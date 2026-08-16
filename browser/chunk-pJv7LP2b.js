@@ -1,0 +1,1 @@
+import{Lt as cI,St as Xy,ct as Ua,t as $a}from"./chunk-B9Ka-aUs.js";var r=class t{static ɵfac=function(e){return new(e||t)};static ɵcmp=Xy({type:t,selectors:[[`app-stories`]],decls:2,vars:0,template:function(e,p){e&1&&($a(0,`p`),cI(1,`stories works!`),Ua())},encapsulation:2})};export{r as StoriesComponent};

@@ -1,0 +1,1 @@
+import{Lt as cI,St as Xy,ct as Ua,t as $a}from"./chunk-B9Ka-aUs.js";var c=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=Xy({type:e,selectors:[[`app-activity`]],decls:2,vars:0,template:function(t,m){t&1&&($a(0,`p`),cI(1,`activity works!`),Ua())},encapsulation:2})};export{c as ActivityComponent};

@@ -1,0 +1,1 @@
+import{Lt as cI,St as Xy,ct as Ua,t as $a}from"./chunk-B9Ka-aUs.js";var s=class n{static ɵfac=function(t){return new(t||n)};static ɵcmp=Xy({type:n,selectors:[[`app-notifications`]],decls:2,vars:0,template:function(t,p){t&1&&($a(0,`p`),cI(1,`notifications works!`),Ua())},encapsulation:2})};export{s as NotificationsComponent};

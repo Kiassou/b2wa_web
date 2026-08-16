@@ -1,0 +1,1 @@
+import{Lt as cI,St as Xy,ct as Ua,t as $a}from"./chunk-B9Ka-aUs.js";var a=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=Xy({type:e,selectors:[[`app-community`]],decls:2,vars:0,template:function(t,s){t&1&&($a(0,`p`),cI(1,`community works!`),Ua())},encapsulation:2})};export{a as CommunityComponent};
