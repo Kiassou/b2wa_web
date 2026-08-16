@@ -1,0 +1,80 @@
+<div class="auth-card otp-card">
+
+  <!-- HEADER BRANDING B2WA -->
+  <div class="brand-header">
+    <div class="brand-logo-wrap">
+      <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="brand-logo" />
+    </div>
+    <div class="brand-info">
+      <h3>B2WA</h3>
+      <small>BUSINESS TO WEST AFRICA</small>
+    </div>
+  </div>
+
+  <!-- TITRE & SOUS-TITRE -->
+  <div class="auth-title">
+    <span class="eyebrow">DOUBLE AUTHENTIFICATION</span>
+    <p>
+      Saisissez le code à 6 chiffres envoyé à votre adresse email pour réinitialiser votre accès.
+    </p>
+  </div>
+
+  <!-- FORMULAIRE OTP -->
+  <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="auth-form" autocomplete="off">
+    
+    <div class="otp-inputs-container">
+      <input
+        *ngFor="let controlName of otpControls; let i = index"
+        #otpInput
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        [formControlName]="controlName"
+        (input)="onInput(i, $event)"
+        (keydown)="onKeyDown(i, $event)"
+        (paste)="onPaste($event)"
+        class="otp-field"
+        [class.filled]="otpForm.get(controlName)?.value"
+        [class.is-invalid]="submitted && otpForm.invalid"
+      />
+    </div>
+
+    <div class="error-msg text-center" *ngIf="submitted && otpForm.invalid">
+      Veuillez saisir le code complet à 6 chiffres.
+    </div>
+
+    <!-- BOUTON VALIDER -->
+    <button 
+      type="submit" 
+      class="submit-btn" 
+      [disabled]="isLoading || otpForm.invalid"
+    >
+      <span *ngIf="!isLoading" class="material-symbols-outlined btn-icon">verified_user</span>
+      <span *ngIf="isLoading" class="spinner"></span>
+      <span>{{ isLoading ? 'Vérification...' : 'Vérifier le code' }}</span>
+    </button>
+  </form>
+
+  <!-- RENVOYER LE CODE & TIMER -->
+  <div class="resend-section">
+    <p *ngIf="countdown > 0">
+      Renvoyer le code dans <strong class="timer-text">{{ countdown }}s</strong>
+    </p>
+    <button 
+      *ngIf="countdown === 0" 
+      type="button" 
+      class="resend-btn" 
+      (click)="resendCode()"
+      [disabled]="isResending"
+    >
+      <span class="material-symbols-outlined">refresh</span>
+      <span>{{ isResending ? 'Envoi...' : 'Renvoyer le code' }}</span>
+    </button>
+  </div>
+
+  <div class="auth-footer-link">
+    <a routerLink="/auth/login">← Retour à la connexion</a>
+  </div>
+
+</div>

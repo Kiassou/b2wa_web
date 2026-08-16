@@ -1,0 +1,114 @@
+<!-- BRAND -->
+<div class="brand">
+  <div class="brand-mark">
+    <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="brand-logo" />
+  </div>
+
+  <div class="brand-name">
+    <strong>B2WA</strong>
+    <small>BUSINESS TO WEST AFRICA</small>
+  </div>
+</div>
+
+<!-- SLIDES -->
+<div class="slides">
+  @for (slide of slides; track slide.id; let i = $index) {
+    <article
+      class="slide"
+      [class.active]="i === currentSlide"
+      [attr.aria-hidden]="i !== currentSlide"
+    >
+      <!-- ILLUSTRATION VISUELLE -->
+      <div class="visual">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+
+        <div class="b2wa-card">
+          <div class="card-header">
+            <span class="status-dot"></span>
+            <span>B2WA NETWORK</span>
+            <span class="card-code">
+              {{ slide.accent }}
+            </span>
+          </div>
+
+          <div class="icon-container">
+            <div class="icon-ring"></div>
+            <div class="icon-box">
+              <span class="material-symbols-outlined">
+                {{ slide.icon }}
+              </span>
+            </div>
+          </div>
+
+          <div class="scan-line"></div>
+
+          <div class="data-lines">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <div class="floating-node node-one"></div>
+        <div class="floating-node node-two"></div>
+        <div class="floating-node node-three"></div>
+      </div>
+
+      <!-- TEXTE -->
+      <div class="content">
+        <span class="eyebrow">
+          <span class="eyebrow-line"></span>
+          {{ slide.eyebrow }}
+        </span>
+        <h1>
+          {{ slide.title }}
+        </h1>
+        <p>
+          {{ slide.description }}
+        </p>
+      </div>
+    </article>
+  }
+</div>
+
+<!-- CONTROLES FOOTER -->
+<div class="promo-footer">
+  <div class="indicators">
+    @for (slide of slides; track slide.id; let i = $index) {
+      <button
+        type="button"
+        class="indicator"
+        [class.active]="i === currentSlide"
+        [attr.aria-label]="'Slide ' + (i + 1)"
+        (click)="goToSlide(i)"
+      ></button>
+    }
+  </div>
+
+  <div class="mobile-controls">
+    <button
+      type="button"
+      class="skip-button"
+      (click)="skip()"
+    >
+      Passer
+    </button>
+    <button
+      type="button"
+      class="next-button"
+      (click)="next()"
+    >
+      <span>
+        {{
+          currentSlide === slides.length - 1
+            ? 'Démarrer'
+            : 'Suivant'
+        }}
+      </span>
+      <span class="material-symbols-outlined">
+        arrow_forward
+      </span>
+    </button>
+  </div>
+</div>

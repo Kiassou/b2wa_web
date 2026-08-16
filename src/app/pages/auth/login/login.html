@@ -1,0 +1,134 @@
+<div class="login-card">
+
+  <!-- HEADER -->
+  <div class="login-header">
+    <div class="brand-header">
+      <div class="login-logo-wrap">
+        <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="login-logo" />
+      </div>
+      <div class="brand-info">
+        <h3>B2WA</h3>
+        <small>BUSINESS TO WEST AFRICA</small>
+      </div>
+    </div>
+
+    <div class="auth-title">
+      <span class="eyebrow">ESPACE MEMBRE</span>
+      <p>Accédez à votre compte grossiste ou commerçant</p>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off">
+
+    <!-- EMAIL -->
+    <div class="form-group">
+      <label for="email">Adresse email ou Téléphone</label>
+      <div 
+        class="input-wrap"
+        [class.input-error]="f['email'].touched && f['email'].invalid"
+      >
+        <span class="material-symbols-outlined">mail</span>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="ex: marchand@b2wa.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <small 
+        class="error" 
+        *ngIf="f['email'].touched && f['email'].invalid"
+      >
+        <span *ngIf="f['email'].errors?.['required']">
+          L'identifiant est obligatoire.
+        </span>
+        <span *ngIf="f['email'].errors?.['email']">
+          Format d'email invalide.
+        </span>
+      </small>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="form-group">
+      <div class="label-row">
+        <label for="password">Mot de passe</label>
+        <a routerLink="/auth/forgot-password" class="forgot-link">
+          Mot de passe oublié ?
+        </a>
+      </div>
+
+      <div 
+        class="input-wrap"
+        [class.input-error]="f['password'].touched && f['password'].invalid"
+      >
+        <span class="material-symbols-outlined">lock</span>
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+
+        <button
+          type="button"
+          class="toggle-btn"
+          (click)="togglePassword()"
+          [attr.aria-label]="showPassword ? 'Masquer' : 'Afficher'"
+        >
+          <span class="material-symbols-outlined">
+            {{ showPassword ? 'visibility_off' : 'visibility' }}
+          </span>
+        </button>
+      </div>
+
+      <small 
+        class="error" 
+        *ngIf="f['password'].touched && f['password'].invalid"
+      >
+        <span *ngIf="f['password'].errors?.['required']">
+          Le mot de passe est obligatoire.
+        </span>
+        <span *ngIf="f['password'].errors?.['minlength']">
+          6 caractères minimum.
+        </span>
+      </small>
+    </div>
+
+    <!-- REMEMBER ME -->
+    <div class="form-footer">
+      <label class="remember-me">
+        <input type="checkbox" formControlName="rememberMe" />
+        <span>Se souvenir de moi</span>
+      </label>
+    </div>
+
+    <!-- SERVER ERROR -->
+    <p class="server-error" *ngIf="errorMessage">
+      <span class="material-symbols-outlined">error</span>
+      {{ errorMessage }}
+    </p>
+
+    <!-- LOGIN BUTTON -->
+    <button type="submit" class="login-btn" [disabled]="loading">
+      <span class="material-symbols-outlined" *ngIf="!loading">login</span>
+      <span>{{ loading ? 'Connexion en cours...' : 'Se connecter' }}</span>
+    </button>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+      <span>ou</span>
+    </div>
+
+    <!-- REGISTER LINK -->
+    <div class="auth-link">
+      <span>Nouveau sur la plateforme ?</span>
+      <a routerLink="/auth/register">Créer un compte B2WA</a>
+    </div>
+
+  </form>
+
+</div>

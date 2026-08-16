@@ -1,0 +1,234 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* CARTE DES CONDITIONS */
+.terms-card {
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(15, 44, 89, 0.95); /* Bleu Marine B2WA */
+  border: 1px solid rgba(22, 163, 74, 0.35); /* Bordure Verte B2WA */
+  backdrop-filter: blur(16px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.terms-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #ffffff;
+}
+
+.back-link span.material-symbols-outlined {
+  font-size: 1rem;
+}
+
+/* BRAND HEADER */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.brand-info h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.brand-info small {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #f59e0b; /* Ambre B2WA */
+  letter-spacing: 0.8px;
+}
+
+/* TITRES */
+.auth-title .eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #16a34a; /* Vert B2WA */
+  letter-spacing: 1px;
+}
+
+.auth-title h2 {
+  margin: 0.15rem 0 0.1rem 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.update-date {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #f59e0b; /* Ambre */
+  font-weight: 500;
+}
+
+/* CORPS DES CONDITIONS (SCROLLABLE) */
+.terms-content {
+  overflow-y: auto;
+  padding-right: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+}
+
+/* Style de scrollbar personnalisée */
+.terms-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.terms-content::-webkit-scrollbar-track {
+  background: rgba(10, 25, 47, 0.4);
+  border-radius: 4px;
+}
+
+.terms-content::-webkit-scrollbar-thumb {
+  background: rgba(22, 163, 74, 0.4);
+  border-radius: 4px;
+}
+
+.terms-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 163, 74, 0.7);
+}
+
+/* SECTIONS */
+.terms-section {
+  background: rgba(10, 25, 47, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.35rem;
+}
+
+.section-title span {
+  font-size: 1.1rem;
+  color: #16a34a; /* Vert B2WA */
+}
+
+.section-title h4 {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.terms-section p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.terms-section p strong {
+  color: #ffffff;
+}
+
+.terms-section ul {
+  margin: 0.35rem 0 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.73rem;
+  color: #cbd5e1;
+}
+
+.terms-section li {
+  margin-bottom: 0.2rem;
+  line-height: 1.35;
+}
+
+/* FOOTER & BOUTON D'ACCEPTATION */
+.terms-footer {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.accept-btn {
+  width: 100%;
+  height: 38px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+  transition: all 0.2s ease;
+}
+
+.accept-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
+}
+
+.accept-btn span.material-symbols-outlined {
+  font-size: 1.1rem;
+}

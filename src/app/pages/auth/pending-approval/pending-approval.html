@@ -1,0 +1,65 @@
+<div class="auth-card pending-card">
+
+  <!-- BRAND HEADER -->
+  <div class="brand-header">
+    <div class="brand-logo-wrap">
+      <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="brand-logo" />
+    </div>
+    <div class="brand-info">
+      <h3>B2WA</h3>
+      <small>BUSINESS TO WEST AFRICA</small>
+    </div>
+  </div>
+
+  <!-- ICON ANIMÉE D'ATTENTE -->
+  <div class="status-icon-wrap">
+    <div class="pulse-ring"></div>
+    <span class="material-symbols-outlined status-icon">hourglass_top</span>
+  </div>
+
+  <!-- TITRE & DÉTAILS -->
+  <div class="auth-title">
+    <span class="eyebrow">COMPTE EN COURS DE VALIDATION</span>
+    <h2>Demande en cours d'examen</h2>
+    <p>
+      Votre inscription a bien été enregistrée. L'équipe d'administration <strong>B2WA</strong> vérifie actuellement vos informations et documents pour certifier votre profil.
+    </p>
+  </div>
+
+  <!-- ENCADRÉ INFORMATIF -->
+  <div class="info-box">
+    <div class="info-item">
+      <span class="material-symbols-outlined icon">mark_email_unread</span>
+      <div class="info-text">
+        <strong>Notification par email</strong>
+        <p>Un message de confirmation vous sera envoyé dès que votre compte sera approuvé.</p>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <span class="material-symbols-outlined icon">schedule</span>
+      <div class="info-text">
+        <strong>Délai d'estimation</strong>
+        <p>Le traitement prend généralement entre 12h et 24h ouvrées.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions-group">
+    <button type="button" class="refresh-btn" (click)="checkStatus()" [disabled]="isChecking">
+      <span class="material-symbols-outlined" [class.spin]="isChecking">sync</span>
+      <span>{{ isChecking ? 'Vérification...' : 'Renvoyer une demande' }}</span>
+    </button>
+
+    <!--<button type="button" class="logout-btn" (click)="logout()">
+      <span class="material-symbols-outlined">logout</span>
+      <span>Se déconnecter</span>
+    </button>-->
+  </div>
+
+  <div class="auth-footer-link">
+    <p>Besoin d'aide ? <a href="mailto:support@b2wa.com">Contacter le support B2WA</a></p>
+  </div>
+
+</div>

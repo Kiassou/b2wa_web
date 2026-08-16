@@ -1,0 +1,619 @@
+<div class="register-card">
+
+  <!-- HEADER -->
+  <div class="register-header">
+    <div class="brand-header">
+      <div class="register-logo-wrap">
+        <img
+          src="assets/images/B2WA_logo.png"
+          alt="Logo B2WA"
+          class="login-logo"
+        />
+      </div>
+
+      <div class="brand-info">
+        <h3>B2WA</h3>
+        <small>BUSINESS TO WEST AFRICA</small>
+      </div>
+    </div>
+
+    <div class="auth-title">
+      <span class="eyebrow">CRÉATION DE COMPTE</span>
+      <p>Inscrivez-vous pour accéder à la plateforme</p>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()"
+    novalidate
+    autocomplete="off"
+  >
+
+    <!-- NOM COMPLET -->
+    <div class="form-group">
+      <label for="fullName">
+        Nom complet ou raison sociale
+      </label>
+
+      <div
+        class="input-wrap"
+        [class.input-error]="
+          f['fullName'].touched && f['fullName'].invalid
+        "
+      >
+        <span class="material-symbols-outlined">person</span>
+
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          placeholder="Ex : Bakary Coulibaly"
+          autocomplete="new-name"
+        />
+      </div>
+
+      <small
+        class="error"
+        *ngIf="f['fullName'].touched && f['fullName'].hasError('required')"
+      >
+        Le nom complet est obligatoire.
+      </small>
+    </div>
+
+    <!-- EMAIL -->
+    <div class="form-group">
+      <label for="email">Adresse email</label>
+
+      <div
+        class="input-wrap"
+        [class.input-error]="
+          f['email'].touched && f['email'].invalid
+        "
+      >
+        <span class="material-symbols-outlined">mail</span>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="exemple@domaine.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <small
+        class="error"
+        *ngIf="f['email'].touched && f['email'].hasError('required')"
+      >
+        L'adresse email est obligatoire.
+      </small>
+
+      <small
+        class="error"
+        *ngIf="f['email'].touched && f['email'].hasError('email')"
+      >
+        Veuillez saisir une adresse email valide.
+      </small>
+    </div>
+
+    <!-- TELEPHONE -->
+    <div class="form-group">
+      <label for="phone">Téléphone</label>
+
+      <div
+        class="input-wrap"
+        [class.input-error]="
+          f['phone'].touched && f['phone'].invalid
+        "
+      >
+        <span class="material-symbols-outlined">call</span>
+
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="+223 00 00 00 00"
+          autocomplete="tel"
+        />
+      </div>
+
+      <small
+        class="error"
+        *ngIf="f['phone'].touched && f['phone'].hasError('required')"
+      >
+        Le numéro de téléphone est obligatoire.
+      </small>
+    </div>
+
+    <!-- ROLE -->
+    <div class="form-group">
+      <label>Sélectionnez votre rôle</label>
+
+      <div class="role-selector-compact">
+
+        <label
+          class="role-btn"
+          [class.active]="f['role'].value === 'FOURNISSEUR'"
+        >
+          <input
+            type="radio"
+            formControlName="role"
+            value="FOURNISSEUR"
+            (change)="onRoleChange('FOURNISSEUR')"
+          />
+
+          <span class="material-symbols-outlined icon">
+            inventory_2
+          </span>
+
+          <span>Fournisseur</span>
+        </label>
+
+        <label
+          class="role-btn"
+          [class.active]="f['role'].value === 'COMMERCANT'"
+        >
+          <input
+            type="radio"
+            formControlName="role"
+            value="COMMERCANT"
+            (change)="onRoleChange('COMMERCANT')"
+          />
+
+          <span class="material-symbols-outlined icon">
+            storefront
+          </span>
+
+          <span>Commerçant</span>
+        </label>
+
+      </div>
+    </div>
+
+    <!-- MOTS DE PASSE -->
+    <div class="form-row">
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+
+        <div
+          class="input-wrap"
+          [class.input-error]="
+            f['password'].touched && f['password'].invalid
+          "
+        >
+          <span class="material-symbols-outlined">lock</span>
+
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+
+          <button
+            type="button"
+            class="toggle-btn"
+            (click)="togglePassword()"
+            aria-label="Afficher ou masquer le mot de passe"
+          >
+            <span class="material-symbols-outlined">
+              {{ showPassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </button>
+        </div>
+
+        <small
+          class="error"
+          *ngIf="f['password'].touched && f['password'].hasError('required')"
+        >
+          Le mot de passe est obligatoire.
+        </small>
+
+        <small
+          class="error"
+          *ngIf="f['password'].touched && f['password'].hasError('minlength')"
+        >
+          Minimum 8 caractères.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer</label>
+
+        <div
+          class="input-wrap"
+          [class.input-error]="
+            (f['confirmPassword'].touched || registerForm.touched) &&
+            (
+              f['confirmPassword'].invalid ||
+              registerForm.hasError('passwordMismatch')
+            )
+          "
+        >
+          <span class="material-symbols-outlined">lock_reset</span>
+
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+
+          <button
+            type="button"
+            class="toggle-btn"
+            (click)="toggleConfirmPassword()"
+            aria-label="Afficher ou masquer la confirmation"
+          >
+            <span class="material-symbols-outlined">
+              {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+            </span>
+          </button>
+        </div>
+
+        <small
+          class="error"
+          *ngIf="
+            f['confirmPassword'].touched &&
+            f['confirmPassword'].hasError('required')
+          "
+        >
+          La confirmation est obligatoire.
+        </small>
+
+        <small
+          class="error"
+          *ngIf="
+            registerForm.touched &&
+            registerForm.hasError('passwordMismatch')
+          "
+        >
+          Les mots de passe ne correspondent pas.
+        </small>
+      </div>
+
+    </div>
+
+    <!-- CONDITIONS -->
+    <div class="form-footer">
+      <div class="checkbox-wrap">
+        <input
+          id="acceptTerms"
+          type="checkbox"
+          formControlName="acceptTerms"
+        />
+
+        <label for="acceptTerms">
+          J'accepte les
+          <a
+            routerLink="/auth/terms"
+            class="terms-link"
+          >
+            conditions d'utilisation
+          </a>
+        </label>
+      </div>
+
+      <small
+        class="error"
+        *ngIf="
+          f['acceptTerms'].touched &&
+          f['acceptTerms'].hasError('required')
+        "
+      >
+        Vous devez accepter les conditions.
+      </small>
+    </div>
+
+    <!-- BOUTON INSCRIPTION -->
+    <button
+      type="submit"
+      class="submit-btn"
+      [disabled]="loading || !f['acceptTerms'].value"
+    >
+      <span
+        class="material-symbols-outlined"
+        *ngIf="!loading"
+      >
+        person_add
+      </span>
+
+      <span>
+        {{ loading ? "Inscription..." : "Créer mon compte" }}
+      </span>
+    </button>
+
+    <div class="divider">
+      <span>ou</span>
+    </div>
+
+    <div class="auth-link">
+      <span>Déjà un compte ?</span>
+      <a routerLink="/auth/login">Se connecter</a>
+    </div>
+
+  </form>
+</div>
+
+<!-- MODAL DOCUMENTS -->
+<div
+  class="modal-backdrop"
+  *ngIf="showDocModal"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-card">
+
+    <!-- HEADER MODAL -->
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-icon">
+          <span class="material-symbols-outlined">badge</span>
+        </div>
+
+        <div>
+          <h3>Vérification d'identité</h3>
+
+          <small class="role-badge">
+            {{
+              selectedRole === 'FOURNISSEUR'
+                ? 'Compte Fournisseur'
+                : 'Compte Commerçant'
+            }}
+          </small>
+        </div>
+      </div>
+
+      <p
+        *ngIf="selectedRole === 'FOURNISSEUR'"
+        class="mandatory-notice"
+      >
+        <span class="material-symbols-outlined">
+          info
+        </span>
+
+        Ces documents sont obligatoires pour la certification de votre
+        entreprise.
+      </p>
+
+      <p
+        *ngIf="selectedRole === 'COMMERCANT'"
+        class="optional-notice"
+      >
+        <span class="material-symbols-outlined">
+          verified
+        </span>
+
+        Facultatif pour le moment, mais recommandé pour augmenter votre
+        limite de transactions.
+      </p>
+    </div>
+
+    <!-- CORPS MODAL -->
+    <div class="modal-body">
+
+      <!-- RCCM -->
+      <div
+        class="doc-upload-card"
+        [class.has-file]="documents.rccm"
+      >
+        <div class="doc-info">
+          <span class="material-symbols-outlined doc-icon">
+            description
+          </span>
+
+          <div class="doc-details">
+            <strong>Registre du Commerce (RCCM)</strong>
+
+            <small *ngIf="!documents.rccm">
+              PDF, PNG ou JPG (max. 5 Mo)
+            </small>
+
+            <small
+              *ngIf="documents.rccm"
+              class="file-name"
+            >
+              {{ documents.rccm.name }}
+            </small>
+          </div>
+        </div>
+
+        <div class="doc-action">
+          <ng-container *ngIf="!documents.rccm">
+            <label
+              for="rccm-input"
+              class="upload-btn"
+            >
+              <span class="material-symbols-outlined">
+                upload_file
+              </span>
+              <span>Parcourir</span>
+            </label>
+
+            <input
+              id="rccm-input"
+              type="file"
+              accept=".pdf,.png,.jpg,.jpeg"
+              hidden
+              (change)="onFileSelected($event, 'rccm')"
+            />
+          </ng-container>
+
+          <button
+            *ngIf="documents.rccm"
+            type="button"
+            class="remove-btn"
+            (click)="removeFile('rccm')"
+          >
+            <span class="material-symbols-outlined">
+              delete
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NIF -->
+      <div
+        class="doc-upload-card"
+        [class.has-file]="documents.nif"
+      >
+        <div class="doc-info">
+          <span class="material-symbols-outlined doc-icon">
+            receipt_long
+          </span>
+
+          <div class="doc-details">
+            <strong>
+              Numéro d'Identification Fiscale (NIF)
+            </strong>
+
+            <small *ngIf="!documents.nif">
+              PDF, PNG ou JPG (max. 5 Mo)
+            </small>
+
+            <small
+              *ngIf="documents.nif"
+              class="file-name"
+            >
+              {{ documents.nif.name }}
+            </small>
+          </div>
+        </div>
+
+        <div class="doc-action">
+          <ng-container *ngIf="!documents.nif">
+            <label
+              for="nif-input"
+              class="upload-btn"
+            >
+              <span class="material-symbols-outlined">
+                upload_file
+              </span>
+              <span>Parcourir</span>
+            </label>
+
+            <input
+              id="nif-input"
+              type="file"
+              accept=".pdf,.png,.jpg,.jpeg"
+              hidden
+              (change)="onFileSelected($event, 'nif')"
+            />
+          </ng-container>
+
+          <button
+            *ngIf="documents.nif"
+            type="button"
+            class="remove-btn"
+            (click)="removeFile('nif')"
+          >
+            <span class="material-symbols-outlined">
+              delete
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PIECE D'IDENTITE -->
+      <div
+        class="doc-upload-card"
+        [class.has-file]="documents.identity"
+      >
+        <div class="doc-info">
+          <span class="material-symbols-outlined doc-icon">
+            id_card
+          </span>
+
+          <div class="doc-details">
+            <strong>Pièce d'identité (CNI ou Passeport)</strong>
+
+            <small *ngIf="!documents.identity">
+              PDF, PNG ou JPG (max. 5 Mo)
+            </small>
+
+            <small
+              *ngIf="documents.identity"
+              class="file-name"
+            >
+              {{ documents.identity.name }}
+            </small>
+          </div>
+        </div>
+
+        <div class="doc-action">
+          <ng-container *ngIf="!documents.identity">
+            <label
+              for="id-input"
+              class="upload-btn"
+            >
+              <span class="material-symbols-outlined">
+                upload_file
+              </span>
+              <span>Parcourir</span>
+            </label>
+
+            <input
+              id="id-input"
+              type="file"
+              accept=".pdf,.png,.jpg,.jpeg"
+              hidden
+              (change)="onFileSelected($event, 'identity')"
+            />
+          </ng-container>
+
+          <button
+            *ngIf="documents.identity"
+            type="button"
+            class="remove-btn"
+            (click)="removeFile('identity')"
+          >
+            <span class="material-symbols-outlined">
+              delete
+            </span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER MODAL -->
+    <div class="modal-footer">
+
+      <button
+        *ngIf="selectedRole === 'COMMERCANT'"
+        type="button"
+        class="secondary-btn"
+        (click)="skipDocuments()"
+      >
+        Définir plus tard
+      </button>
+
+      <button
+        type="button"
+        class="primary-btn"
+        [disabled]="
+          selectedRole === 'FOURNISSEUR' &&
+          (
+            !documents.rccm ||
+            !documents.nif ||
+            !documents.identity
+          )
+        "
+        (click)="saveDocuments()"
+      >
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
+        <span>Valider les documents</span>
+      </button>
+
+    </div>
+
+  </div>
+</div>

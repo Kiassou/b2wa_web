@@ -1,0 +1,1570 @@
+<div class="support-container">
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+  <header class="support-hero">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+      <span class="support-eyebrow">
+        <span class="material-symbols-outlined">
+          help_center
+        </span>
+        CENTRE D'ASSISTANCE B2WA
+      </span>
+      <h1 class="hero-title">
+        Comment pouvons-nous
+        <span>vous aider ?</span>
+      </h1>
+      <p class="hero-subtitle">
+        Trouvez rapidement une réponse, consultez vos demandes
+        ou contactez directement l'équipe B2WA.
+      </p>
+    </div>
+  </header>
+  <!-- =====================================================
+       ALERTES
+       ===================================================== -->
+  @if (successMessage()) {
+    <div class="support-alert success">
+      <span class="material-symbols-outlined">
+        check_circle
+      </span>
+      <span>
+        {{ successMessage() }}
+      </span>
+      <button
+        type="button"
+        (click)="successMessage.set(null)"
+      >
+        <span class="material-symbols-outlined">
+          close
+        </span>
+      </button>
+    </div>
+  }
+  @if (errorMessage()) {
+    <div class="support-alert error">
+      <span class="material-symbols-outlined">
+        error
+      </span>
+      <span>
+        {{ errorMessage() }}
+      </span>
+      <button
+        type="button"
+        (click)="errorMessage.set(null)"
+      >
+        <span class="material-symbols-outlined">
+          close
+        </span>
+      </button>
+    </div>
+  }
+  <!-- =====================================================
+       ACTIONS RAPIDES
+       ===================================================== -->
+  <section class="quick-actions">
+    <!-- Produits -->
+    <button
+      type="button"
+      class="quick-card"
+      (click)="selectCategory('products')"
+    >
+      <div class="quick-icon blue">
+        <span class="material-symbols-outlined">
+          inventory_2
+        </span>
+      </div>
+      <div class="quick-card-content">
+        <h3>
+          Produits & Stock
+        </h3>
+        <p>
+          Gestion des produits, catalogue et synchronisation du stock.
+        </p>
+      </div>
+      <span class="material-symbols-outlined quick-arrow">
+        arrow_forward
+      </span>
+    </button>
+    <!-- Paiements -->
+    <button
+      type="button"
+      class="quick-card"
+      (click)="selectCategory('payments')"
+    >
+      <div class="quick-icon green">
+        <span class="material-symbols-outlined">
+          payments
+        </span>
+      </div>
+      <div class="quick-card-content">
+        <h3>
+          Paiements
+        </h3>
+        <p>
+          Transactions, paiements refusés, frais et encaissements.
+        </p>
+      </div>
+      <span class="material-symbols-outlined quick-arrow">
+        arrow_forward
+      </span>
+    </button>
+    <!-- Compte -->
+    <button
+      type="button"
+      class="quick-card"
+      (click)="selectCategory('account')"
+    >
+      <div class="quick-icon purple">
+        <span class="material-symbols-outlined">
+          verified_user
+        </span>
+      </div>
+      <div class="quick-card-content">
+        <h3>
+          Compte & Sécurité
+        </h3>
+        <p>
+          KYC, profil commerçant, mot de passe et sécurité.
+        </p>
+      </div>
+      <span class="material-symbols-outlined quick-arrow">
+        arrow_forward
+      </span>
+    </button>
+    <!-- Ticket -->
+    <button
+      type="button"
+      class="quick-card primary-action"
+      (click)="openTicketModal()"
+    >
+      <div class="quick-icon orange">
+        <span class="material-symbols-outlined">
+          support_agent
+        </span>
+      </div>
+      <div class="quick-card-content">
+        <h3>
+          Besoin d'un agent ?
+        </h3>
+        <p>
+          Créez une demande et notre équipe vous accompagne.
+        </p>
+      </div>
+      <span class="material-symbols-outlined quick-arrow">
+        arrow_forward
+      </span>
+    </button>
+  </section>
+
+  <!-- =====================================================
+       STATISTIQUES SUPPORT
+       ===================================================== -->
+  <section class="support-stats">
+    <div class="support-stat">
+      <div class="support-stat-icon blue">
+        <span class="material-symbols-outlined">
+          confirmation_number
+        </span>
+      </div>
+      <div>
+        <span class="support-stat-label">
+          Mes demandes
+        </span>
+        <strong>
+          {{ tickets().length }}
+        </strong>
+      </div>
+    </div>
+    <div class="support-stat">
+      <div class="support-stat-icon orange">
+        <span class="material-symbols-outlined">
+          pending_actions
+        </span>
+      </div>
+      <div>
+        <span class="support-stat-label">
+          En cours
+        </span>
+        <strong>
+          {{ openTicketsCount() }}
+        </strong>
+      </div>
+    </div>
+    <div class="support-stat">
+      <div class="support-stat-icon green">
+        <span class="material-symbols-outlined">
+          task_alt
+        </span>
+      </div>
+      <div>
+        <span class="support-stat-label">
+          Résolues
+        </span>
+        <strong>
+          {{ resolvedTicketsCount() }}
+        </strong>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="my-tickets-button"
+      (click)="openTicketsModal()"
+    >
+      <span class="material-symbols-outlined">
+        history
+      </span>
+      Voir mes demandes
+      <span class="material-symbols-outlined">
+        arrow_forward
+      </span>
+    </button>
+  </section>
+  <!-- =====================================================
+       FAQ
+       ===================================================== -->
+  <section class="support-main-grid">
+    <div class="dashboard-card faq-section">
+      <div class="section-header">
+        <div class="section-title">
+          <div class="section-icon blue">
+            <span class="material-symbols-outlined">
+              quiz
+            </span>
+          </div>
+          <div>
+            <h2>
+              Foire Aux Questions
+            </h2>
+            <p>
+              Les réponses aux questions les plus fréquentes.
+            </p>
+          </div>
+        </div>
+        <span class="faq-count">
+          {{ filteredFaqs().length }} réponses
+        </span>
+      </div>
+      
+      <!-- CATEGORIES -->
+      <div class="category-tabs">
+        @for (category of categories; track category.id) {
+          <button
+            type="button"
+            [class.active]="selectedCategory() === category.id"
+            (click)="selectCategory(category.id)"
+          >
+            <span class="material-symbols-outlined">
+              {{ category.icon }}
+            </span>
+            {{ category.label }}
+          </button>
+        }
+      </div>
+      <!-- FAQ LIST -->
+      <div class="faq-list">
+        @for (
+          faq of filteredFaqs();
+          track faq.question
+        ) {
+          <div
+            class="faq-item"
+            [class.open]="faq.open"
+          >
+            <button
+              type="button"
+              class="faq-question"
+              (click)="toggleFaq(faq)"
+            >
+              <span class="faq-question-left">
+                <span class="faq-small-icon">
+                  <span class="material-symbols-outlined">
+                    {{ faq.icon }}
+                  </span>
+                </span>
+                <span>
+                  {{ faq.question }}
+                </span>
+              </span>
+              <span class="material-symbols-outlined faq-chevron">
+                expand_more
+              </span>
+            </button>
+            @if (faq.open) {
+              <div class="faq-answer">
+                <p>
+                  {{ faq.answer }}
+                </p>
+                <button
+                  type="button"
+                  class="faq-create-ticket"
+                  (click)="openTicketModal()"
+                >
+                  Cette réponse ne vous aide pas ?
+                  <span class="material-symbols-outlined">
+                    arrow_forward
+                  </span>
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        @if (filteredFaqs().length === 0) {
+          <div class="empty-faq">
+            <span class="material-symbols-outlined">
+              search_off
+            </span>
+            <h3>
+              Aucune réponse trouvée
+            </h3>
+            <p>
+              Essayez une autre recherche ou contactez directement
+              notre équipe support.
+            </p>
+            <button
+              type="button"
+              class="btn-primary"
+              (click)="openTicketModal()"
+            >
+              <span class="material-symbols-outlined">
+                support_agent
+              </span>
+              Contacter le support
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+
+    <!-- ===================================================
+         SIDEBAR ASSISTANCE
+         =================================================== -->
+
+    <aside class="support-sidebar">
+      <!-- Ticket -->
+      <div class="dashboard-card assistance-card">
+        <div class="assistance-icon">
+          <span class="material-symbols-outlined">
+            support_agent
+          </span>
+        </div>
+        <span class="mini-eyebrow">
+          ASSISTANCE B2WA
+        </span>
+        <h2>
+          Vous n'avez pas trouvé la réponse ?
+        </h2>
+        <p>
+          Notre équipe support est disponible pour vous aider
+          avec votre boutique, vos commandes et vos transactions.
+        </p>
+
+        <button
+          type="button"
+          class="btn-primary full-button"
+          (click)="openTicketModal()"
+        >
+
+          <span class="material-symbols-outlined">
+            add_comment
+          </span>
+
+          Créer une demande
+
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary full-button"
+          (click)="openTicketsModal()"
+        >
+
+          <span class="material-symbols-outlined">
+            confirmation_number
+          </span>
+
+          Mes demandes
+
+        </button>
+
+      </div>
+
+
+      <!-- Sécurité -->
+
+      <div class="dashboard-card security-tip">
+
+        <div class="security-tip-header">
+
+          <span class="material-symbols-outlined">
+            shield
+          </span>
+
+          <strong>
+            Conseil de sécurité
+          </strong>
+
+        </div>
+
+        <p>
+          B2WA ne vous demandera jamais votre mot de passe,
+          votre code OTP ou votre code PIN par téléphone,
+          WhatsApp ou email.
+        </p>
+
+      </div>
+
+    </aside>
+
+  </section>
+
+
+  <!-- =====================================================
+       CONTACT
+       ===================================================== -->
+
+  <section class="dashboard-card contact-section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+
+        <div class="section-icon orange">
+
+          <span class="material-symbols-outlined">
+            headset_mic
+          </span>
+
+        </div>
+
+        <div>
+
+          <h2>
+            Contacter un agent B2WA
+          </h2>
+
+          <p>
+            Choisissez le canal qui vous convient le mieux.
+          </p>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="contact-more-button"
+        (click)="openContactModal()"
+      >
+
+        Tous les moyens de contact
+
+        <span class="material-symbols-outlined">
+          arrow_forward
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="contact-grid">
+
+      <!-- Téléphone -->
+
+      <div class="contact-card">
+
+        <div class="contact-card-icon blue">
+
+          <span class="material-symbols-outlined">
+            call
+          </span>
+
+        </div>
+
+        <div>
+
+          <strong>
+            Téléphone Support
+          </strong>
+
+          <p>
+            Lundi — Vendredi · 8h — 18h
+          </p>
+
+          <a href="tel:+22300000000">
+            +223 00 00 00 00
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- WhatsApp -->
+
+      <div class="contact-card">
+
+        <div class="contact-card-icon green">
+
+          <span class="material-symbols-outlined">
+            chat
+          </span>
+
+        </div>
+
+        <div>
+
+          <strong>
+            WhatsApp Business
+          </strong>
+
+          <p>
+            Assistance rapide par message
+          </p>
+
+          <a
+            href="https://wa.me/22300000000"
+            target="_blank"
+            rel="noopener"
+          >
+            Démarrer une discussion
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Email -->
+
+      <div class="contact-card">
+
+        <div class="contact-card-icon purple">
+
+          <span class="material-symbols-outlined">
+            mail
+          </span>
+
+        </div>
+
+        <div>
+
+          <strong>
+            Email Support
+          </strong>
+
+          <p>
+            Réponse sous 24 heures
+          </p>
+
+          <a href="mailto:support@b2wa.com">
+            support&#64;b2wa.com
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       MODAL : NOUVEAU TICKET
+       ===================================================== -->
+
+  @if (isTicketModalOpen()) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeTicketModal()"
+    >
+
+      <div
+        class="support-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="modal-header">
+
+          <div>
+
+            <span class="modal-eyebrow">
+              SUPPORT B2WA
+            </span>
+
+            <h2>
+              Nouvelle demande
+            </h2>
+
+            <p>
+              Décrivez votre problème afin que notre équipe
+              puisse vous aider efficacement.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeTicketModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+          @if (errorMessage()) {
+
+            <div class="modal-error">
+
+              <span class="material-symbols-outlined">
+                error
+              </span>
+
+              {{ errorMessage() }}
+
+            </div>
+
+          }
+
+
+          <div class="form-group">
+
+            <label>
+              Sujet de votre demande
+              <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="ticketSubject"
+              placeholder="Ex : Problème avec mon stock"
+            />
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label>
+                Catégorie
+              </label>
+
+              <select
+                [(ngModel)]="ticketCategory"
+              >
+
+                <option value="tech">
+                  Problème technique
+                </option>
+
+                <option value="products">
+                  Produits & Stock
+                </option>
+
+                <option value="billing">
+                  Facturation & Paiements
+                </option>
+
+                <option value="account">
+                  Gestion du compte
+                </option>
+
+                <option value="orders">
+                  Commandes
+                </option>
+
+                <option value="other">
+                  Autre demande
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Priorité
+              </label>
+
+              <select
+                [(ngModel)]="ticketPriority"
+              >
+
+                <option value="low">
+                  Basse
+                </option>
+
+                <option value="medium">
+                  Moyenne
+                </option>
+
+                <option value="high">
+                  Haute / Urgente
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Référence de transaction / produit
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="ticketReference"
+              placeholder="Ex : TXN-88321 ou PRD-2048"
+            />
+
+            <small class="field-hint">
+              Facultatif — utile pour accélérer le traitement.
+            </small>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Description détaillée
+              <span>*</span>
+            </label>
+
+            <textarea
+              rows="5"
+              [(ngModel)]="ticketDescription"
+              placeholder="Expliquez votre situation, le problème rencontré et les étapes déjà effectuées..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- PIÈCE JOINTE -->
+
+          <div class="attachment-section">
+
+            <label class="attachment-label">
+              Pièce jointe
+            </label>
+
+            @if (!selectedFileName()) {
+
+              <label
+                class="upload-zone"
+                for="supportFile"
+              >
+
+                <span class="material-symbols-outlined">
+                  attach_file
+                </span>
+
+                <strong>
+                  Ajouter une capture ou un document
+                </strong>
+
+                <small>
+                  PNG, JPG ou PDF · 5 Mo maximum
+                </small>
+
+              </label>
+
+              <input
+                id="supportFile"
+                type="file"
+                hidden
+                accept="image/png,image/jpeg,application/pdf"
+                (change)="onFileSelected($event)"
+              />
+
+            } @else {
+
+              <div class="selected-file">
+
+                <div class="file-icon">
+
+                  <span class="material-symbols-outlined">
+                    description
+                  </span>
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{ selectedFileName() }}
+                  </strong>
+
+                  <small>
+                    Pièce jointe ajoutée
+                  </small>
+
+                </div>
+
+                <button
+                  type="button"
+                  (click)="removeAttachment()"
+                >
+
+                  <span class="material-symbols-outlined">
+                    delete
+                  </span>
+
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- SÉCURITÉ -->
+
+          <div class="ticket-security">
+
+            <span class="material-symbols-outlined">
+              shield
+            </span>
+
+            <div>
+
+              <strong>
+                Ne partagez jamais vos informations secrètes.
+              </strong>
+
+              <p>
+                B2WA ne vous demandera jamais votre mot de passe,
+                votre code OTP ou votre code PIN dans une demande.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeTicketModal()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="continueTicket()"
+          >
+
+            Continuer
+
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       MODAL : CONFIRMATION
+       ===================================================== -->
+
+  @if (isConfirmModalOpen()) {
+
+    <div class="modal-backdrop confirmation-backdrop">
+
+      <div class="confirmation-modal">
+
+        <div class="confirmation-icon">
+
+          <span class="material-symbols-outlined">
+            send
+          </span>
+
+        </div>
+
+        <h2>
+          Envoyer cette demande ?
+        </h2>
+
+        <p>
+          Votre demande sera transmise à l'équipe support B2WA.
+          Vous pourrez suivre son évolution depuis
+          <strong>Mes demandes</strong>.
+        </p>
+
+
+        <div class="confirmation-summary">
+
+          <div>
+            <span>
+              Sujet
+            </span>
+
+            <strong>
+              {{ ticketSubject }}
+            </strong>
+          </div>
+
+          <div>
+            <span>
+              Priorité
+            </span>
+
+            <strong
+              [class.urgent]="ticketPriority === 'high'"
+            >
+              {{ getPriorityLabel(ticketPriority) }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="confirmation-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeConfirmModal()"
+            [disabled]="isSubmitting()"
+          >
+            Retour
+          </button>
+
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="submitTicket()"
+            [disabled]="isSubmitting()"
+          >
+
+            @if (isSubmitting()) {
+
+              <span class="material-symbols-outlined rotating">
+                progress_activity
+              </span>
+
+              Envoi en cours...
+
+            } @else {
+
+              <span class="material-symbols-outlined">
+                send
+              </span>
+
+              Envoyer la demande
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       MODAL : MES DEMANDES
+       ===================================================== -->
+
+  @if (isTicketsModalOpen()) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeTicketsModal()"
+    >
+
+      <div
+        class="support-modal tickets-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="modal-header">
+
+          <div>
+
+            <span class="modal-eyebrow">
+              ESPACE SUPPORT
+            </span>
+
+            <h2>
+              Mes demandes
+            </h2>
+
+            <p>
+              Consultez l'état de vos demandes auprès du support B2WA.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeTicketsModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+          <div class="ticket-summary-bar">
+
+            <div>
+
+              <strong>
+                {{ tickets().length }}
+              </strong>
+
+              <span>
+                demandes
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                {{ openTicketsCount() }}
+              </strong>
+
+              <span>
+                en cours
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                {{ resolvedTicketsCount() }}
+              </strong>
+
+              <span>
+                résolues
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="tickets-list">
+
+            @for (
+              ticket of tickets();
+              track ticket.id
+            ) {
+
+              <button
+                type="button"
+                class="ticket-card"
+                (click)="openTicketDetail(ticket)"
+              >
+
+                <div class="ticket-card-top">
+
+                  <span class="ticket-id">
+                    #{{ ticket.id }}
+                  </span>
+
+                  <span
+                    class="ticket-status"
+                    [class]="getTicketStatusClass(ticket.status)"
+                  >
+                    {{ ticket.statusLabel }}
+                  </span>
+
+                </div>
+
+
+                <h3>
+                  {{ ticket.subject }}
+                </h3>
+
+
+                <div class="ticket-card-meta">
+
+                  <span>
+                    <span class="material-symbols-outlined">
+                      category
+                    </span>
+
+                    {{ ticket.categoryLabel }}
+                  </span>
+
+                  <span>
+                    <span class="material-symbols-outlined">
+                      schedule
+                    </span>
+
+                    {{ ticket.updatedAt }}
+                  </span>
+
+                </div>
+
+
+                <div class="ticket-card-bottom">
+
+                  <span
+                    class="ticket-priority"
+                    [class]="getPriorityClass(ticket.priority)"
+                  >
+                    {{ ticket.priorityLabel }}
+                  </span>
+
+                  <span class="material-symbols-outlined">
+                    arrow_forward
+                  </span>
+
+                </div>
+
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="closeTicketsModal(); openTicketModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              add
+            </span>
+
+            Nouvelle demande
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       MODAL : DETAIL TICKET
+       ===================================================== -->
+
+  @if (
+    isTicketDetailModalOpen() &&
+    selectedTicket()
+  ) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeTicketDetail()"
+    >
+
+      <div
+        class="support-modal ticket-detail-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="modal-header">
+
+          <div>
+
+            <span class="modal-eyebrow">
+              #{{ selectedTicket()!.id }}
+            </span>
+
+            <h2>
+              {{ selectedTicket()!.subject }}
+            </h2>
+
+            <p>
+              Créée le {{ selectedTicket()!.createdAt }}
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeTicketDetail()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+          <div class="detail-status-row">
+
+            <span
+              class="ticket-status large"
+              [class]="getTicketStatusClass(selectedTicket()!.status)"
+            >
+              {{ selectedTicket()!.statusLabel }}
+            </span>
+
+            <span
+              class="ticket-priority"
+              [class]="getPriorityClass(selectedTicket()!.priority)"
+            >
+              {{ selectedTicket()!.priorityLabel }}
+            </span>
+
+            <span class="detail-category">
+              {{ selectedTicket()!.categoryLabel }}
+            </span>
+
+          </div>
+
+
+          <div class="conversation">
+
+            <div class="conversation-message user-message">
+
+              <div class="message-header">
+
+                <strong>
+                  Vous
+                </strong>
+
+                <span>
+                  {{ selectedTicket()!.createdAt }}
+                </span>
+
+              </div>
+
+              <p>
+                {{ selectedTicket()!.description }}
+              </p>
+
+              @if (selectedTicket()!.reference) {
+
+                <div class="reference-box">
+
+                  <span class="material-symbols-outlined">
+                    tag
+                  </span>
+
+                  Référence :
+                  <strong>
+                    {{ selectedTicket()!.reference }}
+                  </strong>
+
+                </div>
+
+              }
+
+              @if (selectedTicket()!.attachment) {
+
+                <div class="attachment-preview">
+
+                  <span class="material-symbols-outlined">
+                    attachment
+                  </span>
+
+                  {{ selectedTicket()!.attachment }}
+
+                </div>
+
+              }
+
+            </div>
+
+
+            @if (selectedTicket()!.response) {
+
+              <div class="conversation-message support-message">
+
+                <div class="message-header">
+
+                  <strong>
+                    Support B2WA
+                  </strong>
+
+                  <span>
+                    Réponse du support
+                  </span>
+
+                </div>
+
+                <p>
+                  {{ selectedTicket()!.response }}
+                </p>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          @if (
+            selectedTicket()!.status !== 'resolved'
+          ) {
+
+            <div class="reply-box">
+
+              <textarea
+                rows="3"
+                placeholder="Ajouter une réponse à cette demande..."
+              ></textarea>
+
+              <button
+                type="button"
+                class="btn-primary"
+              >
+
+                <span class="material-symbols-outlined">
+                  send
+                </span>
+
+                Répondre
+
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeTicketDetail()"
+          >
+            Fermer
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       MODAL : CONTACT
+       ===================================================== -->
+
+  @if (isContactModalOpen()) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeContactModal()"
+    >
+
+      <div
+        class="support-modal contact-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="modal-header">
+
+          <div>
+
+            <span class="modal-eyebrow">
+              CONTACT B2WA
+            </span>
+
+            <h2>
+              Contacter un agent
+            </h2>
+
+            <p>
+              Choisissez le canal qui vous convient.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeContactModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div class="modal-body contact-modal-body">
+
+          <a
+            href="tel:+22300000000"
+            class="contact-option"
+          >
+
+            <div class="contact-option-icon blue">
+
+              <span class="material-symbols-outlined">
+                call
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Téléphone
+              </strong>
+
+              <span>
+                +223 00 00 00 00
+              </span>
+              <small>
+                Lundi — Vendredi · 8h — 18h
+              </small>
+            </div>
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+          </a>
+          <a
+            href="https://wa.me/22300000000"
+            target="_blank"
+            rel="noopener"
+            class="contact-option"
+          >
+            <div class="contact-option-icon green">
+              <span class="material-symbols-outlined">
+                chat
+              </span>
+            </div>
+            <div>
+              <strong>
+                WhatsApp Business
+              </strong>
+              <span>
+                Assistance par message
+              </span>
+              <small>
+                Réponse rapide
+              </small>
+            </div>
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+          </a>
+          <a
+            href="mailto:support@b2wa.com"
+            class="contact-option"
+          >
+            <div class="contact-option-icon purple">
+              <span class="material-symbols-outlined">
+                mail
+              </span>
+            </div>
+            <div>
+              <strong>
+                Email
+              </strong>
+              <span>
+                support&#64;b2wa.com
+              </span>
+              <small>
+                Réponse sous 24 heures
+              </small>
+            </div>
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+          </a>
+          <button
+            type="button"
+            class="contact-option ticket-contact"
+            (click)="closeContactModal(); openTicketModal()"
+          >
+            <div class="contact-option-icon orange">
+              <span class="material-symbols-outlined">
+                confirmation_number
+              </span>
+            </div>
+            <div>
+              <strong>
+                Créer un ticket
+              </strong>
+              <span>
+                Décrire votre problème
+              </span>
+              <small>
+                Suivi directement dans B2WA
+              </small>
+            </div>
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,871 @@
+<div class="dashboard-page">
+
+  <!-- EN-TÊTE -->
+  <header class="page-header">
+
+    <div class="page-heading">
+      <span class="page-eyebrow">
+        ESPACE COMMERÇANT
+      </span>
+
+      <h1 class="page-title">
+        Tableau de bord Commerçant
+      </h1>
+
+      <p class="page-subtitle">
+        Aperçu en temps réel de votre activité commerciale sur B2WA
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <small class="last-update">
+        Dernière mise à jour :
+        {{ lastUpdate | date: 'dd/MM/yyyy à HH:mm' }}
+      </small>
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="refreshDashboard()"
+        [disabled]="loading"
+      >
+        <span class="material-symbols-outlined">
+          refresh
+        </span>
+
+        <span>
+          {{ loading ? 'Actualisation...' : 'Actualiser' }}
+        </span>
+      </button>
+
+    </div>
+
+  </header>
+
+  <!-- FILTRES -->
+<section class="dashboard-toolbar">
+
+  <!-- FILTRE PÉRIODE -->
+  <div class="filter-group">
+    <label for="periodFilter" class="filter-label">
+      <span class="material-symbols-outlined label-icon">calendar_today</span>
+      <span>Période</span>
+    </label>
+
+    <div class="select-wrapper">
+      <select
+        id="periodFilter"
+        [value]="selectedPeriod()"
+        (change)="onPeriodChange($event)"
+      >
+        @for (period of periods; track period.value) {
+          <option [value]="period.value">
+            {{ period.label }}
+          </option>
+        }
+      </select>
+      <span class="material-symbols-outlined select-arrow">expand_more</span>
+    </div>
+  </div>
+
+  <!-- FILTRE CATÉGORIE -->
+  <div class="filter-group">
+    <label for="categoryFilter" class="filter-label">
+      <span class="material-symbols-outlined label-icon">category</span>
+      <span>Catégorie</span>
+    </label>
+
+    <div class="select-wrapper">
+      <select
+        id="categoryFilter"
+        [value]="selectedCategory()"
+        (change)="onCategoryChange($event)"
+      >
+        @for (category of categoryFilters; track category) {
+          <option [value]="category">
+            {{ category }}
+          </option>
+        }
+      </select>
+      <span class="material-symbols-outlined select-arrow">expand_more</span>
+    </div>
+  </div>
+
+  <!-- FILTRE STATUT -->
+  <div class="filter-group">
+    <label for="statusFilter" class="filter-label">
+      <span class="material-symbols-outlined label-icon">tune</span>
+      <span>Statut</span>
+    </label>
+
+    <div class="select-wrapper">
+      <select
+        id="statusFilter"
+        [value]="selectedStatus()"
+        (change)="onStatusChange($event)"
+      >
+        @for (status of statusFilters; track status) {
+          <option [value]="status">
+            {{ status === 'ALL' ? 'Tous les statuts' : status }}
+          </option>
+        }
+      </select>
+      <span class="material-symbols-outlined select-arrow">expand_more</span>
+    </div>
+  </div>
+
+  <!-- RECHERCHE -->
+  <div class="filter-group search-group">
+    <label for="orderSearch" class="filter-label">
+      <span class="material-symbols-outlined label-icon">search</span>
+      <span>Recherche</span>
+    </label>
+
+    <div class="search-input-wrapper">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input
+        id="orderSearch"
+        type="search"
+        placeholder="Commande, client ou produit..."
+        [value]="searchTerm()"
+        (input)="onSearchChange($event)"
+      />
+    </div>
+  </div>
+
+  <!-- BOUTON RAZ -->
+  <button
+    type="button"
+    class="reset-filter-btn"
+    (click)="resetFilters()"
+    title="Réinitialiser tous les filtres"
+  >
+    <span class="material-symbols-outlined">filter_alt_off</span>
+    <span>Réinitialiser</span>
+  </button>
+
+</section>
+
+  <!-- INDICATEUR DE CHARGEMENT -->
+  @if (loading) {
+    <div class="loading-banner">
+      <span class="loading-spinner"></span>
+      Chargement des données du dashboard...
+    </div>
+  }
+
+  <!-- KPI -->
+  <section class="kpi-grid">
+
+    @for (kpi of kpis(); track kpi.title) {
+      <article class="kpi-card">
+
+        <div
+          class="kpi-icon-wrapper"
+          [style.background]="kpi.background"
+          [style.color]="kpi.color"
+        >
+          <span class="material-symbols-outlined">
+            {{ kpi.icon }}
+          </span>
+        </div>
+
+        <div class="kpi-info">
+          <span class="kpi-title">
+            {{ kpi.title }}
+          </span>
+
+          <strong class="kpi-value">
+              {{ kpi.value }}
+            </strong>
+
+          <div class="kpi-value-row">
+            <span
+              class="kpi-badge"
+              [class.positive]="kpi.isPositive"
+              [class.negative]="!kpi.isPositive"
+            >
+              <span class="material-symbols-outlined">
+                {{ kpi.isPositive ? 'trending_up' : 'trending_down' }}
+              </span>
+
+              {{ kpi.change }}
+            </span>
+          </div>
+
+          <small class="kpi-description">
+            {{ kpi.description }}
+          </small>
+        </div>
+
+      </article>
+    }
+
+  </section>
+
+  <!-- ACTIONS RAPIDES -->
+  <section class="quick-actions-section">
+
+    <div class="section-heading">
+      <div>
+        <span class="section-eyebrow">
+          PRODUCTIVITÉ
+        </span>
+
+        <h2 class="section-title">
+          Actions rapides
+        </h2>
+      </div>
+    </div>
+
+    <div class="quick-actions-grid">
+
+      @for (action of quickActions; track action.label) {
+        <a
+          [routerLink]="action.route"
+          class="quick-action-btn"
+        >
+          <div
+            class="action-icon"
+            [style.background-color]="action.color + '18'"
+            [style.color]="action.color"
+          >
+            <span class="material-symbols-outlined">
+              {{ action.icon }}
+            </span>
+          </div>
+
+          <span>
+            {{ action.label }}
+          </span>
+
+          <span class="material-symbols-outlined action-arrow">
+            arrow_forward
+          </span>
+        </a>
+      }
+
+    </div>
+
+  </section>
+
+  <!-- GRAPHIQUES -->
+  <div class="charts-grid">
+
+    <!-- COURBE DES VENTES -->
+    <section class="dashboard-card chart-card">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">
+            ANALYTIQUE
+          </span>
+
+          <h2>
+            Évolution des ventes
+          </h2>
+
+          <p>
+            Revenus enregistrés selon la période sélectionnée
+          </p>
+        </div>
+
+        <span class="badge-period">
+          {{ selectedPeriodLabel() }}
+        </span>
+      </div>
+
+      <div class="chart-summary">
+        <strong>
+          {{ totalRevenue() | number: '1.0-0' }} FCFA
+        </strong>
+
+        <span>
+          {{ salesPoints().length }} périodes analysées
+        </span>
+      </div>
+
+      <div class="line-chart-container">
+
+        <svg
+          viewBox="0 0 700 300"
+          preserveAspectRatio="none"
+          class="line-chart"
+          role="img"
+          aria-label="Évolution des ventes"
+        >
+
+          <defs>
+            <linearGradient
+              id="salesGradient"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop
+                offset="0%"
+                stop-color="#16a34a"
+                stop-opacity="0.32"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#16a34a"
+                stop-opacity="0.02"
+              />
+            </linearGradient>
+          </defs>
+
+          <!-- GRILLE -->
+          @for (line of chartGridLines(); track line.y) {
+  <line
+    x1="45"
+    [attr.y1]="line.y"
+    x2="680"
+    [attr.y2]="line.y"
+    stroke="#e2e8f0"
+    stroke-width="1"
+    stroke-dasharray="4 5"
+  />
+
+  <text
+    x="0"
+    [attr.y]="line.y + 4"
+    class="chart-y-label"
+  >
+    {{ line.label }}
+  </text>
+}
+
+          <!-- ZONE SOUS LA COURBE -->
+          <polygon
+            [attr.points]="salesAreaPoints()"
+            fill="url(#salesGradient)"
+          />
+
+          <!-- LIGNE -->
+          <polyline
+            [attr.points]="salesLinePoints()"
+            fill="none"
+            stroke="#16a34a"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <!-- POINTS -->
+          @for (point of chartPoints(); track point.label) {
+            <g>
+              <circle
+                [attr.cx]="point.x"
+                [attr.cy]="point.y"
+                r="6"
+                fill="#ffffff"
+                stroke="#16a34a"
+                stroke-width="3"
+              />
+
+              <title>
+                {{ point.label }} :
+                {{ point.value | number: '1.0-0' }} FCFA
+              </title>
+            </g>
+          }
+
+        </svg>
+
+        <div class="chart-labels">
+          @for (point of chartPoints(); track point.label) {
+            <span>
+              {{ point.label }}
+            </span>
+          }
+        </div>
+
+      </div>
+
+      @if (salesPoints().length === 0) {
+        <div class="empty-chart">
+          Aucune donnée de vente pour cette période.
+        </div>
+      }
+
+    </section>
+
+    <!-- DONUT CATEGORIES -->
+    <section class="dashboard-card donut-card">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">
+            PERFORMANCE
+          </span>
+
+          <h2>
+            Répartition des ventes
+          </h2>
+
+          <p>
+            Par catégories de produits
+          </p>
+        </div>
+
+        <span class="category-count">
+          {{ categoryDistribution().length }} catégories
+        </span>
+      </div>
+
+      <div class="donut-content">
+
+        <div class="donut-wrapper">
+
+          <svg
+            viewBox="0 0 42 42"
+            class="donut-svg"
+            role="img"
+            aria-label="Répartition des ventes par catégorie"
+          >
+
+            <circle
+              cx="21"
+              cy="21"
+              r="15.9155"
+              fill="none"
+              stroke="#e2e8f0"
+              stroke-width="5"
+            />
+
+            @for (
+              segment of donutSegments();
+              track segment.name
+            ) {
+              <circle
+                cx="21"
+                cy="21"
+                r="15.9155"
+                fill="none"
+                [attr.stroke]="segment.color"
+                stroke-width="5"
+                [attr.stroke-dasharray]="segment.dashArray"
+                [attr.stroke-dashoffset]="segment.dashOffset"
+                stroke-linecap="butt"
+                transform="rotate(-90 21 21)"
+              >
+                <title>
+                  {{ segment.name }} :
+                  {{ segment.percentage }}%
+                </title>
+              </circle>
+            }
+
+          </svg>
+
+          <div class="donut-center-text">
+            <strong class="donut-total">
+              {{ categoryTotal() | number: '1.0-0' }}
+            </strong>
+
+            <span class="donut-sub">
+              FCFA
+            </span>
+          </div>
+
+        </div>
+
+        <div class="donut-legend">
+
+          @for (
+            category of categoryDistribution();
+            track category.name
+          ) {
+            <div class="legend-item">
+
+              <span
+                class="legend-dot"
+                [style.background-color]="category.color"
+              ></span>
+
+              <span class="legend-name">
+                {{ category.name }}
+              </span>
+
+              <strong class="legend-value">
+                {{ category.percentage }}%
+              </strong>
+            </div>
+          }
+
+          @if (categoryDistribution().length === 0) {
+            <p class="empty-message">
+              Aucune catégorie disponible.
+            </p>
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- ZONE PRODUITS ET STATISTIQUES -->
+  <div class="secondary-stats-grid">
+
+    <!-- PRODUITS LES PLUS VENDUS -->
+    <section class="dashboard-card top-products-card">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">
+            PRODUITS
+          </span>
+
+          <h2>
+            Produits les plus vendus
+          </h2>
+
+          <p>
+            Classement basé sur les commandes filtrées
+          </p>
+        </div>
+
+        <a
+          routerLink="/dashboard/products"
+          class="link-btn"
+        >
+          Gérer les produits
+        </a>
+      </div>
+
+      <div class="top-products-list">
+
+        @for (
+          product of topProducts();
+          track product.name
+        ) {
+          <div class="product-ranking">
+
+            <div class="ranking-number">
+              {{ product.position }}
+            </div>
+
+            <div class="product-ranking-info">
+              <strong>
+                {{ product.name }}
+              </strong>
+
+              <div class="product-progress">
+                <span
+                  [style.width.%]="product.progress"
+                ></span>
+              </div>
+            </div>
+
+            <div class="product-ranking-value">
+              <strong>
+                {{ product.quantity }}
+              </strong>
+
+              <small>
+                ventes
+              </small>
+            </div>
+
+          </div>
+        }
+
+        @if (topProducts().length === 0) {
+          <p class="empty-message">
+            Aucun produit vendu pour ces filtres.
+          </p>
+        }
+
+      </div>
+
+    </section>
+
+    <!-- RESUME ACTIVITE -->
+    <section class="dashboard-card overview-card">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">
+            RÉSUMÉ
+          </span>
+
+          <h2>
+            Performance commerciale
+          </h2>
+
+          <p>
+            Indicateurs calculés sur la période sélectionnée
+          </p>
+        </div>
+      </div>
+
+      <div class="overview-list">
+
+        <div class="overview-row">
+          <div>
+            <span class="material-symbols-outlined green-icon">
+              shopping_bag
+            </span>
+
+            <span>
+              Commandes filtrées
+            </span>
+          </div>
+
+          <strong>
+            {{ filteredOrders().length }}
+          </strong>
+        </div>
+
+        <div class="overview-row">
+          <div>
+            <span class="material-symbols-outlined blue-icon">
+              local_shipping
+            </span>
+
+            <span>
+              Commandes livrées
+            </span>
+          </div>
+
+          <strong>
+            {{ deliveredOrdersCount() }}
+          </strong>
+        </div>
+
+        <div class="overview-row">
+          <div>
+            <span class="material-symbols-outlined amber-icon">
+              receipt_long
+            </span>
+
+            <span>
+              Panier moyen
+            </span>
+          </div>
+
+          <strong>
+            {{ averageOrderValue() | number: '1.0-0' }} FCFA
+          </strong>
+        </div>
+
+        <div class="overview-row">
+          <div>
+            <span class="material-symbols-outlined purple-icon">
+              percent
+            </span>
+
+            <span>
+              Taux de livraison
+            </span>
+          </div>
+
+          <strong>
+            {{ deliveryRate() }}%
+          </strong>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- COMMANDES ET ACTIVITES -->
+  <div class="main-dashboard-grid">
+
+<!-- COMMANDES RECENTES -->
+<section class="dashboard-card orders-section">
+
+  <div class="card-header">
+    <div>
+      <span class="card-eyebrow">VENTES</span>
+      <h2>Commandes récentes</h2>
+      <p>
+        Affichage des 5 plus récentes sur 
+        <strong>{{ filteredOrders().length }}</strong> commande(s)
+      </p>
+    </div>
+
+    <a routerLink="/dashboard/orders" class="link-btn">
+      <span>Tout voir</span>
+      <span class="material-symbols-outlined icon-arrow">arrow_forward</span>
+    </a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Client</th>
+          <th>Produit</th>
+          <th>Catégorie</th>
+          <th>Montant</th>
+          <th class="text-right">Statut</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Utilisation du pipe slice:0:5 pour afficher au maximum 5 éléments -->
+        @for (
+          order of (filteredOrders() | slice:0:5);
+          track order.id
+        ) {
+          <tr class="table-row">
+            <td class="order-id">
+              #{{ order.id }}
+            </td>
+
+            <td class="client-cell">
+              <div class="client-avatar">
+                {{ order.client.charAt(0).toUpperCase() }}
+              </div>
+              <span class="client-name">{{ order.client }}</span>
+            </td>
+
+            <td class="product-name">
+              {{ order.product }}
+            </td>
+
+            <td>
+              <span class="category-badge">{{ order.category }}</span>
+            </td>
+
+            <td class="amount-cell">
+              {{ order.amount | number: '1.0-0' }} <small>FCFA</small>
+            </td>
+
+            <td class="text-right">
+              <span
+                class="status-pill"
+                [class.status-en-cours]="order.status === 'EN COURS'"
+                [class.status-livre]="order.status === 'LIVRÉ'"
+                [class.status-en-attente]="order.status === 'EN ATTENTE'"
+                [class.status-annule]="order.status === 'ANNULÉ'"
+              >
+                <span class="status-dot"></span>
+                {{ order.status }}
+              </span>
+            </td>
+          </tr>
+        }
+
+        @if (filteredOrders().length === 0) {
+          <tr>
+            <td colspan="6" class="empty-table-state">
+              <span class="material-symbols-outlined empty-icon">inbox</span>
+              <p>Aucune commande ne correspond aux filtres.</p>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+    <!-- ACTIVITES -->
+    <section class="dashboard-card activity-section">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">
+            ACTUALITÉS
+          </span>
+
+          <h2>
+            Activités récentes
+          </h2>
+
+          <p>
+            Flux récent de votre compte
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="icon-btn"
+          title="Actualiser les activités"
+          (click)="refreshDashboard()"
+        >
+          <span class="material-symbols-outlined">
+            sync
+          </span>
+        </button>
+      </div>
+
+      <div class="activity-timeline">
+
+        @for (
+          activity of activities();
+          track activity.id
+        ) {
+          <div class="timeline-item">
+
+            <div
+              class="timeline-icon"
+              [class]="activity.colorClass"
+            >
+              <span class="material-symbols-outlined">
+                {{ activity.icon }}
+              </span>
+            </div>
+
+            <div class="timeline-content">
+              <span class="timeline-title">
+                {{ activity.title }}
+              </span>
+
+              <span class="timeline-time">
+                {{ activity.time }}
+              </span>
+            </div>
+
+          </div>
+        }
+
+        @if (activities().length === 0) {
+          <p class="empty-message">
+            Aucune activité récente.
+          </p>
+        }
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- EXPORT -->
+  <div class="dashboard-footer-actions">
+
+  <button
+    type="button"
+    class="btn btn-primary export-pdf-btn"
+    (click)="exportOrdersPdf()"
+    [disabled]="filteredOrders().length === 0 || exportingPdf"
+  >
+    <span class="material-symbols-outlined">
+      picture_as_pdf
+    </span>
+
+    <span>
+      {{ exportingPdf ? 'Génération du PDF...' : 'Exporter les commandes PDF' }}
+    </span>
+  </button>
+
+  <span class="footer-info">
+    Les statistiques et exportations PDF dépendent des filtres actuellement sélectionnés.
+  </span>
+
+</div>
+
+</div>

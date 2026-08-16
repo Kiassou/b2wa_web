@@ -1,0 +1,265 @@
+<div class="orders-container">
+
+  <!-- EN-TÊTE PAGE -->
+  <header class="orders-header">
+    <div class="header-titles">
+      <span class="eyebrow"><span class="material-symbols-outlined">shopping_bag</span> VENTES & COMMANDES</span>
+      <h1>Gestion des Commandes</h1>
+      <p>Suivez l'état de préparation, le statut de paiement et la livraison de vos ventes.</p>
+    </div>
+  </header>
+
+  <!-- CARTES D'ANALYSE -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue"><span class="material-symbols-outlined">receipt_long</span></div>
+      <div class="stat-info">
+        <span class="label">Total Commandes</span>
+        <strong>{{ totalOrdersCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon orange"><span class="material-symbols-outlined">hourglass_top</span></div>
+      <div class="stat-info">
+        <span class="label">En Attente</span>
+        <strong>{{ pendingOrdersCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon cyan"><span class="material-symbols-outlined">local_shipping</span></div>
+      <div class="stat-info">
+        <span class="label">En Cours</span>
+        <strong>{{ processingOrdersCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green"><span class="material-symbols-outlined">task_alt</span></div>
+      <div class="stat-info">
+        <span class="label">Livrées</span>
+        <strong>{{ deliveredOrdersCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon purple"><span class="material-symbols-outlined">account_balance_wallet</span></div>
+      <div class="stat-info">
+        <span class="label">Chiffre d'Affaires</span>
+        <strong>{{ totalRevenue | number }} FCFA</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- BARRE DE RECHERCHE ET FILTRES -->
+  <section class="filter-bar">
+    <div class="search-box">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="N° de commande, client, téléphone..." />
+    </div>
+
+    <div class="filter-group">
+      <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+        <option value="ALL">Tous les statuts</option>
+        <option value="PENDING">En attente</option>
+        <option value="PROCESSING">En cours de livraison</option>
+        <option value="DELIVERED">Livrées</option>
+        <option value="CANCELLED">Annulées</option>
+      </select>
+
+      <select [(ngModel)]="selectedPaymentStatus" (change)="applyFilters()">
+        <option value="ALL">Tous les paiements</option>
+        <option value="PAID">Payé</option>
+        <option value="UNPAID">Non Payé</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- TABLEAU DES COMMANDES -->
+  <section class="orders-table-card">
+    <div class="table-responsive">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Commande</th>
+            <th>Client</th>
+            <th>Date & Heure</th>
+            <th>Montant Total</th>
+            <th>Paiement</th>
+            <th>Statut Commande</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of paginatedOrders; trackBy: trackByOrderId">
+            <td>
+              <div class="order-id-cell">
+                <strong class="order-number">{{ order.orderNumber }}</strong>
+                <span class="items-count">{{ order.items.length }} article(s)</span>
+              </div>
+            </td>
+
+            <td>
+              <div class="customer-cell">
+                <strong>{{ order.customerName }}</strong>
+                <span>{{ order.customerPhone }}</span>
+              </div>
+            </td>
+
+            <td>
+              <span class="order-date">{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </td>
+
+            <td>
+              <strong class="total-amount">{{ order.totalAmount | number }} FCFA</strong>
+            </td>
+
+            <td>
+              <div class="payment-info">
+                <span class="badge-payment" [class.paid]="order.paymentStatus === 'PAID'">
+                  {{ order.paymentStatus === 'PAID' ? 'PAYÉ' : 'EN ATTENTE' }}
+                </span>
+                <small class="payment-method">{{ order.paymentMethod }}</small>
+              </div>
+            </td>
+
+            <td>
+              <select
+                class="status-select"
+                [ngClass]="getStatusClass(order.status)"
+                [ngModel]="order.status"
+                (ngModelChange)="updateOrderStatus(order, $event)"
+              >
+                <option value="PENDING">En attente</option>
+                <option value="PROCESSING">En cours</option>
+                <option value="DELIVERED">Livrée</option>
+                <option value="CANCELLED">Annulée</option>
+              </select>
+            </td>
+
+            <td class="text-right">
+              <button class="btn-icon" (click)="openDetailModal(order)" title="Détails">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredOrders.length === 0">
+            <td colspan="7" class="empty-state">
+              <span class="material-symbols-outlined">receipt</span>
+              <p>Aucune commande ne correspond aux filtres actuels.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PAGINATION -->
+  <section class="pagination-bar" *ngIf="filteredOrders.length > 0">
+    <div class="pagination-info">
+      Affichage de <strong>{{ paginationStart }}</strong> à <strong>{{ paginationEnd }}</strong> sur <strong>{{ filteredOrders.length }}</strong> commandes
+    </div>
+
+    <div class="pagination-controls">
+      <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }} / page</option>
+      </select>
+
+      <button type="button" class="pagination-button" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+
+      <ng-container *ngFor="let page of paginationPages">
+        <span *ngIf="page === '...'" class="pagination-dots">...</span>
+        <button
+          *ngIf="page !== '...'"
+          type="button"
+          class="pagination-button"
+          [class.active]="currentPage === page"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+      </ng-container>
+
+      <button type="button" class="pagination-button" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- MODALE : DÉTAILS DE LA COMMANDE -->
+  <div class="modal-backdrop" *ngIf="isDetailModalOpen && selectedOrder">
+    <div class="detail-modal">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">FICHE COMMANDE</span>
+          <h2>{{ selectedOrder.orderNumber }}</h2>
+        </div>
+        <button class="modal-close" (click)="closeDetailModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- COORDONNÉES CLIENT -->
+        <div class="info-block">
+          <h3>Informations Client</h3>
+          <div class="info-grid">
+            <div><label>Nom :</label> <strong>{{ selectedOrder.customerName }}</strong></div>
+            <div><label>Téléphone :</label> <strong>{{ selectedOrder.customerPhone }}</strong></div>
+            <div class="full-width"><label>Adresse :</label> <span>{{ selectedOrder.customerAddress }}</span></div>
+          </div>
+        </div>
+
+        <!-- LISTE DES ARTICLES -->
+        <div class="info-block">
+          <h3>Articles commandés</h3>
+          <table class="detail-items-table">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Prix Unit.</th>
+                <th>Qté</th>
+                <th class="text-right">Sous-Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedOrder.items">
+                <td>{{ item.productName }}</td>
+                <td>{{ item.unitPrice | number }} FCFA</td>
+                <td>x{{ item.quantity }}</td>
+                <td class="text-right"><strong>{{ (item.unitPrice * item.quantity) | number }} FCFA</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- RÉSUMÉ PAIEMENT -->
+        <div class="order-summary-box">
+          <div class="summary-line">
+            <span>Méthode de Paiement</span>
+            <strong>{{ selectedOrder.paymentMethod }}</strong>
+          </div>
+          <div class="summary-line">
+            <span>Statut Paiement</span>
+            <span class="badge-payment" [class.paid]="selectedOrder.paymentStatus === 'PAID'">
+              {{ selectedOrder.paymentStatus }}
+            </span>
+          </div>
+          <div class="summary-line total">
+            <span>Total Général</span>
+            <strong>{{ selectedOrder.totalAmount | number }} FCFA</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeDetailModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+</div>

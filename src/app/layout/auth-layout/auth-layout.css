@@ -1,0 +1,179 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #070b14;
+  color: #f8fafc;
+}
+
+/* =====================================================
+   AUTH LAYOUT
+===================================================== */
+
+.auth-layout {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  overflow: hidden;
+  /* Fond continu unifié pour toute la page */
+  background: linear-gradient(135deg, #070c16 0%, #0b1220 50%, #070b14 100%);
+}
+
+
+/* =====================================================
+   PROMO (INCHANGÉ - CONSERVÉ TEL QUEL)
+===================================================== */
+
+.auth-promo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37, 99, 235, 0.35),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(6, 182, 212, 0.22),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      #0b1220 0%,
+      #070b14 100%
+    );
+}
+
+
+/* =====================================================
+   AUTH CONTENT (MARIÉ AVEC LA SECTION PROMO)
+===================================================== */
+
+.auth-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px 16px;
+  box-sizing: border-box;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Fond transparent pour laisser transparaître le dégradé global */
+  background: transparent;
+
+  /* Ligne de séparation lumineuse subtile entre la promo et le form */
+  border-left: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+/* --- 1. Halo de lumière diffus qui connecte la promo au formulaire --- */
+.auth-content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100px; /* Chevauche la frontière pour fusionner les deux zones */
+  transform: translateY(-50%);
+  width: 350px;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(6, 182, 212, 0.12) 0%,
+    rgba(37, 99, 235, 0.05) 50%,
+    transparent 70%
+  );
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+
+/* S'assure que le formulaire reste au-dessus de la lumière */
+.auth-content > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =====================================================
+   MOBILE (CONSERVÉ)
+===================================================== */
+
+@media (max-width: 767px) {
+
+  .auth-layout {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    display: block;
+    overflow: hidden;
+  }
+
+  .auth-promo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    z-index: 20;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition:
+      opacity 350ms ease,
+      transform 350ms ease,
+      visibility 350ms ease;
+  }
+
+  .auth-content {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    border-left: none; /* Supprime la bordure sur mobile */
+    transition:
+      opacity 350ms ease,
+      transform 350ms ease,
+      visibility 350ms ease;
+  }
+
+  .auth-promo.hidden-mobile {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-25px);
+  }
+
+  .auth-content.hidden-mobile {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(25px);
+  }
+}

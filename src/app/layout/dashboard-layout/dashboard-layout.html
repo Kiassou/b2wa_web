@@ -1,0 +1,37 @@
+<div
+  class="dashboard-layout"
+  [class.sidebar-collapsed]="sidebarCollapsed"
+  [class.mobile-menu-open]="mobileMenuOpen"
+>
+  <!-- ==================================================
+       SIDEBAR
+  =================================================== -->
+  <app-sidebar
+    [collapsed]="sidebarCollapsed"
+    [mobileOpen]="mobileMenuOpen"
+    (closeSidebar)="closeMobileMenu()"
+    (toggleCollapse)="onToggleSidebar()"
+  />
+
+  <!-- ==================================================
+       MOBILE OVERLAY
+  =================================================== -->
+  <div
+    class="sidebar-overlay"
+    [class.visible]="mobileMenuOpen"
+    (click)="closeMobileMenu()"
+  ></div>
+
+  <!-- ==================================================
+       MAIN AREA
+  =================================================== -->
+  <div class="dashboard-main">
+    <!-- NAVBAR -->
+    <app-navbar (toggleSidebar)="onToggleSidebar()" />
+
+    <!-- CONTENT -->
+    <main class="dashboard-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

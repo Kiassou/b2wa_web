@@ -1,3 +1,205 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+
+  {
+    path: '',
+    redirectTo: 'splash',
+    pathMatch: 'full'
+  },
+
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/splash/splash')
+        .then(m => m.SplashComponent)
+  },
+
+
+
+  {
+    path: 'auth',
+
+    loadComponent: () =>
+      import('./layout/auth-layout/auth-layout')
+        .then(m => m.AuthLayoutComponent),
+
+    children: [
+
+      {
+        path: 'login',
+
+        loadComponent: () =>
+          import('./pages/auth/login/login')
+            .then(m => m.LoginComponent)
+      },
+
+      {
+        path: 'terms',
+
+        loadComponent: () =>
+          import('./pages/auth/terms/terms')
+            .then(m => m.TermsComponent)
+      },
+
+      {
+        path: 'register',
+
+        loadComponent: () =>
+          import('./pages/auth/register/register')
+            .then(m => m.RegisterComponent)
+      },
+      {
+        path: 'pending-approval',
+
+        loadComponent: () =>
+          import('./pages/auth/pending-approval/pending-approval')
+            .then(m => m.PendingApprovalComponent)
+      },
+      {
+        path: 'account-verify',
+
+        loadComponent: () =>
+          import('./pages/auth/account-verify/account-verify')
+            .then(m => m.AccountVerifyComponent)
+      },
+
+      {
+        path: 'forgot-password',
+
+        loadComponent: () =>
+          import('./pages/auth/forgot-password/forgot-password')
+            .then(m => m.ForgotPasswordComponent)
+      },
+
+      {
+        path: 'verify-otp',
+
+        loadComponent: () =>
+          import('./pages/auth/verify-otp/verify-otp')
+            .then(m => m.VerifyOtpComponent)
+      },
+
+      {
+        path: 'reset-password',
+
+        loadComponent: () =>
+          import('./pages/auth/reset-password/reset-password')
+            .then(m => m.ResetPasswordComponent)
+      }
+
+    ]
+  },
+
+
+
+  {
+    path: 'dashboard',
+
+    loadComponent: () =>
+      import('./layout/dashboard-layout/dashboard-layout')
+        .then(m => m.DashboardLayoutComponent),
+
+    children: [
+
+      {
+        path: '',
+
+        loadComponent: () =>
+          import('./pages/dashboard/dashboard')
+            .then(m => m.DashboardComponent)
+      },
+      {
+        path: 'notifications',
+
+        loadComponent: () =>
+          import('./pages/notifications/notifications')
+            .then(m => m.NotificationsComponent)
+      },
+      {
+        path: 'activity',
+
+        loadComponent: () =>
+          import('./pages/activity/activity')
+            .then(m => m.ActivityComponent)
+      },
+      {
+        path: 'community',
+
+        loadComponent: () =>
+          import('./pages/community/community')
+            .then(m => m.CommunityComponent)
+      },
+      {
+        path: 'finances',
+
+        loadComponent: () =>
+          import('./pages/finances/finances')
+            .then(m => m.FinancesComponent)
+      },
+      {
+        path: 'flash-sales',
+
+        loadComponent: () =>
+          import('./pages/flash-sales/flash-sales')
+            .then(m => m.FlashSalesComponent)
+      },
+      {
+        path: 'orders',
+
+        loadComponent: () =>
+          import('./pages/orders/orders')
+            .then(m => m.OrdersComponent)
+      },
+      {
+        path: 'products',
+
+        loadComponent: () =>
+          import('./pages/products/products')
+            .then(m => m.ProductsComponent)
+      },
+      {
+        path: 'shipping',
+
+        loadComponent: () =>
+          import('./pages/shipping/shipping')
+            .then(m => m.ShippingComponent)
+      },
+      {
+        path: 'stories',
+
+        loadComponent: () =>
+          import('./pages/stories/stories')
+            .then(m => m.StoriesComponent)
+      },
+      {
+        path: 'profile',
+
+        loadComponent: () =>
+          import('./pages/profile/profile')
+            .then(m => m.ProfileComponent)
+      },
+      {
+        path: 'support',
+
+        loadComponent: () =>
+          import('./pages/support/support')
+            .then(m => m.SupportComponent)
+      },
+      {
+        path: 'settings',
+
+        loadComponent: () =>
+          import('./pages/settings/settings')
+            .then(m => m.SettingsComponent)
+      }
+
+    ]
+  },
+
+  {
+    path: '**',
+    redirectTo: 'splash'
+  }
+
+];

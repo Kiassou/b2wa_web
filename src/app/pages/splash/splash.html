@@ -1,0 +1,67 @@
+<div class="splash">
+
+  <!-- BACKGROUND -->
+  <div class="background">
+    <div class="grid"></div>
+    <div class="glow glow-primary"></div>
+    <div class="glow glow-secondary"></div>
+    <div class="glow glow-accent"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <main class="splash-content">
+
+    <!-- LOGO -->
+    <div class="logo-wrapper">
+      <div class="logo-ring ring-one"></div>
+      <div class="logo-ring ring-two"></div>
+
+      <div class="logo">
+        <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="logo-img" />
+      </div>
+    </div>
+
+    <!-- BRAND -->
+    <div class="brand">
+      <h1>B2WA</h1>
+      <span>BUSINESS TO WEST AFRICA</span>
+    </div>
+
+    <!-- TAGLINE -->
+    <p class="tagline">
+      Le réseau B2B & la plateforme logistique de référence en Afrique de l'Ouest.
+    </p>
+
+    <!-- STATUS -->
+    <div class="status">
+      <span class="status-dot"></span>
+      <span>
+        {{ progress === 100 ? 'Plateforme prête' : 'Chargement de la plateforme...' }}
+      </span>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="loading">
+      <div class="loading-track">
+        <div
+          class="loading-progress"
+          [style.width]="progress + '%'"
+        ></div>
+      </div>
+
+      <div class="loading-info">
+        <span>RÉSEAU B2WA</span>
+        <span>{{ progress | number:'1.0-0' }}%</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="splash-footer">
+    <span>TRANSACTIONS & SÉQUESTRATION SÉCURISÉES</span>
+    <span class="separator">•</span>
+    <span>B2WA</span>
+  </footer>
+
+</div>

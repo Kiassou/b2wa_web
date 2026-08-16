@@ -1,0 +1,25 @@
+<div class="auth-layout">
+
+  <!-- SECTION GAUCHE : PROMO / ONBOARDING CAROUSEL -->
+  <section
+    class="auth-promo"
+    [class.hidden-mobile]="isMobile && !onboardingVisible"
+  >
+    <app-promo-carousel
+      (onboardingCompleted)="completeOnboarding()"
+    />
+  </section>
+
+  <!-- SECTION DROITE : CONTENU DES PAGES (LOGIN, REGISTER, TERMS, ETC.) -->
+  <main
+    class="auth-content"
+    [class.hidden-mobile]="isMobile && onboardingVisible"
+  >
+    <!-- Orbes lumineux d'arrière-plan B2WA -->
+    <div class="glow-orb glow-orb-primary"></div>
+    <div class="glow-orb glow-orb-secondary"></div>
+
+    <router-outlet />
+  </main>
+
+</div>

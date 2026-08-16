@@ -1,0 +1,1087 @@
+<div class="profile-container">
+
+  <!-- ============================= -->
+  <!-- HEADER -->
+  <!-- ============================= -->
+  <header class="page-header">
+    <div class="header-content">
+      <span class="page-eyebrow">MON COMPTE</span>
+      <h1 class="page-title">Profil Commerçant</h1>
+      <p class="page-subtitle">
+        Gérez votre identité, votre commerce et la sécurité de votre compte B2WA.
+      </p>
+    </div>
+    <button
+      type="button"
+      class="btn-account-settings"
+      (click)="openModal('security')"
+    >
+      <span class="material-symbols-outlined">settings</span>
+      Paramètres du compte
+    </button>
+  </header>
+
+
+  <!-- ============================= -->
+  <!-- SUCCESS MESSAGE -->
+  <!-- ============================= -->
+  @if (successMessage()) {
+    <div class="alert-banner success">
+      <span class="material-symbols-outlined">check_circle</span>
+      <span>{{ successMessage() }}</span>
+
+      <button
+        type="button"
+        class="alert-close"
+        (click)="successMessage.set(null)"
+      >
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  }
+
+  <!-- ============================= -->
+  <!-- PROFILE HERO -->
+  <!-- ============================= -->
+  <section class="dashboard-card profile-banner-card">
+    <div class="banner-cover">
+      <div class="banner-pattern"></div>
+    </div>
+    <div class="banner-body">
+      <!-- AVATAR -->
+      <div class="avatar-container">
+        <div class="avatar-ring">
+          @if (avatarPreview()) {
+            <img
+              [src]="avatarPreview()!"
+              alt="Photo du commerçant"
+            />
+          } @else {
+            <div class="avatar-placeholder">
+              {{ getInitials() }}
+            </div>
+          }
+        </div>
+        <button
+          type="button"
+          class="avatar-upload-btn"
+          title="Modifier la photo"
+          (click)="openModal('avatar')"
+        >
+          <span class="material-symbols-outlined">photo_camera</span>
+        </button>
+      </div>
+      <!-- IDENTITÉ -->
+      <div class="merchant-identity">
+        <div class="name-row">
+          <h2>
+            {{ profileForm.get('firstName')?.value }}
+            {{ profileForm.get('lastName')?.value }}
+          </h2>
+          <span
+            class="badge badge-verified"
+            title="Commerçant vérifié"
+          >
+            <span class="material-symbols-outlined icon-xs">
+              verified
+            </span>
+            Vérifié
+          </span>
+        </div>
+        <p class="store-name">
+          <span class="material-symbols-outlined">
+            storefront
+          </span>
+          {{ profileForm.get('storeName')?.value }}
+        </p>
+        <p class="merchant-location">
+
+          <span class="material-symbols-outlined">
+            location_on
+          </span>
+          {{ profileForm.get('city')?.value }},
+          {{ profileForm.get('country')?.value }}
+        </p>
+        <p class="merchant-bio">
+          {{ profileForm.get('bio')?.value }}
+        </p>
+      </div>
+      
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- STATS -->
+    <!-- ============================= -->
+    <div class="profile-stats-bar">
+
+      <div class="stat-item">
+        <span class="stat-label">
+          Ventes effectuées
+        </span>
+
+        <span class="stat-value">
+          {{ merchantStats.totalSales | number }}
+        </span>
+      </div>
+
+
+      <div class="stat-divider"></div>
+
+
+      <div class="stat-item">
+
+        <span class="stat-label">
+          Note globale
+        </span>
+
+        <span class="stat-value highlight">
+          ★ {{ merchantStats.rating }}
+        </span>
+
+      </div>
+
+
+      <div class="stat-divider"></div>
+
+
+      <div class="stat-item">
+
+        <span class="stat-label">
+          Ancienneté
+        </span>
+
+        <span class="stat-value">
+          {{ merchantStats.memberSince }}
+        </span>
+
+      </div>
+
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-label">
+          Profil complété
+        </span>
+        <span class="stat-value progress">
+          {{ merchantStats.completionRate }}%
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- IDENTITÉ -->
+  <!-- ============================= -->
+  <section class="dashboard-card account-section">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-icon blue">
+          <span class="material-symbols-outlined">
+            person
+          </span>
+        </div>
+        <div>
+          <h3>Identité du titulaire</h3>
+          <p>
+            Informations personnelles du responsable du compte.
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn-section-edit"
+        (click)="openModal('personal')"
+      >
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+
+        Modifier
+      </button>
+
+    </div>
+
+
+    <div class="info-grid">
+
+      <div class="info-item">
+        <span class="info-label">Prénom</span>
+        <strong>
+          {{ profileForm.get('firstName')?.value }}
+        </strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Nom</span>
+        <strong>
+          {{ profileForm.get('lastName')?.value }}
+        </strong>
+      </div>
+
+
+      <div class="info-item">
+        <span class="info-label">Adresse email</span>
+        <strong>
+          {{ profileForm.get('email')?.value }}
+        </strong>
+      </div>
+
+
+      <div class="info-item">
+        <span class="info-label">Téléphone</span>
+        <strong>
+          {{ profileForm.get('phone')?.value }}
+        </strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- COMMERCE -->
+  <!-- ============================= -->
+  <section class="dashboard-card account-section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+
+        <div class="section-icon green">
+          <span class="material-symbols-outlined">
+            storefront
+          </span>
+        </div>
+
+        <div>
+          <h3>Informations du commerce</h3>
+
+          <p>
+            Informations commerciales et localisation de votre activité.
+          </p>
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-section-edit"
+        (click)="openModal('business')"
+      >
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+
+        Modifier
+      </button>
+
+    </div>
+
+
+    <div class="info-grid">
+
+      <div class="info-item">
+        <span class="info-label">
+          Nom commercial
+        </span>
+
+        <strong>
+          {{ profileForm.get('storeName')?.value }}
+        </strong>
+      </div>
+
+
+      <div class="info-item">
+        <span class="info-label">
+          Secteur d'activité
+        </span>
+
+        <strong>
+          {{ profileForm.get('businessType')?.value }}
+        </strong>
+      </div>
+
+
+      <div class="info-item">
+        <span class="info-label">
+          NIF
+        </span>
+
+        <strong>
+          {{ profileForm.get('nif')?.value }}
+        </strong>
+
+        <small class="verified-info">
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+
+          Information vérifiée
+        </small>
+      </div>
+
+
+      <div class="info-item">
+        <span class="info-label">
+          Localisation
+        </span>
+
+        <strong>
+          {{ profileForm.get('city')?.value }},
+          {{ profileForm.get('country')?.value }}
+        </strong>
+      </div>
+
+
+      <div class="info-item full-width">
+        <span class="info-label">
+          Adresse
+        </span>
+
+        <strong>
+          {{ profileForm.get('address')?.value }}
+        </strong>
+      </div>
+
+
+      <div class="info-item full-width">
+        <span class="info-label">
+          Présentation
+        </span>
+
+        <p class="info-description">
+          {{ profileForm.get('bio')?.value }}
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- VERIFICATION -->
+  <!-- ============================= -->
+  <section class="dashboard-card account-section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+
+        <div class="section-icon gold">
+          <span class="material-symbols-outlined">
+            verified_user
+          </span>
+        </div>
+
+        <div>
+          <h3>Vérification du commerçant</h3>
+
+          <p>
+            Renforcez la confiance entre vous et les partenaires B2WA.
+          </p>
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-section-edit"
+        (click)="openModal('verification')"
+      >
+        Voir les détails
+
+        <span class="material-symbols-outlined">
+          arrow_forward
+        </span>
+      </button>
+
+    </div>
+
+
+    <div class="verification-grid">
+
+      <div class="verification-item verified">
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
+        <div>
+          <strong>Identité</strong>
+          <small>Vérifiée</small>
+        </div>
+      </div>
+
+
+      <div class="verification-item verified">
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
+        <div>
+          <strong>Téléphone</strong>
+          <small>Vérifié</small>
+        </div>
+      </div>
+
+
+      <div class="verification-item verified">
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
+        <div>
+          <strong>Email</strong>
+          <small>Vérifié</small>
+        </div>
+      </div>
+
+
+      <div class="verification-item verified">
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
+        <div>
+          <strong>Commerce</strong>
+          <small>Vérifié</small>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- SÉCURITÉ -->
+  <!-- ============================= -->
+  <section class="dashboard-card account-section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+
+        <div class="section-icon purple">
+          <span class="material-symbols-outlined">
+            shield
+          </span>
+        </div>
+
+        <div>
+          <h3>Sécurité du compte</h3>
+
+          <p>
+            Protégez votre compte et contrôlez vos accès.
+          </p>
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-section-edit"
+        (click)="openModal('security')"
+      >
+        Gérer
+
+        <span class="material-symbols-outlined">
+          arrow_forward
+        </span>
+      </button>
+
+    </div>
+
+
+    <div class="security-grid">
+
+      <div class="security-item">
+
+        <div class="security-icon">
+          <span class="material-symbols-outlined">
+            lock
+          </span>
+        </div>
+
+        <div>
+          <strong>Mot de passe</strong>
+          <small>Dernière modification : il y a 2 mois</small>
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div class="security-icon">
+          <span class="material-symbols-outlined">
+            phonelink_lock
+          </span>
+        </div>
+
+        <div>
+          <strong>Double authentification</strong>
+          <small class="warning-text">
+            Non activée
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div class="security-icon">
+          <span class="material-symbols-outlined">
+            devices
+          </span>
+        </div>
+
+        <div>
+          <strong>Sessions actives</strong>
+          <small>2 appareils connectés</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- DOCUMENTS -->
+  <!-- ============================= -->
+  <section class="dashboard-card account-section">
+
+    <div class="section-header">
+
+      <div class="section-title">
+
+        <div class="section-icon orange">
+          <span class="material-symbols-outlined">
+            description
+          </span>
+        </div>
+
+        <div>
+          <h3>Documents commerciaux</h3>
+
+          <p>
+            Gérez les documents utilisés pour la vérification.
+          </p>
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-section-edit"
+        (click)="openModal('documents')"
+      >
+        Gérer
+
+        <span class="material-symbols-outlined">
+          arrow_forward
+        </span>
+      </button>
+
+    </div>
+
+
+    <div class="documents-list">
+
+      <div class="document-item">
+
+        <span class="material-symbols-outlined">
+          badge
+        </span>
+
+        <div>
+          <strong>Numéro d'identification fiscal</strong>
+          <small>Document vérifié</small>
+        </div>
+
+        <span class="document-status success">
+          Vérifié
+        </span>
+
+      </div>
+
+
+      <div class="document-item">
+
+        <span class="material-symbols-outlined">
+          id_card
+        </span>
+
+        <div>
+          <strong>Pièce d'identité</strong>
+          <small>Document vérifié</small>
+        </div>
+
+        <span class="document-status success">
+          Vérifié
+        </span>
+
+      </div>
+
+
+      <div class="document-item">
+
+        <span class="material-symbols-outlined">
+          business_center
+        </span>
+
+        <div>
+          <strong>Registre de commerce</strong>
+          <small>Document non fourni</small>
+        </div>
+
+        <span class="document-status pending">
+          À fournir
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- ACTIONS SENSIBLES -->
+  <!-- ============================= -->
+  <section class="danger-zone">
+
+    <div>
+
+      <span class="material-symbols-outlined">
+        warning
+      </span>
+
+      <div>
+        <h3>Actions sensibles</h3>
+
+        <p>
+          Ces actions peuvent affecter définitivement votre compte.
+        </p>
+      </div>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn-danger-outline"
+      (click)="openModal('danger')"
+    >
+      Gérer les actions sensibles
+    </button>
+
+  </section>
+
+
+<!-- ================================================= -->
+<!-- MODAL OVERLAY -->
+<!-- ================================================= -->
+@if (activeModal()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="profile-modal" (click)="$event.stopPropagation()">
+
+      <!-- MODAL PERSONNEL -->
+      @if (activeModal() === 'personal') {
+        <div class="modal-header">
+          <div>
+            <span class="modal-eyebrow">MON COMPTE</span>
+            <h2>Modifier mes informations</h2>
+            <p>Mettez à jour les informations du titulaire du compte.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <form [formGroup]="profileForm">
+          <div class="modal-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Prénom</label>
+                <input type="text" formControlName="firstName" />
+              </div>
+
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" formControlName="lastName" />
+              </div>
+
+              <div class="form-group full-width">
+                <label>Adresse email</label>
+                <input type="email" formControlName="email" />
+              </div>
+
+              <div class="form-group full-width">
+                <label>Téléphone</label>
+                <input type="tel" formControlName="phone" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" (click)="closeModal()">Annuler</button>
+            <button type="button" class="btn-primary" (click)="requestSave()">
+              <span class="material-symbols-outlined">save</span>
+              Continuer
+            </button>
+          </div>
+        </form>
+      }
+
+      <!-- MODAL COMMERCE -->
+      @if (activeModal() === 'business') {
+        <div class="modal-header">
+          <div>
+            <span class="modal-eyebrow">MON COMMERCE</span>
+            <h2>Modifier le commerce</h2>
+            <p>Mettez à jour les informations de votre activité.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <form [formGroup]="profileForm">
+          <div class="modal-body">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label>Nom commercial</label>
+                <input type="text" formControlName="storeName" />
+              </div>
+
+              <div class="form-group">
+                <label>Secteur d'activité</label>
+                <input type="text" formControlName="businessType" />
+              </div>
+
+              <div class="form-group">
+                <label>NIF</label>
+                <input type="text" formControlName="nif" />
+                <small class="field-hint">Une modification peut nécessiter une nouvelle vérification.</small>
+              </div>
+
+              <div class="form-group">
+                <label>Pays</label>
+                <input type="text" formControlName="country" />
+              </div>
+
+              <div class="form-group">
+                <label>Ville</label>
+                <input type="text" formControlName="city" />
+              </div>
+
+              <div class="form-group full-width">
+                <label>Adresse</label>
+                <input type="text" formControlName="address" />
+              </div>
+
+              <div class="form-group full-width">
+                <label>Présentation</label>
+                <textarea rows="4" formControlName="bio"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" (click)="closeModal()">Annuler</button>
+            <button type="button" class="btn-primary" (click)="requestSave()">
+              <span class="material-symbols-outlined">save</span>
+              Continuer
+            </button>
+          </div>
+        </form>
+      }
+
+      <!-- MODAL AVATAR -->
+      @if (activeModal() === 'avatar') {
+        <div class="modal-header">
+          <div>
+            <span class="modal-eyebrow">PHOTO DE PROFIL</span>
+            <h2>Modifier votre photo</h2>
+            <p>Utilisez une image claire représentant votre activité.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body avatar-modal-body">
+          <div class="large-avatar">
+            @if (avatarPreview()) {
+              <img [src]="avatarPreview()!" alt="Aperçu" />
+            } @else {
+              <span>{{ getInitials() }}</span>
+            }
+          </div>
+
+          <label class="upload-area">
+            <span class="material-symbols-outlined">cloud_upload</span>
+            <strong>Choisir une image</strong>
+            <small>PNG, JPG ou WEBP — 5 Mo maximum</small>
+            <input type="file" accept="image/png,image/jpeg,image/webp" (change)="onFileSelected($event)" hidden />
+          </label>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Annuler</button>
+          <button type="button" class="btn-primary" [disabled]="!avatarChanged()" (click)="requestAvatarSave()">Enregistrer</button>
+        </div>
+      }
+
+      <!-- MODAL VERIFICATION -->
+      @if (activeModal() === 'verification') {
+        <div class="modal-header">
+          <div>
+            <span class="modal-eyebrow">CONFIANCE B2WA</span>
+            <h2>Vérification du commerçant</h2>
+            <p>Consultez l'état de vérification de votre compte.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="verification-modal-list">
+            <div class="verification-row verified">
+              <span class="material-symbols-outlined">check_circle</span>
+              <div>
+                <strong>Identité</strong>
+                <small>Votre identité a été vérifiée.</small>
+              </div>
+            </div>
+
+            <div class="verification-row verified">
+              <span class="material-symbols-outlined">check_circle</span>
+              <div>
+                <strong>Email</strong>
+                <small>Adresse email vérifiée.</small>
+              </div>
+            </div>
+
+            <div class="verification-row verified">
+              <span class="material-symbols-outlined">check_circle</span>
+              <div>
+                <strong>Téléphone</strong>
+                <small>Numéro de téléphone vérifié.</small>
+              </div>
+            </div>
+
+            <div class="verification-row verified">
+              <span class="material-symbols-outlined">check_circle</span>
+              <div>
+                <strong>Commerce</strong>
+                <small>Informations commerciales vérifiées.</small>
+              </div>
+            </div>
+
+            <div class="verification-score">
+              <div>
+                <strong>Profil vérifié</strong>
+                <p>Votre compte inspire davantage confiance aux partenaires B2WA.</p>
+              </div>
+              <span class="material-symbols-outlined">verified</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-primary" (click)="closeModal()">Fermer</button>
+        </div>
+      }
+
+      <!-- MODAL SECURITY -->
+      @if (activeModal() === 'security') {
+        <div class="modal-header">
+          <div>
+            <span class="modal-eyebrow">SÉCURITÉ</span>
+            <h2>Sécurité du compte</h2>
+            <p>Protégez votre compte B2WA.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body security-modal-body">
+          <button type="button" class="modal-action-row" (click)="showComingSoon('Changement de mot de passe')">
+            <span class="material-symbols-outlined">lock_reset</span>
+            <div>
+              <strong>Changer le mot de passe</strong>
+              <small>Modifier votre mot de passe actuel.</small>
+            </div>
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+
+          <button type="button" class="modal-action-row" (click)="showComingSoon('Double authentification')">
+            <span class="material-symbols-outlined">phonelink_lock</span>
+            <div>
+              <strong>Double authentification</strong>
+              <small>Ajouter une couche de sécurité supplémentaire.</small>
+            </div>
+            <span class="security-status">Désactivée</span>
+          </button>
+
+          <button type="button" class="modal-action-row" (click)="showComingSoon('Gestion des sessions')">
+            <span class="material-symbols-outlined">devices</span>
+            <div>
+              <strong>Sessions actives</strong>
+              <small>2 appareils connectés.</small>
+            </div>
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-primary" (click)="closeModal()">Fermer</button>
+        </div>
+      }
+
+      <!-- MODAL DOCUMENTS -->
+      @if (activeModal() === 'documents') {
+        <div class="modal-header">
+          <div>
+            <span class="modal-eyebrow">VÉRIFICATION</span>
+            <h2>Documents commerciaux</h2>
+            <p>Gérez les documents liés à votre activité.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body documents-modal-body">
+          <div class="document-modal-item verified">
+            <span class="material-symbols-outlined">badge</span>
+            <div>
+              <strong>NIF</strong>
+              <small>Document vérifié</small>
+            </div>
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+
+          <div class="document-modal-item verified">
+            <span class="material-symbols-outlined">id_card</span>
+            <div>
+              <strong>Pièce d'identité</strong>
+              <small>Document vérifié</small>
+            </div>
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+
+          <div class="document-modal-item pending">
+            <span class="material-symbols-outlined">business_center</span>
+            <div>
+              <strong>Registre de commerce</strong>
+              <small>Document requis pour compléter le profil.</small>
+            </div>
+            <button type="button" class="btn-small" (click)="showComingSoon('Ajout du registre de commerce')">Ajouter</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-primary" (click)="closeModal()">Fermer</button>
+        </div>
+      }
+
+      <!-- MODAL DANGER -->
+      @if (activeModal() === 'danger') {
+        <div class="modal-header danger-header">
+          <div>
+            <span class="modal-eyebrow">ATTENTION</span>
+            <h2>Actions sensibles</h2>
+            <p>Ces actions peuvent avoir des conséquences importantes.</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <button type="button" class="danger-action" (click)="showComingSoon('Déconnexion des autres appareils')">
+            <span class="material-symbols-outlined">logout</span>
+            <div>
+              <strong>Déconnecter les autres appareils</strong>
+              <small>Fermer les sessions ouvertes sur les autres appareils.</small>
+            </div>
+          </button>
+
+          <button type="button" class="danger-action delete" (click)="openDeleteConfirmation()">
+            <span class="material-symbols-outlined">delete_forever</span>
+            <div>
+              <strong>Supprimer mon compte</strong>
+              <small>Cette action est définitive et irréversible.</small>
+            </div>
+          </button>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Annuler</button>
+        </div>
+      }
+
+      <!-- CONFIRMATION MODIFICATION -->
+      @if (showConfirmation()) {
+        <div class="confirmation-overlay">
+          <div class="confirmation-modal">
+            <div class="confirmation-icon">
+              <span class="material-symbols-outlined">save</span>
+            </div>
+            <h3>Confirmer la modification</h3>
+            <p>Vous êtes sur le point de modifier les informations de votre compte B2WA.</p>
+
+            <div class="confirmation-actions">
+              <button type="button" class="btn-secondary" (click)="cancelConfirmation()">Retour</button>
+              <button type="button" class="btn-primary" [disabled]="saving()" (click)="confirmSave()">
+                @if (saving()) {
+                  <span class="material-symbols-outlined rotating">progress_activity</span>
+                  Enregistrement...
+                } @else {
+                  <span class="material-symbols-outlined">check</span>
+                  Confirmer
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- CONFIRMATION SUPPRESSION -->
+      @if (showDeleteConfirmation()) {
+        <div class="confirmation-overlay">
+          <div class="confirmation-modal danger-confirmation">
+            <div class="confirmation-icon danger">
+              <span class="material-symbols-outlined">delete_forever</span>
+            </div>
+            <h3>Supprimer votre compte ?</h3>
+            <p>Cette action est irréversible. Toutes vos données, commandes et informations commerciales pourront être supprimées.</p>
+
+            <div class="delete-warning">
+              <span class="material-symbols-outlined">warning</span>
+              <span>Cette action ne peut pas être annulée.</span>
+            </div>
+
+            <div class="confirmation-actions">
+              <button type="button" class="btn-secondary" (click)="cancelDeleteConfirmation()">Annuler</button>
+              <button type="button" class="btn-danger" (click)="confirmDelete()">Supprimer mon compte</button>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+}

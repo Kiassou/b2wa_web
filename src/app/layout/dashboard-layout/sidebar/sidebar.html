@@ -1,0 +1,122 @@
+<aside
+  class="sidebar"
+  [class.collapsed]="collapsed"
+  [class.mobile-open]="mobileOpen"
+>
+  <!-- ================================================
+        SIDEBAR HEADER (BRANDING B2WA)
+  ================================================= -->
+  <div class="sidebar-header">
+    <a
+      routerLink="/dashboard"
+      class="brand"
+      (click)="onNavigationClick()"
+    >
+      <div class="brand-icon">
+        <span class="material-symbols-outlined">store</span>
+      </div>
+      <div class="brand-text">
+        <strong>B2WA</strong>
+        <small>ESPACE COMMERÇANT</small>
+      </div>
+    </a>
+
+    <!-- BOUTON FERMER EN MOBILE -->
+    <button 
+      type="button"
+      class="mobile-close"
+      aria-label="Fermer le menu"
+      (click)="closeSidebar.emit()"
+    >
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- ================================================
+        NAVIGATION
+  ================================================= -->
+  <nav class="sidebar-nav">
+    
+    <!-- 1. SECTION PRINCIPALE -->
+    <div class="nav-section">
+      <span class="section-title">COMMERCE</span>
+      @for (item of mainItems; track item.label) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+          (click)="onNavigationClick()"
+        >
+          <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nav-badge" [class]="'badge-' + (item.badgeType || 'info')">
+              {{ item.badge }}
+            </span>
+          }
+        </a>
+      }
+    </div>
+
+    <!-- 2. SECTION COMMUNAUTÉ & STORIES -->
+    <div class="nav-section">
+      <span class="section-title">RÉSEAU & SOCIAL</span>
+      @for (item of socialItems; track item.label) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          (click)="onNavigationClick()"
+        >
+          <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nav-badge" [class]="'badge-' + (item.badgeType || 'info')">
+              {{ item.badge }}
+            </span>
+          }
+        </a>
+      }
+    </div>
+
+    <!-- 3. SECTION LOGISTIQUE & FINANCES -->
+    <div class="nav-section">
+      <span class="section-title">LOGISTIQUE & BOURSE</span>
+      @for (item of logisticsItems; track item.label) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          (click)="onNavigationClick()"
+        >
+          <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nav-badge" [class]="'badge-' + (item.badgeType || 'info')">
+              {{ item.badge }}
+            </span>
+          }
+        </a>
+      }
+    </div>
+
+  </nav>
+
+  <!-- ================================================
+        BOTTOM / PROFIL ET PARAMÈTRES
+  ================================================= -->
+  <div class="sidebar-bottom">
+    @for (item of bottomItems; track item.label) {
+      <a
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        (click)="onNavigationClick()"
+      >
+        <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    }
+  </div>
+</aside>

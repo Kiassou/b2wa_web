@@ -1,0 +1,258 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* CARTE PENDING */
+.pending-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(15, 44, 89, 0.95); /* Bleu Marine B2WA */
+  border: 1px solid rgba(245, 158, 11, 0.35); /* Bordure Ambre B2WA */
+  backdrop-filter: blur(16px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* BRAND HEADER */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.2rem;
+}
+
+.brand-logo-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.brand-info {
+  text-align: left;
+}
+
+.brand-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.brand-info small {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #f59e0b; /* Ambre */
+  letter-spacing: 0.8px;
+}
+
+/* ICÔNE ANIMÉE (AMBRE / SABLIÈRE) */
+.status-icon-wrap {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  margin: 0.25rem auto 0.75rem auto;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon {
+  font-size: 1.8rem;
+  color: #f59e0b;
+}
+
+.pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(245, 158, 11, 0.4);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* TITRES */
+.auth-title {
+  margin-bottom: 0.85rem;
+}
+
+.auth-title .eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 1px;
+}
+
+.auth-title h2 {
+  margin: 0.2rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.auth-title p {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #cbd5e1;
+  line-height: 1.35;
+}
+
+.auth-title p strong {
+  color: #ffffff;
+}
+
+/* ENCADRÉ DE DÉTAILS */
+.info-box {
+  background: rgba(10, 25, 47, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.info-item .icon {
+  font-size: 1.1rem;
+  color: #16a34a; /* Vert */
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.info-text strong {
+  display: block;
+  font-size: 0.75rem;
+  color: #f8fafc;
+}
+
+.info-text p {
+  margin: 0;
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+/* BOUTONS D'ACTION */
+.actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.refresh-btn {
+  width: 100%;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.logout-btn {
+  width: 100%;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* FOOTER SUPPORT */
+.auth-footer-link {
+  margin-top: 0.85rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.auth-footer-link p {
+  margin: 0;
+}
+
+.auth-footer-link a {
+  color: #16a34a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer-link a:hover {
+  text-decoration: underline;
+}

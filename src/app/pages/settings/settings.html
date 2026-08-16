@@ -1,0 +1,1082 @@
+<div class="settings-container">
+
+  <!-- HEADER -->
+  <header class="settings-header">
+    <div class="header-content">
+      <h1 class="page-title">Paramètres du système</h1>
+      <p class="page-subtitle">
+        Gérez vos préférences, notifications, sécurité et paramètres
+        commerciaux depuis votre espace B2WA.
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="resetSettings()"
+        [disabled]="isSaving"
+      >
+        <span class="material-symbols-outlined">restart_alt</span>
+        Réinitialiser
+      </button>
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="saveSettings()"
+        [disabled]="isSaving"
+      >
+        <span class="material-symbols-outlined">
+          {{ isSaving ? 'progress_activity' : 'save' }}
+        </span>
+
+        {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+  </header>
+
+
+  <!-- SUCCESS -->
+  @if (successMessage) {
+    <div class="success-banner">
+      <span class="material-symbols-outlined">check_circle</span>
+
+      <div>
+        <strong>Modifications enregistrées</strong>
+        <p>{{ successMessage }}</p>
+      </div>
+
+      <button type="button" (click)="successMessage = ''">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  }
+
+
+  <!-- SETTINGS GRID -->
+  <div class="settings-grid">
+
+
+    <!-- ================================================= -->
+    <!-- 1. PRÉFÉRENCES GÉNÉRALES -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper blue">
+          <span class="material-symbols-outlined">
+            settings_suggest
+          </span>
+        </div>
+
+        <div>
+          <h3>Préférences générales</h3>
+
+          <p>
+            Personnalisez l'expérience de votre espace B2WA.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label>Devise principale</label>
+
+            <select [(ngModel)]="settings.currency">
+
+              <option value="XOF">
+                FCFA (XOF) - Franc CFA UEMOA
+              </option>
+
+              <option value="EUR">
+                Euro (€)
+              </option>
+
+              <option value="USD">
+                Dollar ($)
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Langue</label>
+
+            <select [(ngModel)]="settings.language">
+
+              <option value="fr">Français</option>
+              <option value="en">English</option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Fuseau horaire</label>
+
+            <select [(ngModel)]="settings.timezone">
+
+              <option value="Africa/Bamako">
+                GMT — Bamako
+              </option>
+
+              <option value="Africa/Dakar">
+                GMT — Dakar
+              </option>
+
+              <option value="Africa/Abidjan">
+                GMT — Abidjan
+              </option>
+
+              <option value="Europe/Paris">
+                CET — Paris
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Format de date</label>
+
+            <select [(ngModel)]="settings.dateFormat">
+
+              <option value="DD/MM/YYYY">
+                JJ/MM/AAAA
+              </option>
+
+              <option value="YYYY-MM-DD">
+                AAAA-MM-JJ
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 2. NOTIFICATIONS -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper orange">
+          <span class="material-symbols-outlined">
+            notifications_active
+          </span>
+        </div>
+
+        <div>
+          <h3>Notifications & alertes</h3>
+
+          <p>
+            Choisissez les événements pour lesquels B2WA doit vous avertir.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-body toggle-list">
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+            <strong>Alertes de transaction</strong>
+
+            <p>
+              Recevoir une notification lorsqu'une transaction est effectuée.
+            </p>
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.notifications.emailTransactions"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+            <strong>Notifications SMS</strong>
+
+            <p>
+              Recevoir une alerte SMS lors d'une opération importante.
+            </p>
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.notifications.smsAlerts"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+            <strong>Rapport hebdomadaire</strong>
+
+            <p>
+              Recevoir chaque semaine un résumé de vos activités commerciales.
+            </p>
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.notifications.weeklyReport"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+            <strong>Alertes de stock</strong>
+
+            <p>
+              Être averti lorsqu'un produit atteint son seuil minimum.
+            </p>
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.notifications.stockAlerts"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 3. SÉCURITÉ -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper purple">
+          <span class="material-symbols-outlined">
+            shield_lock
+          </span>
+        </div>
+
+        <div>
+          <h3>Sécurité avancée</h3>
+
+          <p>
+            Renforcez la protection de votre compte et de vos opérations.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-body toggle-list">
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Double authentification — 2FA
+            </strong>
+
+            <p>
+              Ajouter une vérification supplémentaire lors de la connexion.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="security-action"
+            (click)="openTwoFactorModal()"
+          >
+            <span class="material-symbols-outlined">
+              manage_accounts
+            </span>
+
+            Configurer
+          </button>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Confirmation PIN pour les retraits
+            </strong>
+
+            <p>
+              Demander un code secret avant toute opération sensible.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.security.pinForPayouts"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="form-group threshold-group">
+
+          <label>
+            Seuil d'alerte pour retraits suspects
+          </label>
+
+          <div class="input-with-prefix">
+            <span>FCFA</span>
+
+            <input
+              type="number"
+              [(ngModel)]="settings.security.payoutLimit"
+              min="0"
+            >
+          </div>
+
+          <small>
+            Une opération supérieure à ce montant pourra nécessiter
+            une vérification supplémentaire.
+          </small>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="outline-action"
+          (click)="openPasswordModal()"
+        >
+          <span class="material-symbols-outlined">
+            lock_reset
+          </span>
+
+          Modifier mon mot de passe
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 4. ACTIVITÉ COMMERCIALE -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper green">
+          <span class="material-symbols-outlined">
+            storefront
+          </span>
+        </div>
+
+        <div>
+          <h3>Préférences commerciales</h3>
+
+          <p>
+            Configurez le comportement de votre espace marchand.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-body toggle-list">
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Confirmation des commandes
+            </strong>
+
+            <p>
+              Demander une confirmation avant validation d'une commande.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.commerce.confirmOrders"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Mise à jour automatique du stock
+            </strong>
+
+            <p>
+              Actualiser automatiquement les quantités disponibles.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.commerce.autoStock"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Afficher ma boutique aux fournisseurs
+            </strong>
+
+            <p>
+              Permettre aux fournisseurs vérifiés de découvrir votre activité.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.commerce.publicStore"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 5. COMMUNICATION -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper cyan">
+          <span class="material-symbols-outlined">
+            campaign
+          </span>
+        </div>
+
+        <div>
+          <h3>Communication B2WA</h3>
+
+          <p>
+            Gérez les communications que vous souhaitez recevoir.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-body toggle-list">
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Actualités B2WA
+            </strong>
+
+            <p>
+              Recevoir les nouveautés et améliorations de la plateforme.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.communication.news"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="toggle-item">
+
+          <div class="toggle-content">
+
+            <strong>
+              Offres commerciales
+            </strong>
+
+            <p>
+              Recevoir les offres et opportunités destinées aux commerçants.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="settings.communication.offers"
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 6. SESSIONS -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper red">
+          <span class="material-symbols-outlined">
+            devices
+          </span>
+        </div>
+
+        <div>
+          <h3>Sessions & appareils</h3>
+
+          <p>
+            Consultez les appareils actuellement connectés à votre compte.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="device-item">
+
+          <div class="device-icon">
+            <span class="material-symbols-outlined">
+              computer
+            </span>
+          </div>
+
+          <div class="device-info">
+
+            <strong>Windows — Chrome</strong>
+
+            <span>
+              Bamako, Mali · Session actuelle
+            </span>
+
+          </div>
+
+          <span class="current-session">
+            Actuelle
+          </span>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="danger-outline"
+          (click)="openLogoutModal()"
+        >
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+
+          Déconnecter les autres appareils
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- 7. ZONE SENSIBLE -->
+    <!-- ================================================= -->
+
+    <section class="dashboard-card danger-card">
+
+      <div class="card-header">
+
+        <div class="icon-wrapper red">
+          <span class="material-symbols-outlined">
+            warning
+          </span>
+        </div>
+
+        <div>
+          <h3>Zone sensible</h3>
+
+          <p>
+            Actions importantes concernant votre compte B2WA.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="danger-content">
+
+        <div>
+
+          <strong>Désactiver mon compte</strong>
+
+          <p>
+            Votre compte sera temporairement désactivé et votre boutique
+            ne sera plus visible.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="danger-button"
+          (click)="openDeactivateModal()"
+        >
+          Désactiver le compte
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- ===================================================== -->
+  <!-- MODAL MOT DE PASSE -->
+  <!-- ===================================================== -->
+
+  @if (activeModal === 'password') {
+
+    <div class="modal-overlay" (click)="closeModal()">
+
+      <div class="modal" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+
+          <div class="modal-icon purple">
+            <span class="material-symbols-outlined">
+              lock_reset
+            </span>
+          </div>
+
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+
+        </div>
+
+        <div class="modal-content">
+
+          <h2>Modifier le mot de passe</h2>
+
+          <p>
+            Utilisez un mot de passe fort que vous n'utilisez pas sur
+            d'autres services.
+          </p>
+
+          <div class="form-group">
+
+            <label>Mot de passe actuel</label>
+
+            <input
+              type="password"
+              [(ngModel)]="passwordData.current"
+              placeholder="••••••••"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Nouveau mot de passe</label>
+
+            <input
+              type="password"
+              [(ngModel)]="passwordData.newPassword"
+              placeholder="••••••••"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Confirmer le nouveau mot de passe</label>
+
+            <input
+              type="password"
+              [(ngModel)]="passwordData.confirm"
+              placeholder="••••••••"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeModal()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="changePassword()"
+          >
+            <span class="material-symbols-outlined">
+              check
+            </span>
+
+            Modifier
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ===================================================== -->
+  <!-- MODAL 2FA -->
+  <!-- ===================================================== -->
+
+  @if (activeModal === 'twoFactor') {
+
+    <div class="modal-overlay" (click)="closeModal()">
+
+      <div class="modal" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+
+          <div class="modal-icon blue">
+            <span class="material-symbols-outlined">
+              phonelink_lock
+            </span>
+          </div>
+
+          <button type="button" class="modal-close" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+
+        </div>
+
+        <div class="modal-content">
+
+          <h2>Double authentification</h2>
+
+          <p>
+            Renforcez la sécurité de votre compte avec une vérification
+            supplémentaire.
+          </p>
+
+          <div class="security-status">
+
+            <span class="material-symbols-outlined">
+              verified_user
+            </span>
+
+            <div>
+              <strong>
+                {{ settings.security.twoFactor ? '2FA activée' : '2FA désactivée' }}
+              </strong>
+
+              <span>
+                {{ settings.security.twoFactor
+                  ? 'Votre compte bénéficie actuellement d'une protection supplémentaire.'
+                  : 'Votre compte n\'utilise pas encore la double authentification.'
+                }}
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeModal()"
+          >
+            Fermer
+          </button>
+
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="toggleTwoFactor()"
+          >
+            <span class="material-symbols-outlined">
+              {{ settings.security.twoFactor ? 'lock_open' : 'lock' }}
+            </span>
+
+            {{ settings.security.twoFactor ? 'Désactiver' : 'Activer' }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ===================================================== -->
+  <!-- MODAL DÉCONNEXION -->
+  <!-- ===================================================== -->
+
+  @if (activeModal === 'logout') {
+
+    <div class="modal-overlay" (click)="closeModal()">
+
+      <div class="modal modal-small" (click)="$event.stopPropagation()">
+
+        <div class="modal-header centered">
+
+          <div class="modal-icon orange">
+            <span class="material-symbols-outlined">
+              logout
+            </span>
+          </div>
+
+        </div>
+
+        <div class="modal-content centered-content">
+
+          <h2>Déconnecter les autres appareils ?</h2>
+
+          <p>
+            Toutes les autres sessions actives seront fermées.
+            Votre session actuelle restera connectée.
+          </p>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeModal()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="logoutOtherDevices()"
+          >
+            Confirmer
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ===================================================== -->
+  <!-- MODAL DÉSACTIVATION -->
+  <!-- ===================================================== -->
+
+  @if (activeModal === 'deactivate') {
+
+    <div class="modal-overlay danger-overlay" (click)="closeModal()">
+
+      <div class="modal modal-small" (click)="$event.stopPropagation()">
+
+        <div class="modal-header centered">
+
+          <div class="modal-icon red">
+            <span class="material-symbols-outlined">
+              warning
+            </span>
+          </div>
+
+        </div>
+
+        <div class="modal-content centered-content">
+
+          <h2>Désactiver votre compte ?</h2>
+
+          <p>
+            Cette action masquera temporairement votre boutique et
+            empêchera les nouvelles opérations commerciales.
+          </p>
+
+          <div class="warning-box">
+            <span class="material-symbols-outlined">
+              info
+            </span>
+
+            <span>
+              Vous pourrez demander la réactivation de votre compte
+              ultérieurement.
+            </span>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeModal()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="danger-button"
+            (click)="deactivateAccount()"
+          >
+            Désactiver
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

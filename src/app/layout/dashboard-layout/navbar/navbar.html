@@ -1,0 +1,91 @@
+<header class="navbar">
+  <!-- TOGGLE SIDEBAR & STATUT B2WA -->
+  <div class="navbar-left">
+    <button type="button" class="icon-btn" (click)="toggleSidebar.emit()" aria-label="Menu">
+      <span class="material-symbols-outlined">menu_open</span>
+    </button>
+
+    <!-- BADGE STATUT SYSTEME B2WA -->
+    <div class="system-status">
+      <span class="status-dot"></span>
+      <span class="status-text">RÉSEAU B2WA OPÉRATIONNEL</span>
+    </div>
+  </div>
+
+  <!-- BARRE DE RECHERCHE ET ACTIONS -->
+  <div class="navbar-right">
+    <div class="search-box">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input type="text" placeholder="Rechercher une offre, un partenaire, une cargaison..." />
+      <span class="search-shortcut">⌘B2WA</span>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <button type="button" class="icon-btn has-badge" aria-label="Notifications" routerLink="/dashboard/notifications">
+      <span class="material-symbols-outlined">notifications</span>
+      <span class="pulse-badge">7</span>
+    </button>
+
+    <div class="divider"></div>
+
+    <!-- MENU PROFIL UTILISATEUR -->
+    <div class="user-dropdown-container">
+      <!-- BOUTON DECLENCHEUR -->
+      <button
+        type="button"
+        class="user-profile-btn"
+        [class.active]="isDropdownOpen"
+        (click)="toggleDropdown($event)"
+        [attr.aria-expanded]="isDropdownOpen"
+      >
+        <div class="avatar">
+          <span>O</span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">O. TRAORE</span>
+          <span class="user-role">Commerçant B2WA</span>
+        </div>
+        <span class="material-symbols-outlined dropdown-chevron">
+          expand_more
+        </span>
+      </button>
+
+      <!-- MENU DROPDOWN -->
+      @if (isDropdownOpen) {
+        <div class="dropdown-menu">
+          <!-- HEADER DU DROPDOWN -->
+          <div class="dropdown-header">
+            <span class="dropdown-user-name">Oumar TRAORE</span>
+            <span class="dropdown-user-email">o.traore@b2wa.africa</span>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <!-- ITEMS DU MENU -->
+          <a routerLink="/dashboard/profile" class="dropdown-item" (click)="closeDropdown()">
+            <span class="material-symbols-outlined">account_circle</span>
+            <span>Mon Profil</span>
+          </a>
+
+          <a routerLink="/dashboard/support" class="dropdown-item" (click)="closeDropdown()">
+            <span class="material-symbols-outlined">support_agent</span>
+            <span>Support B2WA</span>
+          </a>
+
+          <a routerLink="/dashboard/settings" class="dropdown-item" (click)="closeDropdown()">
+            <span class="material-symbols-outlined">settings</span>
+            <span>Paramètres</span>
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <!-- BOUTON DÉCONNEXION -->
+          <button type="button" class="dropdown-item logout-btn" (click)="onLogout()">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Se déconnecter</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

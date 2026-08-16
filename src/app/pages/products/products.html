@@ -1,0 +1,283 @@
+<div class="products-container">
+
+  <!-- HERO & STATISTIQUES -->
+  <header class="products-header">
+    <div class="header-titles">
+      <span class="eyebrow"><span class="material-symbols-outlined">inventory_2</span> GESTION DE STOCK</span>
+      <h1>Mes Produits</h1>
+      <p>Affichez, ajustez le stock et gérez la disponibilité de votre catalogue B2WA.</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <span class="material-symbols-outlined">add</span> Nouveau Produit
+    </button>
+  </header>
+
+  <!-- CARTES DE STATISTIQUES -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue"><span class="material-symbols-outlined">package_2</span></div>
+      <div class="stat-info">
+        <span class="label">Total Produits</span>
+        <strong>{{ totalProductsCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green"><span class="material-symbols-outlined">check_circle</span></div>
+      <div class="stat-info">
+        <span class="label">Produits Actifs</span>
+        <strong>{{ activeProductsCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon orange"><span class="material-symbols-outlined">warning</span></div>
+      <div class="stat-info">
+        <span class="label">Stock Faible</span>
+        <strong>{{ lowStockProductsCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon red"><span class="material-symbols-outlined">block</span></div>
+      <div class="stat-info">
+        <span class="label">Rupture de Stock</span>
+        <strong>{{ outOfStockProductsCount }}</strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon purple"><span class="material-symbols-outlined">payments</span></div>
+      <div class="stat-info">
+        <span class="label">Valeur du Stock</span>
+        <strong>{{ totalInventoryValue | number }} FCFA</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECHERCHE ET FILTRES -->
+  <section class="filter-bar">
+    <div class="search-box">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Rechercher par nom ou SKU..." />
+    </div>
+
+    <div class="filter-group">
+      <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
+        <option value="ALL">Toutes les catégories</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+        <option value="ALL">Tous les statuts</option>
+        <option value="ACTIVE">Actifs uniquement</option>
+        <option value="INACTIVE">Désactivés uniquement</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- TABLEAU ULTRA-PREMIUM DES PRODUITS -->
+  <section class="products-table-card">
+    <div class="table-responsive">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Catégorie</th>
+            <th>Prix (FCFA)</th>
+            <th>Niveau de Stock</th>
+            <th>Statut</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Utilisation de paginatedProducts (nom exact déclaré dans le .ts) -->
+          <tr *ngFor="let product of paginatedProducts; trackBy: trackByProductId" [class.row-inactive]="!product.isActive">
+            <td>
+              <div class="product-identity">
+                <div class="product-avatar">
+                  <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name">
+                  <span *ngIf="!product.imageUrl" class="material-symbols-outlined">image</span>
+                </div>
+                <div>
+                  <strong class="product-name">{{ product.name }}</strong>
+                  <span class="product-sku">SKU: {{ product.sku }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td><span class="badge-category">{{ product.category }}</span></td>
+
+            <td><strong>{{ product.price | number }}</strong></td>
+
+            <td>
+              <div class="stock-pill" [ngClass]="{
+                'stock-ok': product.stock > product.minStockThreshold,
+                'stock-low': product.stock <= product.minStockThreshold && product.stock > 0,
+                'stock-out': product.stock === 0
+              }">
+                <span class="dot"></span>
+                <span>{{ product.stock }} en stock</span>
+              </div>
+            </td>
+
+            <td>
+              <label class="toggle-switch">
+                <input type="checkbox" [checked]="product.isActive" (change)="toggleStatusRequest(product)">
+                <span class="slider"></span>
+              </label>
+            </td>
+
+            <td class="text-right">
+              <button class="btn-icon" (click)="openEditModal(product)" title="Modifier">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredProducts.length === 0">
+            <td colspan="6" class="empty-state">
+              <span class="material-symbols-outlined">inventory_2</span>
+              <p>Aucun produit ne correspond à votre recherche.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PAGINATION INTELLIGENTE -->
+  <section class="pagination-bar" *ngIf="filteredProducts.length > 0">
+    <div class="pagination-info">
+      Affichage de <strong>{{ paginationStart }}</strong> à <strong>{{ paginationEnd }}</strong> sur <strong>{{ filteredProducts.length }}</strong> produits
+    </div>
+
+    <div class="pagination-controls">
+      <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()" aria-label="Nombre de produits par page">
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
+          {{ size }} / page
+        </option>
+      </select>
+
+      <button
+        type="button"
+        class="pagination-button"
+        [disabled]="currentPage === 1"
+        (click)="goToPreviousPage()"
+        aria-label="Page précédente"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+
+      <ng-container *ngFor="let page of paginationPages">
+        <span *ngIf="page === '...'" class="pagination-dots">...</span>
+        <button
+          *ngIf="page !== '...'"
+          type="button"
+          class="pagination-button"
+          [class.active]="currentPage === page"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+      </ng-container>
+
+      <button
+        type="button"
+        class="pagination-button"
+        [disabled]="currentPage === totalPages"
+        (click)="goToNextPage()"
+        aria-label="Page suivante"
+      >
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- MODALE : CRÉER / MODIFIER PRODUIT -->
+  <div class="modal-backdrop" *ngIf="isProductModalOpen">
+    <div class="support-modal">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">FORMULAIRE PRODUIT</span>
+          <h2>{{ modalMode === 'CREATE' ? 'Ajouter un nouveau produit' : 'Modifier le produit' }}</h2>
+        </div>
+        <button class="modal-close" (click)="closeProductModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nom du produit <span>*</span></label>
+            <input type="text" formControlName="name" placeholder="Ex: Ordinateur HP Pavilion">
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Code SKU / Référence <span>*</span></label>
+              <input type="text" formControlName="sku" placeholder="Ex: HP-5542">
+            </div>
+
+            <div class="form-group">
+              <label>Catégorie <span>*</span></label>
+              <select formControlName="category">
+                <option value="" disabled>Choisir une catégorie</option>
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Prix unitaire (FCFA) <span>*</span></label>
+              <input type="number" formControlName="price">
+            </div>
+
+            <div class="form-group">
+              <label>Quantité en Stock <span>*</span></label>
+              <input type="number" formControlName="stock">
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Seuil d'alerte Stock Faible</label>
+              <input type="number" formControlName="minStockThreshold">
+            </div>
+
+            <div class="form-group">
+              <label>URL de l'image (optionnel)</label>
+              <input type="text" formControlName="imageUrl" placeholder="https://...">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeProductModal()">Annuler</button>
+          <button type="submit" class="btn-primary" [disabled]="productForm.invalid">
+            {{ modalMode === 'CREATE' ? 'Enregistrer le produit' : 'Mettre à jour' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODALE : CONFIRMATION DES ACTIONS -->
+  <div class="modal-backdrop" *ngIf="isConfirmModalOpen">
+    <div class="confirmation-modal">
+      <div class="confirmation-icon">
+        <span class="material-symbols-outlined">help_outline</span>
+      </div>
+      <h2>{{ confirmTitle }}</h2>
+      <p>{{ confirmMessage }}</p>
+
+      <div class="confirmation-actions">
+        <button class="btn-secondary" (click)="closeConfirmModal()">Annuler</button>
+        <button [class]="'btn ' + confirmButtonClass" (click)="executeConfirm()">{{ confirmButtonText }}</button>
+      </div>
+    </div>
+  </div>
+
+</div>
