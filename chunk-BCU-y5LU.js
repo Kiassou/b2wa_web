@@ -1,0 +1,1 @@
+import{D as Ga,On as rv,Sn as qa,vn as pI}from"./chunk-oOl-aku3.js";var l=class s{static ɵfac=function(e){return new(e||s)};static ɵcmp=rv({type:s,selectors:[[`app-flash-sales`]],decls:2,vars:0,template:function(e,m){e&1&&(Ga(0,`p`),pI(1,`flash-sales works!`),qa())},encapsulation:2})};export{l as FlashSalesComponent};

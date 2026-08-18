@@ -1,1 +1,0 @@
-import{Lt as cI,St as Xy,ct as Ua,t as $a}from"./chunk-B9Ka-aUs.js";var i=class n{static ɵfac=function(e){return new(e||n)};static ɵcmp=Xy({type:n,selectors:[[`app-finances`]],decls:2,vars:0,template:function(e,p){e&1&&($a(0,`p`),cI(1,`finances works!`),Ua())},encapsulation:2})};export{i as FinancesComponent};
