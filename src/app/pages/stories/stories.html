@@ -1,1 +1,508 @@
-<p>stories works!</p>
+<div class="stories-page">
+
+  <!-- =====================================================
+       HEADER FIXE
+  ====================================================== -->
+  <header class="stories-header">
+    <div class="header-brand">
+      <span class="brand-name">B2WA</span>
+      <span class="brand-separator"></span>
+      <span class="page-title">Reels</span>
+    </div>
+
+    <div class="header-actions">
+      @if (isSearchOpen) {
+        <div class="stories-search">
+          <span class="material-symbols-outlined">search</span>
+          <input type="search" placeholder="Rechercher..." autofocus>
+        </div>
+      }
+
+      <button type="button" class="header-btn" aria-label="Rechercher" (click)="toggleSearch()">
+        <span class="material-symbols-outlined">
+          {{ isSearchOpen ? 'close' : 'search' }}
+        </span>
+      </button>
+
+      <button type="button" class="header-btn profile-header-btn" aria-label="Mon profil" (click)="openProfile()">
+        <img [src]="currentUser.avatar" [alt]="currentUser.name">
+      </button>
+
+      <button type="button" class="header-btn" aria-label="Plus d’options">
+        <span class="material-symbols-outlined">more_vert</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================================================
+       BARRE STORIES
+  ====================================================== -->
+  <section class="stories-bar">
+    <div class="stories-list">
+      <!-- STORY UTILISATEUR -->
+      <button type="button" class="story-item my-story" (click)="openPublicationModal()">
+        <div class="story-avatar-wrapper">
+          <div class="story-avatar my-avatar">
+            <img [src]="currentUser.avatar" [alt]="currentUser.name">
+          </div>
+          <span class="add-story">
+            <span class="material-symbols-outlined">add</span>
+          </span>
+        </div>
+        <span class="story-name">Votre Story</span>
+      </button>
+
+      <!-- AUTRES STORIES -->
+      @for (story of stories; track story.id) {
+        <button type="button" class="story-item" (click)="openStory(story)">
+          <div class="story-avatar-wrapper" [class.story-seen]="story.seen">
+            <div class="story-avatar">
+              @if (story.avatar) {
+                <img [src]="story.avatar" [alt]="story.author">
+              } @else {
+                <span class="material-symbols-outlined">person</span>
+              }
+            </div>
+          </div>
+          <span class="story-name">{{ story.author }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- =====================================================
+       FEED PRINCIPAL (REELS IMMERSIF)
+  ====================================================== -->
+  <main class="social-feed">
+    @for (story of feedStories; track story.id) {
+      <article class="feed-story-card" [class.is-active]="activeFeedStoryId === story.id">
+        <div class="feed-story-media">
+          @if (story.type === 'video') {
+            <video
+              class="feed-story-video"
+              [attr.data-story-id]="story.id"
+              [src]="story.media"
+              [poster]="story.poster"
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              (click)="toggleFeedVideo($event)"
+              (error)="onFeedVideoError()">
+              Votre navigateur ne prend pas en charge la vidéo.
+            </video>
+          } @else {
+            <img class="feed-story-image" [src]="story.media" [alt]="story.title" loading="lazy">
+          }
+
+          <div class="feed-media-gradient"></div>
+
+          <button type="button" class="feed-sound-btn" aria-label="Son" (click)="toggleFeedMute()">
+            <span class="material-symbols-outlined">
+              {{ isFeedMuted ? 'volume_off' : 'volume_up' }}
+            </span>
+          </button>
+
+          <button type="button" class="feed-more-btn" aria-label="Plus d’options">
+            <span class="material-symbols-outlined">more_vert</span>
+          </button>
+
+          <div class="feed-content-overlay">
+            <div class="feed-author-row">
+              <button type="button" class="feed-author-avatar" (click)="openStory(story)">
+                @if (story.avatar) {
+                  <img [src]="story.avatar" [alt]="story.author">
+                } @else {
+                  <span class="material-symbols-outlined">person</span>
+                }
+              </button>
+
+              <div class="feed-author-info">
+                <div class="feed-author-name">
+                  <strong>@{{ story.username || story.author }}</strong>
+                  @if (story.verified) {
+                    <span class="verified">
+                      <span class="material-symbols-outlined">verified</span>
+                    </span>
+                  }
+                </div>
+                <span>{{ story.time }}</span>
+              </div>
+
+              @if (story.username !== currentUser.username) {
+                <button type="button" class="follow-btn" (click)="toggleFollow()">
+                  {{ isFollowing ? 'Abonné' : 'Suivre' }}
+                </button>
+              }
+            </div>
+
+            <div class="feed-copy">
+              <h2>{{ story.title }}</h2>
+              <p>{{ story.description }}</p>
+
+              @if (story.community) {
+                <button type="button" class="feed-community-tag" (click)="openCommunity(story)">
+                  <span class="material-symbols-outlined">groups</span>
+                  {{ story.community }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <aside class="feed-actions">
+            <button type="button" class="feed-action" [class.liked]="story.liked" aria-label="J'aime" (click)="toggleLike(story)">
+              <span class="material-symbols-outlined">
+                {{ story.liked ? 'favorite' : 'favorite_border' }}
+              </span>
+              <small>{{ story.likes }}</small>
+            </button>
+
+            <button type="button" class="feed-action" aria-label="Commentaires" (click)="openComments(story)">
+              <span class="material-symbols-outlined">chat_bubble</span>
+              <small>{{ story.comments }}</small>
+            </button>
+
+            <button type="button" class="feed-action" aria-label="Partager" (click)="shareStory(story)">
+              <span class="material-symbols-outlined">share</span>
+              <small>Partager</small>
+            </button>
+
+            @if (story.product) {
+              <button type="button" class="feed-action product-feed-action" aria-label="Voir le produit" (click)="viewProduct(story.product)">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                <small>Produit</small>
+              </button>
+            } @else {
+              <button type="button" class="feed-action" aria-label="Communauté" (click)="openCommunity(story)">
+                <span class="material-symbols-outlined">groups</span>
+                <small>Groupe</small>
+              </button>
+            }
+          </aside>
+        </div>
+      </article>
+    } @empty {
+      <div class="empty-feed">
+        <span class="material-symbols-outlined">auto_stories</span>
+        <h2>Aucune publication</h2>
+        <p>Soyez le premier à publier un Reel sur B2WA.</p>
+        <button type="button" class="publish-content-btn" (click)="openPublicationModal()">
+          Publier maintenant
+        </button>
+      </div>
+    }
+  </main>
+
+  <!-- =====================================================
+       STORY VIEWER (PLEIN ÉCRAN TYPE INSTA)
+  ====================================================== -->
+  @if (isViewerOpen && activeStory) {
+    <div class="story-viewer-backdrop" role="presentation" (click)="closeStoryViewer()">
+      <section class="story-viewer" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="viewer-progress-list">
+          @for (story of stories; track story.id; let index = $index) {
+            <div class="viewer-progress-item">
+              <span [style.width.%]="index < activeStoryIndex ? 100 : (index === activeStoryIndex ? activeProgress : 0)"></span>
+            </div>
+          }
+        </div>
+
+        <div class="viewer-header">
+          <div class="viewer-author">
+            <div class="viewer-avatar">
+              @if (activeStory.avatar) {
+                <img [src]="activeStory.avatar" [alt]="activeStory.author">
+              } @else {
+                <span class="material-symbols-outlined">person</span>
+              }
+            </div>
+            <div>
+              <div class="viewer-author-name">
+                <strong>{{ activeStory.author }}</strong>
+                @if (activeStory.verified) {
+                  <span class="verified"><span class="material-symbols-outlined">verified</span></span>
+                }
+              </div>
+              <span class="viewer-time">{{ activeStory.time }}</span>
+            </div>
+          </div>
+
+          <div class="viewer-header-actions">
+            @if (activeStory.type === 'video') {
+              <button type="button" class="viewer-icon-btn" aria-label="Son" (click)="toggleViewerMute()">
+                <span class="material-symbols-outlined">{{ isMuted ? 'volume_off' : 'volume_up' }}</span>
+              </button>
+            }
+            <button type="button" class="viewer-icon-btn" aria-label="Fermer" (click)="closeStoryViewer()">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="viewer-media" (click)="togglePause()">
+          @if (activeStory.type === 'video') {
+            <video
+              class="viewer-video"
+              [src]="activeStory.media"
+              [poster]="activeStory.poster"
+              [muted]="isMuted"
+              playsinline
+              preload="metadata"
+              (loadedmetadata)="onViewerVideoLoaded($event)"
+              (timeupdate)="onViewerVideoTimeUpdate($event)"
+              (ended)="onViewerVideoEnded()"
+              (error)="onViewerVideoError()">
+              Votre navigateur ne prend pas en charge la vidéo.
+            </video>
+          } @else {
+            <img class="viewer-image" [src]="activeStory.media" [alt]="activeStory.title">
+          }
+
+          @if (isLoading) {
+            <div class="viewer-loading"><span class="loading-spinner"></span> Chargement...</div>
+          }
+          @if (isPaused) {
+            <div class="paused-indicator"><span class="material-symbols-outlined">play_arrow</span></div>
+          }
+
+          <button type="button" class="viewer-navigation viewer-navigation-left" (click)="$event.stopPropagation(); previousStory()">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <button type="button" class="viewer-navigation viewer-navigation-right" (click)="$event.stopPropagation(); nextStory()">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+
+          <div class="viewer-story-content">
+            @if (activeStory.community) {
+              <span class="viewer-community"><span class="material-symbols-outlined">groups</span> {{ activeStory.community }}</span>
+            }
+            <h2>{{ activeStory.title }}</h2>
+            <p>{{ activeStory.description }}</p>
+
+            @if (activeStory.product) {
+              <button type="button" class="viewer-product-card" (click)="$event.stopPropagation(); viewProduct(activeStory.product)">
+                <img [src]="activeStory.product.image" [alt]="activeStory.product.name">
+                <span>
+                  <strong>{{ activeStory.product.name }}</strong>
+                  <small>{{ activeStory.product.price | number }} {{ activeStory.product.currency }}</small>
+                </span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="quick-reactions">
+          <button type="button" (click)="replyText = '👍'; sendReply()">👍</button>
+          <button type="button" (click)="replyText = '🔥'; sendReply()">🔥</button>
+          <button type="button" (click)="replyText = '👏'; sendReply()">👏</button>
+          <button type="button" (click)="replyText = '❤️'; sendReply()">❤️</button>
+        </div>
+
+        <div class="viewer-footer">
+          <div class="reply-box">
+            <input type="text" [(ngModel)]="replyText" placeholder="Envoyer un message..." (keyup.enter)="sendReply()">
+            <button type="button" class="viewer-like-btn" [class.liked]="activeStory.liked" (click)="$event.stopPropagation(); toggleLike(activeStory)">
+              <span class="material-symbols-outlined">{{ activeStory.liked ? 'favorite' : 'favorite_border' }}</span>
+            </button>
+            <button type="button" class="viewer-send-btn" (click)="$event.stopPropagation(); sendReply()">
+              <span class="material-symbols-outlined">send</span>
+            </button>
+          </div>
+          <span class="viewer-views"><span class="material-symbols-outlined">visibility</span> {{ activeStory.views }} vues</span>
+        </div>
+      </section>
+    </div>
+  }
+
+  <!-- =====================================================
+       MODAL COMMENTAIRES
+  ====================================================== -->
+  @if (isCommentsOpen && activeStory) {
+    <div class="comments-backdrop" role="presentation" (click)="closeComments()">
+      <section class="comments-sheet" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="comments-header">
+          <strong>Commentaires</strong>
+          <span>{{ activeStory.comments }}</span>
+          <button type="button" class="header-btn" (click)="closeComments()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="comments-list">
+          @for (comment of activeStory.commentsList; track comment.id) {
+            <div class="comment-item">
+              <div class="comment-avatar">
+                @if (comment.avatar) {
+                  <img [src]="comment.avatar" [alt]="comment.author">
+                } @else {
+                  <span class="material-symbols-outlined">person</span>
+                }
+              </div>
+              <div>
+                <strong>{{ comment.author }}</strong>
+                <p>{{ comment.text }}</p>
+                <small>{{ comment.time }}</small>
+              </div>
+            </div>
+          } @empty {
+            <div class="comments-empty">
+              <span class="material-symbols-outlined">chat_bubble_outline</span>
+              <p>Aucun commentaire pour le moment.</p>
+            </div>
+          }
+        </div>
+
+        <div class="comments-input">
+          <input type="text" [(ngModel)]="replyText" placeholder="Écrire un commentaire..." (keyup.enter)="sendReply()">
+          <button type="button" (click)="sendReply()">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  <!-- =====================================================
+       MODAL PROFIL
+  ====================================================== -->
+  @if (isProfileOpen) {
+    <div class="profile-modal-backdrop" role="presentation" (click)="closeProfile()">
+      <section class="profile-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="profile-cover"></div>
+        <div class="profile-body">
+          <button type="button" class="profile-close-icon" (click)="closeProfile()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+
+          <div class="profile-avatar-large">
+            <img [src]="currentUser.avatar" [alt]="currentUser.name">
+          </div>
+
+          <div class="profile-name-row">
+            <h2>{{ currentUser.name }}</h2>
+            @if (currentUser.verified) {
+              <span class="verified"><span class="material-symbols-outlined">verified</span></span>
+            }
+          </div>
+
+          <span class="profile-username">@{{ currentUser.username }}</span>
+          <p class="profile-bio">{{ currentUser.bio }}</p>
+
+          <div class="profile-stats">
+            <div class="profile-stat"><strong>{{ currentUser.publications }}</strong><span>Publications</span></div>
+            <div class="profile-stat"><strong>{{ currentUser.followers }}</strong><span>Abonnés</span></div>
+            <div class="profile-stat"><strong>{{ currentUser.following }}</strong><span>Abonnements</span></div>
+          </div>
+
+          <div class="profile-buttons">
+            <button type="button" class="profile-follow-btn" (click)="toggleFollow()">
+              {{ isFollowing ? 'Abonné' : 'Suivre' }}
+            </button>
+            <button type="button" class="profile-close-btn" (click)="closeProfile()">Fermer</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  }
+
+  <!-- =====================================================
+       MODAL PUBLICATION
+  ====================================================== -->
+  @if (isPublicationModalOpen) {
+    <div class="modal-backdrop" role="presentation" (click)="closePublicationModal()">
+      <section class="create-story-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div>
+            <span class="modal-kicker">NOUVEAU CONTENU</span>
+            <h2>Publier un Reel sur B2WA</h2>
+          </div>
+          <button type="button" class="header-btn" (click)="closePublicationModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="create-story-form">
+          <label>
+            Type de contenu
+            <select [(ngModel)]="publicationType">
+              <option value="image">Photo</option>
+              <option value="video">Vidéo</option>
+            </select>
+          </label>
+
+          <label>
+            Importer un fichier
+            <input type="file" accept="image/*,video/*" (change)="onMediaSelected($event)">
+          </label>
+
+          <label>
+            URL du média
+            <input type="url" [(ngModel)]="publicationMedia" placeholder="https://exemple.com/media.mp4">
+          </label>
+
+          @if (publicationType === 'video') {
+            <label>
+              URL de l’image poster
+              <input type="url" [(ngModel)]="publicationPoster" placeholder="https://exemple.com/poster.jpg">
+            </label>
+          }
+
+          <label>
+            Titre
+            <input type="text" [(ngModel)]="publicationTitle" placeholder="Titre de votre publication">
+          </label>
+
+          <label>
+            Description
+            <textarea rows="3" [(ngModel)]="publicationDescription" placeholder="Écrivez une légende..."></textarea>
+          </label>
+
+          <label>
+            Communauté
+            <input type="text" [(ngModel)]="publicationCommunity" placeholder="Ex: Entrepreneurs du Mali">
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="showPublicationProduct">
+            Associer un produit
+          </label>
+
+          @if (showPublicationProduct) {
+            <label>
+              Nom du produit
+              <input type="text" [(ngModel)]="publicationProductName" placeholder="Nom du produit">
+            </label>
+
+            <label>
+              Prix
+              <input type="number" [(ngModel)]="publicationProductPrice" placeholder="25000">
+            </label>
+
+            <label>
+              Image du produit
+              <input type="url" [(ngModel)]="publicationProductImage" placeholder="https://exemple.com/produit.jpg">
+            </label>
+          }
+
+          <div class="create-story-actions">
+            <button type="button" class="cancel-btn" (click)="closePublicationModal()">Annuler</button>
+            <button type="button" class="publish-btn" [disabled]="isPublishing" (click)="publishContent()">
+              <span class="material-symbols-outlined">publish</span>
+              {{ isPublishing ? 'Publication...' : 'Publier' }}
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  }
+
+  <!-- NOTIFICATION TOAST -->
+  @if (showToast) {
+    <div class="stories-toast">
+      <span class="material-symbols-outlined">check_circle</span>
+      {{ toastMessage }}
+    </div>
+  }
+
+</div>

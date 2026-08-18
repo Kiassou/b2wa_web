@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 
 import {
-  provideRouter
+  provideRouter,
+  withInMemoryScrolling
 } from '@angular/router';
 
 import {
@@ -15,10 +16,21 @@ import {
   routes
 } from './app.routes';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
+
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+
+    provideRouter(
+      routes,
+
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled'
+      })
+    ),
+
     provideHttpClient()
   ]
 };

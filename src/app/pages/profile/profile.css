@@ -70,7 +70,7 @@
 .page-title {
   margin: 0;
   color: #101828;
-  font-size: clamp(28px, 3vw, 38px);
+  font-size: clamp(28px, 2vw, 38px);
   font-weight: 800;
   letter-spacing: -1px;
 }
@@ -1664,12 +1664,6 @@
   .profile-container {
     padding: 18px 14px 30px;
   }
-
-
-
-
-
-
 
   /* PROFILE */
 

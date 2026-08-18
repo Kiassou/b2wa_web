@@ -1,9 +1,6 @@
 <div class="live-page">
 
-  <!-- ===================================================== -->
   <!-- TOPBAR -->
-  <!-- ===================================================== -->
-
   <header class="live-topbar">
 
     <div class="topbar-left">
@@ -11,145 +8,261 @@
       <button
         type="button"
         class="back-btn"
-        (click)="leaveLive()"
-      >
+        (click)="leaveLive()">
 
         <span class="material-symbols-outlined">
           arrow_back
         </span>
 
-        <span>
+        <span class="btn-text">
           Quitter
         </span>
-
       </button>
 
-
       <div class="live-brand">
-
         <div class="live-logo">
-          B
+          <span>B</span>
         </div>
 
-        <div>
-
-          <strong>
+        <div class="brand-info">
+          <strong class="brand-name">
             B2WA LIVE
           </strong>
 
-          <span>
-            Diffusion en direct
+          <span class="brand-subtitle">
+            <span class="live-pulse-dot"></span>
+            Diffusion interactive
           </span>
-
         </div>
-
       </div>
-
     </div>
-
 
     <div class="topbar-actions">
 
-      <div class="viewer-counter">
+      <div
+        class="viewer-counter"
+        title="Spectateurs en direct">
 
-        <span class="material-symbols-outlined">
+        <span class="material-symbols-outlined icon-live">
           visibility
         </span>
 
-        {{ viewerCount }}
+        <strong>
+          {{ viewerCount }}
+        </strong>
 
+        <small>
+          en direct
+        </small>
       </div>
 
+      <button
+        type="button"
+        class="copy-live-btn"
+        (click)="copyLiveLink()">
+
+        <span class="material-symbols-outlined">
+          {{ copied ? 'check' : 'link' }}
+        </span>
+
+        <span class="btn-text">
+          {{ copied ? 'Lien copié' : 'Copier le lien' }}
+        </span>
+      </button>
 
       <button
         type="button"
         class="share-live-btn"
-        (click)="shareLive()"
-      >
+        (click)="shareLive()">
 
         <span class="material-symbols-outlined">
           share
         </span>
 
-        Partager
-
+        <span class="btn-text">
+          Partager
+        </span>
       </button>
 
-    </div>
+      <button
+        type="button"
+        class="chat-toggle-header-btn"
+        [class.active]="isChatOpen"
+        (click)="toggleChat()"
+        title="Afficher ou masquer le chat">
 
+        <span class="material-symbols-outlined">
+          chat
+        </span>
+      </button>
+    </div>
   </header>
 
-
-
-  <!-- ===================================================== -->
   <!-- MAIN -->
-  <!-- ===================================================== -->
+  <main
+    class="live-main"
+    [class.chat-closed]="!isChatOpen">
 
-  <main class="live-main">
+    <!-- VIDEO ET INFORMATIONS -->
+    <section class="live-content-area">
 
-
-    <!-- =================================================== -->
-    <!-- VIDEO AREA -->
-    <!-- =================================================== -->
-
-    <section class="live-video-section">
-
-      <div class="video-container">
+      <!-- VIDEO -->
+      <div
+        #videoContainer
+        class="video-container">
 
         @if (isLive) {
-
-          <!-- VIDEO PLACEHOLDER -->
-
           <div class="video-placeholder">
 
-            <div class="video-center">
+            <div class="ambient-glow"></div>
 
-              <div class="live-pulse">
-                <span></span>
-              </div>
-
-              <strong>
-                LIVE
-              </strong>
-
-              <p>
-                La diffusion est en cours
-              </p>
-
-            </div>
-
-
-            <!-- LIVE BADGE -->
-
-            <div class="live-badge">
-
-              <span class="live-dot"></span>
-
-              EN DIRECT
-
-            </div>
-
-
-            <!-- VIEWERS -->
-
-            <div class="video-viewers">
-
-              <span class="material-symbols-outlined">
-                visibility
+            <!-- ÉTAT CONNEXION -->
+            <div class="connection-status">
+              <span
+                class="connection-dot"
+                [class.offline]="!isConnected">
               </span>
 
-              {{ viewerCount }} spectateurs
-
+              <span>
+                {{ isConnected
+                  ? 'Connexion stable'
+                  : 'Reconnexion...' }}
+              </span>
             </div>
 
+            <!-- CONTENU CENTRAL -->
+            <div class="video-center">
+
+              <div class="live-pulse-ring">
+                <span class="material-symbols-outlined live-icon">
+                  sensors
+                </span>
+              </div>
+
+              <strong class="live-stream-status">
+                STREAMING EN DIRECT
+              </strong>
+
+              <p class="live-stream-subtext">
+                Les nouveautés du commerce malien
+              </p>
+            </div>
+
+            <!-- OVERLAY SUPÉRIEUR -->
+            <div class="video-top-overlay">
+
+              <div class="live-badge">
+                <span class="live-dot"></span>
+                <span>EN DIRECT</span>
+              </div>
+
+              <div class="video-viewers">
+                <span class="material-symbols-outlined">
+                  group
+                </span>
+
+                <span>
+                  {{ viewerCount }} spectateurs
+                </span>
+              </div>
+            </div>
+
+            <!-- RÉACTIONS FLOTTANTES -->
+            <div class="floating-reactions">
+              @for (reaction of reactions; track reaction.id) {
+                <span
+                  class="floating-reaction"
+                  [style.left.%]="reaction.left">
+
+                  {{ reaction.emoji }}
+                </span>
+              }
+            </div>
+
+            <!-- ACTIONS VIDÉO -->
+            <div class="video-actions-overlay">
+
+              <div class="reaction-buttons">
+
+                <button
+                  type="button"
+                  class="reaction-btn"
+                  title="Envoyer un cœur"
+                  (click)="sendReaction('❤️')">
+
+                  ❤️
+                </button>
+
+                <button
+                  type="button"
+                  class="reaction-btn"
+                  title="Envoyer une flamme"
+                  (click)="sendReaction('🔥')">
+
+                  🔥
+                </button>
+
+                <button
+                  type="button"
+                  class="reaction-btn"
+                  title="Applaudir"
+                  (click)="sendReaction('👏')">
+
+                  👏
+                </button>
+
+                <button
+                  type="button"
+                  class="reaction-btn"
+                  title="Envoyer une idée"
+                  (click)="sendReaction('💡')">
+
+                  💡
+                </button>
+              </div>
+
+              <div class="player-controls">
+
+                <button
+                  type="button"
+                  class="control-btn"
+                  title="Activer ou désactiver le son"
+                  (click)="toggleMute()">
+
+                  <span class="material-symbols-outlined">
+                    {{ isMuted
+                      ? 'volume_off'
+                      : 'volume_up' }}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="control-btn"
+                  title="Plein écran"
+                  (click)="toggleFullscreen()">
+
+                  <span class="material-symbols-outlined">
+                    {{ isFullscreen
+                      ? 'fullscreen_exit'
+                      : 'fullscreen' }}
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
-
         } @else {
-
+          <!-- LIVE TERMINÉ -->
           <div class="live-ended">
 
-            <span class="material-symbols-outlined">
-              videocam_off
+            <div class="ended-icon-box">
+              <span class="material-symbols-outlined">
+                videocam_off
+              </span>
+            </div>
+
+            <span class="ended-label">
+              SESSION TERMINÉE
             </span>
 
             <h2>
@@ -157,107 +270,158 @@
             </h2>
 
             <p>
-              Merci d'avoir participé à ce Live B2WA.
+              Merci d'avoir participé à cette session
+              en direct B2WA.
             </p>
+
+            <div class="ended-statistics">
+
+              <div>
+                <strong>
+                  {{ peakViewerCount }}
+                </strong>
+
+                <span>
+                  Pic de spectateurs
+                </span>
+              </div>
+
+              <div>
+                <strong>
+                  {{ liveDuration }}
+                </strong>
+
+                <span>
+                  Durée du Live
+                </span>
+              </div>
+            </div>
 
             <button
               type="button"
-              (click)="leaveLive()"
-            >
+              class="btn-primary"
+              (click)="leaveLive()">
+
+              <span class="material-symbols-outlined">
+                arrow_back
+              </span>
+
               Retour à la communauté
             </button>
-
           </div>
-
         }
-
       </div>
 
-
-
-      <!-- ================================================= -->
-      <!-- LIVE INFORMATION -->
-      <!-- ================================================= -->
-
+      <!-- INFORMATIONS DU LIVE -->
       <div class="live-information">
 
-        <div class="live-title">
+        <div class="live-title-block">
 
-          <span class="live-status-label">
-            EN DIRECT
-          </span>
+          <div class="live-tags">
+            <span class="tag-badge">
+              COMMERCE
+            </span>
 
-          <h1>
+            <span class="tag-badge">
+              B2B MALI
+            </span>
+
+            @if (isLive) {
+              <span class="tag-badge tag-live">
+                EN DIRECT
+              </span>
+            }
+          </div>
+
+          <h1 class="live-title">
             Les nouveautés du commerce malien
           </h1>
 
-          <p>
-            Découvrez les nouvelles opportunités,
-            produits et actualités du commerce au Mali.
+          <p class="live-description">
+            Découvrez les nouvelles opportunités, produits
+            stratégiques et actualités marquantes du secteur
+            commercial au Mali avec nos experts.
           </p>
 
-        </div>
-
-
-        <div class="live-host">
-
-          <div class="host-avatar">
-            A
-          </div>
-
-          <div>
-
-            <strong>
-              Admin de la communauté
-            </strong>
+          <div class="live-runtime">
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
 
             <span>
-              Organisateur du Live
+              {{ liveDuration }}
             </span>
 
+            <span class="runtime-separator">•</span>
+
+            <span>
+              {{ peakViewerCount }} spectateurs au maximum
+            </span>
           </div>
-
-          <button
-            type="button"
-            class="community-btn"
-          >
-
-            <span class="material-symbols-outlined">
-              groups
-            </span>
-
-            Communauté
-
-          </button>
-
         </div>
 
-      </div>
+        <!-- HÔTE -->
+        <div class="live-host-card">
 
+          <div class="host-details">
+
+            <div class="host-avatar">
+              <span>A</span>
+
+              <span
+                class="host-verified"
+                title="Compte vérifié">
+
+                ✓
+              </span>
+            </div>
+
+            <div class="host-meta">
+              <strong>
+                Admin de la communauté
+              </strong>
+
+              <span class="host-role">
+                Organisateur officiel
+              </span>
+
+              <span class="host-status">
+                <span></span>
+                En ligne maintenant
+              </span>
+            </div>
+          </div>
+
+          <div class="host-actions">
+            <button
+              type="button"
+              class="community-btn">
+
+              <span class="material-symbols-outlined">
+                groups
+              </span>
+
+              Communauté
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
 
-
-
-    <!-- =================================================== -->
     <!-- CHAT -->
-    <!-- =================================================== -->
-
     @if (isChatOpen) {
-
       <aside class="live-chat">
 
-        <!-- CHAT HEADER -->
-
+        <!-- HEADER CHAT -->
         <div class="chat-header">
 
-          <div>
+          <div class="chat-title-group">
 
-            <span class="material-symbols-outlined">
-              chat
+            <span class="material-symbols-outlined chat-icon">
+              forum
             </span>
 
             <div>
-
               <strong>
                 Discussion en direct
               </strong>
@@ -265,176 +429,301 @@
               <small>
                 {{ viewerCount }} participants
               </small>
-
             </div>
-
           </div>
-
 
           <button
             type="button"
-            (click)="toggleChat()"
-          >
+            class="icon-btn"
+            title="Fermer le chat"
+            (click)="toggleChat()">
 
             <span class="material-symbols-outlined">
               close
             </span>
-
           </button>
-
         </div>
 
+        <!-- MESSAGES -->
+        <div
+          #chatContainer
+          class="chat-messages">
 
+          @for (msg of messages; track msg.id) {
+            <div
+              class="chat-message"
+              [class.admin-message]="msg.isAdmin">
 
-        <!-- CHAT MESSAGES -->
+              <div
+                class="message-avatar"
+                [style.background-color]="msg.avatarBg">
 
-        <div class="chat-messages">
+                {{ msg.author[0] }}
+              </div>
 
+              <div class="message-content">
 
-          <div class="chat-message">
+                <div class="message-meta">
 
-            <div class="message-avatar">
-              M
+                  <strong class="author-name">
+                    {{ msg.author }}
+                  </strong>
+
+                  @if (msg.isAdmin) {
+                    <span class="admin-badge">
+                      ADMIN
+                    </span>
+                  }
+
+                  <span class="message-time">
+                    {{ msg.time }}
+                  </span>
+                </div>
+
+                <p class="message-text">
+                  {{ msg.text }}
+                </p>
+              </div>
             </div>
-
-            <div>
-
-              <strong>
-                Moussa
-              </strong>
-
-              <p>
-                Bonjour tout le monde 👋
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="chat-message">
-
-            <div class="message-avatar">
-              A
-            </div>
-
-            <div>
-
-              <strong>
-                Awa
-              </strong>
-
-              <p>
-                Très intéressant ce produit !
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="chat-message admin-message">
-
-            <div class="message-avatar">
-              B
-            </div>
-
-            <div>
-
-              <strong>
-                Admin
-                <span>
-                  ADMIN
-                </span>
-              </strong>
-
-              <p>
-                Merci à tous pour votre présence 🙌
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="chat-message">
-
-            <div class="message-avatar">
-              K
-            </div>
-
-            <div>
-
-              <strong>
-                Karim
-              </strong>
-
-              <p>
-                Comment peut-on commander ?
-              </p>
-
-            </div>
-
-          </div>
-
-
+          }
         </div>
 
-
-
-        <!-- CHAT FOOTER -->
-
+        <!-- FOOTER CHAT -->
         <div class="chat-footer">
 
-          <input
-            #messageInput
-            type="text"
-            placeholder="Écrire un message..."
-            (keyup.enter)="
-              sendMessage(messageInput.value);
-              messageInput.value = ''
-            "
-          />
+          <span class="chat-hint">
+            Soyez respectueux envers les autres
+            participants.
+          </span>
 
+          <div class="input-wrapper">
 
-          <button
-            type="button"
-            (click)="
-              sendMessage(messageInput.value);
-              messageInput.value = ''
-            "
-          >
+            <input
+              #messageInput
+              type="text"
+              maxlength="300"
+              placeholder="Envoyer un message..."
+              (keyup.enter)="
+                sendMessage(messageInput.value);
+                messageInput.value = ''
+              ">
 
-            <span class="material-symbols-outlined">
-              send
-            </span>
+            <button
+              type="button"
+              class="send-btn"
+              title="Envoyer"
+              (click)="
+                sendMessage(messageInput.value);
+                messageInput.value = ''
+              ">
 
-          </button>
-
+              <span class="material-symbols-outlined">
+                send
+              </span>
+            </button>
+          </div>
         </div>
-
       </aside>
-
     } @else {
-
-      <!-- OPEN CHAT -->
-
+      <!-- RÉOUVERTURE CHAT -->
       <button
         type="button"
-        class="open-chat-btn"
-        (click)="toggleChat()"
-      >
+        class="open-chat-fab"
+        (click)="toggleChat()">
 
         <span class="material-symbols-outlined">
           chat
         </span>
 
-        Ouvrir le chat
-
+        <span>
+          Ouvrir le chat
+        </span>
       </button>
-
     }
-
   </main>
+
+  <!-- TOAST -->
+   @if (showToast) {
+    <div class="live-toast">
+
+      <span class="material-symbols-outlined">
+        check_circle
+      </span>
+
+      {{ toastMessage }}
+    </div>
+  }
+
+  <!-- MODALE QUITTER -->
+  @if (isLeaveModalOpen) {
+  <div class="live-modal-backdrop" role="presentation">
+
+    <section
+      class="leave-live-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="leave-live-title"
+      (click)="$event.stopPropagation()">
+
+      <!-- EN-TÊTE -->
+      <div class="leave-modal-header">
+
+        <div class="leave-modal-icon">
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="leave-modal-close"
+          aria-label="Fermer la confirmation"
+          (click)="closeLeaveModal()">
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+      </div>
+
+      <!-- CONTENU -->
+      <div class="leave-modal-content">
+
+        <span class="leave-modal-kicker">
+          QUITTER LE LIVE
+        </span>
+
+        <h2 id="leave-live-title">
+          Voulez-vous vraiment quitter ce Live ?
+        </h2>
+
+        <p class="leave-modal-description">
+          Vous êtes actuellement connecté à une session
+          interactive. Si vous quittez maintenant, vous ne
+          pourrez plus participer à la discussion en direct.
+        </p>
+
+        <!-- INFORMATIONS DU LIVE -->
+        <div class="leave-live-summary">
+
+          <div class="leave-summary-main">
+
+            <div class="leave-summary-avatar">
+              <span>A</span>
+              <span class="summary-online-dot"></span>
+            </div>
+
+            <div>
+              <strong>
+                {{ liveTitle }}
+              </strong>
+
+              <span>
+                Organisé par l’admin de la communauté
+              </span>
+            </div>
+          </div>
+
+          <div class="leave-summary-status">
+            <span class="summary-live-dot"></span>
+            EN DIRECT
+          </div>
+        </div>
+
+        <!-- STATISTIQUES -->
+        <div class="leave-live-stats">
+
+          <div class="leave-stat">
+            <span class="material-symbols-outlined">
+              visibility
+            </span>
+
+            <div>
+              <strong>
+                {{ viewerCount }}
+              </strong>
+
+              <small>
+                Spectateurs
+              </small>
+            </div>
+          </div>
+
+          <div class="leave-stat">
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
+
+            <div>
+              <strong>
+                {{ liveDuration }}
+              </strong>
+
+              <small>
+                Durée actuelle
+              </small>
+            </div>
+          </div>
+
+          <div class="leave-stat">
+            <span class="material-symbols-outlined">
+              forum
+            </span>
+
+            <div>
+              <strong>
+                {{ messages.length }}
+              </strong>
+
+              <small>
+                Messages
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- AVERTISSEMENT -->
+        <div class="leave-modal-notice">
+          <span class="material-symbols-outlined">
+            info
+          </span>
+
+          <p>
+            Vous pourrez revenir dans la communauté et
+            rejoindre un autre Live à tout moment.
+          </p>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="leave-modal-actions">
+
+        <button
+          type="button"
+          class="stay-live-btn"
+          (click)="closeLeaveModal()">
+
+          <span class="material-symbols-outlined">
+            play_arrow
+          </span>
+
+          Rester dans le Live
+        </button>
+
+        <button
+          type="button"
+          class="confirm-leave-btn"
+          (click)="confirmLeaveLive()">
+
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+
+          Quitter le Live
+        </button>
+      </div>
+    </section>
+  </div>
+}
 
 </div>
