@@ -1,0 +1,1 @@
+import{En as qa,an as gI,cn as iv,k as Ga}from"./chunk-BQcrR3qZ.js";var l=class s{static ɵfac=function(e){return new(e||s)};static ɵcmp=iv({type:s,selectors:[[`app-flash-sales`]],decls:2,vars:0,template:function(e,m){e&1&&(Ga(0,`p`),gI(1,`flash-sales works!`),qa())},encapsulation:2})};export{l as FlashSalesComponent};

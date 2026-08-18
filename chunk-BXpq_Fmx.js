@@ -1,1 +1,0 @@
-import{D as Ga,On as rv,Sn as qa,vn as pI}from"./chunk-oOl-aku3.js";var i=class n{static ɵfac=function(e){return new(e||n)};static ɵcmp=rv({type:n,selectors:[[`app-finances`]],decls:2,vars:0,template:function(e,p){e&1&&(Ga(0,`p`),pI(1,`finances works!`),qa())},encapsulation:2})};export{i as FinancesComponent};

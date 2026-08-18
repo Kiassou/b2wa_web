@@ -1,0 +1,1 @@
+import{En as qa,an as gI,cn as iv,k as Ga}from"./chunk-BQcrR3qZ.js";var i=class n{static ɵfac=function(e){return new(e||n)};static ɵcmp=iv({type:n,selectors:[[`app-finances`]],decls:2,vars:0,template:function(e,p){e&1&&(Ga(0,`p`),gI(1,`finances works!`),qa())},encapsulation:2})};export{i as FinancesComponent};

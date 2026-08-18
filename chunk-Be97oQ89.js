@@ -1,1 +1,0 @@
-import{D as Ga,On as rv,Sn as qa,vn as pI}from"./chunk-oOl-aku3.js";var s=class n{static ɵfac=function(e){return new(e||n)};static ɵcmp=rv({type:n,selectors:[[`app-shipping`]],decls:2,vars:0,template:function(e,m){e&1&&(Ga(0,`p`),pI(1,`shipping works!`),qa())},encapsulation:2})};export{s as ShippingComponent};

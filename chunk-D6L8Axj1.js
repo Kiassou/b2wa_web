@@ -1,1 +1,0 @@
-import{D as Ga,On as rv,Sn as qa,vn as pI}from"./chunk-oOl-aku3.js";var s=class n{static ɵfac=function(t){return new(t||n)};static ɵcmp=rv({type:n,selectors:[[`app-notifications`]],decls:2,vars:0,template:function(t,p){t&1&&(Ga(0,`p`),pI(1,`notifications works!`),qa())},encapsulation:2})};export{s as NotificationsComponent};
