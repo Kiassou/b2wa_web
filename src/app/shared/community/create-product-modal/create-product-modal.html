@@ -1,0 +1,93 @@
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="community-modal product-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <div class="modal-icon green">
+            <span class="material-symbols-outlined">inventory_2</span>
+          </div>
+          <div>
+            <span class="modal-kicker">BOUTIQUE</span>
+            <h2>Publier un produit</h2>
+          </div>
+        </div>
+        <button type="button" class="modal-close" (click)="closeModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Image du produit</label>
+          <label class="product-upload">
+            @if (productForm.imagePreview) {
+              <img [src]="productForm.imagePreview" alt="Aperçu du produit" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:cover;" />
+              <strong>Changer la photo</strong>
+            } @else {
+              <span class="material-symbols-outlined">add_photo_alternate</span>
+              <strong>Ajouter une photo</strong>
+              <small>Une image claire du produit</small>
+            }
+            <input type="file" accept="image/png,image/jpeg,image/webp" (change)="onProductImageSelected($event)" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nom du produit</label>
+            <input type="text" placeholder="Ex : Sac artisanal" [(ngModel)]="productForm.title" />
+          </div>
+
+          <div class="form-group">
+            <label>Catégorie</label>
+            <select [(ngModel)]="productForm.category">
+              <option value="">Choisir une catégorie</option>
+              <option value="Mode">Mode</option>
+              <option value="Alimentation">Alimentation</option>
+              <option value="Électronique">Électronique</option>
+              <option value="Artisanat">Artisanat</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea rows="4" placeholder="Décrivez votre produit..." [(ngModel)]="productForm.description"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prix</label>
+            <div class="input-with-suffix">
+              <input type="number" placeholder="0" [(ngModel)]="productForm.price" />
+              <span>FCFA</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Stock disponible</label>
+            <input type="number" placeholder="0" [(ngModel)]="productForm.stock" />
+          </div>
+        </div>
+
+        <div class="publication-info green-info">
+          <span class="material-symbols-outlined">groups</span>
+          <div>
+            <strong>Publication communautaire</strong>
+            <small>Ce produit sera publié dans votre communauté et visible par tous ses membres.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="cancel-btn" (click)="closeModal()">Annuler</button>
+        <button type="button" class="primary-btn green-btn" [disabled]="!canPublishProduct" (click)="publishProduct()">
+          <span class="material-symbols-outlined">publish</span>
+          Publier le produit
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,440 @@
+<div class="live-page">
+
+  <!-- ===================================================== -->
+  <!-- TOPBAR -->
+  <!-- ===================================================== -->
+
+  <header class="live-topbar">
+
+    <div class="topbar-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="leaveLive()"
+      >
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+        <span>
+          Quitter
+        </span>
+
+      </button>
+
+
+      <div class="live-brand">
+
+        <div class="live-logo">
+          B
+        </div>
+
+        <div>
+
+          <strong>
+            B2WA LIVE
+          </strong>
+
+          <span>
+            Diffusion en direct
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="topbar-actions">
+
+      <div class="viewer-counter">
+
+        <span class="material-symbols-outlined">
+          visibility
+        </span>
+
+        {{ viewerCount }}
+
+      </div>
+
+
+      <button
+        type="button"
+        class="share-live-btn"
+        (click)="shareLive()"
+      >
+
+        <span class="material-symbols-outlined">
+          share
+        </span>
+
+        Partager
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ===================================================== -->
+  <!-- MAIN -->
+  <!-- ===================================================== -->
+
+  <main class="live-main">
+
+
+    <!-- =================================================== -->
+    <!-- VIDEO AREA -->
+    <!-- =================================================== -->
+
+    <section class="live-video-section">
+
+      <div class="video-container">
+
+        @if (isLive) {
+
+          <!-- VIDEO PLACEHOLDER -->
+
+          <div class="video-placeholder">
+
+            <div class="video-center">
+
+              <div class="live-pulse">
+                <span></span>
+              </div>
+
+              <strong>
+                LIVE
+              </strong>
+
+              <p>
+                La diffusion est en cours
+              </p>
+
+            </div>
+
+
+            <!-- LIVE BADGE -->
+
+            <div class="live-badge">
+
+              <span class="live-dot"></span>
+
+              EN DIRECT
+
+            </div>
+
+
+            <!-- VIEWERS -->
+
+            <div class="video-viewers">
+
+              <span class="material-symbols-outlined">
+                visibility
+              </span>
+
+              {{ viewerCount }} spectateurs
+
+            </div>
+
+          </div>
+
+        } @else {
+
+          <div class="live-ended">
+
+            <span class="material-symbols-outlined">
+              videocam_off
+            </span>
+
+            <h2>
+              Le Live est terminé
+            </h2>
+
+            <p>
+              Merci d'avoir participé à ce Live B2WA.
+            </p>
+
+            <button
+              type="button"
+              (click)="leaveLive()"
+            >
+              Retour à la communauté
+            </button>
+
+          </div>
+
+        }
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- LIVE INFORMATION -->
+      <!-- ================================================= -->
+
+      <div class="live-information">
+
+        <div class="live-title">
+
+          <span class="live-status-label">
+            EN DIRECT
+          </span>
+
+          <h1>
+            Les nouveautés du commerce malien
+          </h1>
+
+          <p>
+            Découvrez les nouvelles opportunités,
+            produits et actualités du commerce au Mali.
+          </p>
+
+        </div>
+
+
+        <div class="live-host">
+
+          <div class="host-avatar">
+            A
+          </div>
+
+          <div>
+
+            <strong>
+              Admin de la communauté
+            </strong>
+
+            <span>
+              Organisateur du Live
+            </span>
+
+          </div>
+
+          <button
+            type="button"
+            class="community-btn"
+          >
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+
+            Communauté
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================== -->
+    <!-- CHAT -->
+    <!-- =================================================== -->
+
+    @if (isChatOpen) {
+
+      <aside class="live-chat">
+
+        <!-- CHAT HEADER -->
+
+        <div class="chat-header">
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              chat
+            </span>
+
+            <div>
+
+              <strong>
+                Discussion en direct
+              </strong>
+
+              <small>
+                {{ viewerCount }} participants
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            (click)="toggleChat()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+
+
+        <!-- CHAT MESSAGES -->
+
+        <div class="chat-messages">
+
+
+          <div class="chat-message">
+
+            <div class="message-avatar">
+              M
+            </div>
+
+            <div>
+
+              <strong>
+                Moussa
+              </strong>
+
+              <p>
+                Bonjour tout le monde 👋
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="chat-message">
+
+            <div class="message-avatar">
+              A
+            </div>
+
+            <div>
+
+              <strong>
+                Awa
+              </strong>
+
+              <p>
+                Très intéressant ce produit !
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="chat-message admin-message">
+
+            <div class="message-avatar">
+              B
+            </div>
+
+            <div>
+
+              <strong>
+                Admin
+                <span>
+                  ADMIN
+                </span>
+              </strong>
+
+              <p>
+                Merci à tous pour votre présence 🙌
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="chat-message">
+
+            <div class="message-avatar">
+              K
+            </div>
+
+            <div>
+
+              <strong>
+                Karim
+              </strong>
+
+              <p>
+                Comment peut-on commander ?
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- CHAT FOOTER -->
+
+        <div class="chat-footer">
+
+          <input
+            #messageInput
+            type="text"
+            placeholder="Écrire un message..."
+            (keyup.enter)="
+              sendMessage(messageInput.value);
+              messageInput.value = ''
+            "
+          />
+
+
+          <button
+            type="button"
+            (click)="
+              sendMessage(messageInput.value);
+              messageInput.value = ''
+            "
+          >
+
+            <span class="material-symbols-outlined">
+              send
+            </span>
+
+          </button>
+
+        </div>
+
+      </aside>
+
+    } @else {
+
+      <!-- OPEN CHAT -->
+
+      <button
+        type="button"
+        class="open-chat-btn"
+        (click)="toggleChat()"
+      >
+
+        <span class="material-symbols-outlined">
+          chat
+        </span>
+
+        Ouvrir le chat
+
+      </button>
+
+    }
+
+  </main>
+
+</div>

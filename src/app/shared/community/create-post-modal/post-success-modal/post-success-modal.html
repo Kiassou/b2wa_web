@@ -1,0 +1,162 @@
+@if (visible && post) {
+  <div class="modal-backdrop">
+
+    <div
+      class="success-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- CLOSE -->
+      <button
+        type="button"
+        class="success-close"
+        (click)="closeModal()"
+        aria-label="Fermer"
+      >
+        <span class="material-symbols-outlined">
+          close
+        </span>
+      </button>
+
+
+      <!-- SUCCESS ICON -->
+      <div class="success-icon blue-success">
+
+        <div class="success-icon-ring">
+          <span class="material-symbols-outlined">
+            check
+          </span>
+        </div>
+
+      </div>
+
+
+      <!-- TITLE -->
+      <span class="success-kicker blue-kicker">
+        PUBLICATION
+      </span>
+
+      <h2>
+        Publication publiée !
+      </h2>
+
+      <p class="success-description">
+        Votre publication a été publiée avec succès
+        dans votre communauté.
+      </p>
+
+
+      <!-- DETAILS -->
+      <div class="success-details">
+
+        <!-- TITLE -->
+        <div class="success-detail-item">
+
+          <div class="detail-icon blue-detail">
+            <span class="material-symbols-outlined">
+              title
+            </span>
+          </div>
+
+          <div class="detail-content">
+
+            <small>
+              Titre
+            </small>
+
+            <strong>
+              {{ post.title }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- DATE -->
+        <div class="success-detail-item">
+
+          <div class="detail-icon blue-detail">
+            <span class="material-symbols-outlined">
+              calendar_month
+            </span>
+          </div>
+
+          <div class="detail-content">
+
+            <small>
+              Date de publication
+            </small>
+
+            <strong>
+              {{ post.date }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- VISIBILITY -->
+        <div class="success-detail-item">
+
+          <div class="detail-icon blue-detail">
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+          </div>
+
+          <div class="detail-content">
+
+            <small>
+              Visibilité
+            </small>
+
+            <strong>
+              Membres de la communauté
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- STATUS -->
+      <div class="success-status">
+
+        <span class="material-symbols-outlined">
+          verified
+        </span>
+
+        <span>
+          Publication active dans votre communauté
+        </span>
+
+      </div>
+
+
+      <!-- ACTION -->
+      <div class="success-actions">
+
+        <button
+          type="button"
+          class="success-primary blue-success-btn"
+          (click)="closeModal()"
+        >
+
+          <span class="material-symbols-outlined">
+            check_circle
+          </span>
+
+          Terminer
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+}

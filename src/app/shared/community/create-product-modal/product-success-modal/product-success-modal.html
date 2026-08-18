@@ -1,0 +1,55 @@
+@if (visible && product) {
+  <div class="modal-backdrop">
+    <div class="success-modal" (click)="$event.stopPropagation()">
+      <button type="button" class="success-close" (click)="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <div class="success-icon green-success">
+        <span class="material-symbols-outlined">check</span>
+      </div>
+
+      <span class="success-kicker green-kicker">BOUTIQUE B2WA</span>
+      <h2>Produit publié !</h2>
+      <p class="success-description">Votre produit est maintenant visible par les membres de votre communauté.</p>
+
+      <div class="success-details">
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <div>
+            <small>Produit</small>
+            <strong>{{ product.name }}</strong>
+          </div>
+        </div>
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">category</span>
+          <div>
+            <small>Catégorie</small>
+            <strong>{{ product.category }}</strong>
+          </div>
+        </div>
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">payments</span>
+          <div>
+            <small>Prix</small>
+            <strong>{{ product.price }}</strong>
+          </div>
+        </div>
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">warehouse</span>
+          <div>
+            <small>Stock</small>
+            <strong>{{ product.stock }} unités</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <button type="button" class="success-primary green-success-btn" (click)="closeModal()">
+          <span class="material-symbols-outlined">check_circle</span>
+          Terminer
+        </button>
+      </div>
+    </div>
+  </div>
+}

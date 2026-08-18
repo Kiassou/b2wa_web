@@ -1,0 +1,1724 @@
+<div class="manage-page">
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <header class="manage-topbar">
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="goBack()"
+    >
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+      Communauté
+
+    </button>
+
+
+    <div class="topbar-title">
+
+      <span class="material-symbols-outlined">
+        admin_panel_settings
+      </span>
+
+      Gestion de la communauté
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =====================================================
+       COMMUNITY HEADER
+  ====================================================== -->
+
+  <section class="manage-hero">
+
+    <div
+      class="hero-cover"
+      [style.background-image]="'url(' + community.cover + ')'"
+    >
+
+      <div class="hero-overlay"></div>
+
+    </div>
+
+
+    <div class="hero-content">
+
+      <div class="community-avatar">
+
+        {{ community.icon }}
+
+      </div>
+
+
+      <div class="hero-info">
+
+        <div class="hero-title">
+
+          <h1>
+            {{ community.name }}
+          </h1>
+
+          @if (community.verified) {
+
+            <span
+              class="verified"
+              title="Communauté vérifiée"
+            >
+
+              <span class="material-symbols-outlined">
+                verified
+              </span>
+
+            </span>
+
+          }
+
+        </div>
+
+
+        <p>
+          {{ community.description }}
+        </p>
+
+
+        <div class="hero-meta">
+
+          <span>
+
+            <span class="material-symbols-outlined">
+              category
+            </span>
+
+            {{ community.category }}
+
+          </span>
+
+
+          <span>
+
+            <span class="material-symbols-outlined">
+              calendar_month
+            </span>
+
+            Créée le {{ community.createdAt }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="admin-badge">
+
+        <span class="material-symbols-outlined">
+          shield
+        </span>
+
+        Administrateur
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
+
+  <nav class="manage-tabs">
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'overview'"
+      (click)="setActiveTab('overview')"
+    >
+
+      <span class="material-symbols-outlined">
+        dashboard
+      </span>
+
+      Vue d'ensemble
+
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'information'"
+      (click)="setActiveTab('information')"
+    >
+
+      <span class="material-symbols-outlined">
+        edit
+      </span>
+
+      Informations
+
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'members'"
+      (click)="setActiveTab('members')"
+    >
+
+      <span class="material-symbols-outlined">
+        groups
+      </span>
+
+      Membres
+
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'posts'"
+      (click)="setActiveTab('posts')"
+    >
+
+      <span class="material-symbols-outlined">
+        article
+      </span>
+
+      Publications
+
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'products'"
+      (click)="setActiveTab('products')"
+    >
+
+      <span class="material-symbols-outlined">
+        inventory_2
+      </span>
+
+      Produits
+
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'lives'"
+      (click)="setActiveTab('lives')"
+    >
+
+      <span class="material-symbols-outlined">
+        videocam
+      </span>
+
+      Lives
+
+    </button>
+
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'settings'"
+      (click)="setActiveTab('settings')"
+    >
+
+      <span class="material-symbols-outlined">
+        settings
+      </span>
+
+      Paramètres
+
+    </button>
+
+  </nav>
+
+
+
+  <!-- =====================================================
+       CONTENT
+  ====================================================== -->
+
+  <main class="manage-content">
+
+
+
+    <!-- ===================================================
+         OVERVIEW
+    ==================================================== -->
+
+    @if (activeTab === 'overview') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              ADMINISTRATION
+            </span>
+
+            <h2>
+              Vue d'ensemble
+            </h2>
+
+            <p>
+              Gérez et surveillez l'activité de votre communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+
+          <article class="stat-card blue">
+
+            <div class="stat-icon">
+
+              <span class="material-symbols-outlined">
+                groups
+              </span>
+
+            </div>
+
+            <div>
+
+              <span>
+                Membres
+              </span>
+
+              <strong>
+                {{ community.members | number }}
+              </strong>
+
+              <small>
+                membres actifs
+              </small>
+
+            </div>
+
+          </article>
+
+
+          <article class="stat-card purple">
+
+            <div class="stat-icon">
+
+              <span class="material-symbols-outlined">
+                article
+              </span>
+
+            </div>
+
+            <div>
+
+              <span>
+                Publications
+              </span>
+
+              <strong>
+                {{ community.posts }}
+              </strong>
+
+              <small>
+                publications
+              </small>
+
+            </div>
+
+          </article>
+
+
+          <article class="stat-card green">
+
+            <div class="stat-icon">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+            </div>
+
+            <div>
+
+              <span>
+                Produits
+              </span>
+
+              <strong>
+                {{ community.products }}
+              </strong>
+
+              <small>
+                produits publiés
+              </small>
+
+            </div>
+
+          </article>
+
+
+          <article class="stat-card red">
+
+            <div class="stat-icon">
+
+              <span class="material-symbols-outlined">
+                videocam
+              </span>
+
+            </div>
+
+            <div>
+
+              <span>
+                Lives
+              </span>
+
+              <strong>
+                {{ community.lives }}
+              </strong>
+
+              <small>
+                événements
+              </small>
+
+            </div>
+
+          </article>
+
+        </div>
+
+
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="panel">
+
+          <div class="panel-heading">
+
+            <div>
+
+              <span class="section-kicker">
+                ACTIONS RAPIDES
+              </span>
+
+              <h3>
+                Gérer votre communauté
+              </h3>
+
+            </div>
+
+          </div>
+
+
+          <div class="quick-actions">
+
+            <button
+              type="button"
+              (click)="setActiveTab('information')"
+            >
+
+              <span class="quick-icon blue">
+                <span class="material-symbols-outlined">
+                  edit
+                </span>
+              </span>
+
+              <span>
+
+                <strong>
+                  Modifier les informations
+                </strong>
+
+                <small>
+                  Nom, description et catégorie
+                </small>
+
+              </span>
+
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              (click)="setActiveTab('members')"
+            >
+
+              <span class="quick-icon purple">
+                <span class="material-symbols-outlined">
+                  groups
+                </span>
+              </span>
+
+              <span>
+
+                <strong>
+                  Gérer les membres
+                </strong>
+
+                <small>
+                  Consulter et gérer vos membres
+                </small>
+
+              </span>
+
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              (click)="setActiveTab('posts')"
+            >
+
+              <span class="quick-icon orange">
+                <span class="material-symbols-outlined">
+                  article
+                </span>
+              </span>
+
+              <span>
+
+                <strong>
+                  Publications
+                </strong>
+
+                <small>
+                  Gérer vos publications
+                </small>
+
+              </span>
+
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              (click)="setActiveTab('products')"
+            >
+
+              <span class="quick-icon green">
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+              </span>
+
+              <span>
+
+                <strong>
+                  Produits
+                </strong>
+
+                <small>
+                  Gérer votre catalogue
+                </small>
+
+              </span>
+
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              (click)="setActiveTab('lives')"
+            >
+
+              <span class="quick-icon red">
+                <span class="material-symbols-outlined">
+                  videocam
+                </span>
+              </span>
+
+              <span>
+
+                <strong>
+                  B2WA Live
+                </strong>
+
+                <small>
+                  Gérer vos événements
+                </small>
+
+              </span>
+
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+
+            </button>
+
+          </div>
+
+        </section>
+
+      </section>
+
+    }
+
+
+
+    <!-- ===================================================
+         INFORMATION
+    ==================================================== -->
+
+    @if (activeTab === 'information') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              COMMUNAUTÉ
+            </span>
+
+            <h2>
+              Informations de la communauté
+            </h2>
+
+            <p>
+              Modifiez les informations visibles par les membres.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <section class="panel form-panel">
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label>
+                Nom de la communauté
+              </label>
+
+              <input
+                type="text"
+                [(ngModel)]="communityForm.name"
+              />
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Catégorie
+              </label>
+
+              <select
+                [(ngModel)]="communityForm.category"
+              >
+
+                <option>
+                  Commerce
+                </option>
+
+                <option>
+                  Agriculture
+                </option>
+
+                <option>
+                  Artisanat
+                </option>
+
+                <option>
+                  Mode
+                </option>
+
+                <option>
+                  Technologie
+                </option>
+
+                <option>
+                  Alimentation
+                </option>
+
+                <option>
+                  Autre
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Description courte
+              </label>
+
+              <textarea
+                rows="3"
+                [(ngModel)]="communityForm.description"
+              ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Description complète
+              </label>
+
+              <textarea
+                rows="6"
+                [(ngModel)]="communityForm.longDescription"
+              ></textarea>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="primary-action"
+              (click)="saveCommunityInformation()"
+            >
+
+              <span class="material-symbols-outlined">
+                save
+              </span>
+
+              Enregistrer les modifications
+
+            </button>
+
+          </div>
+
+        </section>
+
+      </section>
+
+    }
+
+
+
+    <!-- ===================================================
+         MEMBERS
+    ==================================================== -->
+
+    @if (activeTab === 'members') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              MEMBRES
+            </span>
+
+            <h2>
+              Gestion des membres
+            </h2>
+
+            <p>
+              Consultez et gérez les membres de votre communauté.
+            </p>
+
+          </div>
+
+          <span class="count-badge">
+            {{ community.members }} membres
+          </span>
+
+        </div>
+
+
+        <section class="panel">
+
+          <div class="toolbar">
+
+            <div class="search-box">
+
+              <span class="material-symbols-outlined">
+                search
+              </span>
+
+              <input
+                type="text"
+                [(ngModel)]="memberSearch"
+                placeholder="Rechercher un membre..."
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="members-table">
+
+            @for (
+              member of filteredMembers;
+              track member.id
+            ) {
+
+              <div class="member-row">
+
+                <div class="member-profile">
+
+                  <img
+                    [src]="member.avatar"
+                    [alt]="member.name"
+                  />
+
+                  <div>
+
+                    <strong>
+                      {{ member.name }}
+                    </strong>
+
+                    <span>
+                      Membre depuis {{ member.joinedAt }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <span class="role-badge">
+                  {{ member.role }}
+                </span>
+
+
+                <button
+                  type="button"
+                  class="danger-icon-btn"
+                  title="Retirer"
+                  (click)="removeMember(member)"
+                >
+
+                  <span class="material-symbols-outlined">
+                    person_remove
+                  </span>
+
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+        </section>
+
+      </section>
+
+    }
+
+
+
+    <!-- ===================================================
+         POSTS
+    ==================================================== -->
+
+    @if (activeTab === 'posts') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              CONTENU
+            </span>
+
+            <h2>
+              Publications
+            </h2>
+
+            <p>
+              Gérez les publications de votre communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <section class="panel">
+
+          <div class="toolbar">
+
+            <div class="search-box">
+
+              <span class="material-symbols-outlined">
+                search
+              </span>
+
+              <input
+                type="text"
+                [(ngModel)]="postSearch"
+                placeholder="Rechercher une publication..."
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="post-management-list">
+
+            @for (
+              post of filteredPosts;
+              track post.id
+            ) {
+
+              <article class="managed-post">
+
+                <div class="post-main">
+
+                  <div class="post-title-row">
+
+                    <h3>
+                      {{ post.title }}
+                    </h3>
+
+                    <span
+                      class="status-badge"
+                      [class.hidden-status]="post.status === 'Masqué'"
+                    >
+                      {{ post.status }}
+                    </span>
+
+                  </div>
+
+                  <p>
+                    {{ post.content }}
+                  </p>
+
+                  <div class="post-meta">
+
+                    <span>
+                      {{ post.date }}
+                    </span>
+
+                    <span>
+                      <span class="material-symbols-outlined">
+                        favorite
+                      </span>
+                      {{ post.likes }}
+                    </span>
+
+                    <span>
+                      <span class="material-symbols-outlined">
+                        chat_bubble
+                      </span>
+                      {{ post.comments }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div class="item-actions">
+
+                  <button
+                    type="button"
+                    title="Masquer"
+                    (click)="hidePost(post)"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      visibility_off
+                    </span>
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="danger-action"
+                    title="Supprimer"
+                    (click)="deletePost(post)"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      delete
+                    </span>
+
+                  </button>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      </section>
+
+    }
+
+
+
+    <!-- ===================================================
+         PRODUCTS
+    ==================================================== -->
+
+    @if (activeTab === 'products') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              BOUTIQUE
+            </span>
+
+            <h2>
+              Produits
+            </h2>
+
+            <p>
+              Gérez les produits publiés dans votre communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="management-products">
+
+          @for (
+            product of filteredProducts;
+            track product.id
+          ) {
+
+            <article class="managed-product">
+
+              <div class="managed-product-image">
+
+                <img
+                  [src]="product.image"
+                  [alt]="product.name"
+                />
+
+                <span>
+                  {{ product.status }}
+                </span>
+
+              </div>
+
+
+              <div class="managed-product-content">
+
+                <span class="product-category">
+                  {{ product.category }}
+                </span>
+
+                <h3>
+                  {{ product.name }}
+                </h3>
+
+                <strong>
+                  {{ product.price }}
+                </strong>
+
+
+                <div class="product-stock">
+
+                  <span>
+                    Stock
+                  </span>
+
+                  <b>
+                    {{ product.stock }}
+                  </b>
+
+                </div>
+
+
+                <div class="product-actions">
+
+                  <button
+                    type="button"
+                    (click)="hideProduct(product)"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      visibility_off
+                    </span>
+
+                    Masquer
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="danger-text"
+                    (click)="deleteProduct(product)"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      delete
+                    </span>
+
+                    Supprimer
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+
+    <!-- ===================================================
+         LIVES
+    ==================================================== -->
+
+    @if (activeTab === 'lives') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              B2WA LIVE
+            </span>
+
+            <h2>
+              Gestion des Lives
+            </h2>
+
+            <p>
+              Gérez les événements programmés de votre communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lives-management">
+
+          @for (
+            live of lives;
+            track live.id
+          ) {
+
+            <article class="managed-live">
+
+              <div class="live-icon">
+
+                <span class="material-symbols-outlined">
+                  videocam
+                </span>
+
+              </div>
+
+
+              <div class="live-main">
+
+                <div class="live-title">
+
+                  <h3>
+                    {{ live.title }}
+                  </h3>
+
+                  <span
+                    class="live-status"
+                    [class.cancelled]="live.status === 'Annulé'"
+                  >
+                    {{ live.status }}
+                  </span>
+
+                </div>
+
+
+                <div class="live-meta">
+
+                  <span>
+
+                    <span class="material-symbols-outlined">
+                      calendar_month
+                    </span>
+
+                    {{ live.date }}
+
+                  </span>
+
+
+                  <span>
+
+                    <span class="material-symbols-outlined">
+                      schedule
+                    </span>
+
+                    {{ live.time }}
+
+                  </span>
+
+
+                  <span>
+
+                    <span class="material-symbols-outlined">
+                      timer
+                    </span>
+
+                    {{ live.duration }}
+
+                  </span>
+
+
+                  <span>
+
+                    <span class="material-symbols-outlined">
+                      groups
+                    </span>
+
+                    {{ live.reservations }}/{{ live.capacity }}
+
+                  </span>
+
+                </div>
+
+
+                <div class="live-link">
+
+                  <span class="material-symbols-outlined">
+                    link
+                  </span>
+
+                  <span>
+                    {{ live.link }}
+                  </span>
+
+                  <button
+                    type="button"
+                    (click)="copyLiveLink(live.link)"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      content_copy
+                    </span>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <div class="live-actions">
+
+                @if (live.status !== 'Annulé') {
+
+                  <button
+                    type="button"
+                    class="danger-action"
+                    (click)="cancelLive(live)"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      event_busy
+                    </span>
+
+                    Annuler
+
+                  </button>
+
+                }
+
+
+                <button
+                  type="button"
+                  class="danger-action"
+                  (click)="deleteLive(live)"
+                >
+
+                  <span class="material-symbols-outlined">
+                    delete
+                  </span>
+
+                  Supprimer
+
+                </button>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+
+    <!-- ===================================================
+         SETTINGS
+    ==================================================== -->
+
+    @if (activeTab === 'settings') {
+
+      <section class="tab-content">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              CONFIGURATION
+            </span>
+
+            <h2>
+              Paramètres de la communauté
+            </h2>
+
+            <p>
+              Contrôlez le fonctionnement et la visibilité de votre communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <section class="panel settings-panel">
+
+
+          <div class="setting-row">
+
+            <div class="setting-icon blue">
+
+              <span class="material-symbols-outlined">
+                public
+              </span>
+
+            </div>
+
+
+            <div class="setting-info">
+
+              <strong>
+                Communauté publique
+              </strong>
+
+              <p>
+                Permet aux utilisateurs de découvrir votre communauté.
+              </p>
+
+            </div>
+
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                [(ngModel)]="communitySettings.publicCommunity"
+              />
+
+              <span></span>
+
+            </label>
+
+          </div>
+
+
+
+          <div class="setting-row">
+
+            <div class="setting-icon purple">
+
+              <span class="material-symbols-outlined">
+                edit
+              </span>
+
+            </div>
+
+
+            <div class="setting-info">
+
+              <strong>
+                Publications des membres
+              </strong>
+
+              <p>
+                Autoriser les membres à publier dans la communauté.
+              </p>
+
+            </div>
+
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                [(ngModel)]="communitySettings.allowMembersPosts"
+              />
+
+              <span></span>
+
+            </label>
+
+          </div>
+
+
+
+          <div class="setting-row">
+
+            <div class="setting-icon green">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+            </div>
+
+
+            <div class="setting-info">
+
+              <strong>
+                Produits des membres
+              </strong>
+
+              <p>
+                Autoriser les membres à publier leurs produits.
+              </p>
+
+            </div>
+
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                [(ngModel)]="communitySettings.allowMemberProducts"
+              />
+
+              <span></span>
+
+            </label>
+
+          </div>
+
+
+
+          <div class="setting-row">
+
+            <div class="setting-icon red">
+
+              <span class="material-symbols-outlined">
+                videocam
+              </span>
+
+            </div>
+
+
+            <div class="setting-info">
+
+              <strong>
+                Lives des membres
+              </strong>
+
+              <p>
+                Autoriser les membres à organiser des Lives.
+              </p>
+
+            </div>
+
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                [(ngModel)]="communitySettings.allowMemberLives"
+              />
+
+              <span></span>
+
+            </label>
+
+          </div>
+
+
+          <div class="settings-save">
+
+            <button
+              type="button"
+              class="primary-action"
+              (click)="saveSettings()"
+            >
+
+              <span class="material-symbols-outlined">
+                save
+              </span>
+
+              Enregistrer les paramètres
+
+            </button>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- DANGER ZONE -->
+
+        <section class="danger-zone">
+
+          <div class="danger-zone-header">
+
+            <div class="danger-zone-icon">
+
+              <span class="material-symbols-outlined">
+                warning
+              </span>
+
+            </div>
+
+            <div>
+
+              <h3>
+                Zone dangereuse
+              </h3>
+
+              <p>
+                Ces actions peuvent avoir des conséquences irréversibles.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="danger-zone-action">
+
+            <div>
+
+              <strong>
+                Supprimer la communauté
+              </strong>
+
+              <p>
+                Supprime définitivement votre communauté et ses contenus.
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="delete-community-btn"
+              (click)="deleteCommunity()"
+            >
+
+              <span class="material-symbols-outlined">
+                delete_forever
+              </span>
+
+              Supprimer la communauté
+
+            </button>
+
+          </div>
+
+        </section>
+
+      </section>
+
+    }
+
+  </main>
+
+
+
+  <!-- =====================================================
+       CONFIRMATION MODAL
+  ====================================================== -->
+
+  @if (showConfirmModal) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeConfirmModal()"
+    >
+
+      <div
+        class="confirmation-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="confirmation-icon">
+
+          <span class="material-symbols-outlined">
+            warning
+          </span>
+
+        </div>
+
+
+        <h2>
+          {{ confirmTitle }}
+        </h2>
+
+
+        <p>
+          {{ confirmMessage }}
+        </p>
+
+
+        <div class="confirmation-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="closeConfirmModal()"
+          >
+            Annuler
+          </button>
+
+
+          <button
+            type="button"
+            class="confirm-btn"
+            [class.warning]="confirmButtonClass === 'warning'"
+            [class.danger]="confirmButtonClass === 'danger'"
+            (click)="confirmAction()"
+          >
+
+            {{ confirmButtonText }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- =====================================================
+       SUCCESS MODAL
+  ====================================================== -->
+
+  @if (showSuccessModal) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeSuccess()"
+    >
+
+      <div
+        class="success-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="success-icon">
+
+          <span class="material-symbols-outlined">
+            check_circle
+          </span>
+
+        </div>
+
+
+        <h2>
+          {{ successTitle }}
+        </h2>
+
+
+        <p>
+          {{ successMessage }}
+        </p>
+
+
+        <button
+          type="button"
+          class="success-btn"
+          (click)="closeSuccess()"
+        >
+
+          <span class="material-symbols-outlined">
+            done
+          </span>
+
+          Compris
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

@@ -131,6 +131,39 @@ export const routes: Routes = [
             .then(m => m.CommunityComponent)
       },
       {
+        path: 'create-community',
+
+        loadComponent: () =>
+          import('./pages/community/create-community/create-community')
+            .then(m => m.CreateCommunityComponent)
+      },
+      {
+        path: 'manage-community/:id/manage',
+        loadComponent: () =>
+          import('./pages/community/manage-community/manage-community')
+            .then(m => m.ManageCommunityComponent)
+      },
+      {
+        path: 'community/:id',
+        loadComponent: () =>
+          import('./pages/community/community-detail/community-detail')
+            .then(m => m.CommunityDetailComponent)
+      },
+       {
+        path: 'community-view/:id',
+
+        loadComponent: () =>
+          import('./pages/community/community-view/community-view')
+            .then(m => m.CommunityViewComponent)
+      },
+      {
+        path: 'live/:id',
+
+        loadComponent: () =>
+          import('./pages/community/live/live')
+            .then(m => m.LiveComponent)
+      },
+      {
         path: 'finances',
 
         loadComponent: () =>

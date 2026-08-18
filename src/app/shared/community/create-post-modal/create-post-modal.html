@@ -1,0 +1,281 @@
+@if (visible) {
+  <div class="modal-backdrop">
+
+    <div
+      class="community-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- ================================================= -->
+      <!-- HEADER -->
+      <!-- ================================================= -->
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+
+          <div class="modal-icon blue">
+            <span class="material-symbols-outlined">
+              edit_note
+            </span>
+          </div>
+
+          <div class="modal-heading-text">
+
+            <span class="modal-kicker">
+              B2WA • COMMUNAUTÉ
+            </span>
+
+            <h2>
+              Nouvelle publication
+            </h2>
+
+            <p>
+              Partagez une actualité avec votre communauté
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeModal()"
+          aria-label="Fermer"
+        >
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- BODY -->
+      <!-- ================================================= -->
+
+      <div class="modal-body">
+
+
+        <!-- TITRE -->
+
+        <div class="form-group">
+
+          <label>
+            <span class="material-symbols-outlined">
+              title
+            </span>
+
+            Titre de la publication
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="material-symbols-outlined input-icon">
+              edit
+            </span>
+
+            <input
+              type="text"
+              placeholder="Ex : Nouvelle arrivée de produits..."
+              [(ngModel)]="postForm.title"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- CONTENU -->
+
+        <div class="form-group">
+
+          <label>
+            <span class="material-symbols-outlined">
+              notes
+            </span>
+
+            Contenu
+          </label>
+
+          <div class="textarea-wrapper">
+
+            <span class="material-symbols-outlined input-icon">
+              format_align_left
+            </span>
+
+            <textarea
+              rows="4"
+              placeholder="Écrivez votre publication..."
+              [(ngModel)]="postForm.content"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- IMAGE -->
+
+        <div class="form-group">
+
+          <label>
+            <span class="material-symbols-outlined">
+              image
+            </span>
+
+            Image
+
+            <span class="optional">
+              Facultatif
+            </span>
+          </label>
+
+
+          <label class="upload-box">
+
+            @if (postForm.imagePreview) {
+
+              <div class="image-preview">
+
+                <img
+                  [src]="postForm.imagePreview"
+                  alt="Aperçu"
+                />
+
+                <div class="preview-overlay">
+
+                  <span class="material-symbols-outlined">
+                    photo_camera
+                  </span>
+
+                  <strong>
+                    Changer l'image
+                  </strong>
+
+                </div>
+
+              </div>
+
+            } @else {
+
+              <div class="upload-icon">
+
+                <span class="material-symbols-outlined">
+                  cloud_upload
+                </span>
+
+              </div>
+
+              <strong>
+                Ajouter une image
+              </strong>
+
+              <small>
+                PNG, JPG ou WEBP
+              </small>
+
+              <span class="upload-hint">
+                Cliquez pour parcourir vos fichiers
+              </span>
+
+            }
+
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              (change)="onPostImageSelected($event)"
+            />
+
+          </label>
+
+        </div>
+
+
+        <!-- VISIBILITÉ -->
+
+        <div class="publication-info">
+
+          <div class="info-icon">
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+
+          </div>
+
+          <div class="info-content">
+
+            <strong>
+              Publication communautaire
+            </strong>
+
+            <small>
+              Visible uniquement par les membres de votre communauté.
+            </small>
+
+          </div>
+
+          <span class="material-symbols-outlined info-check">
+            verified
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- FOOTER -->
+      <!-- ================================================= -->
+
+      <div class="modal-footer">
+
+        <div class="footer-status">
+
+          <span class="status-dot"></span>
+
+          <span>
+            Prêt à publier
+          </span>
+
+        </div>
+
+
+        <div class="footer-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="closeModal()"
+          >
+            Annuler
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-btn blue-btn"
+            [disabled]="!canPublishPost"
+            (click)="publishPost()"
+          >
+
+            <span class="material-symbols-outlined">
+              publish
+            </span>
+
+            Publier
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+}

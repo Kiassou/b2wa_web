@@ -1,0 +1,1526 @@
+<div class="community-detail-page">
+
+  <!-- =====================================================
+       COMMUNITY HERO
+  ====================================================== -->
+
+  <section class="community-hero">
+
+    <div
+      class="hero-cover"
+      [style.background-image]="'url(' + community.cover + ')'"
+    >
+      <div class="hero-overlay"></div>
+
+      <button
+        class="back-button"
+        type="button"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">arrow_back</span>
+        Communautés
+      </button>
+
+      <div class="hero-status">
+
+        @if (community.isAdmin) {
+
+          <span class="status-badge admin">
+            <span class="material-symbols-outlined">
+              verified
+            </span>
+            Admin
+          </span>
+
+        } @else if (community.isMember) {
+
+          <span class="status-badge member">
+            <span class="material-symbols-outlined">
+              group
+            </span>
+            Membre
+          </span>
+
+        } @else {
+
+          <span class="status-badge public">
+            Communauté publique
+          </span>
+
+        }
+
+      </div>
+    </div>
+
+
+    <div class="hero-content">
+
+      <div class="community-avatar">
+        {{ community.icon }}
+      </div>
+
+
+      <div class="community-main-info">
+
+        <div class="community-title-line">
+
+          <div>
+
+            <div class="title-row">
+
+              <h1>
+                {{ community.name }}
+              </h1>
+
+              @if (community.verified) {
+
+                <span
+                  class="verified-icon"
+                  title="Communauté vérifiée"
+                >
+                  <span class="material-symbols-outlined">
+                    verified
+                  </span>
+                </span>
+
+              }
+
+            </div>
+
+            <span class="community-category">
+              {{ community.category }}
+            </span>
+
+          </div>
+
+
+          <div class="hero-actions">
+              <button
+                class="secondary-action"
+                type="button"
+                (click)="manageCommunity()"
+              >
+                <span class="material-symbols-outlined">
+                  settings
+                </span>
+                Gérer
+              </button>
+          </div>
+
+        </div>
+
+
+        <p class="community-description">
+          {{ community.description }}
+        </p>
+
+
+        <div class="community-meta">
+
+          <span>
+            <span class="material-symbols-outlined">
+              group
+            </span>
+            {{ formatNumber(community.members) }} membres
+          </span>
+
+          <span>
+            <span class="material-symbols-outlined">
+              article
+            </span>
+            {{ community.posts }} publications
+          </span>
+
+          <span>
+            <span class="material-symbols-outlined">
+              inventory_2
+            </span>
+            {{ community.products }} produits
+          </span>
+
+          <span>
+            <span class="material-symbols-outlined">
+              person
+            </span>
+            Admin : {{ community.admin }}
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       COMMUNITY NAVIGATION
+  ====================================================== -->
+
+  <nav class="community-navigation">
+
+    <div class="tabs">
+
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === 'home'"
+        (click)="changeTab('home')"
+      >
+        <span class="material-symbols-outlined">
+          home
+        </span>
+
+        Accueil
+      </button>
+
+
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === 'products'"
+        (click)="changeTab('products')"
+      >
+        <span class="material-symbols-outlined">
+          inventory_2
+        </span>
+
+        Produits
+
+        <span class="tab-count">
+          {{ community.products }}
+        </span>
+      </button>
+
+
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === 'lives'"
+        (click)="changeTab('lives')"
+      >
+        <span class="material-symbols-outlined">
+          live_tv
+        </span>
+
+        Lives
+
+        @if (liveNow) {
+
+          <span class="live-dot"></span>
+
+        }
+
+      </button>
+
+
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === 'members'"
+        (click)="changeTab('members')"
+      >
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+
+        Membres
+
+        <span class="tab-count">
+          {{ formatNumber(community.members) }}
+        </span>
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main class="community-content">
+
+
+    <!-- ===================================================
+         LEFT / MAIN
+    ==================================================== -->
+
+    <section class="main-column">
+
+
+      <!-- ===============================================
+           ADMIN QUICK ACTIONS
+      ================================================= -->
+
+      @if (community.isAdmin) {
+
+        <section class="admin-actions">
+
+          <div class="admin-actions-header">
+
+            <div>
+              <span class="admin-kicker">
+                ADMINISTRATION
+              </span>
+
+              <h2>
+                Gérer votre communauté
+              </h2>
+            </div>
+
+            <span class="admin-icon">
+              <span class="material-symbols-outlined">
+                admin_panel_settings
+              </span>
+            </span>
+
+          </div>
+
+
+          <div class="admin-action-grid">
+
+            <button
+              type="button"
+              (click)="openPostModal()"
+            >
+              <span class="action-icon blue">
+                <span class="material-symbols-outlined">
+                  edit
+                </span>
+              </span>
+
+              <span>
+                <strong>Publication</strong>
+                <small>Partager une actualité</small>
+              </span>
+
+              <span class="material-symbols-outlined arrow">
+                arrow_forward
+              </span>
+            </button>
+
+
+            <button
+              type="button"
+              (click)="openProductModal()"
+            >
+              <span class="action-icon green">
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+              </span>
+
+              <span>
+                <strong>Produit</strong>
+                <small>Publier un produit</small>
+              </span>
+
+              <span class="material-symbols-outlined arrow">
+                arrow_forward
+              </span>
+            </button>
+
+
+            <button
+              type="button"
+              (click)="openLiveModal()"
+            >
+              <span class="action-icon red">
+                <span class="material-symbols-outlined">
+                  videocam
+                </span>
+              </span>
+
+              <span>
+                <strong>Programmer un Live</strong>
+                <small>Créer votre événement</small>
+              </span>
+
+              <span class="material-symbols-outlined arrow">
+                arrow_forward
+              </span>
+            </button>
+
+          </div>
+
+        </section>
+
+      }
+
+      <!-- ===============================================
+           UPCOMING LIVE
+      ================================================= -->
+
+      @if (activeTab === 'home' && upcomingLives.length > 0) {
+
+        <section class="upcoming-section">
+
+      @if (liveNow) {
+
+        <section class="live-now-card">
+
+          <div class="live-header">
+
+            <div class="live-title">
+
+              <span class="live-indicator">
+                <span></span>
+                EN DIRECT
+              </span>
+
+              <h2>
+                {{ liveNow.title }}
+              </h2>
+
+              <p>
+                {{ liveNow.description }}
+              </p>
+
+            </div>
+
+            <span class="live-viewers">
+              <span class="material-symbols-outlined">
+                visibility
+              </span>
+              {{ liveNow.viewers }} spectateurs
+            </span>
+
+          </div>
+
+
+          <div class="live-preview">
+
+            <div class="live-pattern"></div>
+
+            <div class="live-play">
+
+              <span class="material-symbols-outlined">
+                play_arrow
+              </span>
+
+            </div>
+
+            <div class="live-preview-title">
+              {{ liveNow.title }}
+            </div>
+
+          </div>
+
+
+          <div class="live-footer">
+
+            <div class="live-host">
+
+              <div class="host-avatar">
+                {{ community.icon }}
+              </div>
+
+              <div>
+                <strong>
+                  {{ community.admin }}
+                </strong>
+
+                <span>
+                  Admin de la communauté
+                </span>
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="join-live-btn"
+              (click)="joinLive(liveNow.id)"
+            >
+              <span class="material-symbols-outlined">
+                videocam
+              </span>
+
+              Rejoindre le Live
+            </button>
+
+          </div>
+
+        </section>
+
+      }
+
+          <div class="section-header">
+
+            <div>
+              <span class="section-kicker">
+                À VENIR
+              </span>
+
+              <h2>
+                Prochains Lives
+              </h2>
+            </div>
+
+            <button
+              type="button"
+              class="see-all"
+              (click)="changeTab('lives')"
+            >
+              Voir tous
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+            </button>
+
+          </div>
+
+
+          <div class="upcoming-list">
+
+            @for (live of upcomingLives; track live.id) {
+
+              <article class="upcoming-live">
+
+                <div class="live-date">
+
+                  <span>
+                    {{ live.month }}
+                  </span>
+
+                  <strong>
+                    {{ live.day }}
+                  </strong>
+
+                </div>
+
+
+                <div class="upcoming-info">
+
+                  <span class="upcoming-badge">
+                    LIVE PROGRAMMÉ
+                  </span>
+
+                  <h3>
+                    {{ live.title }}
+                  </h3>
+
+                  <p>
+                    {{ live.time }} · {{ live.duration }}
+                  </p>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="remind-btn"
+                  (click)="setReminder(live)"
+                >
+                  <span class="material-symbols-outlined">
+                    notifications
+                  </span>
+
+                  Me rappeler
+                </button>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ===============================================
+           TABS CONTENT
+      ================================================= -->
+
+      @if (activeTab === 'home') {
+
+        <section class="feed-section">
+
+          <div class="section-header">
+
+            <div>
+              <span class="section-kicker">
+                ACTUALITÉS
+              </span>
+
+              <h2>
+                Publications
+              </h2>
+            </div>
+
+            <button
+              type="button"
+              class="sort-button"
+            >
+              Récent
+              <span class="material-symbols-outlined">
+                expand_more
+              </span>
+            </button>
+
+          </div>
+
+
+          <div class="post-list">
+
+            @for (post of posts; track post.id) {
+
+              <article class="post-card">
+
+                <!-- POST HEADER -->
+
+                <div class="post-header">
+
+                  <div class="author-avatar">
+                    {{ post.authorAvatar }}
+                  </div>
+
+                  <div class="author-info">
+
+                    <div class="author-name-row">
+
+                      <strong>
+                        {{ post.author }}
+                      </strong>
+
+                      @if (post.isAdmin) {
+
+                        <span class="author-admin">
+                          Admin
+                        </span>
+
+                      }
+
+                    </div>
+
+                    <span>
+                      {{ post.time }}
+                    </span>
+
+                  </div>
+
+
+                  <button
+                    class="post-menu"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">
+                      more_horiz
+                    </span>
+                  </button>
+
+                </div>
+
+
+                <!-- POST CONTENT -->
+
+                <div class="post-content">
+
+                  <p>
+                    {{ post.content }}
+                  </p>
+
+
+                  @if (post.image) {
+
+                    <div class="post-image">
+
+                      <img
+                        [src]="post.image"
+                        alt="Publication"
+                      />
+
+                    </div>
+
+                  }
+
+
+                  @if (post.product) {
+
+                    <div class="product-post">
+
+                      <div class="product-image">
+
+                        <img
+                          [src]="post.product.image"
+                          [alt]="post.product.name"
+                        />
+
+                      </div>
+
+
+                      <div class="product-info">
+
+                        <span class="product-label">
+                          PRODUIT
+                        </span>
+
+                        <h3>
+                          {{ post.product.name }}
+                        </h3>
+
+                        <p>
+                          {{ post.product.description }}
+                        </p>
+
+                        <div class="product-bottom">
+
+                          <strong>
+                            {{ post.product.price }}
+                          </strong>
+
+                          <span>
+                            {{ post.product.stock }}
+                          </span>
+
+                        </div>
+
+                      </div>
+
+
+                      <button
+                        type="button"
+                        class="view-product"
+                        (click)="viewProduct(post.product)"
+                      >
+                        Voir
+                        <span class="material-symbols-outlined">
+                          arrow_forward
+                        </span>
+                      </button>
+
+                    </div>
+
+                  }
+
+                </div>
+
+
+                <!-- POST FOOTER -->
+
+                <div class="post-stats">
+
+                  <span>
+                    <span class="material-symbols-outlined">
+                      thumb_up
+                    </span>
+                    {{ post.likes }}
+                  </span>
+
+                  <span>
+                    {{ post.comments }} commentaires
+                  </span>
+
+                </div>
+
+
+                <div class="post-actions">
+
+                  <button
+                    type="button"
+                    [class.liked]="post.liked"
+                    (click)="toggleLike(post)"
+                  >
+                    <span class="material-symbols-outlined">
+                      {{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
+                    </span>
+
+                    J'aime
+                  </button>
+
+
+                  <button
+                    type="button"
+                    (click)="commentPost(post)"
+                  >
+                    <span class="material-symbols-outlined">
+                      chat_bubble_outline
+                    </span>
+
+                    Commenter
+                  </button>
+
+
+                  <button
+                    type="button"
+                    (click)="sharePost(post)"
+                  >
+                    <span class="material-symbols-outlined">
+                      share
+                    </span>
+
+                    Partager
+                  </button>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ===============================================
+           PRODUCTS TAB
+      ================================================= -->
+
+      @if (activeTab === 'products') {
+
+        <section class="tab-section">
+
+          <div class="section-header">
+
+            <div>
+              <span class="section-kicker">
+                CATALOGUE
+              </span>
+
+              <h2>
+                Produits de la communauté
+              </h2>
+
+              <p>
+                Découvrez les produits publiés par l'Admin.
+              </p>
+            </div>
+
+            @if (community.isAdmin) {
+
+              <button
+                type="button"
+                class="primary-action"
+                (click)="openProductModal()"
+              >
+                <span class="material-symbols-outlined">
+                  add
+                </span>
+
+                Publier un produit
+              </button>
+
+            }
+
+          </div>
+
+
+          <div class="products-grid">
+
+            @for (product of products; track product.id) {
+
+              <article class="product-card">
+
+                <div class="product-card-image">
+
+                  <img
+                    [src]="product.image"
+                    [alt]="product.name"
+                  />
+
+                  <span class="product-status">
+                    {{ product.status }}
+                  </span>
+
+                </div>
+
+
+                <div class="product-card-content">
+
+                  <span class="product-category">
+                    {{ product.category }}
+                  </span>
+
+                  <h3>
+                    {{ product.name }}
+                  </h3>
+
+                  <p>
+                    {{ product.description }}
+                  </p>
+
+
+                  <div class="product-card-bottom">
+
+                    <div>
+                      <strong>
+                        {{ product.price }}
+                      </strong>
+
+                      <span>
+                        {{ product.stock }}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      (click)="viewProduct(product)"
+                    >
+                      Voir
+                      <span class="material-symbols-outlined">
+                        arrow_forward
+                      </span>
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ===============================================
+           LIVES TAB
+      ================================================= -->
+
+      @if (activeTab === 'lives') {
+
+        
+      @if (liveNow) {
+
+        <section class="live-now-card">
+
+          <div class="live-header">
+
+            <div class="live-title">
+
+              <span class="live-indicator">
+                <span></span>
+                EN DIRECT
+              </span>
+
+              <h2>
+                {{ liveNow.title }}
+              </h2>
+
+              <p>
+                {{ liveNow.description }}
+              </p>
+
+            </div>
+
+            <span class="live-viewers">
+              <span class="material-symbols-outlined">
+                visibility
+              </span>
+              {{ liveNow.viewers }} spectateurs
+            </span>
+
+          </div>
+
+
+          <div class="live-preview">
+
+            <div class="live-pattern"></div>
+
+            <div class="live-play">
+
+              <span class="material-symbols-outlined">
+                play_arrow
+              </span>
+
+            </div>
+
+            <div class="live-preview-title">
+              {{ liveNow.title }}
+            </div>
+
+          </div>
+
+
+          <div class="live-footer">
+
+            <div class="live-host">
+
+              <div class="host-avatar">
+                {{ community.icon }}
+              </div>
+
+              <div>
+                <strong>
+                  {{ community.admin }}
+                </strong>
+
+                <span>
+                  Admin de la communauté
+                </span>
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="join-live-btn"
+              (click)="joinLive(liveNow.id)"
+            >
+              <span class="material-symbols-outlined">
+                videocam
+              </span>
+
+              Rejoindre le Live
+            </button>
+
+          </div>
+
+        </section>
+
+      }
+
+        <section class="tab-section">
+
+          <div class="section-header">
+
+            <div>
+              <span class="section-kicker">
+                ÉVÉNEMENTS
+              </span>
+
+              <h2>
+                Lives de la communauté
+              </h2>
+
+              <p>
+                Participez aux présentations et événements en direct.
+              </p>
+            </div>
+
+            @if (community.isAdmin) {
+
+              <button
+                type="button"
+                class="primary-action"
+                (click)="openLiveModal()"
+              >
+                <span class="material-symbols-outlined">
+                  videocam
+                </span>
+
+                Programmer un Live
+              </button>
+
+            }
+
+          </div>
+
+
+          @if (liveNow) {
+
+            <div class="live-tab-current">
+
+              <div>
+                <span class="live-indicator">
+                  <span></span>
+                  EN DIRECT
+                </span>
+
+                <h3>
+                  {{ liveNow.title }}
+                </h3>
+
+                <p>
+                  {{ liveNow.description }}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                class="join-live-btn"
+                (click)="joinLive(liveNow.id)"
+              >
+                <span class="material-symbols-outlined">
+                  videocam
+                </span>
+
+                Rejoindre le Live
+              </button>
+
+            </div>
+
+          }
+
+
+          <div class="all-lives">
+
+            @for (live of upcomingLives; track live.id) {
+
+              <article class="live-card">
+
+                <div class="live-card-date">
+
+                  <span>
+                    {{ live.month }}
+                  </span>
+
+                  <strong>
+                    {{ live.day }}
+                  </strong>
+
+                </div>
+
+
+                <div class="live-card-info">
+
+                  <span class="upcoming-badge">
+                    PROGRAMMÉ
+                  </span>
+
+                  <h3>
+                    {{ live.title }}
+                  </h3>
+
+                  <p>
+                    {{ live.date }} · {{ live.time }}
+                    · {{ live.duration }}
+                  </p>
+
+                </div>
+
+
+                <div class="live-card-actions">
+
+                  <button
+                    type="button"
+                    class="remind-btn"
+                    (click)="setReminder(live)"
+                  >
+                    <span class="material-symbols-outlined">
+                      notifications
+                    </span>
+
+                    Rappel
+                  </button>
+
+                  <button
+                    type="button"
+                    class="share-live"
+                    (click)="shareLive(live)"
+                  >
+                    <span class="material-symbols-outlined">
+                      share
+                    </span>
+                  </button>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ===============================================
+           MEMBERS TAB
+      ================================================= -->
+
+      @if (activeTab === 'members') {
+
+        <section class="tab-section">
+
+          <div class="section-header">
+
+            <div>
+              <span class="section-kicker">
+                COMMUNAUTÉ
+              </span>
+
+              <h2>
+                Membres
+              </h2>
+
+              <p>
+                Les professionnels qui participent à cette communauté.
+              </p>
+            </div>
+
+            <span class="members-total">
+              {{ formatNumber(community.members) }} membres
+            </span>
+
+          </div>
+
+
+          <div class="members-list">
+
+            @for (member of members; track member.id) {
+
+              <article class="member-card">
+
+                <img
+                  [src]="member.avatar"
+                  [alt]="member.name"
+                />
+
+                <div class="member-info">
+
+                  <strong>
+                    {{ member.name }}
+                  </strong>
+
+                  <span>
+                    {{ member.role }}
+                  </span>
+
+                </div>
+
+
+                @if (member.isAdmin) {
+
+                  <span class="member-role admin">
+                    Admin
+                  </span>
+
+                } @else {
+
+                  <span class="member-role">
+                    Membre
+                  </span>
+
+                }
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+      }
+
+
+    </section>
+
+
+    <!-- ===================================================
+         SIDEBAR
+    ==================================================== -->
+
+    <aside class="community-sidebar">
+
+
+      <!-- ABOUT -->
+
+      <section class="sidebar-card">
+
+        <div class="sidebar-title">
+
+          <span class="material-symbols-outlined">
+            info
+          </span>
+
+          <h3>
+            À propos
+          </h3>
+
+        </div>
+
+
+        <p class="sidebar-description">
+          {{ community.description }}
+        </p>
+
+
+        <div class="sidebar-details">
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              category
+            </span>
+
+            <div>
+              <small>Catégorie</small>
+              <strong>{{ community.category }}</strong>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              public
+            </span>
+
+            <div>
+              <small>Visibilité</small>
+              <strong>Publique</strong>
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              calendar_month
+            </span>
+
+            <div>
+              <small>Créée le</small>
+              <strong>{{ community.createdAt }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ADMIN -->
+
+      <section class="sidebar-card admin-card">
+
+        <div class="sidebar-title">
+
+          <span class="material-symbols-outlined">
+            shield_person
+          </span>
+
+          <h3>
+            Administrateur
+          </h3>
+
+        </div>
+
+
+        <div class="admin-profile">
+
+          <div class="admin-avatar">
+            {{ community.icon }}
+          </div>
+
+          <div>
+
+            <strong>
+              {{ community.admin }}
+            </strong>
+
+            <span>
+              Créateur de la communauté
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- COMMUNITY STATS -->
+
+      <section class="sidebar-card">
+
+        <div class="sidebar-title">
+
+          <span class="material-symbols-outlined">
+            analytics
+          </span>
+
+          <h3>
+            Activité
+          </h3>
+
+        </div>
+
+
+        <div class="activity-stats">
+
+          <div>
+            <strong>
+              {{ formatNumber(community.members) }}
+            </strong>
+            <span>Membres</span>
+          </div>
+
+          <div>
+            <strong>
+              {{ community.posts }}
+            </strong>
+            <span>Posts</span>
+          </div>
+
+          <div>
+            <strong>
+              {{ community.products }}
+            </strong>
+            <span>Produits</span>
+          </div>
+
+          <div>
+            <strong>
+              {{ upcomingLives.length }}
+            </strong>
+            <span>Lives</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- MEMBERS PREVIEW -->
+
+      <section class="sidebar-card">
+
+        <div class="sidebar-heading-row">
+
+          <div class="sidebar-title">
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+
+            <h3>
+              Membres
+            </h3>
+
+          </div>
+
+          <button
+            type="button"
+            (click)="changeTab('members')"
+          >
+            Voir tout
+          </button>
+
+        </div>
+
+
+        <div class="sidebar-members">
+
+          @for (member of members.slice(0, 5); track member.id) {
+
+            <div class="sidebar-member">
+
+              <img
+                [src]="member.avatar"
+                [alt]="member.name"
+              />
+
+              <div>
+
+                <strong>
+                  {{ member.name }}
+                </strong>
+
+                <span>
+                  {{ member.role }}
+                </span>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+
+      <!-- COMMUNITY RULES -->
+
+      <section class="sidebar-card rules-card">
+
+        <div class="sidebar-title">
+
+          <span class="material-symbols-outlined">
+            gavel
+          </span>
+
+          <h3>
+            Règles
+          </h3>
+
+        </div>
+
+
+        <ul>
+
+          <li>
+            Respecter les autres membres.
+          </li>
+
+          <li>
+            Publier uniquement du contenu professionnel.
+          </li>
+
+          <li>
+            Éviter les informations trompeuses.
+          </li>
+
+          <li>
+            Respecter les règles commerciales de B2WA.
+          </li>
+
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- MODALES COMPONENTES PARTAGÉES -->
+  <!-- ========================================================= -->
+
+  <app-create-post-modal
+    [visible]="showPostModal"
+    (close)="closePostModal()"
+    (postCreated)="onPostCreated($event)"
+  ></app-create-post-modal>
+
+  <app-post-success-modal
+    [visible]="showPostSuccessModal"
+    [post]="createdPost"
+    (close)="closePostSuccessModal()"
+  ></app-post-success-modal>
+
+  <app-create-product-modal
+    [visible]="showProductModal"
+    (close)="closeProductModal()"
+    (productCreated)="onProductCreated($event)"
+  ></app-create-product-modal>
+
+  <app-product-success-modal
+    [visible]="showProductSuccessModal"
+    [product]="createdProduct"
+    (close)="closeProductSuccessModal()"
+  ></app-product-success-modal>
+
+  <app-schedule-live-modal
+    [visible]="showLiveModal"
+    (close)="closeLiveModal()"
+    (liveCreated)="onLiveCreated($event)"
+  ></app-schedule-live-modal>
+
+  <app-live-success-modal
+    [visible]="showLiveSuccessModal"
+    [live]="createdLive"
+    (close)="closeLiveSuccessModal()"
+  ></app-live-success-modal>
+
+</div>

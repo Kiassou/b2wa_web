@@ -1,0 +1,887 @@
+/* =========================================================
+   LIVE MODAL
+========================================================= */
+
+.live-modal {
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 30px 80px rgba(15, 23, 42, 0.22),
+    0 10px 30px rgba(15, 23, 42, 0.08);
+
+  animation: liveModalIn 0.28s ease;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.live-modal .modal-header {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #fffafa 100%
+    );
+}
+
+
+.live-modal .modal-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  min-width: 0;
+}
+
+
+.live-modal .modal-icon.red {
+  width: 46px;
+  height: 46px;
+
+  flex: 0 0 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fee2e2,
+      #fecaca
+    );
+
+  color: #dc2626;
+
+  box-shadow:
+    0 7px 18px rgba(220, 38, 38, 0.12);
+}
+
+
+.live-modal .modal-icon .material-symbols-outlined {
+  font-size: 23px;
+}
+
+
+.live-modal .modal-kicker {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+
+.live-modal .red-kicker {
+  color: #dc2626;
+}
+
+
+.live-modal .modal-title h2 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+
+.live-modal .modal-close {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #f8fafc;
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.live-modal .modal-close:hover {
+  background: #fee2e2;
+  color: #dc2626;
+
+  transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.live-modal .modal-body {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  padding: 20px 24px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.live-modal .form-group {
+  margin-bottom: 13px;
+}
+
+
+.live-modal .form-group:last-child {
+  margin-bottom: 0;
+}
+
+
+.live-modal .form-group label:not(.live-upload) {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+.live-modal input,
+.live-modal select,
+.live-modal textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dbe3ec;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.live-modal input,
+.live-modal select {
+  height: 42px;
+
+  padding: 0 12px;
+}
+
+
+.live-modal textarea {
+  min-height: 72px;
+
+  padding: 10px 12px;
+
+  resize: vertical;
+}
+
+
+.live-modal input::placeholder,
+.live-modal textarea::placeholder {
+  color: #94a3b8;
+}
+
+
+.live-modal input:focus,
+.live-modal select:focus,
+.live-modal textarea:focus {
+  border-color: #ef4444;
+
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.08);
+
+  background: #fffafa;
+}
+
+
+/* =========================================================
+   FORM ROW
+========================================================= */
+
+.live-modal .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   LIVE UPLOAD
+========================================================= */
+
+.live-upload {
+  position: relative;
+
+  min-height: 74px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 13px;
+
+  box-sizing: border-box;
+
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f8fafc
+    );
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.live-upload:hover {
+  border-color: #ef4444;
+
+  background: #fffafa;
+}
+
+
+.live-upload > .material-symbols-outlined {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #fee2e2;
+  color: #dc2626;
+
+  font-size: 21px;
+}
+
+
+.live-upload strong {
+  display: block;
+
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+.live-upload small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+}
+
+
+.live-upload input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* PREVIEW */
+
+.live-upload img {
+  width: 72px;
+  height: 54px;
+
+  flex: 0 0 72px;
+
+  border-radius: 9px;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   LIVE LINK INFO
+========================================================= */
+
+.live-link-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 14px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7f7,
+      #fef2f2
+    );
+}
+
+
+.live-link-icon {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+
+.live-link-icon .material-symbols-outlined {
+  font-size: 19px;
+}
+
+
+.live-link-info strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #991b1b;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+.live-link-info p {
+  margin: 0;
+
+  color: #7f1d1d;
+
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.live-modal .modal-footer {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding: 15px 24px;
+
+  border-top: 1px solid #e2e8f0;
+
+  background: #ffffff;
+}
+
+
+.live-modal .cancel-btn,
+.live-modal .primary-btn {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 17px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.live-modal .cancel-btn {
+  border: 1px solid #e2e8f0;
+
+  background: #ffffff;
+  color: #475569;
+}
+
+
+.live-modal .cancel-btn:hover {
+  background: #f8fafc;
+}
+
+
+.live-modal .red-btn {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 18px rgba(220, 38, 38, 0.20);
+}
+
+
+.live-modal .red-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 24px rgba(220, 38, 38, 0.28);
+}
+
+
+.live-modal .red-btn:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  background: rgba(15, 23, 42, 0.62);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes liveModalIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .modal-backdrop {
+    padding: 10px;
+  }
+
+  .live-modal {
+    width: 100%;
+    max-width: 500px;
+
+    max-height: calc(100dvh - 20px);
+
+    border-radius: 19px;
+  }
+
+  .live-modal .modal-header {
+    padding: 15px 16px;
+  }
+
+  .live-modal .modal-body {
+    padding: 15px 16px;
+  }
+
+  .live-modal .modal-footer {
+    padding: 12px 16px;
+  }
+
+  .live-modal .modal-icon.red {
+    width: 40px;
+    height: 40px;
+
+    flex-basis: 40px;
+
+    border-radius: 11px;
+  }
+
+  .live-modal .modal-title h2 {
+    font-size: 17px;
+  }
+
+  .live-modal .form-group {
+    margin-bottom: 10px;
+  }
+
+  .live-modal .form-row {
+    gap: 9px;
+  }
+
+  .live-modal input,
+  .live-modal select {
+    height: 39px;
+
+    font-size: 12px;
+  }
+
+  .live-modal textarea {
+    min-height: 62px;
+  }
+
+  .live-upload {
+    min-height: 62px;
+  }
+
+  .live-link-info {
+    margin-top: 10px;
+    padding: 10px 11px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .modal-backdrop {
+    align-items: center;
+
+    padding: 7px;
+  }
+
+  .live-modal {
+    max-height: calc(100dvh - 14px);
+
+    border-radius: 17px;
+  }
+
+  .live-modal .modal-header {
+    padding: 12px 13px;
+  }
+
+  .live-modal .modal-body {
+    padding: 12px 13px;
+
+    /*
+     * Le body reste scrollable uniquement si
+     * l'écran est réellement trop petit.
+     */
+    overflow-y: auto;
+  }
+
+  .live-modal .modal-footer {
+    padding: 10px 13px;
+
+    gap: 7px;
+  }
+
+  .live-modal .modal-kicker {
+    font-size: 8px;
+  }
+
+  .live-modal .modal-title h2 {
+    font-size: 16px;
+  }
+
+  .live-modal .modal-close {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .live-modal .form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .live-modal .form-group label:not(.live-upload) {
+    margin-bottom: 4px;
+
+    font-size: 10px;
+  }
+
+  .live-modal input,
+  .live-modal select {
+    height: 37px;
+
+    padding: 0 9px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+  }
+
+  .live-modal textarea {
+    min-height: 55px;
+
+    padding: 8px 9px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+  }
+
+  .live-upload {
+    min-height: 58px;
+
+    padding: 8px 10px;
+
+    gap: 9px;
+
+    border-radius: 9px;
+  }
+
+  .live-upload > .material-symbols-outlined {
+    width: 32px;
+    height: 32px;
+
+    flex-basis: 32px;
+
+    font-size: 17px;
+  }
+
+  .live-upload strong {
+    font-size: 10px;
+  }
+
+  .live-upload small {
+    font-size: 8px;
+  }
+
+  .live-upload img {
+    width: 58px;
+    height: 42px;
+
+    flex-basis: 58px;
+  }
+
+  .live-link-info {
+    gap: 8px;
+
+    margin-top: 8px;
+
+    padding: 8px 9px;
+
+    border-radius: 9px;
+  }
+
+  .live-link-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+
+    border-radius: 8px;
+  }
+
+  .live-link-icon .material-symbols-outlined {
+    font-size: 16px;
+  }
+
+  .live-link-info strong {
+    font-size: 9px;
+  }
+
+  .live-link-info p {
+    font-size: 8px;
+    line-height: 1.35;
+  }
+
+  .live-modal .cancel-btn,
+  .live-modal .primary-btn {
+    min-height: 38px;
+
+    padding: 0 11px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .live-modal .modal-header {
+    padding: 10px;
+  }
+
+  .live-modal .modal-body {
+    padding: 10px;
+  }
+
+  .live-modal .modal-footer {
+    padding: 8px 10px;
+  }
+
+  .live-modal .modal-title {
+    gap: 8px;
+  }
+
+  .live-modal .modal-icon.red {
+    width: 34px;
+    height: 34px;
+
+    flex-basis: 34px;
+  }
+
+  .live-modal .modal-title h2 {
+    font-size: 14px;
+  }
+
+  .live-modal .form-row {
+    gap: 5px;
+  }
+
+  .live-modal input,
+  .live-modal select {
+    height: 34px;
+
+    padding: 0 7px;
+
+    font-size: 10px;
+  }
+
+  .live-modal textarea {
+    min-height: 48px;
+  }
+
+  .live-modal .form-group {
+    margin-bottom: 7px;
+  }
+
+  .live-modal .cancel-btn,
+  .live-modal .primary-btn {
+    min-height: 34px;
+
+    padding: 0 8px;
+
+    font-size: 9px;
+  }
+
+}

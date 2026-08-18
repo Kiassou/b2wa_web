@@ -1,0 +1,1428 @@
+<div class="community-view-page">
+
+  <!-- ========================================================= -->
+  <!-- BACK -->
+  <!-- ========================================================= -->
+  <div class="page-topbar">
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="goBack()"
+    >
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+      <span>Communautés</span>
+    </button>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- COMMUNITY HERO -->
+  <!-- ========================================================= -->
+  <section class="community-hero">
+
+    <div
+      class="hero-cover"
+      [style.background-image]="'url(' + community.cover + ')'"
+    >
+
+      <div class="hero-overlay"></div>
+
+      <div class="hero-category">
+        {{ community.category }}
+      </div>
+
+      @if (community.verified) {
+
+        <div class="hero-verified">
+
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+
+          Communauté vérifiée
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <div class="hero-content">
+
+      <!-- COMMUNITY ICON -->
+      <div class="community-icon">
+        {{ community.icon }}
+      </div>
+
+
+      <!-- IDENTITY -->
+      <div class="community-identity">
+
+        <div class="identity-title">
+
+          <div>
+
+            <h1>
+              {{ community.name }}
+            </h1>
+
+            <span class="community-admin">
+
+              <span class="material-symbols-outlined">
+                person
+              </span>
+
+              Par {{ community.admin }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <p class="community-description">
+          {{ community.description }}
+        </p>
+
+
+        <!-- STATS -->
+        <div class="community-stats">
+
+          <div class="community-stat">
+
+            <span class="material-symbols-outlined">
+              group
+            </span>
+
+            <div>
+
+              <strong>
+                {{ formatNumber(community.members) }}
+              </strong>
+
+              <span>
+                Membres
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="community-stat">
+
+            <span class="material-symbols-outlined">
+              article
+            </span>
+
+            <div>
+
+              <strong>
+                {{ community.posts }}
+              </strong>
+
+              <span>
+                Publications
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="community-stat">
+
+            <span class="material-symbols-outlined">
+              inventory_2
+            </span>
+
+            <div>
+
+              <strong>
+                {{ community.products }}
+              </strong>
+
+              <span>
+                Produits
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="community-stat">
+
+            <span class="material-symbols-outlined">
+              videocam
+            </span>
+
+            <div>
+
+              <strong>
+                {{ community.lives }}
+              </strong>
+
+              <span>
+                Lives
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+      <div class="community-actions">
+
+        <!-- SHARE COMMUNITY -->
+        <button
+          type="button"
+          class="share-btn"
+          (click)="shareCommunity()"
+        >
+
+          <span class="material-symbols-outlined">
+            share
+          </span>
+
+          Partager
+
+        </button>
+
+
+        <!-- MEMBER -->
+        @if (community.isMember) {
+
+          <button
+            type="button"
+            class="member-btn"
+            (click)="leaveCommunity()"
+          >
+
+            <span class="material-symbols-outlined">
+              check_circle
+            </span>
+
+            Membre
+
+          </button>
+
+        } @else {
+
+          <button
+            type="button"
+            class="join-btn"
+            (click)="joinCommunity()"
+          >
+
+            <span class="material-symbols-outlined">
+              group_add
+            </span>
+
+            Rejoindre
+
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- CONTENT NAVIGATION -->
+  <!-- ========================================================= -->
+  <nav class="community-tabs">
+
+    <!-- HOME -->
+    <button
+      type="button"
+      [class.active]="activeTab === 'home'"
+      (click)="setActiveTab('home')"
+    >
+
+      <span class="material-symbols-outlined">
+        home
+      </span>
+
+      <span>Accueil</span>
+
+    </button>
+
+
+    <!-- POSTS -->
+    <button
+      type="button"
+      [class.active]="activeTab === 'posts'"
+      (click)="setActiveTab('posts')"
+    >
+
+      <span class="material-symbols-outlined">
+        article
+      </span>
+
+      <span>Publications</span>
+
+    </button>
+
+
+    <!-- PRODUCTS -->
+    <button
+      type="button"
+      [class.active]="activeTab === 'products'"
+      (click)="setActiveTab('products')"
+    >
+
+      <span class="material-symbols-outlined">
+        inventory_2
+      </span>
+
+      <span>Produits</span>
+
+    </button>
+
+
+    <!-- LIVES -->
+    <button
+      type="button"
+      [class.active]="activeTab === 'lives'"
+      (click)="setActiveTab('lives')"
+    >
+
+      <span class="material-symbols-outlined">
+        videocam
+      </span>
+
+      <span>Lives</span>
+
+      @if (upcomingLives.length > 0) {
+
+        <span class="tab-badge">
+          {{ upcomingLives.length }}
+        </span>
+
+      }
+
+    </button>
+
+
+    <!-- MEMBERS -->
+    <button
+      type="button"
+      [class.active]="activeTab === 'members'"
+      (click)="setActiveTab('members')"
+    >
+
+      <span class="material-symbols-outlined">
+        groups
+      </span>
+
+      <span>Membres</span>
+
+    </button>
+
+  </nav>
+
+
+  <!-- ========================================================= -->
+  <!-- MAIN CONTENT -->
+  <!-- ========================================================= -->
+  <main class="community-content">
+
+
+    <!-- ======================================================= -->
+    <!-- HOME -->
+    <!-- ======================================================= -->
+    @if (activeTab === 'home') {
+
+      <div class="content-grid">
+
+        <!-- =================================================== -->
+        <!-- LEFT -->
+        <!-- =================================================== -->
+        <div class="main-column">
+
+
+          <!-- ABOUT -->
+          <section class="content-card about-card">
+
+            <div class="card-heading">
+
+              <div>
+
+                <span class="section-kicker">
+                  À PROPOS
+                </span>
+
+                <h2>
+                  À propos de cette communauté
+                </h2>
+
+              </div>
+
+            </div>
+
+
+            <p>
+              {{ community.longDescription }}
+            </p>
+
+
+            <div class="community-info-grid">
+
+              <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                  category
+                </span>
+
+                <div>
+
+                  <small>
+                    Catégorie
+                  </small>
+
+                  <strong>
+                    {{ community.category }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                  calendar_month
+                </span>
+
+                <div>
+
+                  <small>
+                    Créée le
+                  </small>
+
+                  <strong>
+                    {{ community.createdAt }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- RECENT POSTS -->
+          <section class="content-card">
+
+            <div class="card-heading">
+
+              <div>
+
+                <span class="section-kicker">
+                  COMMUNAUTÉ
+                </span>
+
+                <h2>
+                  Publications récentes
+                </h2>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="text-btn"
+                (click)="setActiveTab('posts')"
+              >
+
+                Voir tout
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+              </button>
+
+            </div>
+
+
+            @if (posts.length > 0) {
+
+              <div class="posts-list">
+
+                @for (
+                  post of posts.slice(0, 3);
+                  track post.id
+                ) {
+
+                  <article class="post-card">
+
+
+                    <!-- POST HEADER -->
+                    <div class="post-header">
+
+                      <div class="post-author">
+
+                        <div class="author-avatar">
+                          {{ post.authorInitial }}
+                        </div>
+
+                        <div>
+
+                          <strong>
+                            {{ post.author }}
+                          </strong>
+
+                          <span>
+                            {{ post.date }}
+                          </span>
+
+                        </div>
+
+                      </div>
+
+
+                      <span class="admin-label">
+
+                        <span class="material-symbols-outlined">
+                          shield
+                        </span>
+
+                        Administrateur
+
+                      </span>
+
+                    </div>
+
+
+                    <!-- POST BODY -->
+                    <div class="post-body">
+
+                      <h3>
+                        {{ post.title }}
+                      </h3>
+
+                      <p>
+                        {{ post.content }}
+                      </p>
+
+
+                      @if (post.image) {
+
+                        <img
+                          class="post-image"
+                          [src]="post.image"
+                          alt="Publication"
+                        />
+
+                      }
+
+                    </div>
+
+
+                    <!-- POST ACTIONS -->
+                    <div class="post-actions">
+
+
+                      <!-- FAVORI -->
+                      <button
+                        type="button"
+                        class="post-action"
+                        [class.active]="post.isLiked"
+                        (click)="toggleLike(post)"
+                      >
+
+                        <span class="material-symbols-outlined">
+
+                          {{
+                            post.isLiked
+                              ? 'favorite'
+                              : 'favorite_border'
+                          }}
+
+                        </span>
+
+                        <span>
+                          Aimer
+                        </span>
+
+                        <small>
+                          {{ post.likes }}
+                        </small>
+
+                      </button>
+
+
+                      <!-- COMMENTAIRES -->
+                      <button
+                        type="button"
+                        class="post-action"
+                        (click)="openComments(post)"
+                      >
+
+                        <span class="material-symbols-outlined">
+                          chat_bubble
+                        </span>
+
+                        <span>
+                          Commentaires
+                        </span>
+
+                        <small>
+                          {{ post.comments }}
+                        </small>
+
+                      </button>
+
+
+                      <!-- PARTAGER -->
+                      <button
+                        type="button"
+                        class="post-action"
+                        (click)="sharePost(post)"
+                      >
+
+                        <span class="material-symbols-outlined">
+                          share
+                        </span>
+
+                        <span>
+                          Partager
+                        </span>
+
+                        <small>
+                          {{ post.shares || 0 }}
+                        </small>
+
+                      </button>
+
+                    </div>
+
+                  </article>
+
+                }
+
+              </div>
+
+            } @else {
+
+              <div class="empty-content">
+
+                <span class="material-symbols-outlined">
+                  article
+                </span>
+
+                <p>
+                  Aucune publication pour le moment.
+                </p>
+
+              </div>
+
+            }
+
+          </section>
+
+        </div>
+
+
+        <!-- =================================================== -->
+        <!-- RIGHT SIDEBAR -->
+        <!-- =================================================== -->
+        <aside class="side-column">
+
+
+          <!-- UPCOMING LIVE -->
+          <section class="content-card live-card">
+
+            <div class="card-heading">
+
+              <div>
+
+                <span class="section-kicker live-kicker">
+                  EN DIRECT BIENTÔT
+                </span>
+
+                <h2>
+                  Prochain live
+                </h2>
+
+              </div>
+
+            </div>
+
+
+            @if (upcomingLives.length > 0) {
+
+              @let live = upcomingLives[0];
+
+              <div class="live-preview">
+
+                <div class="live-cover">
+
+                  <img
+                    [src]="live.cover"
+                    alt="Live"
+                  />
+
+                  <span class="live-status">
+                    LIVE
+                  </span>
+
+                </div>
+
+
+                <div class="live-info">
+
+                  <h3>
+                    {{ live.title }}
+                  </h3>
+
+                  <p>
+                    {{ live.description }}
+                  </p>
+
+
+                  <div class="live-meta">
+
+                    <span>
+
+                      <span class="material-symbols-outlined">
+                        calendar_month
+                      </span>
+
+                      {{ live.date }}
+
+                    </span>
+
+
+                    <span>
+
+                      <span class="material-symbols-outlined">
+                        schedule
+                      </span>
+
+                      {{ live.time }}
+
+                    </span>
+
+                  </div>
+
+
+                  <div class="live-reservations">
+
+                    <span>
+                      {{ live.reservations }}
+                      personnes inscrites
+                    </span>
+
+                    <span>
+                      {{ live.capacity }}
+                      places
+                    </span>
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    class="reserve-btn"
+                    [class.reserved]="live.isReserved"
+                    (click)="reserveLive(live)"
+                  >
+
+                    @if (live.isReserved) {
+
+                      <span class="material-symbols-outlined">
+                        check_circle
+                      </span>
+
+                      Place réservée
+
+                    } @else {
+
+                      <span class="material-symbols-outlined">
+                        confirmation_number
+                      </span>
+
+                      Réserver ma place
+
+                    }
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            } @else {
+
+              <div class="empty-content">
+
+                <span class="material-symbols-outlined">
+                  event_busy
+                </span>
+
+                <p>
+                  Aucun live programmé.
+                </p>
+
+              </div>
+
+            }
+
+          </section>
+
+
+          <!-- MEMBERS -->
+          <section class="content-card members-card">
+
+            <div class="card-heading">
+
+              <div>
+
+                <span class="section-kicker">
+                  COMMUNAUTÉ
+                </span>
+
+                <h2>
+                  Membres
+                </h2>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="text-btn"
+                (click)="setActiveTab('members')"
+              >
+                Voir tout
+              </button>
+
+            </div>
+
+
+            <div class="member-list">
+
+              @for (
+                member of members.slice(0, 5);
+                track member.id
+              ) {
+
+                <div class="member-item">
+
+                  <img
+                    [src]="member.avatar"
+                    [alt]="member.name"
+                  />
+
+                  <div>
+
+                    <strong>
+                      {{ member.name }}
+                    </strong>
+
+                    <span>
+                      {{ member.role }}
+                    </span>
+
+                  </div>
+
+
+                  @if (member.isAdmin) {
+
+                    <span
+                      class="admin-icon"
+                      title="Administrateur"
+                    >
+
+                      <span class="material-symbols-outlined">
+                        shield
+                      </span>
+
+                    </span>
+
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+          </section>
+
+        </aside>
+
+      </div>
+
+    }
+
+
+    <!-- ======================================================= -->
+    <!-- POSTS -->
+    <!-- ======================================================= -->
+    @if (activeTab === 'posts') {
+
+      <section class="full-content-section">
+
+        <div class="section-title">
+
+          <div>
+
+            <span class="section-kicker">
+              COMMUNAUTÉ
+            </span>
+
+            <h2>
+              Publications
+            </h2>
+
+            <p>
+              Découvrez les dernières publications de
+              {{ community.name }}.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="posts-list">
+
+          @for (post of posts; track post.id) {
+
+            <article class="post-card">
+
+
+              <!-- HEADER -->
+              <div class="post-header">
+
+                <div class="post-author">
+
+                  <div class="author-avatar">
+                    {{ post.authorInitial }}
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      {{ post.author }}
+                    </strong>
+
+                    <span>
+                      {{ post.date }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <span class="admin-label">
+
+                  <span class="material-symbols-outlined">
+                    shield
+                  </span>
+
+                  Administrateur
+
+                </span>
+
+              </div>
+
+
+              <!-- BODY -->
+              <div class="post-body">
+
+                <h3>
+                  {{ post.title }}
+                </h3>
+
+                <p>
+                  {{ post.content }}
+                </p>
+
+
+                @if (post.image) {
+
+                  <img
+                    class="post-image"
+                    [src]="post.image"
+                    alt="Publication"
+                  />
+
+                }
+
+              </div>
+
+
+              <!-- ACTIONS -->
+              <div class="post-actions">
+
+                <button
+                  type="button"
+                  class="post-action"
+                  [class.active]="post.isLiked"
+                  (click)="toggleLike(post)"
+                >
+
+                  <span class="material-symbols-outlined">
+
+                    {{
+                      post.isLiked
+                        ? 'favorite'
+                        : 'favorite_border'
+                    }}
+
+                  </span>
+
+                  <span>
+                    Favori
+                  </span>
+
+                  <small>
+                    {{ post.likes }}
+                  </small>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  class="post-action"
+                  (click)="openComments(post)"
+                >
+
+                  <span class="material-symbols-outlined">
+                    chat_bubble
+                  </span>
+
+                  <span>
+                    Commentaires
+                  </span>
+
+                  <small>
+                    {{ post.comments }}
+                  </small>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  class="post-action"
+                  (click)="sharePost(post)"
+                >
+
+                  <span class="material-symbols-outlined">
+                    share
+                  </span>
+
+                  <span>
+                    Partager
+                  </span>
+
+                  <small>
+                    {{ post.shares || 0 }}
+                  </small>
+
+                </button>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- ======================================================= -->
+    <!-- PRODUCTS -->
+    <!-- ======================================================= -->
+    @if (activeTab === 'products') {
+
+      <section class="full-content-section">
+
+        <div class="section-title">
+
+          <div>
+
+            <span class="section-kicker">
+              BOUTIQUE
+            </span>
+
+            <h2>
+              Produits de la communauté
+            </h2>
+
+            <p>
+              Découvrez les produits publiés par
+              {{ community.admin }}.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        @if (products.length > 0) {
+
+          <div class="products-grid">
+
+            @for (
+              product of products;
+              track product.id
+            ) {
+
+              <article class="product-card">
+
+                <div class="product-image">
+
+                  <img
+                    [src]="product.image"
+                    [alt]="product.name"
+                  />
+
+                  @if (product.badge) {
+
+                    <span class="product-badge">
+                      {{ product.badge }}
+                    </span>
+
+                  }
+
+                </div>
+
+
+                <div class="product-content">
+
+                  <span class="product-category">
+                    {{ product.category }}
+                  </span>
+
+                  <h3>
+                    {{ product.name }}
+                  </h3>
+
+                  <p>
+                    {{ product.description }}
+                  </p>
+
+
+                  <div class="product-bottom">
+
+                    <strong>
+                      {{ product.price }}
+                    </strong>
+
+                    <button
+                      type="button"
+                      (click)="viewProduct(product)"
+                    >
+
+                      Voir
+
+                      <span class="material-symbols-outlined">
+                        arrow_forward
+                      </span>
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="empty-state">
+
+            <span class="material-symbols-outlined">
+              inventory_2
+            </span>
+
+            <h3>
+              Aucun produit
+            </h3>
+
+            <p>
+              Cette communauté n'a pas encore publié de produit.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    }
+
+
+    <!-- ======================================================= -->
+    <!-- LIVES -->
+    <!-- ======================================================= -->
+    @if (activeTab === 'lives') {
+
+      <section class="full-content-section">
+
+        <div class="section-title">
+
+          <div>
+
+            <span class="section-kicker">
+              B2WA LIVE
+            </span>
+
+            <h2>
+              Lives de la communauté
+            </h2>
+
+            <p>
+              Participez aux événements organisés par cette communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        @if (upcomingLives.length > 0) {
+
+          <div class="lives-grid">
+
+            @for (
+              live of upcomingLives;
+              track live.id
+            ) {
+
+              <article class="live-card-large">
+
+                <div class="live-cover">
+
+                  <img
+                    [src]="live.cover"
+                    alt="Live"
+                  />
+
+                  <span class="live-status">
+                    À VENIR
+                  </span>
+
+                </div>
+
+
+                <div class="live-card-content">
+
+                  <h3>
+                    {{ live.title }}
+                  </h3>
+
+                  <p>
+                    {{ live.description }}
+                  </p>
+
+
+                  <div class="live-details">
+
+                    <span>
+
+                      <span class="material-symbols-outlined">
+                        calendar_month
+                      </span>
+
+                      {{ live.date }}
+
+                    </span>
+
+
+                    <span>
+
+                      <span class="material-symbols-outlined">
+                        schedule
+                      </span>
+
+                      {{ live.time }}
+
+                    </span>
+
+                  </div>
+
+
+                  <div class="live-card-footer">
+
+                    <span>
+                      {{ live.reservations }}/{{ live.capacity }}
+                      places
+                    </span>
+
+
+                    <button
+                      type="button"
+                      class="reserve-btn"
+                      [class.reserved]="live.isReserved"
+                      (click)="reserveLive(live)"
+                    >
+
+                      @if (live.isReserved) {
+
+                        <span class="material-symbols-outlined">
+                          check_circle
+                        </span>
+
+                        Réservé
+
+                      } @else {
+
+                        <span class="material-symbols-outlined">
+                          confirmation_number
+                        </span>
+
+                        Réserver
+
+                      }
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="empty-state">
+
+            <span class="material-symbols-outlined">
+              videocam_off
+            </span>
+
+            <h3>
+              Aucun live à venir
+            </h3>
+
+            <p>
+              Aucun live n'est actuellement programmé dans cette communauté.
+            </p>
+
+          </div>
+
+        }
+
+      </section>
+
+    }
+
+
+    <!-- ======================================================= -->
+    <!-- MEMBERS -->
+    <!-- ======================================================= -->
+    @if (activeTab === 'members') {
+
+      <section class="full-content-section">
+
+        <div class="section-title">
+
+          <div>
+
+            <span class="section-kicker">
+              MEMBRES
+            </span>
+
+            <h2>
+              Membres de la communauté
+            </h2>
+
+            <p>
+              {{ formatNumber(community.members) }}
+              personnes ont rejoint cette communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="members-grid">
+
+          @for (
+            member of members;
+            track member.id
+          ) {
+
+            <article class="member-card">
+
+              <img
+                [src]="member.avatar"
+                [alt]="member.name"
+              />
+
+              <div>
+
+                <h3>
+                  {{ member.name }}
+                </h3>
+
+                <span>
+                  {{ member.role }}
+                </span>
+
+              </div>
+
+
+              @if (member.isAdmin) {
+
+                <span class="admin-badge">
+                  Administrateur
+                </span>
+
+              }
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+  </main>
+
+</div>

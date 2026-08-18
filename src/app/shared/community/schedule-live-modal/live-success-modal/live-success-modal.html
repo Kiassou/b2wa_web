@@ -1,0 +1,73 @@
+@if (visible && live) {
+  <div class="modal-backdrop">
+    <div class="success-modal live-success-modal" (click)="$event.stopPropagation()">
+      <button type="button" class="success-close" (click)="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <div class="success-icon red-success">
+        <span class="material-symbols-outlined">videocam</span>
+      </div>
+
+      <span class="success-kicker red-kicker">B2WA LIVE</span>
+      <h2>Live programmé !</h2>
+      <p class="success-description">Votre événement a été créé avec succès. Vous pouvez maintenant partager le lien avec votre communauté.</p>
+
+      <div class="success-details">
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">videocam</span>
+          <div>
+            <small>Événement</small>
+            <strong>{{ live.title }}</strong>
+          </div>
+        </div>
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <div>
+            <small>Date</small>
+            <strong>{{ live.date }}</strong>
+          </div>
+        </div>
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">schedule</span>
+          <div>
+            <small>Heure</small>
+            <strong>{{ live.time }} · {{ live.duration }}</strong>
+          </div>
+        </div>
+        <div class="success-detail-item">
+          <span class="material-symbols-outlined">groups</span>
+          <div>
+            <small>Capacité</small>
+            <strong>{{ live.capacity }} places</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="generated-live-link">
+        <div class="generated-link-header">
+          <div>
+            <span class="material-symbols-outlined">link</span>
+            <strong>Votre lien B2WA Live</strong>
+          </div>
+          <span class="link-generated-badge">Généré</span>
+        </div>
+        <div class="link-box">
+          <span>{{ live.link }}</span>
+          <button type="button" (click)="copyLiveLink()" [title]="linkCopied ? 'Lien copié !' : 'Copier le lien'">
+            <span class="material-symbols-outlined">{{ linkCopied ? 'check' : 'content_copy' }}</span>
+          </button>
+        </div>
+        <p>Partagez ce lien pour permettre aux membres de réserver leur place et d'accéder au Live.</p>
+      </div>
+
+      <div class="success-actions live-actions">
+        <button type="button" class="secondary-success-btn" (click)="closeModal()">Terminer</button>
+        <button type="button" class="success-primary red-success-btn" (click)="copyLiveLink()">
+          <span class="material-symbols-outlined">{{ linkCopied ? 'check' : 'share' }}</span>
+          {{ linkCopied ? 'Lien copié' : 'Partager le Live' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

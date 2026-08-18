@@ -1,0 +1,1232 @@
+<div class="create-community-page">
+
+  <!-- ===================================================== -->
+  <!-- TOPBAR -->
+  <!-- ===================================================== -->
+
+  <header class="page-topbar">
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="goBack()"
+    >
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+      <span>Communautés</span>
+
+    </button>
+
+
+    <div class="topbar-title">
+
+      <span class="material-symbols-outlined">
+        groups
+      </span>
+
+      <div>
+
+        <h1>
+          Créer une communauté
+        </h1>
+
+        <p>
+          Construisez votre espace professionnel sur B2WA.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="community-limit">
+
+      <span class="material-symbols-outlined">
+        workspace_premium
+      </span>
+
+      <div>
+
+        <strong>0 / 3</strong>
+
+        <span>
+          communautés
+        </span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ===================================================== -->
+  <!-- STEPS -->
+  <!-- ===================================================== -->
+
+  <div class="steps-wrapper">
+
+    <div class="steps">
+
+      <!-- STEP 1 -->
+
+      <button
+        type="button"
+        class="step"
+        [class.active]="currentStep === 1"
+        [class.completed]="currentStep > 1"
+        (click)="goToStep(1)"
+      >
+
+        <span class="step-number">
+
+          @if (currentStep > 1) {
+
+            <span class="material-symbols-outlined">
+              check
+            </span>
+
+          } @else {
+
+            1
+
+          }
+
+        </span>
+
+        <span class="step-info">
+
+          <strong>
+            Identité
+          </strong>
+
+          <small>
+            Présentez votre communauté
+          </small>
+
+        </span>
+
+      </button>
+
+
+      <span class="step-line"></span>
+
+
+      <!-- STEP 2 -->
+
+      <button
+        type="button"
+        class="step"
+        [class.active]="currentStep === 2"
+        [class.completed]="currentStep > 2"
+        (click)="goToStep(2)"
+      >
+
+        <span class="step-number">
+
+          @if (currentStep > 2) {
+
+            <span class="material-symbols-outlined">
+              check
+            </span>
+
+          } @else {
+
+            2
+
+          }
+
+        </span>
+
+        <span class="step-info">
+
+          <strong>
+            Configuration
+          </strong>
+
+          <small>
+            Définissez votre espace
+          </small>
+
+        </span>
+
+      </button>
+
+
+      <span class="step-line"></span>
+
+
+      <!-- STEP 3 -->
+
+      <button
+        type="button"
+        class="step"
+        [class.active]="currentStep === 3"
+        (click)="goToStep(3)"
+      >
+
+        <span class="step-number">
+          3
+        </span>
+
+        <span class="step-info">
+
+          <strong>
+            Règles
+          </strong>
+
+          <small>
+            Encadrez votre communauté
+          </small>
+
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ===================================================== -->
+  <!-- MAIN -->
+  <!-- ===================================================== -->
+
+  <main class="create-content">
+
+
+    <!-- =================================================== -->
+    <!-- FORM -->
+    <!-- =================================================== -->
+
+    <section class="form-container">
+
+
+      <!-- ================================================ -->
+      <!-- STEP 1 -->
+      <!-- ================================================ -->
+
+      @if (currentStep === 1) {
+
+        <section class="form-section">
+
+          <div class="section-header">
+
+            <span class="section-kicker">
+              ÉTAPE 01
+            </span>
+
+            <h2>
+              Donnez une identité à votre communauté
+            </h2>
+
+            <p>
+              Présentez votre activité et permettez aux membres
+              de comprendre immédiatement l'objectif de votre communauté.
+            </p>
+
+          </div>
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label for="community-name">
+              Nom de la communauté
+              <span>*</span>
+            </label>
+
+            <div
+              class="input-wrapper"
+              [class.input-error]="errors.name"
+            >
+
+              <span class="material-symbols-outlined">
+                badge
+              </span>
+
+              <input
+                id="community-name"
+                type="text"
+                [(ngModel)]="community.name"
+                maxlength="60"
+                placeholder="Ex : Les entrepreneurs du Mali"
+              />
+
+              <small>
+                {{ nameLength }}/60
+              </small>
+
+            </div>
+
+            @if (errors.name) {
+
+              <div class="field-error">
+
+                <span class="material-symbols-outlined">
+                  error
+                </span>
+
+                {{ errors.name }}
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- CATEGORY -->
+
+          <div class="form-group">
+
+            <label for="community-category">
+              Catégorie
+              <span>*</span>
+            </label>
+
+            <div
+              class="select-wrapper"
+              [class.input-error]="errors.category"
+            >
+
+              <span class="material-symbols-outlined">
+                category
+              </span>
+
+              <select
+                id="community-category"
+                [(ngModel)]="community.category"
+              >
+
+                <option value="">
+                  Sélectionner une catégorie
+                </option>
+
+                @for (category of categories; track category) {
+
+                  <option [value]="category">
+                    {{ category }}
+                  </option>
+
+                }
+
+              </select>
+
+              <span class="material-symbols-outlined arrow">
+                expand_more
+              </span>
+
+            </div>
+
+            @if (errors.category) {
+
+              <div class="field-error">
+
+                <span class="material-symbols-outlined">
+                  error
+                </span>
+
+                {{ errors.category }}
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="form-group">
+
+            <label for="community-description">
+              Description courte
+              <span>*</span>
+            </label>
+
+            <div
+              class="textarea-wrapper"
+              [class.input-error]="errors.description"
+            >
+
+              <textarea
+                id="community-description"
+                [(ngModel)]="community.description"
+                maxlength="180"
+                rows="4"
+                placeholder="Décrivez votre communauté en quelques mots..."
+              ></textarea>
+
+              <small>
+                {{ descriptionLength }}/180
+              </small>
+
+            </div>
+
+            @if (errors.description) {
+
+              <div class="field-error">
+
+                <span class="material-symbols-outlined">
+                  error
+                </span>
+
+                {{ errors.description }}
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- ICON + COVER -->
+
+          <div class="identity-options">
+
+
+            <!-- ICON -->
+
+            <div class="form-group">
+
+              <label>
+                Icône de la communauté
+              </label>
+
+              <div class="icon-selector">
+
+                <button
+                  type="button"
+                  class="selected-icon"
+                  (click)="toggleEmojiPicker()"
+                >
+                  {{ community.icon }}
+
+                  <span class="material-symbols-outlined">
+                    expand_more
+                  </span>
+
+                </button>
+
+
+                @if (showEmojiPicker) {
+
+                  <div class="emoji-picker">
+
+                    @for (icon of icons; track icon) {
+
+                      <button
+                        type="button"
+                        [class.selected]="community.icon === icon"
+                        (click)="selectIcon(icon)"
+                      >
+                        {{ icon }}
+                      </button>
+
+                    }
+
+                  </div>
+
+                }
+
+              </div>
+
+            </div>
+
+
+            <!-- COVER -->
+
+            <div class="form-group cover-group">
+
+              <label>
+                Image de couverture
+              </label>
+
+              <input
+                #coverInput
+                type="file"
+                accept="image/*"
+                hidden
+                (change)="onCoverSelected($event)"
+              />
+
+
+              @if (community.cover) {
+
+                <div class="cover-upload has-image">
+
+                  <img
+                    [src]="community.cover"
+                    alt="Couverture"
+                  />
+
+                  <button
+                    type="button"
+                    class="remove-cover"
+                    (click)="removeCover()"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      close
+                    </span>
+
+                  </button>
+
+                </div>
+
+              } @else {
+
+                <button
+                  type="button"
+                  class="cover-upload"
+                  (click)="coverInput.click()"
+                >
+
+                  <span class="material-symbols-outlined">
+                    add_photo_alternate
+                  </span>
+
+                  <strong>
+                    Ajouter une couverture
+                  </strong>
+
+                  <small>
+                    JPG, PNG • 5 Mo max
+                  </small>
+
+                </button>
+
+              }
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+
+      <!-- ================================================= -->
+      <!-- STEP 2 -->
+      <!-- ================================================= -->
+
+      @if (currentStep === 2) {
+
+        <section class="form-section">
+
+          <div class="section-header">
+
+            <span class="section-kicker">
+              ÉTAPE 02
+            </span>
+
+            <h2>
+              Configurez votre communauté
+            </h2>
+
+            <p>
+              Choisissez comment les membres pourront interagir
+              avec votre communauté.
+            </p>
+
+          </div>
+
+
+          <!-- LONG DESCRIPTION -->
+
+          <div class="form-group">
+
+            <label for="long-description">
+              Présentation de la communauté
+              <span>*</span>
+            </label>
+
+            <div
+              class="textarea-wrapper"
+              [class.input-error]="errors.longDescription"
+            >
+
+              <textarea
+                id="long-description"
+                [(ngModel)]="community.longDescription"
+                maxlength="1000"
+                rows="7"
+                placeholder="Présentez votre communauté, son objectif, les activités proposées, les produits que vous partagez..."
+              ></textarea>
+
+              <small>
+                {{ longDescriptionLength }}/1000
+              </small>
+
+            </div>
+
+            @if (errors.longDescription) {
+
+              <div class="field-error">
+
+                <span class="material-symbols-outlined">
+                  error
+                </span>
+
+                {{ errors.longDescription }}
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- SETTINGS -->
+
+          <div class="settings-card">
+
+            <div class="settings-heading">
+
+              <span class="material-symbols-outlined">
+                tune
+              </span>
+
+              <div>
+
+                <h3>
+                  Paramètres de la communauté
+                </h3>
+
+                <p>
+                  Vous pourrez modifier ces paramètres plus tard.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- PUBLIC -->
+
+            <div class="setting-row">
+
+              <div class="setting-icon">
+                <span class="material-symbols-outlined">
+                  public
+                </span>
+              </div>
+
+              <div class="setting-info">
+
+                <strong>
+                  Communauté publique
+                </strong>
+
+                <span>
+                  Votre communauté peut être découverte dans B2WA.
+                </span>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  [(ngModel)]="community.isPublic"
+                />
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <!-- MEMBERS -->
+
+            <div class="setting-row">
+
+              <div class="setting-icon">
+                <span class="material-symbols-outlined">
+                  group_add
+                </span>
+              </div>
+
+              <div class="setting-info">
+
+                <strong>
+                  Autoriser les nouveaux membres
+                </strong>
+
+                <span>
+                  Les utilisateurs pourront rejoindre votre communauté.
+                </span>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  [(ngModel)]="community.allowMembers"
+                />
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <!-- COMMENTS -->
+
+            <div class="setting-row">
+
+              <div class="setting-icon">
+                <span class="material-symbols-outlined">
+                  chat
+                </span>
+              </div>
+
+              <div class="setting-info">
+
+                <strong>
+                  Commentaires
+                </strong>
+
+                <span>
+                  Autoriser les membres à commenter vos publications.
+                </span>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  [(ngModel)]="community.allowComments"
+                />
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <!-- LIVE -->
+
+            <div class="setting-row">
+
+              <div class="setting-icon live-setting">
+                <span class="material-symbols-outlined">
+                  videocam
+                </span>
+              </div>
+
+              <div class="setting-info">
+
+                <strong>
+                  B2WA Live
+                </strong>
+
+                <span>
+                  Organisez des lives et permettez aux membres
+                  de réserver leur place.
+                </span>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  [(ngModel)]="community.allowLives"
+                />
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- LIVE OPTIONS -->
+
+          @if (community.allowLives) {
+
+            <div class="live-options">
+
+              <div class="live-options-header">
+
+                <span class="material-symbols-outlined">
+                  live_tv
+                </span>
+
+                <div>
+
+                  <h3>
+                    Paramètres B2WA Live
+                  </h3>
+
+                  <p>
+                    Ces paramètres seront utilisés par défaut
+                    lors de la programmation de vos lives.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="live-fields">
+
+                <div class="form-group">
+
+                  <label>
+                    Capacité
+                  </label>
+
+                  <div class="input-wrapper">
+
+                    <span class="material-symbols-outlined">
+                      groups
+                    </span>
+
+                    <input
+                      type="number"
+                      min="1"
+                      max="10000"
+                      [(ngModel)]="community.liveCapacity"
+                    />
+
+                    <small>
+                      places
+                    </small>
+
+                  </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>
+                    Durée
+                  </label>
+
+                  <div class="input-wrapper">
+
+                    <span class="material-symbols-outlined">
+                      schedule
+                    </span>
+
+                    <input
+                      type="number"
+                      min="15"
+                      max="480"
+                      [(ngModel)]="community.liveDuration"
+                    />
+
+                    <small>
+                      min
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          }
+
+        </section>
+
+      }
+
+
+
+      <!-- ================================================= -->
+      <!-- STEP 3 -->
+      <!-- ================================================= -->
+
+      @if (currentStep === 3) {
+
+        <section class="form-section">
+
+          <div class="section-header">
+
+            <span class="section-kicker">
+              ÉTAPE 03
+            </span>
+
+            <h2>
+              Définissez les règles
+            </h2>
+
+            <p>
+              Des règles claires permettent de créer un espace
+              professionnel et agréable pour tous les membres.
+            </p>
+
+          </div>
+
+
+          <div class="rules-intro">
+
+            <div class="rules-icon">
+
+              <span class="material-symbols-outlined">
+                shield
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Votre communauté, vos règles.
+              </strong>
+
+              <p>
+                En tant que créateur, vous êtes l'administrateur
+                de cette communauté. Vous pourrez gérer les
+                publications, produits, membres et lives.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="community-rules">
+              Règles de la communauté
+              <span>*</span>
+            </label>
+
+            <div
+              class="textarea-wrapper"
+              [class.input-error]="errors.rules"
+            >
+
+              <textarea
+                id="community-rules"
+                [(ngModel)]="community.rules"
+                maxlength="1200"
+                rows="9"
+                placeholder="Ex :
+1. Respecter les autres membres.
+2. Pas de contenu frauduleux.
+3. Les publications doivent être liées à l'activité de la communauté.
+4. Pas de spam ou de publicité abusive."
+              ></textarea>
+
+              <small>
+                {{ community.rules.length }}/1200
+              </small>
+
+            </div>
+
+            @if (errors.rules) {
+
+              <div class="field-error">
+
+                <span class="material-symbols-outlined">
+                  error
+                </span>
+
+                {{ errors.rules }}
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <div class="final-notice">
+
+            <span class="material-symbols-outlined">
+              info
+            </span>
+
+            <div>
+
+              <strong>
+                Avant de créer votre communauté
+              </strong>
+
+              <p>
+                Vous serez automatiquement nommé
+                <strong>Administrateur</strong>.
+                Vous aurez le contrôle sur les publications,
+                produits, lives, membres et paramètres de
+                votre communauté.
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+
+      <!-- ================================================= -->
+      <!-- NAVIGATION -->
+      <!-- ================================================= -->
+
+      <div class="form-footer">
+
+        @if (currentStep > 1) {
+
+          <button
+            type="button"
+            class="secondary-btn"
+            (click)="previousStep()"
+          >
+
+            <span class="material-symbols-outlined">
+              arrow_back
+            </span>
+
+            Retour
+
+          </button>
+
+        } @else {
+
+          <button
+            type="button"
+            class="secondary-btn"
+            (click)="goBack()"
+          >
+            Annuler
+          </button>
+
+        }
+
+
+        @if (currentStep < totalSteps) {
+
+          <button
+            type="button"
+            class="primary-btn"
+            (click)="nextStep()"
+          >
+
+            Continuer
+
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+
+          </button>
+
+        } @else {
+
+          <button
+            type="button"
+            class="primary-btn create-btn"
+            [disabled]="isSubmitting"
+            (click)="createCommunity()"
+          >
+
+            @if (isSubmitting) {
+
+              <span class="loader"></span>
+
+              Création...
+
+            } @else {
+
+              <span class="material-symbols-outlined">
+                add_circle
+              </span>
+
+              Créer ma communauté
+
+            }
+
+          </button>
+
+        }
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================== -->
+    <!-- PREVIEW -->
+    <!-- =================================================== -->
+
+    <aside class="preview-container">
+
+      <div class="preview-sticky">
+
+        <div class="preview-header">
+
+          <div>
+
+            <span class="section-kicker">
+              APERÇU
+            </span>
+
+            <h2>
+              Votre communauté
+            </h2>
+
+          </div>
+
+          <span class="preview-live">
+            EN DIRECT
+          </span>
+
+        </div>
+
+
+        <!-- COMMUNITY PREVIEW -->
+
+        <article class="preview-card">
+
+          <div
+            class="preview-cover"
+            [style.background]="previewCover"
+          >
+
+            <div class="preview-cover-overlay"></div>
+
+            <span class="preview-category">
+              {{ previewCategory }}
+            </span>
+
+            <div class="preview-icon">
+              {{ community.icon }}
+            </div>
+
+          </div>
+
+
+          <div class="preview-body">
+
+            <h3>
+              {{ previewName }}
+            </h3>
+
+            <span class="preview-admin">
+
+              <span class="material-symbols-outlined">
+                person
+              </span>
+
+              Par vous · Administrateur
+
+            </span>
+
+            <p>
+              {{ previewDescription }}
+            </p>
+
+
+            <div class="preview-stats">
+
+              <span>
+
+                <span class="material-symbols-outlined">
+                  group
+                </span>
+
+                1 membre
+
+              </span>
+
+              <span>
+
+                <span class="material-symbols-outlined">
+                  article
+                </span>
+
+                0 posts
+
+              </span>
+
+              <span>
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+                0 produits
+
+              </span>
+
+            </div>
+
+
+            <div class="preview-footer">
+
+              <div class="preview-avatar">
+                V
+              </div>
+
+              <span>
+                Vous êtes l'administrateur
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- INFO -->
+
+        <div class="preview-info">
+
+          <div class="preview-info-icon">
+
+            <span class="material-symbols-outlined">
+              tips_and_updates
+            </span>
+
+          </div>
+
+          <div>
+
+            <strong>
+              Conseil B2WA
+            </strong>
+
+            <p>
+              Une communauté active attire davantage
+              de membres. Publiez régulièrement des
+              produits et programmez des lives pour
+              développer votre réseau.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+</div>

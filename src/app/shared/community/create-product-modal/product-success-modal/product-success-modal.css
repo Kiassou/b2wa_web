@@ -1,0 +1,547 @@
+/* =========================================================
+   PRODUCT SUCCESS MODAL
+========================================================= */
+
+.success-modal {
+  position: relative;
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+
+  padding: 34px 30px 28px;
+
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.20),
+    0 8px 30px rgba(15, 23, 42, 0.08);
+
+  text-align: center;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  animation: successModalIn 0.28s ease;
+}
+
+
+/* =========================================================
+   CLOSE
+========================================================= */
+
+.success-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #f8fafc;
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.success-close:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  transform: rotate(90deg);
+}
+
+.success-close .material-symbols-outlined {
+  font-size: 21px;
+}
+
+
+/* =========================================================
+   SUCCESS ICON
+========================================================= */
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 4px auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+}
+
+.success-icon .material-symbols-outlined {
+  font-size: 38px;
+  font-weight: 600;
+}
+
+
+/* GREEN */
+.green-success {
+  background: linear-gradient(
+    135deg,
+    #dcfce7,
+    #bbf7d0
+  );
+
+  color: #16a34a;
+
+  box-shadow:
+    0 10px 25px rgba(22, 163, 74, 0.15);
+}
+
+
+/* =========================================================
+   KICKER
+========================================================= */
+
+.success-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+
+  margin-bottom: 10px;
+}
+
+.green-kicker {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.success-modal h2 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 25px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.success-description {
+  max-width: 410px;
+
+  margin: 10px auto 22px;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+.success-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  margin-top: 4px;
+  margin-bottom: 24px;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   DETAIL ITEM
+========================================================= */
+
+.success-detail-item {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f8fafc
+    );
+}
+
+
+/* ICON */
+
+.success-detail-item > .material-symbols-outlined {
+  flex: 0 0 auto;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #ecfdf5;
+  color: #16a34a;
+
+  font-size: 20px;
+}
+
+
+/* TEXT */
+
+.success-detail-item > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+
+.success-detail-item small {
+  color: #94a3b8;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+
+.success-detail-item strong {
+  display: block;
+
+  color: #1e293b;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+}
+
+
+.success-primary {
+  width: 100%;
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: 0;
+  border-radius: 13px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.green-success-btn {
+  background: linear-gradient(
+    135deg,
+    #16a34a,
+    #15803d
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 20px rgba(22, 163, 74, 0.20);
+}
+
+
+.green-success-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 26px rgba(22, 163, 74, 0.28);
+}
+
+
+.success-primary .material-symbols-outlined {
+  font-size: 19px;
+}
+
+
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  background: rgba(15, 23, 42, 0.62);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes successModalIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .modal-backdrop {
+    align-items: center;
+    padding: 12px;
+  }
+
+  .success-modal {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 28px 20px 20px;
+
+    border-radius: 20px;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+
+    margin-bottom: 14px;
+  }
+
+  .success-icon .material-symbols-outlined {
+    font-size: 34px;
+  }
+
+  .success-modal h2 {
+    font-size: 22px;
+  }
+
+  .success-description {
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+
+  .success-details {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .success-detail-item {
+    padding: 10px;
+    gap: 9px;
+  }
+
+  .success-detail-item > .material-symbols-outlined {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .modal-backdrop {
+    padding: 8px;
+  }
+
+  .success-modal {
+    max-height: calc(100dvh - 16px);
+
+    padding: 24px 14px 16px;
+
+    border-radius: 18px;
+  }
+
+  .success-close {
+    top: 10px;
+    right: 10px;
+
+    width: 34px;
+    height: 34px;
+  }
+
+  .success-icon {
+    width: 58px;
+    height: 58px;
+
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+
+  .success-icon .material-symbols-outlined {
+    font-size: 30px;
+  }
+
+  .success-kicker {
+    font-size: 9px;
+    padding: 5px 10px;
+  }
+
+  .success-modal h2 {
+    font-size: 20px;
+  }
+
+  .success-description {
+    font-size: 12px;
+    line-height: 1.5;
+
+    margin-top: 8px;
+    margin-bottom: 15px;
+  }
+
+  /*
+   * Une seule colonne sur petit écran.
+   * Cela évite que les informations soient écrasées.
+   */
+  .success-details {
+    grid-template-columns: 1fr;
+    gap: 7px;
+
+    margin-bottom: 15px;
+  }
+
+  .success-detail-item {
+    padding: 9px 10px;
+  }
+
+  .success-detail-item > .material-symbols-outlined {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 9px;
+
+    font-size: 17px;
+  }
+
+  .success-detail-item small {
+    font-size: 9px;
+  }
+
+  .success-detail-item strong {
+    font-size: 12px;
+  }
+
+  .success-primary {
+    min-height: 44px;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .success-modal {
+    padding: 21px 11px 13px;
+  }
+
+  .success-modal h2 {
+    font-size: 18px;
+  }
+
+  .success-description {
+    font-size: 11px;
+  }
+
+  .success-detail-item {
+    gap: 8px;
+  }
+
+}
