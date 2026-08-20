@@ -1,1 +1,0 @@
-import{En as qa,an as gI,cn as iv,k as Ga}from"./chunk-BQcrR3qZ.js";var s=class n{static ɵfac=function(e){return new(e||n)};static ɵcmp=iv({type:n,selectors:[[`app-shipping`]],decls:2,vars:0,template:function(e,m){e&1&&(Ga(0,`p`),gI(1,`shipping works!`),qa())},encapsulation:2})};export{s as ShippingComponent};
