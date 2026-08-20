@@ -1,1 +1,1076 @@
-<p>shipping works!</p>
+<div class="shipping-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+  <header class="shipping-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+        title="Retour"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
+
+      <div class="header-title">
+
+        <div class="shipping-logo">
+          <span class="material-symbols-outlined">
+            local_shipping
+          </span>
+        </div>
+
+        <div>
+          <span class="header-kicker">
+            B2WA
+          </span>
+
+          <h1>
+            Expéditions
+          </h1>
+        </div>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="create-btn"
+      (click)="createShipment()"
+    >
+      <span class="material-symbols-outlined">
+        add
+      </span>
+
+      <span>
+        Nouvelle expédition
+      </span>
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       INTRO
+  ====================================================== -->
+  <section class="shipping-intro">
+
+    <div>
+
+      <span class="section-kicker">
+        LOGISTIQUE B2WA
+      </span>
+
+      <h2>
+        Gérez vos expéditions
+      </h2>
+
+      <p>
+        Suivez vos colis, consultez leur progression
+        et gardez le contrôle de vos livraisons.
+      </p>
+
+    </div>
+
+    <div class="intro-decoration">
+      <span class="material-symbols-outlined">
+        route
+      </span>
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
+  <section class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon blue">
+        <span class="material-symbols-outlined">
+          inventory_2
+        </span>
+      </div>
+
+      <div class="stat-content">
+
+        <span>
+          Total
+        </span>
+
+        <strong>
+          {{ statistics.total }}
+        </strong>
+
+        <small>
+          Toutes les expéditions
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon orange">
+        <span class="material-symbols-outlined">
+          package_2
+        </span>
+      </div>
+
+      <div class="stat-content">
+
+        <span>
+          En préparation
+        </span>
+
+        <strong>
+          {{ statistics.preparing }}
+        </strong>
+
+        <small>
+          En attente d'expédition
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon purple">
+        <span class="material-symbols-outlined">
+          local_shipping
+        </span>
+      </div>
+
+      <div class="stat-content">
+
+        <span>
+          En transit
+        </span>
+
+        <strong>
+          {{ statistics.inTransit }}
+        </strong>
+
+        <small>
+          Sur le trajet
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon green">
+        <span class="material-symbols-outlined">
+          task_alt
+        </span>
+      </div>
+
+      <div class="stat-content">
+
+        <span>
+          Livrées
+        </span>
+
+        <strong>
+          {{ statistics.delivered }}
+        </strong>
+
+        <small>
+          Livraisons terminées
+        </small>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+    <!-- =====================================================
+       TRACKING SEARCH
+  ====================================================== -->
+  <section class="tracking-card">
+
+    <div class="tracking-icon">
+      <span class="material-symbols-outlined">
+        location_searching
+      </span>
+    </div>
+
+    <div class="tracking-content">
+
+      <span class="tracking-kicker">
+        SUIVI D'EXPÉDITION
+      </span>
+
+      <h3>
+        Où est votre colis ?
+      </h3>
+
+      <p>
+        Entrez votre numéro de suivi B2WA pour connaître
+        l'état de votre expédition.
+      </p>
+
+      <div class="tracking-search">
+
+        <span class="material-symbols-outlined">
+          qr_code_2
+        </span>
+
+        <input
+          type="text"
+          [(ngModel)]="trackingNumber"
+          (keyup.enter)="trackShipment()"
+          placeholder="Ex : B2WA-ML-8F42K9"
+        />
+
+        <button
+          type="button"
+          (click)="trackShipment()"
+          [disabled]="!trackingNumber.trim()"
+        >
+          <span class="material-symbols-outlined">
+            search
+          </span>
+
+          Suivre
+        </button>
+
+      </div>
+
+      @if (trackingError) {
+        <div class="tracking-error">
+
+          <span class="material-symbols-outlined">
+            error
+          </span>
+
+          <span>
+            {{ trackingError }}
+          </span>
+
+        </div>
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SHIPMENTS
+  ====================================================== -->
+  <section class="shipments-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="section-kicker">
+          VOS EXPÉDITIONS
+        </span>
+
+        <h2>
+          Expéditions récentes
+        </h2>
+
+      </div>
+
+      <button
+        type="button"
+        class="refresh-btn"
+        (click)="refreshShipments()"
+        title="Actualiser"
+      >
+        <span class="material-symbols-outlined">
+          refresh
+        </span>
+
+        Actualiser
+      </button>
+
+    </div>
+
+
+    <!-- FILTERS -->
+    <div class="shipment-toolbar">
+
+      <div class="filter-tabs">
+
+        <button
+          type="button"
+          [class.active]="activeFilter === 'all'"
+          (click)="setFilter('all')"
+        >
+          Toutes
+          <span>{{ statistics.total }}</span>
+        </button>
+
+        <button
+          type="button"
+          [class.active]="activeFilter === 'preparing'"
+          (click)="setFilter('preparing')"
+        >
+          Préparation
+        </button>
+
+        <button
+          type="button"
+          [class.active]="activeFilter === 'transit'"
+          (click)="setFilter('transit')"
+        >
+          En transit
+        </button>
+
+        <button
+          type="button"
+          [class.active]="activeFilter === 'delivered'"
+          (click)="setFilter('delivered')"
+        >
+          Livrées
+        </button>
+
+        <button
+          type="button"
+          [class.active]="activeFilter === 'problem'"
+          (click)="setFilter('problem')"
+        >
+          Problèmes
+        </button>
+
+      </div>
+
+      <!-- NOUVEAU : recherche -->
+      <div class="shipment-search">
+
+        <span class="material-symbols-outlined">
+          search
+        </span>
+
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Rechercher (n° de suivi, ville...)"
+        />
+
+        @if (searchQuery) {
+          <button
+            type="button"
+            class="clear-search-btn"
+            (click)="searchQuery = ''; onSearchChange()"
+            aria-label="Effacer la recherche"
+          >
+            <span class="material-symbols-outlined">
+              close
+            </span>
+          </button>
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         SHIPMENT LIST
+    ==================================================== -->
+    <div class="shipments-list">
+
+      @if (filteredShipments.length === 0) {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            <span class="material-symbols-outlined">
+              local_shipping
+            </span>
+          </div>
+
+          <h3>
+            Aucune expédition
+          </h3>
+
+          <p>
+            Aucune expédition ne correspond à ce filtre.
+          </p>
+
+          <button
+            type="button"
+            (click)="createShipment()"
+          >
+            <span class="material-symbols-outlined">
+              add
+            </span>
+
+            Créer une expédition
+          </button>
+
+        </div>
+
+      } @else {
+
+        @for (shipment of pagedShipments; track shipment.id) {
+
+          <article class="shipment-card">
+
+            <!-- LEFT -->
+            <div class="shipment-main">
+
+              <div class="shipment-top">
+
+                <div class="tracking-id">
+
+                  <span class="material-symbols-outlined">
+                    qr_code_2
+                  </span>
+
+                  <strong>
+                    {{ shipment.trackingNumber }}
+                  </strong>
+
+                  <button
+                    type="button"
+                    class="copy-btn"
+                    (click)="copyTrackingNumber(shipment.trackingNumber)"
+                    title="Copier le numéro"
+                  >
+                    <span class="material-symbols-outlined">
+                      content_copy
+                    </span>
+                  </button>
+
+                </div>
+
+                <span
+                  class="status-badge"
+                  [class]="getStatusClass(shipment.status)"
+                >
+                  <span class="status-dot"></span>
+                  {{ getStatusLabel(shipment.status) }}
+                </span>
+
+              </div>
+
+
+              <!-- ROUTE -->
+              <div class="shipment-route">
+
+                <div class="location">
+
+                  <span class="location-dot origin"></span>
+
+                  <div>
+                    <small>
+                      Départ
+                    </small>
+
+                    <strong>
+                      {{ shipment.origin }}
+                    </strong>
+                  </div>
+
+                </div>
+
+
+                <div class="route-line">
+
+                  <span class="route-icon">
+                    <span class="material-symbols-outlined">
+                      local_shipping
+                    </span>
+                  </span>
+
+                </div>
+
+
+                <div class="location destination">
+
+                  <span class="location-dot destination-dot"></span>
+
+                  <div>
+                    <small>
+                      Destination
+                    </small>
+
+                    <strong>
+                      {{ shipment.destination }}
+                    </strong>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- DETAILS -->
+              <div class="shipment-details">
+
+                <div>
+                  <span class="material-symbols-outlined">
+                    inventory_2
+                  </span>
+
+                  <span>
+                    {{ shipment.packages }}
+                    {{ shipment.packages > 1 ? 'colis' : 'colis' }}
+                  </span>
+                </div>
+
+                <div>
+                  <span class="material-symbols-outlined">
+                    scale
+                  </span>
+
+                  <span>
+                    {{ shipment.weight }} kg
+                  </span>
+                </div>
+
+                <div>
+                  <span class="material-symbols-outlined">
+                    calendar_month
+                  </span>
+
+                  <span>
+                    {{ shipment.estimatedDelivery }}
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+            <div class="shipment-actions">
+
+              <button
+                type="button"
+                class="view-btn"
+                (click)="viewShipment(shipment)"
+              >
+                <span>
+                  Voir le suivi
+                </span>
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+              </button>
+
+              <!-- NOUVEAU : menu "plus d'options" avec 2 choix -->
+              <div class="more-menu-wrapper">
+
+                <button
+                  type="button"
+                  class="more-btn"
+                  (click)="openShipmentMenu(shipment)"
+                  title="Plus d'options"
+                >
+                  <span class="material-symbols-outlined">
+                    more_vert
+                  </span>
+                </button>
+
+                @if (openMenuShipmentId === shipment.id) {
+
+                  <div
+                    class="more-menu-backdrop"
+                    (click)="closeShipmentMenu()"
+                  ></div>
+
+                  <div class="more-menu">
+
+                    <button
+                      type="button"
+                      (click)="openQrCode(shipment)"
+                    >
+                      <span class="material-symbols-outlined">
+                        qr_code_2
+                      </span>
+                      Voir le QR code
+                    </button>
+
+                    <button
+                      type="button"
+                      class="danger"
+                      (click)="reportProblem(shipment)"
+                    >
+                      <span class="material-symbols-outlined">
+                        report
+                      </span>
+                      Signaler un problème
+                    </button>
+
+                  </div>
+
+                }
+
+              </div>
+
+            </div>
+
+          </article>
+
+        }
+
+      }
+
+    </div>
+
+
+    <!-- NOUVEAU : pagination -->
+    @if (filteredShipments.length > pageSize) {
+
+      <div class="pagination">
+
+        <button
+          type="button"
+          class="page-nav"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+        >
+          <span class="material-symbols-outlined">
+            chevron_left
+          </span>
+        </button>
+
+        <div class="page-numbers">
+
+          @for (page of pageNumbers; track page) {
+
+            <button
+              type="button"
+              [class.active]="page === currentPage"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+
+          }
+
+        </div>
+
+        <button
+          type="button"
+          class="page-nav"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+        >
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </button>
+
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- =====================================================
+       SHIPPING INFO
+  ====================================================== -->
+  <section class="shipping-info">
+
+    <div class="info-icon">
+
+      <span class="material-symbols-outlined">
+        shield
+      </span>
+
+    </div>
+
+    <div>
+
+      <strong>
+        Expéditions sécurisées par B2WA
+      </strong>
+
+      <p>
+        Chaque colis possède un numéro de suivi unique
+        permettant de suivre son parcours jusqu'à sa livraison.
+      </p>
+
+    </div>
+
+    <span class="material-symbols-outlined info-arrow">
+      arrow_forward
+    </span>
+
+  </section>
+
+
+  <!-- =====================================================
+       MODALE QR CODE (nouveau)
+  ====================================================== -->
+
+@if (qrModalShipment) {
+
+  <div
+    class="qr-modal-backdrop"
+  >
+
+    <section
+      class="qr-modal"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()">
+
+      <div class="qr-modal-header">
+
+        <div class="qr-title-wrapper">
+
+          <div class="qr-title-icon">
+
+            <span class="material-symbols-outlined">
+              qr_code_2
+            </span>
+          </div>
+
+
+          <div>
+
+            <span class="section-kicker">
+              SUIVI B2WA
+            </span>
+
+            <h2>
+              QR code d'expédition
+            </h2>
+          </div>
+        </div>
+
+
+        <button
+          type="button"
+          class="qr-close-btn"
+          title="Fermer"
+          (click)="closeQrModal()">
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+      </div>
+
+
+      <div class="qr-modal-body">
+
+        <div class="qr-visual-column">
+
+          <div class="qr-code-box">
+
+            <div class="qr-code-loading">
+
+              <span class="material-symbols-outlined">
+                qr_code_2
+              </span>
+            </div>
+
+
+            <img
+              [src]="getQrCodeUrl(qrModalShipment)"
+              [alt]="
+                'QR code de suivi ' +
+                qrModalShipment.trackingNumber
+              "
+              loading="eager"
+              (load)="onQrLoaded()"
+              (error)="onQrError()"
+            />
+          </div>
+
+
+          @if (qrLoading) {
+
+            <div class="qr-loading-label">
+
+              <span class="material-symbols-outlined rotating">
+                progress_activity
+              </span>
+
+              Génération du QR code...
+            </div>
+          }
+
+
+          @if (qrError) {
+
+            <div class="qr-error-label">
+
+              <span class="material-symbols-outlined">
+                error
+              </span>
+
+              Impossible de charger le QR code.
+            </div>
+          }
+
+
+          <span class="qr-security-label">
+
+            <span class="material-symbols-outlined">
+              verified_user
+            </span>
+
+            QR code sécurisé B2WA
+          </span>
+        </div>
+
+
+        <div class="qr-details-column">
+
+          <div class="qr-tracking-block">
+
+            <span>
+              NUMÉRO DE SUIVI
+            </span>
+
+
+            <div class="qr-tracking-number">
+
+              <strong>
+                {{ qrModalShipment.trackingNumber }}
+              </strong>
+
+
+              <button
+                type="button"
+                title="Copier le numéro"
+                (click)="
+                  copyTrackingNumber(
+                    qrModalShipment.trackingNumber
+                  )
+                ">
+
+                <span class="material-symbols-outlined">
+                  content_copy
+                </span>
+              </button>
+            </div>
+          </div>
+
+
+          <div class="qr-status-line">
+
+            <span
+              class="status-badge"
+              [class]="
+                getStatusClass(
+                  qrModalShipment.status
+                )
+              ">
+
+              <span class="status-dot"></span>
+
+              {{ getStatusLabel(qrModalShipment.status) }}
+            </span>
+
+
+            <span class="qr-live-status">
+
+              <span class="live-dot"></span>
+
+              Suivi en direct
+            </span>
+          </div>
+
+
+          <div class="qr-route-card">
+
+            <div class="qr-route-location">
+
+              <span class="qr-route-marker origin-marker">
+
+                <span class="material-symbols-outlined">
+                  radio_button_checked
+                </span>
+              </span>
+
+
+              <div>
+
+                <small>
+                  Départ
+                </small>
+
+                <strong>
+                  {{ qrModalShipment.origin }}
+                </strong>
+              </div>
+            </div>
+
+
+            <div class="qr-route-connector">
+
+              <span class="material-symbols-outlined">
+                local_shipping
+              </span>
+            </div>
+
+
+            <div class="qr-route-location">
+
+              <span class="qr-route-marker destination-marker">
+
+                <span class="material-symbols-outlined">
+                  location_on
+                </span>
+              </span>
+
+
+              <div>
+
+                <small>
+                  Destination
+                </small>
+
+                <strong>
+                  {{ qrModalShipment.destination }}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="qr-info-grid">
+
+            <div class="qr-info-item">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+
+              <div>
+
+                <small>
+                  Colis
+                </small>
+
+                <strong>
+                  {{ qrModalShipment.packages }}
+                </strong>
+              </div>
+            </div>
+
+
+            <div class="qr-info-item">
+
+              <span class="material-symbols-outlined">
+                scale
+              </span>
+
+
+              <div>
+
+                <small>
+                  Poids total
+                </small>
+
+                <strong>
+                  {{ qrModalShipment.weight }} kg
+                </strong>
+              </div>
+            </div>
+
+
+            <div class="qr-info-item">
+
+              <span class="material-symbols-outlined">
+                calendar_month
+              </span>
+
+
+              <div>
+
+                <small>
+                  Livraison estimée
+                </small>
+
+                <strong>
+                  {{ qrModalShipment.estimatedDelivery }}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="qr-scan-instruction">
+
+            <div class="instruction-icon">
+
+              <span class="material-symbols-outlined">
+                smartphone
+              </span>
+            </div>
+
+
+            <div>
+
+              <strong>
+                Scannez pour suivre ce colis
+              </strong>
+
+              <p>
+                Le scan ouvre directement la page de suivi
+                de cette expédition.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="qr-modal-footer">
+
+        <button
+          type="button"
+          class="qr-secondary-btn"
+          (click)="downloadQrCode(qrModalShipment)">
+
+          <span class="material-symbols-outlined">
+            download
+          </span>
+
+          Télécharger
+        </button>
+
+
+        <button
+          type="button"
+          class="qr-primary-btn"
+          (click)="openTrackingPage(qrModalShipment)">
+
+          <span class="material-symbols-outlined">
+            open_in_new
+          </span>
+
+          Ouvrir le suivi
+        </button>
+      </div>
+    </section>
+  </div>
+}
+
+</div>

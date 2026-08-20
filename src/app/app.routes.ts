@@ -199,6 +199,25 @@ export const routes: Routes = [
             .then(m => m.ShippingComponent)
       },
       {
+        path: 'create-shipment',
+
+        loadComponent: () =>
+          import('./pages/shipping/create-shipment/create-shipment')
+            .then(m => m.CreateShipmentComponent)
+      },
+      { 
+        path: 'shipment-detail/:id',
+        loadComponent: () =>
+          import('./pages/shipping/shipment-detail/shipment-detail')
+            .then(m => m.ShipmentDetailComponent)
+      },
+      { 
+        path: 'tracking',
+        loadComponent: () =>
+          import('./pages/shipping/tracking/tracking')
+            .then(m => m.TrackingComponent)
+      },
+      {
         path: 'stories',
 
         loadComponent: () =>

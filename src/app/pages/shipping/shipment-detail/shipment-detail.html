@@ -1,0 +1,887 @@
+@if (loading) {
+
+  <div class="shipment-detail-state loading-state">
+
+    <span class="material-symbols-outlined rotating">
+      progress_activity
+    </span>
+
+    <h2>
+      Chargement de l'expédition...
+    </h2>
+
+    <p>
+      Récupération des informations de suivi.
+    </p>
+  </div>
+}
+
+
+@else if (notFound || !shipment) {
+
+  <div class="shipment-detail-state empty-state">
+
+    <span class="material-symbols-outlined">
+      search_off
+    </span>
+
+    <h2>
+      Expédition introuvable
+    </h2>
+
+    <p>
+      Cette expédition n'existe pas ou n'est plus disponible.
+    </p>
+
+    <button
+      type="button"
+      class="primary-btn"
+      (click)="goBack()">
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+      Retour aux expéditions
+    </button>
+  </div>
+}
+
+
+@else {
+
+  <div class="shipment-detail-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="page-header">
+
+      <div class="header-left">
+
+        <button
+          type="button"
+          class="back-btn"
+          title="Retour"
+          (click)="goBack()">
+
+          <span class="material-symbols-outlined">
+            arrow_back
+          </span>
+        </button>
+
+
+        <div>
+
+          <span class="page-kicker">
+
+            <span class="material-symbols-outlined">
+              local_shipping
+            </span>
+
+            B2WA EXPEDITIONS
+          </span>
+
+
+          <h1>
+            Détails de l'expédition
+          </h1>
+
+
+          <p>
+            Suivez l'évolution de votre livraison.
+          </p>
+        </div>
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          (click)="copyTrackingNumber()">
+
+          <span class="material-symbols-outlined">
+            content_copy
+          </span>
+
+          Copier le suivi
+        </button>
+
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="trackShipment()">
+
+          <span class="material-symbols-outlined">
+            location_on
+          </span>
+
+          Suivre
+        </button>
+      </div>
+    </header>
+
+
+    <!-- =====================================================
+         SHIPMENT SUMMARY
+    ====================================================== -->
+
+    <section class="shipment-summary">
+
+      <div class="summary-main">
+
+        <div class="shipment-icon">
+
+          <span class="material-symbols-outlined">
+            local_shipping
+          </span>
+        </div>
+
+
+        <div>
+
+          <span class="summary-label">
+            EXPÉDITION
+          </span>
+
+
+          <h2>
+            {{ shipment.reference }}
+          </h2>
+
+
+          <p>
+            Créée le {{ shipment.createdAt }}
+          </p>
+        </div>
+      </div>
+
+
+      <div
+        class="status-badge"
+        [class]="getStatusClass(shipment.status)">
+
+        <span class="status-dot"></span>
+
+        {{ getStatusLabel(shipment.status) }}
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         MAIN GRID
+    ====================================================== -->
+
+    <div class="detail-grid">
+
+
+      <!-- =====================================================
+           LEFT CONTENT
+      ====================================================== -->
+
+      <main class="detail-main">
+
+
+        <!-- =====================================================
+             ROUTE
+        ====================================================== -->
+
+        <section class="detail-card route-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-kicker">
+                ITINÉRAIRE
+              </span>
+
+
+              <h2>
+                Parcours de l'expédition
+              </h2>
+            </div>
+
+
+            <span class="material-symbols-outlined card-header-icon">
+              route
+            </span>
+          </div>
+
+
+          <div class="route">
+
+
+            <!-- DÉPART -->
+
+            <div class="route-point">
+
+              <div class="route-icon departure">
+
+                <span class="material-symbols-outlined">
+                  trip_origin
+                </span>
+              </div>
+
+
+              <div class="route-content">
+
+                <span>
+                  DÉPART
+                </span>
+
+
+                <strong>
+                  {{ shipment.sender.city }}
+                </strong>
+
+
+                <small>
+                  {{ shipment.sender.country }}
+                </small>
+
+
+                @if (shipment.sender.address) {
+
+                  <small class="route-address">
+                    {{ shipment.sender.address }}
+                  </small>
+                }
+              </div>
+            </div>
+
+
+            <div class="route-line">
+
+              <span class="material-symbols-outlined">
+                local_shipping
+              </span>
+            </div>
+
+
+            <!-- ARRIVÉE -->
+
+            <div class="route-point">
+
+              <div class="route-icon arrival">
+
+                <span class="material-symbols-outlined">
+                  location_on
+                </span>
+              </div>
+
+
+              <div class="route-content">
+
+                <span>
+                  ARRIVÉE
+                </span>
+
+
+                <strong>
+                  {{ shipment.receiver.city }}
+                </strong>
+
+
+                <small>
+                  {{ shipment.receiver.country }}
+                </small>
+
+
+                @if (shipment.receiver.address) {
+
+                  <small class="route-address">
+                    {{ shipment.receiver.address }}
+                  </small>
+                }
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =====================================================
+             TIMELINE
+        ====================================================== -->
+
+        <section class="detail-card timeline-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-kicker">
+                SUIVI
+              </span>
+
+
+              <h2>
+                Progression de l'expédition
+              </h2>
+            </div>
+
+
+            <span class="material-symbols-outlined card-header-icon">
+              timeline
+            </span>
+          </div>
+
+
+          <div class="timeline">
+
+            @for (
+              step of trackingSteps;
+              track step.id
+            ) {
+
+              <div
+                class="timeline-item"
+                [class.completed]="step.completed"
+                [class.current]="step.current">
+
+
+                <div class="timeline-marker">
+
+                  @if (step.completed) {
+
+                    <span class="material-symbols-outlined">
+                      check
+                    </span>
+                  }
+
+                  @else if (step.current) {
+
+                    <span class="timeline-current-dot"></span>
+                  }
+
+                  @else {
+
+                    <span class="timeline-number">
+                      {{ step.id }}
+                    </span>
+                  }
+                </div>
+
+
+                <div class="timeline-content">
+
+                  <div class="timeline-top">
+
+                    <strong>
+                      {{ step.title }}
+                    </strong>
+
+
+                    @if (step.date) {
+
+                      <span>
+                        {{ step.date }}
+                      </span>
+                    }
+                  </div>
+
+
+                  <p>
+                    {{ step.description }}
+                  </p>
+
+
+                  @if (step.current) {
+
+                    <span class="timeline-live-label">
+
+                      <span class="live-dot"></span>
+
+                      Étape actuelle
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+
+            @empty {
+
+              <div class="timeline-empty">
+
+                <span class="material-symbols-outlined">
+                  timeline
+                </span>
+
+                <p>
+                  Aucun événement de suivi disponible.
+                </p>
+              </div>
+            }
+          </div>
+        </section>
+
+
+        <!-- =====================================================
+             PACKAGE
+        ====================================================== -->
+
+        <section class="detail-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-kicker">
+                COLIS
+              </span>
+
+
+              <h2>
+                Informations du colis
+              </h2>
+            </div>
+
+
+            <span class="material-symbols-outlined card-header-icon">
+              inventory_2
+            </span>
+          </div>
+
+
+          <div class="info-grid">
+
+
+            <!-- SERVICE -->
+
+            <div class="info-item">
+
+              <span class="material-symbols-outlined">
+                category
+              </span>
+
+
+              <div>
+
+                <small>
+                  Service
+                </small>
+
+
+                <strong>
+                  {{ shipment.service }}
+                </strong>
+              </div>
+            </div>
+
+
+            <!-- POIDS -->
+
+            <div class="info-item">
+
+              <span class="material-symbols-outlined">
+                scale
+              </span>
+
+
+              <div>
+
+                <small>
+                  Poids
+                </small>
+
+
+                <strong>
+                  {{ shipment.weight }} kg
+                </strong>
+              </div>
+            </div>
+
+
+            <!-- QUANTITÉ -->
+
+            <div class="info-item">
+
+              <span class="material-symbols-outlined">
+                inventory
+              </span>
+
+
+              <div>
+
+                <small>
+                  Quantité
+                </small>
+
+
+                <strong>
+                  {{ shipment.packages }} colis
+                </strong>
+              </div>
+            </div>
+
+
+            <!-- FRAIS -->
+
+            <div class="info-item">
+
+              <span class="material-symbols-outlined">
+                payments
+              </span>
+
+
+              <div>
+
+                <small>
+                  Frais
+                </small>
+
+
+                <strong>
+                  {{ shipment.price | number }} {{ shipment.currency }}
+                </strong>
+              </div>
+            </div>
+
+
+            <!-- TRANSPORTEUR -->
+
+            <div class="info-item">
+
+              <span class="material-symbols-outlined">
+                local_shipping
+              </span>
+
+
+              <div>
+
+                <small>
+                  Transporteur
+                </small>
+
+
+                <strong>
+                  {{ shipment.carrier }}
+                </strong>
+              </div>
+            </div>
+
+
+            <!-- DATE LIVRAISON -->
+
+            <div class="info-item">
+
+              <span class="material-symbols-outlined">
+                calendar_month
+              </span>
+
+
+              <div>
+
+                <small>
+                  Livraison estimée
+                </small>
+
+
+                <strong>
+                  {{ shipment.estimatedDelivery }}
+                </strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =====================================================
+             DESCRIPTION
+        ====================================================== -->
+
+        <section class="detail-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-kicker">
+                DESCRIPTION
+              </span>
+
+
+              <h2>
+                Détails supplémentaires
+              </h2>
+            </div>
+
+
+            <span class="material-symbols-outlined card-header-icon">
+              description
+            </span>
+          </div>
+
+
+          <p class="description">
+
+            @if (shipment.description) {
+
+              {{ shipment.description }}
+            }
+
+            @else {
+
+              Aucune description supplémentaire
+              n'a été renseignée pour cette expédition.
+            }
+          </p>
+        </section>
+      </main>
+
+
+      <!-- =====================================================
+           RIGHT SIDEBAR
+      ====================================================== -->
+
+      <aside class="detail-sidebar">
+
+
+        <!-- =====================================================
+             TRACKING
+        ====================================================== -->
+
+        <section class="sidebar-card tracking-card">
+
+          <span class="card-kicker">
+            NUMÉRO DE SUIVI
+          </span>
+
+
+          <div class="tracking-number">
+
+            <strong>
+              {{ shipment.trackingNumber }}
+            </strong>
+
+
+            <button
+              type="button"
+              title="Copier le numéro de suivi"
+              (click)="copyTrackingNumber()">
+
+              <span class="material-symbols-outlined">
+                content_copy
+              </span>
+            </button>
+          </div>
+
+
+          <p>
+            Utilisez ce numéro pour suivre votre expédition.
+          </p>
+        </section>
+
+
+        <!-- =====================================================
+             SENDER
+        ====================================================== -->
+
+        <section class="sidebar-card">
+
+          <div class="sidebar-title">
+
+            <span class="material-symbols-outlined">
+              person
+            </span>
+
+
+            <h3>
+              Expéditeur
+            </h3>
+          </div>
+
+
+          <div class="person-info">
+
+            <div class="avatar">
+
+              {{ getInitials(shipment.sender.name) }}
+            </div>
+
+
+            <div>
+
+              <strong>
+                {{ shipment.sender.name }}
+              </strong>
+
+
+              <span>
+                {{ shipment.sender.phone }}
+              </span>
+
+
+              <small>
+                {{ shipment.sender.city }},
+                {{ shipment.sender.country }}
+              </small>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =====================================================
+             RECEIVER
+        ====================================================== -->
+
+        <section class="sidebar-card">
+
+          <div class="sidebar-title">
+
+            <span class="material-symbols-outlined">
+              person_pin
+            </span>
+
+
+            <h3>
+              Destinataire
+            </h3>
+          </div>
+
+
+          <div class="person-info">
+
+            <div class="avatar receiver-avatar">
+
+              {{ getInitials(shipment.receiver.name) }}
+            </div>
+
+
+            <div>
+
+              <strong>
+                {{ shipment.receiver.name }}
+              </strong>
+
+
+              <span>
+                {{ shipment.receiver.phone }}
+              </span>
+
+
+              <small>
+                {{ shipment.receiver.city }},
+                {{ shipment.receiver.country }}
+              </small>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- =====================================================
+             DELIVERY
+        ====================================================== -->
+
+        <section class="sidebar-card delivery-card">
+
+          <div class="sidebar-title">
+
+            <span class="material-symbols-outlined">
+              event_available
+            </span>
+
+
+            <h3>
+              Livraison estimée
+            </h3>
+          </div>
+
+
+          <strong class="delivery-date">
+
+            {{ shipment.estimatedDelivery }}
+          </strong>
+
+
+          <span class="delivery-info">
+
+            Transporteur :
+            {{ shipment.carrier }}
+          </span>
+        </section>
+
+
+        <!-- =====================================================
+             ACTIONS
+        ====================================================== -->
+
+        <section class="sidebar-card actions-card">
+
+          <button
+            type="button"
+            class="action-btn primary-action"
+            (click)="trackShipment()">
+
+            <span class="material-symbols-outlined">
+              location_on
+            </span>
+
+            Suivre l'expédition
+          </button>
+
+
+          <button
+            type="button"
+            class="action-btn"
+            (click)="contactTransporter()">
+
+            <span class="material-symbols-outlined">
+              support_agent
+            </span>
+
+            Contacter le transporteur
+          </button>
+
+
+          @if (
+            shipment.status !== 'delivered' &&
+            shipment.status !== 'cancelled'
+          ) {
+
+            <button
+              type="button"
+              class="action-btn danger-action"
+              (click)="cancelShipment()">
+
+              <span class="material-symbols-outlined">
+                cancel
+              </span>
+
+              Annuler l'expédition
+            </button>
+          }
+
+          @else if (shipment.status === 'cancelled') {
+
+            <div class="action-disabled-message">
+
+              <span class="material-symbols-outlined">
+                block
+              </span>
+
+              Expédition annulée
+            </div>
+          }
+
+          @else {
+
+            <div class="action-disabled-message">
+
+              <span class="material-symbols-outlined">
+                check_circle
+              </span>
+
+              Expédition déjà livrée
+            </div>
+          }
+        </section>
+      </aside>
+    </div>
+  </div>
+}

@@ -1,0 +1,722 @@
+<div class="tracking-page">
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <section class="tracking-header">
+
+    <div class="header-content">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()">
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
+
+
+      <span class="page-kicker">
+
+        <span class="material-symbols-outlined">
+          local_shipping
+        </span>
+
+        B2WA EXPEDITIONS
+      </span>
+
+
+      <h1>
+        Suivre une expédition
+      </h1>
+
+
+      <p>
+        Suivez votre colis en temps réel et consultez chaque étape
+        de son acheminement.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       MESSAGE D'ERREUR
+  ====================================================== -->
+
+  @if (searched && !shipment) {
+
+    <div class="tracking-error-message">
+
+      <span class="material-symbols-outlined">
+        error
+      </span>
+
+      Aucun résultat trouvé pour ce numéro de suivi.
+    </div>
+  }
+
+
+  <!-- =====================================================
+       RECHERCHE
+  ====================================================== -->
+
+  <section class="tracking-search-section">
+
+    <div class="tracking-search-card">
+
+      <div class="search-icon">
+
+        <span class="material-symbols-outlined">
+          qr_code_scanner
+        </span>
+      </div>
+
+
+      <div class="search-content">
+
+        <label for="tracking-number">
+          Numéro de suivi
+        </label>
+
+
+        <div class="tracking-input">
+
+          <input
+            id="tracking-number"
+            name="trackingNumber"
+            type="text"
+            [(ngModel)]="trackingNumber"
+            placeholder="Ex : B2WA-ML-8F42K9"
+            autocomplete="off"
+            (keyup.enter)="trackShipment()"
+          />
+
+
+          <button
+            type="button"
+            (click)="trackShipment()"
+            [disabled]="!trackingNumber.trim()">
+
+            <span class="material-symbols-outlined">
+              search
+            </span>
+
+            Suivre
+          </button>
+        </div>
+
+
+        <small>
+          Entrez le numéro de suivi fourni lors de la création
+          de votre expédition.
+        </small>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       RÉSULTAT EXPÉDITION
+  ====================================================== -->
+
+  @if (shipment) {
+
+
+    <!-- ===================================================
+         RÉSUMÉ EXPÉDITION
+    ==================================================== -->
+
+    <section class="shipment-summary">
+
+      <div class="summary-top">
+
+        <div>
+
+          <span class="summary-kicker">
+            EXPÉDITION
+          </span>
+
+
+          <h2>
+            {{ shipment.trackingNumber }}
+          </h2>
+
+
+          <small class="shipment-reference">
+            Référence :
+            {{ shipment.reference }}
+          </small>
+        </div>
+
+
+        <span
+          class="shipment-status"
+          [class]="getStatusClass(shipment.status)">
+
+          <span class="status-dot"></span>
+
+          {{ getStatusLabel(shipment.status) }}
+        </span>
+      </div>
+
+
+      <!-- ROUTE -->
+
+      <div class="route-summary">
+
+
+        <!-- ORIGINE -->
+
+        <div class="location">
+
+          <div class="location-icon origin">
+
+            <span class="material-symbols-outlined">
+              location_on
+            </span>
+          </div>
+
+
+          <div>
+
+            <small>
+              Départ
+            </small>
+
+
+            <strong>
+              {{ shipment.sender.city }}
+            </strong>
+
+
+            <span>
+              {{ shipment.sender.country }}
+            </span>
+          </div>
+        </div>
+
+
+        <div class="route-line">
+
+          <span></span>
+
+          <span class="material-symbols-outlined">
+            local_shipping
+          </span>
+
+          <span></span>
+        </div>
+
+
+        <!-- DESTINATION -->
+
+        <div class="location">
+
+          <div class="location-icon destination">
+
+            <span class="material-symbols-outlined">
+              flag
+            </span>
+          </div>
+
+
+          <div>
+
+            <small>
+              Destination
+            </small>
+
+
+            <strong>
+              {{ shipment.receiver.city }}
+            </strong>
+
+
+            <span>
+              {{ shipment.receiver.country }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- LIVRAISON ESTIMÉE -->
+
+      <div class="delivery-info">
+
+        <div class="delivery-icon">
+
+          <span class="material-symbols-outlined">
+            event_available
+          </span>
+        </div>
+
+
+        <div>
+
+          <small>
+            Livraison estimée
+          </small>
+
+
+          <strong>
+            {{ shipment.estimatedDelivery }}
+          </strong>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================
+         CONTENU TRACKING
+    ==================================================== -->
+
+    <section class="tracking-content">
+
+
+      <!-- =================================================
+           COLONNE PRINCIPALE
+      ================================================== -->
+
+      <div class="tracking-main">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="section-kicker">
+              SUIVI
+            </span>
+
+
+            <h2>
+              Progression de l'expédition
+            </h2>
+          </div>
+
+
+          <span
+            class="tracking-live"
+            [class.tracking-inactive]="
+              shipment.status === 'cancelled'
+            ">
+
+            <span></span>
+
+            @if (shipment.status === 'cancelled') {
+              Suivi arrêté
+            }
+
+            @else {
+              Suivi actif
+            }
+          </span>
+        </div>
+
+
+        <!-- PROGRESSION -->
+
+        <div class="tracking-progress">
+
+          <div
+            class="progress-line"
+            [style.width.%]="getProgress()">
+          </div>
+
+
+          @for (
+            step of trackingSteps;
+            track step.id
+          ) {
+
+            <div
+              class="progress-step"
+              [class.completed]="step.completed"
+              [class.current]="step.current">
+
+              <div class="step-icon">
+
+                <span class="material-symbols-outlined">
+                  {{ step.icon }}
+                </span>
+              </div>
+
+
+              <div class="step-label">
+
+                <strong>
+                  {{ step.title }}
+                </strong>
+
+
+                <small>
+                  {{ step.date }}
+                </small>
+              </div>
+            </div>
+          }
+        </div>
+
+
+        <!-- HISTORIQUE -->
+
+        <div class="history-card">
+
+          <div class="history-header">
+
+            <div>
+
+              <span class="section-kicker">
+                HISTORIQUE
+              </span>
+
+
+              <h3>
+                Activité de l'expédition
+              </h3>
+            </div>
+
+
+            <span class="material-symbols-outlined">
+              history
+            </span>
+          </div>
+
+
+          <div class="timeline">
+
+            @for (
+              event of shipmentHistory;
+              track event.id
+            ) {
+
+              <div
+                class="timeline-item"
+                [class.current]="event.current">
+
+                <div class="timeline-marker">
+
+                  <span class="material-symbols-outlined">
+                    {{ event.icon }}
+                  </span>
+                </div>
+
+
+                <div class="timeline-content">
+
+                  <div class="timeline-top">
+
+                    <strong>
+                      {{ event.title }}
+                    </strong>
+
+
+                    <small>
+                      {{ event.date }}
+                    </small>
+                  </div>
+
+
+                  <p>
+                    {{ event.description }}
+                  </p>
+
+
+                  @if (event.location) {
+
+                    <span class="event-location">
+
+                      <span class="material-symbols-outlined">
+                        location_on
+                      </span>
+
+                      {{ event.location }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+
+            @empty {
+
+              <div class="timeline-empty">
+
+                <span class="material-symbols-outlined">
+                  history
+                </span>
+
+                <p>
+                  Aucun historique disponible.
+                </p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+
+      <!-- =================================================
+           SIDEBAR
+      ================================================== -->
+
+      <aside class="tracking-sidebar">
+
+
+        <!-- =================================================
+             INFORMATIONS COLIS
+        ================================================== -->
+
+        <div class="info-card">
+
+          <div class="info-card-header">
+
+            <div class="info-card-icon blue">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+            </div>
+
+
+            <div>
+
+              <span>
+                COLIS
+              </span>
+
+
+              <h3>
+                Informations
+              </h3>
+            </div>
+          </div>
+
+
+          <div class="info-list">
+
+
+            <!-- RÉFÉRENCE -->
+
+            <div>
+
+              <small>
+                Référence
+              </small>
+
+
+              <strong>
+                {{ shipment.reference }}
+              </strong>
+            </div>
+
+
+            <!-- NUMÉRO SUIVI -->
+
+            <div>
+
+              <small>
+                Numéro de suivi
+              </small>
+
+
+              <strong>
+                {{ shipment.trackingNumber }}
+              </strong>
+            </div>
+
+
+            <!-- TYPE -->
+
+            <div>
+
+              <small>
+                Type
+              </small>
+
+
+              <strong>
+                {{ shipment.service }}
+              </strong>
+            </div>
+
+
+            <!-- QUANTITÉ -->
+
+            <div>
+
+              <small>
+                Quantité
+              </small>
+
+
+              <strong>
+                {{ shipment.packages }} colis
+              </strong>
+            </div>
+
+
+            <!-- POIDS -->
+
+            <div>
+
+              <small>
+                Poids
+              </small>
+
+
+              <strong>
+                {{ shipment.weight }} kg
+              </strong>
+            </div>
+
+
+            <!-- SERVICE -->
+
+            <div>
+
+              <small>
+                Service
+              </small>
+
+
+              <strong>
+                {{ shipment.service }}
+              </strong>
+            </div>
+
+
+            <!-- TRANSPORTEUR -->
+
+            <div>
+
+              <small>
+                Transporteur
+              </small>
+
+
+              <strong>
+                {{ shipment.carrier }}
+              </strong>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- =================================================
+             CONTACT SUPPORT
+        ================================================== -->
+
+        <div class="help-card">
+
+          <div class="help-icon">
+
+            <span class="material-symbols-outlined">
+              support_agent
+            </span>
+          </div>
+
+
+          <div>
+
+            <h3>
+              Besoin d'aide ?
+            </h3>
+
+
+            <p>
+              Un problème avec votre expédition ?
+              Notre équipe est disponible pour vous accompagner.
+            </p>
+          </div>
+
+
+          <button
+            type="button"
+            (click)="contactSupport()">
+
+            Contacter le support
+
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+          </button>
+        </div>
+      </aside>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       EXPÉDITION INTROUVABLE
+  ====================================================== -->
+
+  @if (!shipment && searched) {
+
+    <section class="tracking-empty">
+
+      <div class="empty-icon">
+
+        <span class="material-symbols-outlined">
+          search_off
+        </span>
+      </div>
+
+
+      <h2>
+        Expédition introuvable
+      </h2>
+
+
+      <p>
+        Aucun envoi ne correspond à ce numéro de suivi.
+        Vérifiez la référence puis réessayez.
+      </p>
+
+
+      <button
+        type="button"
+        (click)="resetSearch()">
+
+        <span class="material-symbols-outlined">
+          refresh
+        </span>
+
+        Réessayer
+      </button>
+    </section>
+  }
+
+
+  <!-- =====================================================
+       ÉTAT INITIAL
+  ====================================================== -->
+
+  @if (!shipment && !searched) {
+
+    <section class="tracking-initial">
+
+      <div class="initial-icon">
+
+        <span class="material-symbols-outlined">
+          local_shipping
+        </span>
+      </div>
+
+
+      <h2>
+        Rechercher une expédition
+      </h2>
+
+
+      <p>
+        Saisissez votre numéro de suivi pour voir
+        l'état actuel de votre livraison.
+      </p>
+    </section>
+  }
+
+</div>
