@@ -1,0 +1,1 @@
+import{E as Ga,Sn as qa,_n as ov,tn as gI}from"./chunk-0qqP4wJH.js";var s=class n{static ɵfac=function(t){return new(t||n)};static ɵcmp=ov({type:n,selectors:[[`app-notifications`]],decls:2,vars:0,template:function(t,p){t&1&&(Ga(0,`p`),gI(1,`notifications works!`),qa())},encapsulation:2})};export{s as NotificationsComponent};

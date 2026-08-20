@@ -1,0 +1,1 @@
+import{E as Ga,Sn as qa,_n as ov,tn as gI}from"./chunk-0qqP4wJH.js";var c=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=ov({type:e,selectors:[[`app-activity`]],decls:2,vars:0,template:function(t,m){t&1&&(Ga(0,`p`),gI(1,`activity works!`),qa())},encapsulation:2})};export{c as ActivityComponent};
