@@ -192,6 +192,13 @@ export const routes: Routes = [
             .then(m => m.ProductsComponent)
       },
       {
+        path: 'add-products',
+
+        loadComponent: () =>
+          import('./pages/products/add-products/add-products')
+            .then(m => m.AddProductsComponent)
+      },
+      {
         path: 'shipping',
 
         loadComponent: () =>

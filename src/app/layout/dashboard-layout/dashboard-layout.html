@@ -3,9 +3,7 @@
   [class.sidebar-collapsed]="sidebarCollapsed"
   [class.mobile-menu-open]="mobileMenuOpen"
 >
-  <!-- ==================================================
-       SIDEBAR
-  =================================================== -->
+  <!-- SIDEBAR -->
   <app-sidebar
     [collapsed]="sidebarCollapsed"
     [mobileOpen]="mobileMenuOpen"
@@ -13,24 +11,20 @@
     (toggleCollapse)="onToggleSidebar()"
   />
 
-  <!-- ==================================================
-       MOBILE OVERLAY
-  =================================================== -->
+  <!-- MOBILE OVERLAY -->
   <div
     class="sidebar-overlay"
     [class.visible]="mobileMenuOpen"
     (click)="closeMobileMenu()"
   ></div>
 
-  <!-- ==================================================
-       MAIN AREA
-  =================================================== -->
+  <!-- MAIN AREA -->
   <div class="dashboard-main">
     <!-- NAVBAR -->
     <app-navbar (toggleSidebar)="onToggleSidebar()" />
 
-    <!-- CONTENT -->
-    <main class="dashboard-content">
+    <!-- CONTENT (On a ajouté #contentArea ici) -->
+    <main #contentArea class="dashboard-content">
       <router-outlet />
     </main>
   </div>

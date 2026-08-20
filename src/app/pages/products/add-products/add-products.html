@@ -1,0 +1,624 @@
+<div class="add-product-page">
+
+  <!-- HEADER -->
+  <header class="page-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
+
+      <div>
+        <span class="page-kicker">
+          <span class="material-symbols-outlined">
+            storefront
+        </span>
+          BOUTIQUE B2WA
+        </span>
+
+        <h1>
+          Ajouter un produit
+        </h1>
+
+        <p>
+          Créez une fiche produit complète pour votre boutique.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="header-badge">
+      <span class="material-symbols-outlined">
+        add_business
+      </span>
+
+      Nouveau produit
+    </div>
+
+  </header>
+
+
+  <!-- CONTENT -->
+  <main class="product-content">
+
+    <div class="main-column">
+
+      <!-- =========================
+           PRODUCT IMAGES
+      ========================== -->
+
+      <section class="product-card">
+
+        <div class="section-header">
+
+          <div class="section-icon blue">
+            <span class="material-symbols-outlined">
+              imagesmode
+            </span>
+          </div>
+
+          <div>
+            <h2>
+              Images du produit
+            </h2>
+
+            <p>
+              Ajoutez jusqu'à 5 images pour présenter votre produit.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="image-layout">
+
+          <!-- MAIN IMAGE -->
+
+          <div class="main-image-slot">
+
+            @if (imagePreviews[0]) {
+
+              <img
+                [src]="imagePreviews[0]"
+                alt="Image principale du produit"
+              />
+
+              <button
+                type="button"
+                class="remove-image main-remove"
+                (click)="removeImage(0)"
+              >
+                <span class="material-symbols-outlined">
+                  close
+                </span>
+              </button>
+
+              <label class="replace-image">
+                <span class="material-symbols-outlined">
+                  edit
+                </span>
+
+                Modifier
+
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  (change)="onImageSelected($event, 0)"
+                />
+              </label>
+
+            } @else {
+
+              <label class="main-upload">
+
+                <span class="material-symbols-outlined">
+                  add_photo_alternate
+                </span>
+
+                <strong>
+                  Image principale
+                </strong>
+
+                <small>
+                  Cliquez pour ajouter
+                </small>
+
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  (change)="onImageSelected($event, 0)"
+                />
+
+              </label>
+
+            }
+
+          </div>
+
+
+          <!-- OTHER IMAGES -->
+
+          <div class="secondary-images">
+
+            @for (slot of imageSlots; track slot) {
+
+              <div class="image-slot">
+
+                @if (imagePreviews[slot]) {
+
+                  <img
+                    [src]="imagePreviews[slot]"
+                    [alt]="'Image produit ' + (slot + 1)"
+                  />
+
+                  <button
+                    type="button"
+                    class="remove-image"
+                    (click)="removeImage(slot)"
+                  >
+                    <span class="material-symbols-outlined">
+                      close
+                    </span>
+                  </button>
+
+                } @else {
+
+                  <label class="small-upload">
+
+                    <span class="material-symbols-outlined">
+                      add
+                    </span>
+
+                    <small>
+                      Image {{ slot + 1 }}
+                    </small>
+
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      (change)="onImageSelected($event, slot)"
+                    />
+
+                  </label>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="image-info">
+
+          <span class="material-symbols-outlined">
+            info
+          </span>
+
+          <div>
+            <strong>
+              Minimum recommandé : 2 images
+            </strong>
+
+            <small>
+              La première image sera utilisée comme image principale
+              de votre produit.
+            </small>
+          </div>
+
+          <span
+            class="image-counter"
+            [class.valid]="imageCount >= 2"
+          >
+            {{ imageCount }}/5
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           GENERAL INFORMATION
+      ========================== -->
+
+      <section class="product-card">
+
+        <div class="section-header">
+
+          <div class="section-icon purple">
+            <span class="material-symbols-outlined">
+              inventory_2
+            </span>
+          </div>
+
+          <div>
+            <h2>
+              Informations du produit
+            </h2>
+
+            <p>
+              Présentez clairement votre produit aux acheteurs.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+
+            <label>
+              Nom du produit
+              <span>*</span>
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                sell
+              </span>
+
+              <input
+                type="text"
+                placeholder="Ex : Sac artisanal en cuir"
+                [(ngModel)]="product.name"
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Catégorie
+              <span>*</span>
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                category
+              </span>
+
+              <select [(ngModel)]="product.category">
+
+                <option value="">
+                  Choisir une catégorie
+                </option>
+
+                <option value="Mode">
+                  Mode
+                </option>
+
+                <option value="Alimentation">
+                  Alimentation
+                </option>
+
+                <option value="Électronique">
+                  Électronique
+                </option>
+
+                <option value="Artisanat">
+                  Artisanat
+                </option>
+
+                <option value="Agriculture">
+                  Agriculture
+                </option>
+
+                <option value="Maison">
+                  Maison
+                </option>
+
+                <option value="Beauté">
+                  Beauté
+                </option>
+
+                <option value="Autre">
+                  Autre
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Référence / SKU
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                qr_code_2
+              </span>
+
+              <input
+                type="text"
+                placeholder="Ex : B2WA-SAC-001"
+                [(ngModel)]="product.sku"
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Prix
+              <span>*</span>
+            </label>
+
+            <div class="price-input">
+
+              <input
+                type="number"
+                min="0"
+                placeholder="0"
+                [(ngModel)]="product.price"
+              />
+
+              <span>
+                FCFA
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Stock disponible
+              <span>*</span>
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                inventory
+              </span>
+
+              <input
+                type="number"
+                min="0"
+                placeholder="0"
+                [(ngModel)]="product.stock"
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              Description
+              <span>*</span>
+            </label>
+
+            <textarea
+              rows="5"
+              placeholder="Décrivez votre produit, ses caractéristiques, ses avantages..."
+              [(ngModel)]="product.description"
+            ></textarea>
+
+            <small class="field-hint">
+              Une bonne description aide les acheteurs à mieux comprendre
+              votre produit.
+            </small>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+
+    <!-- =========================
+         PREVIEW
+    ========================== -->
+
+    <aside class="preview-column">
+
+      <div class="preview-card">
+
+        <div class="preview-header">
+
+          <div>
+            <span class="preview-kicker">
+              APERÇU
+            </span>
+
+            <h3>
+              Votre produit
+            </h3>
+          </div>
+
+          <span class="material-symbols-outlined">
+            visibility
+          </span>
+
+        </div>
+
+
+        <div class="product-preview">
+
+          <div class="preview-image">
+
+            @if (imagePreviews[0]) {
+
+              <img
+                [src]="imagePreviews[0]"
+                alt="Aperçu produit"
+              />
+
+            } @else {
+
+              <div class="empty-preview">
+
+                <span class="material-symbols-outlined">
+                  image
+                </span>
+
+                <small>
+                  Aucune image
+                </small>
+
+              </div>
+
+            }
+
+            <span class="preview-status">
+              <span class="status-dot"></span>
+              Actif
+            </span>
+
+          </div>
+
+
+          <div class="preview-info">
+
+            <span class="preview-category">
+              {{ product.category || 'Catégorie' }}
+            </span>
+
+            <h4>
+              {{ product.name || 'Nom du produit' }}
+            </h4>
+
+            <p>
+              {{ product.description || 'La description de votre produit apparaîtra ici.' }}
+            </p>
+
+            <div class="preview-bottom">
+
+              <strong>
+                {{ product.price || 0 | number:'1.0-0' }} FCFA
+              </strong>
+
+              <span>
+                {{ product.stock || 0 }} en stock
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="preview-footer">
+
+          <span class="material-symbols-outlined">
+            info
+          </span>
+
+          <span>
+            Ceci est un aperçu de votre fiche produit.
+          </span>
+
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+
+  <!-- FOOTER ACTIONS -->
+
+  <footer class="page-actions">
+
+    <button
+      type="button"
+      class="cancel-btn"
+      (click)="goBack()"
+    >
+      <span class="material-symbols-outlined">
+        close
+      </span>
+
+      Annuler
+    </button>
+
+
+    <button
+      type="button"
+      class="create-btn"
+      [disabled]="!canCreateProduct"
+      (click)="createProduct()"
+    >
+
+      <span class="material-symbols-outlined">
+        add_circle
+      </span>
+
+      Ajouter le produit
+
+    </button>
+
+  </footer>
+
+
+  <!-- SUCCESS TOAST -->
+
+  @if (showSuccess) {
+
+    <div class="success-toast">
+
+      <div class="toast-icon">
+
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
+      </div>
+
+      <div>
+
+        <strong>
+          Produit ajouté
+        </strong>
+
+        <small>
+          Le produit a été ajouté à votre catalogue.
+        </small>
+
+      </div>
+
+      <button
+        type="button"
+        (click)="showSuccess = false"
+      >
+        <span class="material-symbols-outlined">
+          close
+        </span>
+      </button>
+
+    </div>
+
+  }
+
+</div>

@@ -1,283 +1,1295 @@
-<div class="products-container">
+<div
+  class="products-container"
+  (click)="closeActionMenu()"
+>
 
-  <!-- HERO & STATISTIQUES -->
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
   <header class="products-header">
+
     <div class="header-titles">
-      <span class="eyebrow"><span class="material-symbols-outlined">inventory_2</span> GESTION DE STOCK</span>
-      <h1>Mes Produits</h1>
-      <p>Affichez, ajustez le stock et gérez la disponibilité de votre catalogue B2WA.</p>
+
+      <span class="eyebrow">
+
+        <span class="material-symbols-outlined">
+          inventory_2
+        </span>
+
+        CATALOGUE B2WA
+
+      </span>
+
+      <h1>
+        Mes Produits
+      </h1>
+
+      <p>
+        Gérez votre catalogue, vos stocks et la
+        disponibilité de vos produits.
+      </p>
+
     </div>
-    <button class="btn-primary" (click)="openCreateModal()">
-      <span class="material-symbols-outlined">add</span> Nouveau Produit
+
+
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="addProduct()"
+    >
+
+      <span class="material-symbols-outlined">
+        add
+      </span>
+
+      Ajouter un produit
+
     </button>
+
   </header>
 
-  <!-- CARTES DE STATISTIQUES -->
+
+
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
+
   <section class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon blue"><span class="material-symbols-outlined">package_2</span></div>
-      <div class="stat-info">
-        <span class="label">Total Produits</span>
-        <strong>{{ totalProductsCount }}</strong>
-      </div>
-    </div>
 
     <div class="stat-card">
-      <div class="stat-icon green"><span class="material-symbols-outlined">check_circle</span></div>
-      <div class="stat-info">
-        <span class="label">Produits Actifs</span>
-        <strong>{{ activeProductsCount }}</strong>
+
+      <div class="stat-icon blue">
+
+        <span class="material-symbols-outlined">
+          package_2
+        </span>
+
       </div>
+
+      <div class="stat-info">
+
+        <span class="label">
+          Total Produits
+        </span>
+
+        <strong>
+          {{ totalProductsCount }}
+        </strong>
+
+      </div>
+
     </div>
 
-    <div class="stat-card">
-      <div class="stat-icon orange"><span class="material-symbols-outlined">warning</span></div>
-      <div class="stat-info">
-        <span class="label">Stock Faible</span>
-        <strong>{{ lowStockProductsCount }}</strong>
-      </div>
-    </div>
 
     <div class="stat-card">
-      <div class="stat-icon red"><span class="material-symbols-outlined">block</span></div>
-      <div class="stat-info">
-        <span class="label">Rupture de Stock</span>
-        <strong>{{ outOfStockProductsCount }}</strong>
+
+      <div class="stat-icon green">
+
+        <span class="material-symbols-outlined">
+          check_circle
+        </span>
+
       </div>
+
+      <div class="stat-info">
+
+        <span class="label">
+          Produits Actifs
+        </span>
+
+        <strong>
+          {{ activeProductsCount }}
+        </strong>
+
+      </div>
+
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon purple"><span class="material-symbols-outlined">payments</span></div>
-      <div class="stat-info">
-        <span class="label">Valeur du Stock</span>
-        <strong>{{ totalInventoryValue | number }} FCFA</strong>
+
+      <div class="stat-icon orange">
+
+        <span class="material-symbols-outlined">
+          warning
+        </span>
+
       </div>
+
+      <div class="stat-info">
+
+        <span class="label">
+          Stock Faible
+        </span>
+
+        <strong>
+          {{ lowStockProductsCount }}
+        </strong>
+
+      </div>
+
     </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon red">
+
+        <span class="material-symbols-outlined">
+          production_quantity_limits
+        </span>
+
+      </div>
+
+      <div class="stat-info">
+
+        <span class="label">
+          Rupture de Stock
+        </span>
+
+        <strong>
+          {{ outOfStockProductsCount }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon purple">
+
+        <span class="material-symbols-outlined">
+          payments
+        </span>
+
+      </div>
+
+      <div class="stat-info">
+
+        <span class="label">
+          Valeur du Stock
+        </span>
+
+        <strong>
+          {{ totalInventoryValue | number }} FCFA
+        </strong>
+
+      </div>
+
+    </div>
+
   </section>
 
-  <!-- RECHERCHE ET FILTRES -->
+
+
+  <!-- =====================================================
+       SEARCH + FILTERS
+  ====================================================== -->
+
   <section class="filter-bar">
+
     <div class="search-box">
-      <span class="material-symbols-outlined search-icon">search</span>
-      <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Rechercher par nom ou SKU..." />
+
+      <span class="material-symbols-outlined search-icon">
+        search
+      </span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="applyFilters()"
+        placeholder="Rechercher par nom ou SKU..."
+      />
+
     </div>
+
 
     <div class="filter-group">
-      <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
-        <option value="ALL">Toutes les catégories</option>
-        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-      </select>
 
-      <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
-        <option value="ALL">Tous les statuts</option>
-        <option value="ACTIVE">Actifs uniquement</option>
-        <option value="INACTIVE">Désactivés uniquement</option>
-      </select>
-    </div>
-  </section>
-
-  <!-- TABLEAU ULTRA-PREMIUM DES PRODUITS -->
-  <section class="products-table-card">
-    <div class="table-responsive">
-      <table class="products-table">
-        <thead>
-          <tr>
-            <th>Produit</th>
-            <th>Catégorie</th>
-            <th>Prix (FCFA)</th>
-            <th>Niveau de Stock</th>
-            <th>Statut</th>
-            <th class="text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Utilisation de paginatedProducts (nom exact déclaré dans le .ts) -->
-          <tr *ngFor="let product of paginatedProducts; trackBy: trackByProductId" [class.row-inactive]="!product.isActive">
-            <td>
-              <div class="product-identity">
-                <div class="product-avatar">
-                  <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name">
-                  <span *ngIf="!product.imageUrl" class="material-symbols-outlined">image</span>
-                </div>
-                <div>
-                  <strong class="product-name">{{ product.name }}</strong>
-                  <span class="product-sku">SKU: {{ product.sku }}</span>
-                </div>
-              </div>
-            </td>
-
-            <td><span class="badge-category">{{ product.category }}</span></td>
-
-            <td><strong>{{ product.price | number }}</strong></td>
-
-            <td>
-              <div class="stock-pill" [ngClass]="{
-                'stock-ok': product.stock > product.minStockThreshold,
-                'stock-low': product.stock <= product.minStockThreshold && product.stock > 0,
-                'stock-out': product.stock === 0
-              }">
-                <span class="dot"></span>
-                <span>{{ product.stock }} en stock</span>
-              </div>
-            </td>
-
-            <td>
-              <label class="toggle-switch">
-                <input type="checkbox" [checked]="product.isActive" (change)="toggleStatusRequest(product)">
-                <span class="slider"></span>
-              </label>
-            </td>
-
-            <td class="text-right">
-              <button class="btn-icon" (click)="openEditModal(product)" title="Modifier">
-                <span class="material-symbols-outlined">edit</span>
-              </button>
-            </td>
-          </tr>
-
-          <tr *ngIf="filteredProducts.length === 0">
-            <td colspan="6" class="empty-state">
-              <span class="material-symbols-outlined">inventory_2</span>
-              <p>Aucun produit ne correspond à votre recherche.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- PAGINATION INTELLIGENTE -->
-  <section class="pagination-bar" *ngIf="filteredProducts.length > 0">
-    <div class="pagination-info">
-      Affichage de <strong>{{ paginationStart }}</strong> à <strong>{{ paginationEnd }}</strong> sur <strong>{{ filteredProducts.length }}</strong> produits
-    </div>
-
-    <div class="pagination-controls">
-      <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()" aria-label="Nombre de produits par page">
-        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">
-          {{ size }} / page
-        </option>
-      </select>
-
-      <button
-        type="button"
-        class="pagination-button"
-        [disabled]="currentPage === 1"
-        (click)="goToPreviousPage()"
-        aria-label="Page précédente"
+      <select
+        [(ngModel)]="selectedCategory"
+        (change)="applyFilters()"
       >
-        <span class="material-symbols-outlined">chevron_left</span>
-      </button>
 
-      <ng-container *ngFor="let page of paginationPages">
-        <span *ngIf="page === '...'" class="pagination-dots">...</span>
+        <option value="ALL">
+          Toutes les catégories
+        </option>
+
+        @for (category of categories; track category) {
+
+          <option [value]="category">
+            {{ category }}
+          </option>
+
+        }
+
+      </select>
+
+
+      <select
+        [(ngModel)]="selectedStatus"
+        (change)="applyFilters()"
+      >
+
+        <option value="ALL">
+          Tous les statuts
+        </option>
+
+        <option value="ACTIVE">
+          Actifs uniquement
+        </option>
+
+        <option value="INACTIVE">
+          Désactivés uniquement
+        </option>
+
+      </select>
+
+
+      @if (
+        searchQuery ||
+        selectedCategory !== 'ALL' ||
+        selectedStatus !== 'ALL'
+      ) {
+
         <button
-          *ngIf="page !== '...'"
+          type="button"
+          class="clear-filter-btn"
+          (click)="clearFilters()"
+        >
+
+          <span class="material-symbols-outlined">
+            filter_alt_off
+          </span>
+
+          Réinitialiser
+
+        </button>
+
+      }
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       PRODUCTS TABLE
+  ====================================================== -->
+
+  <section class="products-table-card">
+
+    <div class="table-heading">
+
+      <div>
+
+        <h2>
+          Catalogue
+        </h2>
+
+        <span>
+          {{ filteredProducts.length }}
+          produit(s)
+        </span>
+
+      </div>
+
+      <div class="table-heading-status">
+
+        <span class="status-dot active"></span>
+
+        Catalogue actif
+
+      </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+      <table class="products-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Produit
+            </th>
+
+            <th>
+              Catégorie
+            </th>
+
+            <th>
+              Prix
+            </th>
+
+            <th>
+              Stock
+            </th>
+
+            <th>
+              Statut
+            </th>
+
+            <th class="actions-heading">
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            product of paginatedProducts;
+            track product.id
+          ) {
+
+            <tr
+              [class.row-inactive]="!product.isActive"
+            >
+
+              <!-- PRODUCT -->
+
+              <td>
+
+                <div class="product-identity">
+
+                  <div class="product-avatar">
+
+                    @if (product.imageUrl) {
+
+                      <img
+                        [src]="product.imageUrl"
+                        [alt]="product.name"
+                      />
+
+                    } @else {
+
+                      <span class="material-symbols-outlined">
+                        image
+                      </span>
+
+                    }
+
+                  </div>
+
+
+                  <div class="product-main-info">
+
+                    <strong class="product-name">
+                      {{ product.name }}
+                    </strong>
+
+                    <span class="product-sku">
+                      SKU : {{ product.sku }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- CATEGORY -->
+
+              <td>
+
+                <span class="badge-category">
+
+                  {{ product.category }}
+
+                </span>
+
+              </td>
+
+
+              <!-- PRICE -->
+
+              <td>
+
+                <strong class="product-price">
+
+                  {{ product.price | number }}
+
+                  <small>
+                    FCFA
+                  </small>
+
+                </strong>
+
+              </td>
+
+
+              <!-- STOCK -->
+
+              <td>
+
+                <div
+                  class="stock-pill"
+                  [ngClass]="getStockClass(product)"
+                >
+
+                  <span class="dot"></span>
+
+                  {{ getStockLabel(product) }}
+
+                </div>
+
+              </td>
+
+
+              <!-- STATUS -->
+
+              <td>
+
+                <div class="status-cell">
+
+                  <label
+                    class="toggle-switch"
+                    [class.disabled-toggle]="!product.isActive"
+                    [title]="product.isActive
+                      ? 'Désactiver le produit'
+                      : 'Activer le produit'"
+                  >
+
+                    <input
+                      type="checkbox"
+                      [checked]="product.isActive"
+                      (click)="$event.stopPropagation()"
+                      (change)="toggleStatusRequest(product)"
+                    />
+
+                    <span class="slider"></span>
+
+                  </label>
+
+
+                  <span
+                    class="status-label"
+                    [class.active]="product.isActive"
+                    [class.inactive]="!product.isActive"
+                  >
+
+                    <span class="status-dot"></span>
+
+                    {{
+                      product.isActive
+                        ? 'Actif'
+                        : 'Inactif'
+                    }}
+
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <!-- ACTIONS -->
+
+              <td class="actions-cell">
+
+                <div class="action-wrapper">
+
+                  <button
+                    type="button"
+                    class="more-action-btn"
+                    [class.open]="openActionMenuId === product.id"
+                    (click)="
+                      $event.stopPropagation();
+                      toggleActionMenu(product.id)
+                    "
+                    title="Plus d'actions"
+                  >
+
+                    <span class="material-symbols-outlined">
+                      more_vert
+                    </span>
+
+                  </button>
+
+
+                  @if (
+                    openActionMenuId === product.id
+                  ) {
+
+                    <div
+                      class="action-menu"
+                      (click)="$event.stopPropagation()"
+                    >
+
+                      <button
+                        type="button"
+                        (click)="openViewModal(product)"
+                      >
+
+                        <span class="material-symbols-outlined">
+                          visibility
+                        </span>
+
+                        <span>
+                          Voir le produit
+                        </span>
+
+                      </button>
+
+
+                      <button
+                        type="button"
+                        (click)="updateProduct(product)"
+                      >
+
+                        <span class="material-symbols-outlined">
+                          edit
+                        </span>
+
+                        <span>
+                          Modifier
+                        </span>
+
+                      </button>
+
+                    </div>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- EMPTY -->
+
+          @if (filteredProducts.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="empty-state"
+              >
+
+                <div class="empty-icon">
+
+                  <span class="material-symbols-outlined">
+                    inventory_2
+                  </span>
+
+                </div>
+
+                <h3>
+                  Aucun produit trouvé
+                </h3>
+
+                <p>
+                  Aucun produit ne correspond à
+                  vos critères de recherche.
+                </p>
+
+                <button
+                  type="button"
+                  class="empty-reset-btn"
+                  (click)="clearFilters()"
+                >
+                  Réinitialiser les filtres
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       PAGINATION
+  ====================================================== -->
+
+  @if (filteredProducts.length > 0) {
+
+    <section class="pagination-bar">
+
+      <div class="pagination-info">
+
+        Affichage de
+
+        <strong>
+          {{ paginationStart }}
+        </strong>
+
+        à
+
+        <strong>
+          {{ paginationEnd }}
+        </strong>
+
+        sur
+
+        <strong>
+          {{ filteredProducts.length }}
+        </strong>
+
+        produits
+
+      </div>
+
+
+      <div class="pagination-controls">
+
+        <select
+          [(ngModel)]="itemsPerPage"
+          (change)="changeItemsPerPage()"
+          aria-label="Nombre de produits par page"
+        >
+
+          @for (
+            size of pageSizeOptions;
+            track size
+          ) {
+
+            <option [ngValue]="size">
+              {{ size }} / page
+            </option>
+
+          }
+
+        </select>
+
+
+        <button
           type="button"
           class="pagination-button"
-          [class.active]="currentPage === page"
-          (click)="changePage(page)"
+          [disabled]="currentPage === 1"
+          (click)="goToPreviousPage()"
         >
-          {{ page }}
-        </button>
-      </ng-container>
 
-      <button
-        type="button"
-        class="pagination-button"
-        [disabled]="currentPage === totalPages"
-        (click)="goToNextPage()"
-        aria-label="Page suivante"
+          <span class="material-symbols-outlined">
+            chevron_left
+          </span>
+
+        </button>
+
+
+        @for (
+          page of paginationPages;
+          track $index
+        ) {
+
+          @if (page === '...') {
+
+            <span class="pagination-dots">
+              ...
+            </span>
+
+          } @else {
+
+            <button
+              type="button"
+              class="pagination-button"
+              [class.active]="currentPage === page"
+              (click)="changePage(page)"
+            >
+              {{ page }}
+            </button>
+
+          }
+
+        }
+
+
+        <button
+          type="button"
+          class="pagination-button"
+          [disabled]="currentPage === totalPages"
+          (click)="goToNextPage()"
+        >
+
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+  }
+
+
+
+  <!-- =====================================================
+       PRODUCT DETAILS MODAL
+  ====================================================== -->
+
+  @if (
+    isViewModalOpen &&
+    selectedProduct
+  ) {
+
+    <div
+      class="modal-backdrop product-details-backdrop"
+      (click)="closeViewModal()"
+    >
+
+      <div
+        class="product-details-modal"
+        (click)="$event.stopPropagation()"
       >
-        <span class="material-symbols-outlined">chevron_right</span>
-      </button>
-    </div>
-  </section>
 
-  <!-- MODALE : CRÉER / MODIFIER PRODUIT -->
-  <div class="modal-backdrop" *ngIf="isProductModalOpen">
-    <div class="support-modal">
-      <div class="modal-header">
-        <div>
-          <span class="modal-eyebrow">FORMULAIRE PRODUIT</span>
-          <h2>{{ modalMode === 'CREATE' ? 'Ajouter un nouveau produit' : 'Modifier le produit' }}</h2>
-        </div>
-        <button class="modal-close" (click)="closeProductModal()">
-          <span class="material-symbols-outlined">close</span>
-        </button>
-      </div>
 
-      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Nom du produit <span>*</span></label>
-            <input type="text" formControlName="name" placeholder="Ex: Ordinateur HP Pavilion">
+        <!-- MODAL HEADER -->
+
+        <div class="details-header">
+
+          <div class="details-header-title">
+
+            <div class="details-header-icon">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+            </div>
+
+            <div>
+
+              <span class="details-kicker">
+                PRODUIT B2WA
+              </span>
+
+              <h2>
+                Détails du produit
+              </h2>
+
+            </div>
+
           </div>
 
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Code SKU / Référence <span>*</span></label>
-              <input type="text" formControlName="sku" placeholder="Ex: HP-5542">
-            </div>
 
-            <div class="form-group">
-              <label>Catégorie <span>*</span></label>
-              <select formControlName="category">
-                <option value="" disabled>Choisir une catégorie</option>
-                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-              </select>
-            </div>
-          </div>
+          <button
+            type="button"
+            class="details-close"
+            (click)="closeViewModal()"
+          >
 
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Prix unitaire (FCFA) <span>*</span></label>
-              <input type="number" formControlName="price">
-            </div>
+            <span class="material-symbols-outlined">
+              close
+            </span>
 
-            <div class="form-group">
-              <label>Quantité en Stock <span>*</span></label>
-              <input type="number" formControlName="stock">
-            </div>
-          </div>
-
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Seuil d'alerte Stock Faible</label>
-              <input type="number" formControlName="minStockThreshold">
-            </div>
-
-            <div class="form-group">
-              <label>URL de l'image (optionnel)</label>
-              <input type="text" formControlName="imageUrl" placeholder="https://...">
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" (click)="closeProductModal()">Annuler</button>
-          <button type="submit" class="btn-primary" [disabled]="productForm.invalid">
-            {{ modalMode === 'CREATE' ? 'Enregistrer le produit' : 'Mettre à jour' }}
           </button>
+
         </div>
-      </form>
-    </div>
-  </div>
 
-  <!-- MODALE : CONFIRMATION DES ACTIONS -->
-  <div class="modal-backdrop" *ngIf="isConfirmModalOpen">
-    <div class="confirmation-modal">
-      <div class="confirmation-icon">
-        <span class="material-symbols-outlined">help_outline</span>
-      </div>
-      <h2>{{ confirmTitle }}</h2>
-      <p>{{ confirmMessage }}</p>
 
-      <div class="confirmation-actions">
-        <button class="btn-secondary" (click)="closeConfirmModal()">Annuler</button>
-        <button [class]="'btn ' + confirmButtonClass" (click)="executeConfirm()">{{ confirmButtonText }}</button>
+
+        <!-- MODAL BODY -->
+
+        <div class="details-body">
+
+
+          <!-- TOP -->
+
+          <div class="details-top">
+
+
+            <!-- IMAGE -->
+
+            <div class="details-gallery">
+
+              <div class="main-product-image">
+
+                @if (
+                  productImages.length > 0
+                ) {
+
+                  <img
+                    [src]="productImages[selectedImageIndex]"
+                    [alt]="selectedProduct.name"
+                  />
+
+                  @if (
+                    productImages.length > 1
+                  ) {
+
+                    <button
+                      type="button"
+                      class="gallery-nav previous"
+                      (click)="previousImage()"
+                    >
+
+                      <span class="material-symbols-outlined">
+                        chevron_left
+                      </span>
+
+                    </button>
+
+
+                    <button
+                      type="button"
+                      class="gallery-nav next"
+                      (click)="nextImage()"
+                    >
+
+                      <span class="material-symbols-outlined">
+                        chevron_right
+                      </span>
+
+                    </button>
+
+                  }
+
+                } @else {
+
+                  <div class="no-product-image">
+
+                    <span class="material-symbols-outlined">
+                      image
+                    </span>
+
+                    <span>
+                      Aucune image
+                    </span>
+
+                  </div>
+
+                }
+
+
+                <div class="image-count">
+
+                  <span class="material-symbols-outlined">
+                    photo_library
+                  </span>
+
+                  {{
+                    productImages.length
+                  }}
+                  image(s)
+
+                </div>
+
+              </div>
+
+
+              @if (
+                productImages.length > 0
+              ) {
+
+                <div class="thumbnail-list">
+
+                  @for (
+                    image of productImages;
+                    track $index
+                  ) {
+
+                    <button
+                      type="button"
+                      class="thumbnail"
+                      [class.selected]="
+                        selectedImageIndex === $index
+                      "
+                      (click)="selectImage($index)"
+                    >
+
+                      <img
+                        [src]="image"
+                        [alt]="
+                          selectedProduct.name +
+                          ' image ' +
+                          ($index + 1)
+                        "
+                      />
+
+                    </button>
+
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+
+
+            <!-- BASIC INFO -->
+
+            <div class="details-main-info">
+
+              <div class="details-status-row">
+
+                <span
+                  class="details-status"
+                  [class.active]="selectedProduct.isActive"
+                  [class.inactive]="!selectedProduct.isActive"
+                >
+
+                  <span class="status-dot"></span>
+
+                  {{
+                    selectedProduct.isActive
+                      ? 'Produit actif'
+                      : 'Produit désactivé'
+                  }}
+
+                </span>
+
+
+                <span class="details-id">
+                  {{ selectedProduct.id }}
+                </span>
+
+              </div>
+
+
+              <h3>
+                {{ selectedProduct.name }}
+              </h3>
+
+
+              <p class="details-sku">
+                SKU :
+                <strong>
+                  {{ selectedProduct.sku }}
+                </strong>
+              </p>
+
+
+              <span class="badge-category large">
+                {{ selectedProduct.category }}
+              </span>
+
+
+              <div class="details-price">
+
+                <small>
+                  Prix de vente
+                </small>
+
+                <strong>
+                  {{ selectedProduct.price | number }}
+                  <span>FCFA</span>
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- METRICS -->
+
+          <div class="details-metrics">
+
+            <div class="detail-metric">
+
+              <span class="material-symbols-outlined">
+                inventory
+              </span>
+
+              <div>
+
+                <small>
+                  Stock disponible
+                </small>
+
+                <strong>
+                  {{ selectedProduct.stock }}
+                  unités
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="detail-metric">
+
+              <span class="material-symbols-outlined">
+                warning
+              </span>
+
+              <div>
+
+                <small>
+                  Seuil d'alerte
+                </small>
+
+                <strong>
+                  {{ selectedProduct.minStockThreshold }}
+                  unités
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="detail-metric">
+
+              <span class="material-symbols-outlined">
+                update
+              </span>
+
+              <div>
+
+                <small>
+                  Dernière mise à jour
+                </small>
+
+                <strong>
+                  {{ selectedProduct.updatedAt | date:'dd/MM/yyyy' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="details-description">
+
+            <div class="section-mini-title">
+
+              <span class="material-symbols-outlined">
+                description
+              </span>
+
+              Description
+
+            </div>
+
+            <p>
+
+              {{
+                selectedProduct.description ||
+                'Aucune description disponible pour ce produit.'
+              }}
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="details-footer">
+
+          <button
+            type="button"
+            class="details-secondary-btn"
+            (click)="closeViewModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+            Fermer
+
+          </button>
+
+
+          <button
+            type="button"
+            class="details-primary-btn"
+            (click)="updateProduct(selectedProduct)"
+          >
+
+            <span class="material-symbols-outlined">
+              edit
+            </span>
+
+            Modifier le produit
+
+          </button>
+
+        </div>
+
       </div>
+
     </div>
-  </div>
+
+  }
+
+
+
+  <!-- =====================================================
+       CONFIRMATION MODAL
+  ====================================================== -->
+
+  @if (isConfirmModalOpen) {
+
+    <div
+      class="modal-backdrop confirmation-backdrop"
+    >
+
+      <div class="confirmation-modal">
+
+        <div
+          class="confirmation-icon"
+          [class.warning]="
+            confirmButtonClass === 'btn-danger'
+          "
+          [class.success]="
+            confirmButtonClass === 'btn-success'
+          "
+        >
+
+          <span class="material-symbols-outlined">
+
+            {{
+              confirmButtonClass === 'btn-danger'
+                ? 'visibility_off'
+                : 'check_circle'
+            }}
+
+          </span>
+
+        </div>
+
+
+        <span class="confirmation-kicker">
+          CONFIRMATION
+        </span>
+
+
+        <h2>
+          {{ confirmTitle }}
+        </h2>
+
+
+        <p>
+          {{ confirmMessage }}
+        </p>
+
+
+        <div class="confirmation-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeConfirmModal()"
+          >
+
+            Annuler
+
+          </button>
+
+
+          <button
+            type="button"
+            class="confirm-action-btn"
+            [class.danger]="
+              confirmButtonClass === 'btn-danger'
+            "
+            [class.success]="
+              confirmButtonClass === 'btn-success'
+            "
+            (click)="executeConfirm()"
+          >
+
+            <span class="material-symbols-outlined">
+
+              {{
+                confirmButtonClass === 'btn-danger'
+                  ? 'block'
+                  : 'check'
+              }}
+
+            </span>
+
+            {{ confirmButtonText }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- =====================================================
+       STATUS TOAST
+  ====================================================== -->
+
+  @if (showToast) {
+
+    <div
+      class="status-toast"
+      [class.toast-success]="toastType === 'success'"
+      [class.toast-warning]="toastType === 'warning'"
+    >
+
+      <div class="toast-icon">
+
+        <span class="material-symbols-outlined">
+
+          {{
+            toastType === 'success'
+              ? 'check_circle'
+              : 'visibility_off'
+          }}
+
+        </span>
+
+      </div>
+
+
+      <div class="toast-content">
+
+        <strong>
+          {{ toastTitle }}
+        </strong>
+
+        <p>
+          {{ toastMessage }}
+        </p>
+
+      </div>
+
+
+      <div class="toast-progress"></div>
+
+    </div>
+
+  }
 
 </div>

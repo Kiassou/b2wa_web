@@ -1,5 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { SidebarComponent } from './sidebar/sidebar';
 import { NavbarComponent } from './navbar/navbar';
 
@@ -15,11 +16,27 @@ import { NavbarComponent } from './navbar/navbar';
   styleUrl: './dashboard-layout.css'
 })
 export class DashboardLayoutComponent implements OnInit {
+  // Capture la balise <main #contentArea> du HTML
+  @ViewChild('contentArea') contentArea!: ElementRef<HTMLElement>;
+
   sidebarCollapsed = false;
   mobileMenuOpen = false;
 
   private readonly mobileBreakpoint = 991; // Aligné avec le CSS
   isMobile = false;
+
+  private router = inject(Router);
+
+  constructor() {
+    // Écoute les événements de fin de navigation pour remettre le scroll à zéro
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (this.contentArea?.nativeElement) {
+          this.contentArea.nativeElement.scrollTop = 0;
+        }
+      });
+  }
 
   ngOnInit(): void {
     this.updateScreenState();
