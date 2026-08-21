@@ -442,121 +442,97 @@ export class CreateShipmentComponent {
 
 
     const shipmentToStore: Shipment = {
-
       id,
 
       reference,
 
       trackingNumber,
 
-      status:
-        'preparing',
+      status: 'preparing',
 
       createdAt,
 
-      estimatedDelivery:
-        this.shipment.shippingDate,
+      estimatedDelivery: this.shipment.shippingDate,
 
-      price:
-        this.estimatedCost,
+      price: this.estimatedCost,
 
-      currency:
-        'FCFA',
+      currency: 'FCFA',
 
-      description:
-        this.cleanText(
-          this.shipment.description
-        ) ||
+      description: this.cleanText(
+        this.shipment.description
+      ) ||
 
-        `Expédition de ${
-          this.shipment.packageType
-        }.`,
+        `Expédition de ${this.shipment.packageType}.`,
 
-      origin:
-        this.cleanText(
-          this.shipment.sender.city
-        ),
+      origin: this.cleanText(
+        this.shipment.sender.city
+      ),
 
-      destination:
-        this.cleanText(
-          this.shipment.receiver.city
-        ),
+      destination: this.cleanText(
+        this.shipment.receiver.city
+      ),
 
-      packages:
-        Number(
-          this.shipment.quantity
-        ),
+      packages: Number(
+        this.shipment.quantity
+      ),
 
-      weight:
-        Number(
-          this.shipment.weight
-        ),
+      weight: Number(
+        this.shipment.weight
+      ),
 
-      carrier:
-        'B2WA Shipping',
+      carrier: 'B2WA Shipping',
 
-      service:
-        this.cleanText(
-          this.shipment.service
-        ),
+      service: this.cleanText(
+        this.shipment.service
+      ),
 
 
       sender: {
+        name: this.cleanText(
+          this.shipment.sender.name
+        ),
 
-        name:
-          this.cleanText(
-            this.shipment.sender.name
-          ),
+        phone: this.cleanText(
+          this.shipment.sender.phone
+        ),
 
-        phone:
-          this.cleanText(
-            this.shipment.sender.phone
-          ),
+        address: this.cleanText(
+          this.shipment.sender.address
+        ),
 
-        address:
-          this.cleanText(
-            this.shipment.sender.address
-          ),
+        city: this.cleanText(
+          this.shipment.sender.city
+        ),
 
-        city:
-          this.cleanText(
-            this.shipment.sender.city
-          ),
-
-        country:
-          this.cleanText(
-            this.shipment.sender.country
-          )
+        country: this.cleanText(
+          this.shipment.sender.country
+        )
       },
 
 
       receiver: {
+        name: this.cleanText(
+          this.shipment.receiver.name
+        ),
 
-        name:
-          this.cleanText(
-            this.shipment.receiver.name
-          ),
+        phone: this.cleanText(
+          this.shipment.receiver.phone
+        ),
 
-        phone:
-          this.cleanText(
-            this.shipment.receiver.phone
-          ),
+        address: this.cleanText(
+          this.shipment.receiver.address
+        ),
 
-        address:
-          this.cleanText(
-            this.shipment.receiver.address
-          ),
+        city: this.cleanText(
+          this.shipment.receiver.city
+        ),
 
-        city:
-          this.cleanText(
-            this.shipment.receiver.city
-          ),
-
-        country:
-          this.cleanText(
-            this.shipment.receiver.country
-          )
-      }
+        country: this.cleanText(
+          this.shipment.receiver.country
+        )
+      },
+      orderId: '',
+      orderNumber: ''
     };
 
 

@@ -4,7 +4,7 @@
 >
 
   <!-- =====================================================
-       HEADER
+        HEADER
   ====================================================== -->
 
   <header class="products-header">
@@ -52,7 +52,7 @@
 
 
   <!-- =====================================================
-       STATISTICS
+        STATISTICS
   ====================================================== -->
 
   <section class="stats-grid">
@@ -186,7 +186,7 @@
 
 
   <!-- =====================================================
-       SEARCH + FILTERS
+        SEARCH + FILTERS
   ====================================================== -->
 
   <section class="filter-bar">
@@ -278,7 +278,7 @@
 
 
   <!-- =====================================================
-       PRODUCTS TABLE
+        PRODUCTS TABLE
   ====================================================== -->
 
   <section class="products-table-card">
@@ -350,7 +350,7 @@
 
           @for (
             product of paginatedProducts;
-            track product.id
+            track trackByProductId($index, product)
           ) {
 
             <tr
@@ -365,10 +365,10 @@
 
                   <div class="product-avatar">
 
-                    @if (product.imageUrl) {
+                    @if (product.imageUrl || (product.images && product.images.length > 0)) {
 
                       <img
-                        [src]="product.imageUrl"
+                        [src]="product.imageUrl || product.images![0]"
                         [alt]="product.name"
                       />
 
@@ -390,7 +390,7 @@
                     </strong>
 
                     <span class="product-sku">
-                      SKU : {{ product.sku }}
+                      ID: {{ product.id }} | SKU : {{ product.sku }}
                     </span>
 
                   </div>
@@ -441,7 +441,7 @@
 
                   <span class="dot"></span>
 
-                  {{ getStockLabel(product) }}
+                  {{ getStockLabel(product) }} (Min: {{ product.minStockThreshold }})
 
                 </div>
 
@@ -625,7 +625,7 @@
 
 
   <!-- =====================================================
-       PAGINATION
+        PAGINATION
   ====================================================== -->
 
   @if (filteredProducts.length > 0) {
@@ -741,192 +741,139 @@
 
 
 
-  <!-- =====================================================
-       PRODUCT DETAILS MODAL
-  ====================================================== -->
+<!-- =====================================================
+     PRODUCT DETAILS MODAL
+====================================================== -->
 
-  @if (
-    isViewModalOpen &&
-    selectedProduct
-  ) {
+@if (isViewModalOpen && selectedProduct) {
+
+  <div
+    class="modal-backdrop product-details-backdrop"
+  >
 
     <div
-      class="modal-backdrop product-details-backdrop"
-      (click)="closeViewModal()"
+      class="product-details-modal"
+      (click)="$event.stopPropagation()"
     >
 
-      <div
-        class="product-details-modal"
-        (click)="$event.stopPropagation()"
-      >
+      <!-- =================================================
+           HEADER
+      ================================================== -->
 
+      <div class="details-header">
 
-        <!-- MODAL HEADER -->
+        <div class="details-header-title">
 
-        <div class="details-header">
-
-          <div class="details-header-title">
-
-            <div class="details-header-icon">
-
-              <span class="material-symbols-outlined">
-                inventory_2
-              </span>
-
-            </div>
-
-            <div>
-
-              <span class="details-kicker">
-                PRODUIT B2WA
-              </span>
-
-              <h2>
-                Détails du produit
-              </h2>
-
-            </div>
-
+          <div class="details-header-icon">
+            <span class="material-symbols-outlined">
+              inventory_2
+            </span>
           </div>
 
-
-          <button
-            type="button"
-            class="details-close"
-            (click)="closeViewModal()"
-          >
-
-            <span class="material-symbols-outlined">
-              close
+          <div>
+            <span class="details-kicker">
+              PRODUIT B2WA
             </span>
 
-          </button>
+            <h2>
+              Détails du produit
+            </h2>
+          </div>
 
         </div>
 
+        <button
+          type="button"
+          class="details-close"
+          (click)="closeViewModal()"
+          aria-label="Fermer"
+        >
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+
+      </div>
 
 
-        <!-- MODAL BODY -->
+      <!-- =================================================
+           BODY
+      ================================================== -->
 
-        <div class="details-body">
+      <div class="details-body">
 
+        <!-- =================================================
+             PRODUCT OVERVIEW
+        ================================================== -->
 
-          <!-- TOP -->
+        <section class="product-overview">
 
-          <div class="details-top">
+          <!-- GALLERY -->
 
+          <div class="details-gallery">
 
-            <!-- IMAGE -->
+            <div class="main-product-image">
 
-            <div class="details-gallery">
+              @if (productImages.length > 0) {
 
-              <div class="main-product-image">
+                <img
+                  [src]="productImages[selectedImageIndex]"
+                  [alt]="selectedProduct.name"
+                />
 
-                @if (
-                  productImages.length > 0
-                ) {
+                @if (productImages.length > 1) {
 
-                  <img
-                    [src]="productImages[selectedImageIndex]"
-                    [alt]="selectedProduct.name"
-                  />
-
-                  @if (
-                    productImages.length > 1
-                  ) {
-
-                    <button
-                      type="button"
-                      class="gallery-nav previous"
-                      (click)="previousImage()"
-                    >
-
-                      <span class="material-symbols-outlined">
-                        chevron_left
-                      </span>
-
-                    </button>
-
-
-                    <button
-                      type="button"
-                      class="gallery-nav next"
-                      (click)="nextImage()"
-                    >
-
-                      <span class="material-symbols-outlined">
-                        chevron_right
-                      </span>
-
-                    </button>
-
-                  }
-
-                } @else {
-
-                  <div class="no-product-image">
-
+                  <button
+                    type="button"
+                    class="gallery-nav previous"
+                    (click)="previousImage()"
+                    aria-label="Image précédente"
+                  >
                     <span class="material-symbols-outlined">
-                      image
+                      chevron_left
                     </span>
+                  </button>
 
-                    <span>
-                      Aucune image
+                  <button
+                    type="button"
+                    class="gallery-nav next"
+                    (click)="nextImage()"
+                    aria-label="Image suivante"
+                  >
+                    <span class="material-symbols-outlined">
+                      chevron_right
                     </span>
-
-                  </div>
+                  </button>
 
                 }
 
-
-                <div class="image-count">
+                <div class="image-counter">
 
                   <span class="material-symbols-outlined">
                     photo_library
                   </span>
 
-                  {{
-                    productImages.length
-                  }}
-                  image(s)
+                  {{ selectedImageIndex + 1 }}
+                  /
+                  {{ productImages.length }}
 
                 </div>
 
-              </div>
+              } @else {
 
+                <div class="no-product-image">
 
-              @if (
-                productImages.length > 0
-              ) {
+                  <span class="material-symbols-outlined">
+                    image
+                  </span>
 
-                <div class="thumbnail-list">
+                  <strong>
+                    Aucune image
+                  </strong>
 
-                  @for (
-                    image of productImages;
-                    track $index
-                  ) {
-
-                    <button
-                      type="button"
-                      class="thumbnail"
-                      [class.selected]="
-                        selectedImageIndex === $index
-                      "
-                      (click)="selectImage($index)"
-                    >
-
-                      <img
-                        [src]="image"
-                        [alt]="
-                          selectedProduct.name +
-                          ' image ' +
-                          ($index + 1)
-                        "
-                      />
-
-                    </button>
-
-                  }
+                  <small>
+                    Ce produit ne possède aucune image.
+                  </small>
 
                 </div>
 
@@ -935,64 +882,157 @@
             </div>
 
 
+            <!-- THUMBNAILS -->
 
-            <!-- BASIC INFO -->
+            @if (productImages.length > 1) {
 
-            <div class="details-main-info">
+              <div class="thumbnail-list">
 
-              <div class="details-status-row">
+                @for (
+                  image of productImages;
+                  track $index
+                ) {
 
-                <span
-                  class="details-status"
-                  [class.active]="selectedProduct.isActive"
-                  [class.inactive]="!selectedProduct.isActive"
-                >
+                  <button
+                    type="button"
+                    class="thumbnail"
+                    [class.selected]="selectedImageIndex === $index"
+                    (click)="selectImage($index)"
+                  >
 
-                  <span class="status-dot"></span>
+                    <img
+                      [src]="image"
+                      [alt]="
+                        selectedProduct.name +
+                        ' image ' +
+                        ($index + 1)
+                      "
+                    />
+
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- PRODUCT MAIN INFO -->
+
+          <div class="details-main-info">
+
+            <div class="details-status-row">
+
+              <span
+                class="details-status"
+                [class.active]="selectedProduct.isActive"
+                [class.inactive]="!selectedProduct.isActive"
+              >
+
+                <span class="status-dot"></span>
+
+                {{
+                  selectedProduct.isActive
+                    ? 'Produit actif'
+                    : 'Produit désactivé'
+                }}
+
+              </span>
+
+              <span class="details-id">
+                ID : {{ selectedProduct.id }}
+              </span>
+
+            </div>
+
+
+            <h3>
+              {{ selectedProduct.name }}
+            </h3>
+
+
+            <div class="sku-line">
+
+              <span>
+                SKU
+              </span>
+
+              <strong>
+                {{ selectedProduct.sku }}
+              </strong>
+
+            </div>
+
+
+            <span class="badge-category large">
+              {{ selectedProduct.category }}
+            </span>
+
+
+            <!-- PRICE -->
+
+            <div class="details-price">
+
+              <small>
+                Prix de vente
+              </small>
+
+              <strong>
+                {{ selectedProduct.price | number }}
+                <span>FCFA</span>
+              </strong>
+
+            </div>
+
+
+            <!-- STOCK STATUS -->
+
+            <div
+              class="stock-status-card"
+              [class.stock-low]="
+                selectedProduct.stock <=
+                selectedProduct.minStockThreshold
+              "
+              [class.stock-empty]="
+                selectedProduct.stock === 0
+              "
+            >
+
+              <div class="stock-status-icon">
+
+                <span class="material-symbols-outlined">
 
                   {{
-                    selectedProduct.isActive
-                      ? 'Produit actif'
-                      : 'Produit désactivé'
+                    selectedProduct.stock === 0
+                      ? 'inventory'
+                      : selectedProduct.stock <= selectedProduct.minStockThreshold
+                        ? 'warning'
+                        : 'check_circle'
                   }}
 
                 </span>
 
-
-                <span class="details-id">
-                  {{ selectedProduct.id }}
-                </span>
-
               </div>
 
-
-              <h3>
-                {{ selectedProduct.name }}
-              </h3>
-
-
-              <p class="details-sku">
-                SKU :
-                <strong>
-                  {{ selectedProduct.sku }}
-                </strong>
-              </p>
-
-
-              <span class="badge-category large">
-                {{ selectedProduct.category }}
-              </span>
-
-
-              <div class="details-price">
+              <div>
 
                 <small>
-                  Prix de vente
+                  Disponibilité
                 </small>
 
                 <strong>
-                  {{ selectedProduct.price | number }}
-                  <span>FCFA</span>
+
+                  {{
+                    selectedProduct.stock === 0
+                      ? 'Rupture de stock'
+                      : selectedProduct.stock <= selectedProduct.minStockThreshold
+                        ? 'Stock faible'
+                        : 'En stock'
+                  }}
+
                 </strong>
 
               </div>
@@ -1001,154 +1041,261 @@
 
           </div>
 
+        </section>
 
 
-          <!-- METRICS -->
+        <!-- =================================================
+             METRICS
+        ================================================== -->
 
-          <div class="details-metrics">
+        <section class="details-metrics">
 
-            <div class="detail-metric">
+          <div class="detail-metric">
 
+            <div class="metric-icon blue">
               <span class="material-symbols-outlined">
                 inventory
               </span>
-
-              <div>
-
-                <small>
-                  Stock disponible
-                </small>
-
-                <strong>
-                  {{ selectedProduct.stock }}
-                  unités
-                </strong>
-
-              </div>
-
             </div>
 
+            <div>
+              <small>
+                Stock disponible
+              </small>
 
-            <div class="detail-metric">
+              <strong>
+                {{ selectedProduct.stock }}
+                <span>unités</span>
+              </strong>
+            </div>
 
+          </div>
+
+
+          <div class="detail-metric">
+
+            <div class="metric-icon orange">
               <span class="material-symbols-outlined">
                 warning
               </span>
-
-              <div>
-
-                <small>
-                  Seuil d'alerte
-                </small>
-
-                <strong>
-                  {{ selectedProduct.minStockThreshold }}
-                  unités
-                </strong>
-
-              </div>
-
             </div>
 
+            <div>
+              <small>
+                Seuil d'alerte
+              </small>
 
-            <div class="detail-metric">
+              <strong>
+                {{ selectedProduct.minStockThreshold }}
+                <span>unités</span>
+              </strong>
+            </div>
 
+          </div>
+
+
+          <div class="detail-metric">
+
+            <div class="metric-icon purple">
+              <span class="material-symbols-outlined">
+                calendar_today
+              </span>
+            </div>
+
+            <div>
+              <small>
+                Créé le
+              </small>
+
+              <strong>
+                {{ selectedProduct.createdAt | date:'dd/MM/yyyy' }}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-metric">
+
+            <div class="metric-icon green">
               <span class="material-symbols-outlined">
                 update
               </span>
+            </div>
 
-              <div>
+            <div>
+              <small>
+                Dernière mise à jour
+              </small>
 
-                <small>
-                  Dernière mise à jour
-                </small>
-
-                <strong>
-                  {{ selectedProduct.updatedAt | date:'dd/MM/yyyy' }}
-                </strong>
-
-              </div>
-
+              <strong>
+                {{ selectedProduct.updatedAt | date:'dd/MM/yyyy' }}
+              </strong>
             </div>
 
           </div>
 
+        </section>
 
 
-          <!-- DESCRIPTION -->
+        <!-- =================================================
+             DESCRIPTION
+        ================================================== -->
 
-          <div class="details-description">
+        <section class="details-description">
 
-            <div class="section-mini-title">
+          <div class="section-mini-title">
 
-              <span class="material-symbols-outlined">
-                description
-              </span>
+            <span class="material-symbols-outlined">
+              description
+            </span>
 
+            <span>
               Description
-
-            </div>
-
-            <p>
-
-              {{
-                selectedProduct.description ||
-                'Aucune description disponible pour ce produit.'
-              }}
-
-            </p>
+            </span>
 
           </div>
 
-        </div>
+          <p>
+            {{
+              selectedProduct.description ||
+              'Aucune description disponible pour ce produit.'
+            }}
+          </p>
+
+        </section>
 
 
+        <!-- =================================================
+             PRODUCT SUMMARY
+        ================================================== -->
 
-        <!-- FOOTER -->
+        <section class="product-summary">
 
-        <div class="details-footer">
-
-          <button
-            type="button"
-            class="details-secondary-btn"
-            (click)="closeViewModal()"
-          >
-
-            <span class="material-symbols-outlined">
-              close
-            </span>
-
-            Fermer
-
-          </button>
-
-
-          <button
-            type="button"
-            class="details-primary-btn"
-            (click)="updateProduct(selectedProduct)"
-          >
+          <div class="section-mini-title">
 
             <span class="material-symbols-outlined">
-              edit
+              analytics
             </span>
 
-            Modifier le produit
+            <span>
+              Résumé du produit
+            </span>
 
-          </button>
+          </div>
 
-        </div>
+
+          <div class="summary-grid">
+
+            <div class="summary-item">
+
+              <small>
+                Catégorie
+              </small>
+
+              <strong>
+                {{ selectedProduct.category }}
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <small>
+                Disponibilité
+              </small>
+
+              <strong
+                [class.text-success]="selectedProduct.stock > 0"
+                [class.text-danger]="selectedProduct.stock === 0"
+              >
+
+                {{
+                  selectedProduct.stock === 0
+                    ? 'Rupture'
+                    : 'En stock'
+                }}
+
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <small>
+                Statut
+              </small>
+
+              <strong
+                [class.text-success]="selectedProduct.isActive"
+                [class.text-muted]="!selectedProduct.isActive"
+              >
+
+                {{
+                  selectedProduct.isActive
+                    ? 'Actif'
+                    : 'Désactivé'
+                }}
+
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- =================================================
+           FOOTER
+      ================================================== -->
+
+      <div class="details-footer">
+
+        <button
+          type="button"
+          class="details-secondary-btn"
+          (click)="closeViewModal()"
+        >
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
+          Fermer
+
+        </button>
+
+
+        <button
+          type="button"
+          class="details-primary-btn"
+          (click)="updateProduct(selectedProduct)"
+        >
+
+          <span class="material-symbols-outlined">
+            edit
+          </span>
+
+          Modifier le produit
+
+        </button>
 
       </div>
 
     </div>
 
-  }
+  </div>
 
+}
 
 
   <!-- =====================================================
-       CONFIRMATION MODAL
+        CONFIRMATION MODAL
   ====================================================== -->
 
   @if (isConfirmModalOpen) {
@@ -1247,7 +1394,7 @@
 
 
   <!-- =====================================================
-       STATUS TOAST
+        STATUS TOAST
   ====================================================== -->
 
   @if (showToast) {

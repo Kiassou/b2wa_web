@@ -1,7 +1,9 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 
+
+/* =====================================================
+   STATUT D'UNE EXPÉDITION
+===================================================== */
 
 export type ShipmentStatus =
   | 'preparing'
@@ -12,38 +14,68 @@ export type ShipmentStatus =
   | 'cancelled';
 
 
+/* =====================================================
+   MODÈLE EXPÉDITION
+===================================================== */
+
 export interface Shipment {
 
   id: number;
 
-  reference: string;
+  /* RELATION AVEC LA COMMANDE */
+  orderId: string;
+  orderNumber: string;
 
+
+  /* IDENTIFICATION EXPÉDITION */
+  reference: string;
   trackingNumber: string;
 
+
+  /* STATUT */
   status: ShipmentStatus;
 
-  createdAt: string;
 
+  /* DATES */
+  createdAt: string;
   estimatedDelivery: string;
 
-  price: number;
 
+  /* TARIFICATION */
+  price: number;
   currency: string;
 
+
+  /* DESCRIPTION */
   description: string;
 
-  origin: string;
 
+  /* TRAJET */
+  origin: string;
   destination: string;
+
+
+  /* ---------------------------------------------------
+     COLIS
+  --------------------------------------------------- */
 
   packages: number;
 
   weight: number;
 
+
+  /* ---------------------------------------------------
+     TRANSPORTEUR
+  --------------------------------------------------- */
+
   carrier: string;
 
   service: string;
 
+
+  /* ---------------------------------------------------
+     EXPÉDITEUR
+  --------------------------------------------------- */
 
   sender: {
 
@@ -56,8 +88,13 @@ export interface Shipment {
     city: string;
 
     country: string;
+
   };
 
+
+  /* ---------------------------------------------------
+     DESTINATAIRE
+  --------------------------------------------------- */
 
   receiver: {
 
@@ -70,9 +107,15 @@ export interface Shipment {
     city: string;
 
     country: string;
+
   };
+
 }
 
+
+/* =====================================================
+   SERVICE
+===================================================== */
 
 @Injectable({
   providedIn: 'root'
@@ -80,10 +123,23 @@ export interface Shipment {
 export class ShipmentStoreService {
 
 
+  /* ===================================================
+     DONNÉES DE DÉMONSTRATION
+  =================================================== */
+
   private shipments: Shipment[] = [
+
+
+    /* -------------------------------------------------
+       EXPÉDITION 1
+    ------------------------------------------------- */
 
     {
       id: 1,
+
+      orderId: 'ORD-101',
+
+      orderNumber: 'CMD-2026-001',
 
       reference:
         'B2WA-EXP-2026-00001',
@@ -144,31 +200,42 @@ export class ShipmentStoreService {
 
         country:
           'Mali'
+
       },
 
 
       receiver: {
 
         name:
-          'Awa Traoré',
+          'Aïssata Diallo',
 
         phone:
-          '+225 07 00 00 01',
+          '+223 76 12 34 56',
 
         address:
-          'Cocody Angré',
+          'Hamdallaye ACI 2000',
 
         city:
-          'Abidjan',
+          'Bamako',
 
         country:
-          'Côte d’Ivoire'
+          'Mali'
+
       }
+
     },
 
 
+    /* -------------------------------------------------
+       EXPÉDITION 2
+    ------------------------------------------------- */
+
     {
       id: 2,
+
+      orderId: 'ORD-102',
+
+      orderNumber: 'CMD-2026-002',
 
       reference:
         'B2WA-EXP-2026-00002',
@@ -229,31 +296,42 @@ export class ShipmentStoreService {
 
         country:
           'Mali'
+
       },
 
 
       receiver: {
 
         name:
-          'Moussa Koné',
+          'Mamadou Traoré',
 
         phone:
-          '+223 76 00 00 02',
+          '+223 66 98 76 54',
 
         address:
-          'ACI 2000',
+          'Badalabougou',
 
         city:
           'Bamako',
 
         country:
           'Mali'
+
       }
+
     },
 
 
+    /* -------------------------------------------------
+       EXPÉDITION 3
+    ------------------------------------------------- */
+
     {
       id: 3,
+
+      orderId: 'ORD-103',
+
+      orderNumber: 'CMD-2026-003',
 
       reference:
         'B2WA-EXP-2026-00003',
@@ -314,31 +392,42 @@ export class ShipmentStoreService {
 
         country:
           'Mali'
+
       },
 
 
       receiver: {
 
         name:
-          'Fatoumata Diallo',
+          'Oumar Coulibaly',
 
         phone:
-          '+226 70 00 00 03',
+          '+223 70 11 22 33',
 
         address:
-          'Zone du Bois',
+          'Faladié SEMA',
 
         city:
-          'Ouagadougou',
+          'Bamako',
 
         country:
-          'Burkina Faso'
+          'Mali'
+
       }
+
     },
 
 
+    /* -------------------------------------------------
+       EXPÉDITION 4
+    ------------------------------------------------- */
+
     {
       id: 4,
+
+      orderId: 'ORD-104',
+
+      orderNumber: 'CMD-2026-004',
 
       reference:
         'B2WA-EXP-2026-00004',
@@ -399,31 +488,42 @@ export class ShipmentStoreService {
 
         country:
           'Mali'
+
       },
 
 
       receiver: {
 
         name:
-          'Ibrahima Ba',
+          'Fatoumata Keïta',
 
         phone:
-          '+221 77 00 00 04',
+          '+223 75 44 55 66',
 
         address:
-          'Plateau',
+          'Korofina Nord',
 
         city:
-          'Dakar',
+          'Bamako',
 
         country:
-          'Sénégal'
+          'Mali'
+
       }
+
     },
 
 
+    /* -------------------------------------------------
+       EXPÉDITION 5
+    ------------------------------------------------- */
+
     {
       id: 5,
+
+      orderId: 'ORD-105',
+
+      orderNumber: 'CMD-2026-005',
 
       reference:
         'B2WA-EXP-2026-00005',
@@ -484,6 +584,7 @@ export class ShipmentStoreService {
 
         country:
           'Mali'
+
       },
 
 
@@ -503,16 +604,28 @@ export class ShipmentStoreService {
 
         country:
           'Guinée'
+
       }
+
     }
+
   ];
 
+
+  /* ===================================================
+     RÉCUPÉRER TOUTES LES EXPÉDITIONS
+  =================================================== */
 
   getShipments(): Shipment[] {
 
     return this.shipments;
+
   }
 
+
+  /* ===================================================
+     RÉCUPÉRER UNE EXPÉDITION PAR ID
+  =================================================== */
 
   getShipmentById(
     id: number
@@ -522,8 +635,13 @@ export class ShipmentStoreService {
       shipment =>
         shipment.id === id
     );
+
   }
 
+
+  /* ===================================================
+     RÉCUPÉRER PAR NUMÉRO DE SUIVI
+  =================================================== */
 
   findByTrackingNumber(
     trackingNumber: string
@@ -540,8 +658,45 @@ export class ShipmentStoreService {
         shipment.trackingNumber
           .toUpperCase() === value
     );
+
   }
 
+
+  /* ===================================================
+     RÉCUPÉRER L'EXPÉDITION D'UNE COMMANDE
+  =================================================== */
+
+  getShipmentByOrderId(
+    orderId: string
+  ): Shipment | undefined {
+
+    return this.shipments.find(
+      shipment =>
+        shipment.orderId === orderId
+    );
+
+  }
+
+
+  /* ===================================================
+     VÉRIFIER SI UNE COMMANDE POSSÈDE UNE EXPÉDITION
+  =================================================== */
+
+  hasShipment(
+    orderId: string
+  ): boolean {
+
+    return this.shipments.some(
+      shipment =>
+        shipment.orderId === orderId
+    );
+
+  }
+
+
+  /* ===================================================
+     AJOUTER UNE EXPÉDITION
+  =================================================== */
 
   addShipment(
     shipment: Shipment
@@ -550,8 +705,13 @@ export class ShipmentStoreService {
     this.shipments.unshift(
       shipment
     );
+
   }
 
+
+  /* ===================================================
+     MODIFIER UNE EXPÉDITION
+  =================================================== */
 
   updateShipment(
     shipment: Shipment
@@ -565,21 +725,59 @@ export class ShipmentStoreService {
 
 
     if (index === -1) {
+
       return;
+
     }
 
 
     this.shipments[index] =
       shipment;
+
   }
 
+
+  /* ===================================================
+     METTRE À JOUR LE STATUT
+  =================================================== */
+
+  updateShipmentStatus(
+    id: number,
+    status: ShipmentStatus
+  ): boolean {
+
+    const shipment =
+      this.getShipmentById(id);
+
+
+    if (!shipment) {
+
+      return false;
+
+    }
+
+
+    shipment.status =
+      status;
+
+
+    return true;
+
+  }
+
+
+  /* ===================================================
+     GÉNÉRER LE PROCHAIN ID
+  =================================================== */
 
   getNextId(): number {
 
     if (
       this.shipments.length === 0
     ) {
+
       return 1;
+
     }
 
 
@@ -589,5 +787,62 @@ export class ShipmentStoreService {
           shipment.id
       )
     ) + 1;
+
   }
+
+
+  /* ===================================================
+     GÉNÉRER UNE RÉFÉRENCE D'EXPÉDITION
+  =================================================== */
+
+  generateReference(): string {
+
+    const year =
+      new Date()
+        .getFullYear();
+
+
+    const nextId =
+      this.getNextId();
+
+
+    return `B2WA-EXP-${year}-${String(nextId).padStart(5, '0')}`;
+
+  }
+
+
+  /* ===================================================
+     GÉNÉRER UN NUMÉRO DE TRACKING
+  =================================================== */
+
+  generateTrackingNumber(): string {
+
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+
+    let code = '';
+
+
+    for (
+      let i = 0;
+      i < 6;
+      i++
+    ) {
+
+      code +=
+        characters.charAt(
+          Math.floor(
+            Math.random() *
+            characters.length
+          )
+        );
+
+    }
+
+
+    return `B2WA-ML-${code}`;
+
+  }
+
 }

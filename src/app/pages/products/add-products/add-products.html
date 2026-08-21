@@ -339,27 +339,40 @@
           </div>
 
 
-          <div class="form-group">
+<div class="form-group">
 
-            <label>
-              Référence / SKU
-            </label>
+  <label>
+    Référence / SKU (Générée automatiquement)
+  </label>
 
-            <div class="input-wrapper">
+  <div class="input-wrapper">
 
-              <span class="material-symbols-outlined">
-                qr_code_2
-              </span>
+    <span class="material-symbols-outlined">
+      qr_code_2
+    </span>
 
-              <input
-                type="text"
-                placeholder="Ex : B2WA-SAC-001"
-                [(ngModel)]="product.sku"
-              />
+    <input
+      type="text"
+      [value]="product.sku"
+      readonly
+      placeholder="Génération automatique..."
+    />
 
-            </div>
+    <button
+      type="button"
+      class="btn-regenerate"
+      (click)="generateSku()"
+      title="Régénérer la référence"
+      style="border: none; background: transparent; cursor: pointer; padding: 0 8px;"
+    >
+      <span class="material-symbols-outlined" style="font-size: 18px; color: #6b7280;">
+        refresh
+      </span>
+    </button>
 
-          </div>
+  </div>
+
+</div>
 
 
           <div class="form-group">

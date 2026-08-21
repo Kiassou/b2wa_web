@@ -1,265 +1,1002 @@
 <div class="orders-container">
 
-  <!-- EN-TÊTE PAGE -->
+  <!-- HEADER -->
   <header class="orders-header">
     <div class="header-titles">
-      <span class="eyebrow"><span class="material-symbols-outlined">shopping_bag</span> VENTES & COMMANDES</span>
+      <span class="eyebrow">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        VENTES & COMMANDES
+      </span>
+
       <h1>Gestion des Commandes</h1>
-      <p>Suivez l'état de préparation, le statut de paiement et la livraison de vos ventes.</p>
+
+      <p>
+        Gérez vos commandes, préparez les expéditions et suivez chaque livraison.
+      </p>
     </div>
   </header>
 
-  <!-- CARTES D'ANALYSE -->
+
+  <!-- STATS -->
   <section class="stats-grid">
+
     <div class="stat-card">
-      <div class="stat-icon blue"><span class="material-symbols-outlined">receipt_long</span></div>
+      <div class="stat-icon blue">
+        <span class="material-symbols-outlined">receipt_long</span>
+      </div>
+
       <div class="stat-info">
         <span class="label">Total Commandes</span>
         <strong>{{ totalOrdersCount }}</strong>
       </div>
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon orange"><span class="material-symbols-outlined">hourglass_top</span></div>
+      <div class="stat-icon orange">
+        <span class="material-symbols-outlined">pending_actions</span>
+      </div>
+
       <div class="stat-info">
-        <span class="label">En Attente</span>
-        <strong>{{ pendingOrdersCount }}</strong>
+        <span class="label">À confirmer</span>
+        <strong>{{ confirmedOrdersCount }}</strong>
       </div>
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon cyan"><span class="material-symbols-outlined">local_shipping</span></div>
+      <div class="stat-icon cyan">
+        <span class="material-symbols-outlined">local_shipping</span>
+      </div>
+
       <div class="stat-info">
-        <span class="label">En Cours</span>
-        <strong>{{ processingOrdersCount }}</strong>
+        <span class="label">En expédition</span>
+        <strong>{{ inShipmentOrdersCount }}</strong>
       </div>
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon green"><span class="material-symbols-outlined">task_alt</span></div>
+      <div class="stat-icon green">
+        <span class="material-symbols-outlined">task_alt</span>
+      </div>
+
       <div class="stat-info">
         <span class="label">Livrées</span>
         <strong>{{ deliveredOrdersCount }}</strong>
       </div>
     </div>
 
+
     <div class="stat-card">
-      <div class="stat-icon purple"><span class="material-symbols-outlined">account_balance_wallet</span></div>
+      <div class="stat-icon purple">
+        <span class="material-symbols-outlined">account_balance_wallet</span>
+      </div>
+
       <div class="stat-info">
-        <span class="label">Chiffre d'Affaires</span>
+        <span class="label">Chiffre d'affaires</span>
         <strong>{{ totalRevenue | number }} FCFA</strong>
       </div>
     </div>
+
   </section>
 
-  <!-- BARRE DE RECHERCHE ET FILTRES -->
+
+  <!-- FILTERS -->
   <section class="filter-bar">
+
     <div class="search-box">
-      <span class="material-symbols-outlined search-icon">search</span>
-      <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="N° de commande, client, téléphone..." />
+
+      <span class="material-symbols-outlined search-icon">
+        search
+      </span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="applyFilters()"
+        placeholder="N° commande, client, téléphone..."
+      />
+
     </div>
 
+
     <div class="filter-group">
-      <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+
+      <select
+        [(ngModel)]="selectedStatus"
+        (change)="applyFilters()"
+      >
         <option value="ALL">Tous les statuts</option>
-        <option value="PENDING">En attente</option>
-        <option value="PROCESSING">En cours de livraison</option>
+        <option value="CONFIRMED">Confirmées</option>
+        <option value="IN_SHIPMENT">En expédition</option>
         <option value="DELIVERED">Livrées</option>
         <option value="CANCELLED">Annulées</option>
       </select>
 
-      <select [(ngModel)]="selectedPaymentStatus" (change)="applyFilters()">
+
+      <select
+        [(ngModel)]="selectedPaymentStatus"
+        (change)="applyFilters()"
+      >
         <option value="ALL">Tous les paiements</option>
         <option value="PAID">Payé</option>
-        <option value="UNPAID">Non Payé</option>
+        <option value="UNPAID">Non payé</option>
+        <option value="REFUNDED">Remboursé</option>
       </select>
+
     </div>
+
   </section>
 
-  <!-- TABLEAU DES COMMANDES -->
+
+  <!-- TABLE -->
   <section class="orders-table-card">
+
     <div class="table-responsive">
+
       <table class="orders-table">
+
         <thead>
+
           <tr>
             <th>Commande</th>
             <th>Client</th>
-            <th>Date & Heure</th>
-            <th>Montant Total</th>
+            <th>Date</th>
+            <th>Montant</th>
             <th>Paiement</th>
-            <th>Statut Commande</th>
+            <th>Statut</th>
+            <th>Expédition</th>
             <th class="text-right">Actions</th>
           </tr>
+
         </thead>
+
+
         <tbody>
-          <tr *ngFor="let order of paginatedOrders; trackBy: trackByOrderId">
-            <td>
-              <div class="order-id-cell">
-                <strong class="order-number">{{ order.orderNumber }}</strong>
-                <span class="items-count">{{ order.items.length }} article(s)</span>
-              </div>
-            </td>
 
-            <td>
-              <div class="customer-cell">
-                <strong>{{ order.customerName }}</strong>
-                <span>{{ order.customerPhone }}</span>
-              </div>
-            </td>
+          @for (
+            order of paginatedOrders;
+            track trackByOrderId($index, order)
+          ) {
 
-            <td>
-              <span class="order-date">{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
-            </td>
+            <tr>
 
-            <td>
-              <strong class="total-amount">{{ order.totalAmount | number }} FCFA</strong>
-            </td>
+              <!-- COMMANDE -->
+              <td>
 
-            <td>
-              <div class="payment-info">
-                <span class="badge-payment" [class.paid]="order.paymentStatus === 'PAID'">
-                  {{ order.paymentStatus === 'PAID' ? 'PAYÉ' : 'EN ATTENTE' }}
+                <div class="order-id-cell">
+
+                  <strong class="order-number">
+                    {{ order.orderNumber }}
+                  </strong>
+
+                  <span class="items-count">
+                    {{ order.items.length }} article(s)
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <!-- CLIENT -->
+              <td>
+
+                <div class="customer-cell">
+
+                  <strong>
+                    {{ order.customerName }}
+                  </strong>
+
+                  <span>
+                    {{ order.customerPhone }}
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <!-- DATE -->
+              <td>
+
+                <span class="order-date">
+                  {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
                 </span>
-                <small class="payment-method">{{ order.paymentMethod }}</small>
-              </div>
-            </td>
 
-            <td>
-              <select
-                class="status-select"
-                [ngClass]="getStatusClass(order.status)"
-                [ngModel]="order.status"
-                (ngModelChange)="updateOrderStatus(order, $event)"
+              </td>
+
+
+              <!-- MONTANT -->
+              <td>
+
+                <strong class="total-amount">
+                  {{ order.totalAmount | number }} FCFA
+                </strong>
+
+              </td>
+
+
+              <!-- PAIEMENT -->
+              <td>
+
+                <div class="payment-info">
+
+                  <span
+                    class="badge-payment"
+                    [class.paid]="order.paymentStatus === 'PAID'"
+                    [class.unpaid]="order.paymentStatus === 'UNPAID'"
+                    [class.refunded]="order.paymentStatus === 'REFUNDED'"
+                  >
+                    {{ getPaymentLabel(order.paymentStatus) }}
+                  </span>
+
+                  <small>
+                    {{ getPaymentMethodLabel(order.paymentMethod) }}
+                  </small>
+
+                </div>
+
+              </td>
+
+
+              <!-- STATUT -->
+              <td>
+
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(order.status)"
+                >
+
+                  <span class="status-dot"></span>
+
+                  {{ getStatusLabel(order.status) }}
+
+                </span>
+
+              </td>
+
+
+              <!-- EXPEDITION -->
+              <td>
+
+                @if (getShipmentForOrder(order.id); as shipment) {
+
+                  <div class="shipment-cell">
+
+                    <span
+                      class="shipment-status"
+                      [ngClass]="getShipmentStatusClass(shipment.status)"
+                    >
+                      {{ getShipmentStatusLabel(shipment.status) }}
+                    </span>
+
+                    <small>
+                      {{ shipment.trackingNumber }}
+                    </small>
+
+                  </div>
+
+                } @else {
+
+                  <span class="no-shipment">
+                    <span class="material-symbols-outlined">
+                      remove
+                    </span>
+                    Aucune
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- ACTIONS -->
+              <td class="text-right">
+
+                <div class="action-menu">
+
+                  <button
+                    type="button"
+                    class="btn-icon"
+                    title="Actions"
+                    (click)="toggleActionMenu(order.id)"
+                  >
+                    <span class="material-symbols-outlined">
+                      more_vert
+                    </span>
+                  </button>
+
+
+                  @if (openActionMenuId === order.id) {
+
+                    <div class="action-dropdown">
+
+                      <!-- DETAILS -->
+                      <button
+                        type="button"
+                        (click)="openDetailModal(order)"
+                      >
+                        <span class="material-symbols-outlined">
+                          visibility
+                        </span>
+
+                        Voir les détails
+                      </button>
+
+
+                      <!-- CREER EXPEDITION -->
+                      @if (canCreateShipment(order)) {
+
+                        <button
+                          type="button"
+                          class="shipment-action"
+                          (click)="createShipment(order)"
+                        >
+                          <span class="material-symbols-outlined">
+                            local_shipping
+                          </span>
+
+                          Faire une expédition
+                        </button>
+
+                      }
+
+
+                      <!-- VOIR EXPEDITION -->
+                      @if (getShipmentForOrder(order.id); as shipment) {
+
+                        <button
+                          type="button"
+                          class="tracking-action"
+                          (click)="viewShipment(shipment)"
+                        >
+                          <span class="material-symbols-outlined">
+                            route
+                          </span>
+
+                          Voir l'expédition
+                        </button>
+
+                      }
+
+
+                      <!-- CONFIRMATION -->
+                      @if (order.status === 'CONFIRMED') {
+
+                        <button
+                          type="button"
+                          class="cancel-order-action"
+                          (click)="cancelOrder(order)"
+                        >
+                          <span class="material-symbols-outlined">
+                            cancel
+                          </span>
+
+                          Annuler la commande
+                        </button>
+
+                      }
+
+                    </div>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- EMPTY -->
+          @if (filteredOrders.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="8"
+                class="empty-state"
               >
-                <option value="PENDING">En attente</option>
-                <option value="PROCESSING">En cours</option>
-                <option value="DELIVERED">Livrée</option>
-                <option value="CANCELLED">Annulée</option>
-              </select>
-            </td>
 
-            <td class="text-right">
-              <button class="btn-icon" (click)="openDetailModal(order)" title="Détails">
-                <span class="material-symbols-outlined">visibility</span>
-              </button>
-            </td>
-          </tr>
+                <span class="material-symbols-outlined">
+                  receipt_long
+                </span>
 
-          <tr *ngIf="filteredOrders.length === 0">
-            <td colspan="7" class="empty-state">
-              <span class="material-symbols-outlined">receipt</span>
-              <p>Aucune commande ne correspond aux filtres actuels.</p>
-            </td>
-          </tr>
+                <h3>Aucune commande trouvée</h3>
+
+                <p>
+                  Aucune commande ne correspond aux filtres actuels.
+                </p>
+
+              </td>
+
+            </tr>
+
+          }
+
         </tbody>
+
       </table>
+
     </div>
+
   </section>
+
 
   <!-- PAGINATION -->
-  <section class="pagination-bar" *ngIf="filteredOrders.length > 0">
-    <div class="pagination-info">
-      Affichage de <strong>{{ paginationStart }}</strong> à <strong>{{ paginationEnd }}</strong> sur <strong>{{ filteredOrders.length }}</strong> commandes
-    </div>
+  @if (filteredOrders.length > 0) {
 
-    <div class="pagination-controls">
-      <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
-        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }} / page</option>
-      </select>
+    <section class="pagination-bar">
 
-      <button type="button" class="pagination-button" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
-        <span class="material-symbols-outlined">chevron_left</span>
-      </button>
+      <div class="pagination-info">
 
-      <ng-container *ngFor="let page of paginationPages">
-        <span *ngIf="page === '...'" class="pagination-dots">...</span>
+        Affichage de
+        <strong>{{ paginationStart }}</strong>
+        à
+        <strong>{{ paginationEnd }}</strong>
+        sur
+        <strong>{{ filteredOrders.length }}</strong>
+        commandes
+
+      </div>
+
+
+      <div class="pagination-controls">
+
+        <select
+          [(ngModel)]="itemsPerPage"
+          (change)="changeItemsPerPage()"
+        >
+
+          @for (size of pageSizeOptions; track size) {
+
+            <option [ngValue]="size">
+              {{ size }} / page
+            </option>
+
+          }
+
+        </select>
+
+
         <button
-          *ngIf="page !== '...'"
           type="button"
           class="pagination-button"
-          [class.active]="currentPage === page"
-          (click)="changePage(page)"
+          [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)"
         >
-          {{ page }}
+          <span class="material-symbols-outlined">
+            chevron_left
+          </span>
         </button>
-      </ng-container>
 
-      <button type="button" class="pagination-button" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
-        <span class="material-symbols-outlined">chevron_right</span>
-      </button>
-    </div>
-  </section>
 
-  <!-- MODALE : DÉTAILS DE LA COMMANDE -->
-  <div class="modal-backdrop" *ngIf="isDetailModalOpen && selectedOrder">
-    <div class="detail-modal">
-      <div class="modal-header">
-        <div>
-          <span class="modal-eyebrow">FICHE COMMANDE</span>
-          <h2>{{ selectedOrder.orderNumber }}</h2>
-        </div>
-        <button class="modal-close" (click)="closeDetailModal()">
-          <span class="material-symbols-outlined">close</span>
-        </button>
-      </div>
+        @for (page of paginationPages; track $index) {
 
-      <div class="modal-body">
-        <!-- COORDONNÉES CLIENT -->
-        <div class="info-block">
-          <h3>Informations Client</h3>
-          <div class="info-grid">
-            <div><label>Nom :</label> <strong>{{ selectedOrder.customerName }}</strong></div>
-            <div><label>Téléphone :</label> <strong>{{ selectedOrder.customerPhone }}</strong></div>
-            <div class="full-width"><label>Adresse :</label> <span>{{ selectedOrder.customerAddress }}</span></div>
-          </div>
-        </div>
+          @if (page === '...') {
 
-        <!-- LISTE DES ARTICLES -->
-        <div class="info-block">
-          <h3>Articles commandés</h3>
-          <table class="detail-items-table">
-            <thead>
-              <tr>
-                <th>Produit</th>
-                <th>Prix Unit.</th>
-                <th>Qté</th>
-                <th class="text-right">Sous-Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of selectedOrder.items">
-                <td>{{ item.productName }}</td>
-                <td>{{ item.unitPrice | number }} FCFA</td>
-                <td>x{{ item.quantity }}</td>
-                <td class="text-right"><strong>{{ (item.unitPrice * item.quantity) | number }} FCFA</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- RÉSUMÉ PAIEMENT -->
-        <div class="order-summary-box">
-          <div class="summary-line">
-            <span>Méthode de Paiement</span>
-            <strong>{{ selectedOrder.paymentMethod }}</strong>
-          </div>
-          <div class="summary-line">
-            <span>Statut Paiement</span>
-            <span class="badge-payment" [class.paid]="selectedOrder.paymentStatus === 'PAID'">
-              {{ selectedOrder.paymentStatus }}
+            <span class="pagination-dots">
+              ...
             </span>
-          </div>
-          <div class="summary-line total">
-            <span>Total Général</span>
-            <strong>{{ selectedOrder.totalAmount | number }} FCFA</strong>
-          </div>
-        </div>
+
+          } @else {
+
+            <button
+              type="button"
+              class="pagination-button"
+              [class.active]="currentPage === page"
+              (click)="changePage(page)"
+            >
+              {{ page }}
+            </button>
+
+          }
+
+        }
+
+
+        <button
+          type="button"
+          class="pagination-button"
+          [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)"
+        >
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </button>
+
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn-secondary" (click)="closeDetailModal()">Fermer</button>
+    </section>
+
+  }
+
+
+  <!-- =====================================================
+       DETAIL MODAL
+  ====================================================== -->
+
+  @if (isDetailModalOpen && selectedOrder) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeDetailModal()"
+    >
+
+      <div
+        class="detail-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- HEADER -->
+        <div class="modal-header">
+
+          <div>
+
+            <span class="modal-eyebrow">
+              FICHE COMMANDE
+            </span>
+
+            <h2>
+              {{ selectedOrder.orderNumber }}
+            </h2>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeDetailModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <!-- BODY -->
+        <div class="modal-body">
+
+
+          <!-- STATUS HEADER -->
+          <div class="detail-status-card">
+
+            <div>
+
+              <span class="detail-status-label">
+                STATUT DE LA COMMANDE
+              </span>
+
+              <strong
+                class="status-badge large"
+                [ngClass]="getStatusClass(selectedOrder.status)"
+              >
+
+                <span class="status-dot"></span>
+
+                {{ getStatusLabel(selectedOrder.status) }}
+
+              </strong>
+
+            </div>
+
+
+            @if (getShipmentForOrder(selectedOrder.id); as shipment) {
+
+              <div class="linked-shipment">
+
+                <span class="material-symbols-outlined">
+                  local_shipping
+                </span>
+
+                <div>
+
+                  <small>
+                    EXPÉDITION LIÉE
+                  </small>
+
+                  <strong>
+                    {{ shipment.trackingNumber }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- CLIENT -->
+          <div class="info-block">
+
+            <div class="block-title">
+
+              <span class="material-symbols-outlined">
+                person
+              </span>
+
+              Informations Client
+
+            </div>
+
+
+            <div class="info-grid">
+
+              <div>
+
+                <label>Nom</label>
+
+                <strong>
+                  {{ selectedOrder.customerName }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <label>Téléphone</label>
+
+                <strong>
+                  {{ selectedOrder.customerPhone }}
+                </strong>
+
+              </div>
+
+
+              <div class="full-width">
+
+                <label>Adresse de livraison</label>
+
+                <strong>
+                  {{ selectedOrder.customerAddress }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ARTICLES -->
+          <div class="info-block">
+
+            <div class="block-title">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+              Articles commandés
+
+            </div>
+
+
+            <div class="items-list">
+
+              @for (
+                item of selectedOrder.items;
+                track item.id
+              ) {
+
+                <div class="order-item">
+
+                  <div class="item-icon">
+
+                    <span class="material-symbols-outlined">
+                      inventory_2
+                    </span>
+
+                  </div>
+
+
+                  <div class="item-info">
+
+                    <strong>
+                      {{ item.productName }}
+                    </strong>
+
+                    <span>
+                      {{ item.quantity }} ×
+                      {{ item.unitPrice | number }} FCFA
+                    </span>
+
+                  </div>
+
+
+                  <strong class="item-total">
+                    {{ item.unitPrice * item.quantity | number }}
+                    FCFA
+                  </strong>
+
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- PAYMENT -->
+          <div class="order-summary-box">
+
+            <div class="summary-line">
+
+              <span>
+                Méthode de paiement
+              </span>
+
+              <strong>
+                {{ getPaymentMethodLabel(selectedOrder.paymentMethod) }}
+              </strong>
+
+            </div>
+
+
+            <div class="summary-line">
+
+              <span>
+                Statut paiement
+              </span>
+
+              <span
+                class="badge-payment"
+                [class.paid]="selectedOrder.paymentStatus === 'PAID'"
+              >
+                {{ getPaymentLabel(selectedOrder.paymentStatus) }}
+              </span>
+
+            </div>
+
+
+            <div class="summary-line total">
+
+              <span>
+                Total général
+              </span>
+
+              <strong>
+                {{ selectedOrder.totalAmount | number }}
+                FCFA
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- EXPEDITION -->
+          @if (getShipmentForOrder(selectedOrder.id); as shipment) {
+
+            <div class="shipment-linked-card">
+
+              <div class="shipment-linked-header">
+
+                <div>
+
+                  <span class="material-symbols-outlined">
+                    local_shipping
+                  </span>
+
+                  <div>
+
+                    <small>
+                      EXPÉDITION B2WA
+                    </small>
+
+                    <strong>
+                      {{ shipment.trackingNumber }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <span
+                  class="shipment-status"
+                  [ngClass]="getShipmentStatusClass(shipment.status)"
+                >
+                  {{ getShipmentStatusLabel(shipment.status) }}
+                </span>
+
+              </div>
+
+
+              <div class="shipment-route">
+
+                <div>
+
+                  <small>
+                    DÉPART
+                  </small>
+
+                  <strong>
+                    {{ shipment.origin }}
+                  </strong>
+
+                </div>
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+                <div>
+
+                  <small>
+                    DESTINATION
+                  </small>
+
+                  <strong>
+                    {{ shipment.destination }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="view-shipment-btn"
+                (click)="viewShipment(shipment)"
+              >
+
+                <span class="material-symbols-outlined">
+                  route
+                </span>
+
+                Voir le suivi de l'expédition
+
+              </button>
+
+            </div>
+
+          }
+
+
+          <!-- NOTES -->
+          @if (selectedOrder.notes) {
+
+            <div class="notes-block">
+
+              <div class="block-title">
+
+                <span class="material-symbols-outlined">
+                  sticky_note_2
+                </span>
+
+                Notes
+
+              </div>
+
+              <p>
+                {{ selectedOrder.notes }}
+              </p>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="closeDetailModal()"
+          >
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+            Fermer
+
+          </button>
+
+
+          @if (canCreateShipment(selectedOrder)) {
+
+            <button
+              type="button"
+              class="btn-primary shipment-primary"
+              (click)="createShipment(selectedOrder)"
+            >
+
+              <span class="material-symbols-outlined">
+                local_shipping
+              </span>
+
+              Créer l'expédition
+
+            </button>
+
+          }
+
+
+          @if (getShipmentForOrder(selectedOrder.id); as shipment) {
+
+            <button
+              type="button"
+              class="btn-primary tracking-primary"
+              (click)="viewShipment(shipment)"
+            >
+
+              <span class="material-symbols-outlined">
+                route
+              </span>
+
+              Suivre l'expédition
+
+            </button>
+
+          }
+
+        </div>
+
       </div>
+
     </div>
-  </div>
+
+  }
+
+
+  <!-- TOAST -->
+  @if (toast.visible) {
+
+    <div
+      class="order-toast"
+      [class.success]="toast.type === 'success'"
+      [class.warning]="toast.type === 'warning'"
+      [class.error]="toast.type === 'error'"
+    >
+
+      <span class="material-symbols-outlined">
+        {{ toast.icon }}
+      </span>
+
+      <div>
+
+        <strong>
+          {{ toast.title }}
+        </strong>
+
+        <p>
+          {{ toast.message }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        (click)="hideToast()"
+      >
+        <span class="material-symbols-outlined">
+          close
+        </span>
+      </button>
+
+    </div>
+
+  }
 
 </div>

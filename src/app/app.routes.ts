@@ -199,6 +199,12 @@ export const routes: Routes = [
             .then(m => m.AddProductsComponent)
       },
       {
+        path: 'update-products/:id',
+        loadComponent: () =>
+          import('./pages/products/update-products/update-products')
+            .then(m => m.UpdateProductsComponent)
+      },
+      {
         path: 'shipping',
 
         loadComponent: () =>
@@ -206,7 +212,7 @@ export const routes: Routes = [
             .then(m => m.ShippingComponent)
       },
       {
-        path: 'create-shipment',
+        path: 'create-shipment/:orderId',
 
         loadComponent: () =>
           import('./pages/shipping/create-shipment/create-shipment')
@@ -219,7 +225,7 @@ export const routes: Routes = [
             .then(m => m.ShipmentDetailComponent)
       },
       { 
-        path: 'tracking',
+        path: 'tracking/:shipmentId',
         loadComponent: () =>
           import('./pages/shipping/tracking/tracking')
             .then(m => m.TrackingComponent)

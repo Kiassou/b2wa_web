@@ -1,1 +1,706 @@
-<p>update-products works!</p>
+<div class="update-product-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
+
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          edit_square
+        </span>
+      </div>
+
+      <div class="header-text">
+        <span class="page-kicker">
+          CATALOGUE B2WA
+        </span>
+
+        <h1>
+          Modifier le produit
+        </h1>
+
+        <p>
+          Mettez à jour les informations de votre produit.
+        </p>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       LOADING
+  ====================================================== -->
+
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <div class="loading-spinner"></div>
+
+      <p>
+        Chargement du produit...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       ERROR
+  ====================================================== -->
+
+  @if (!loading && errorMessage) {
+
+    <div class="error-state">
+
+      <div class="error-icon">
+        <span class="material-symbols-outlined">
+          error
+        </span>
+      </div>
+
+      <h2>
+        Produit introuvable
+      </h2>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="back-primary-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+        Retour aux produits
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       FORM
+  ====================================================== -->
+
+  @if (!loading && product) {
+
+    <form
+      class="product-layout"
+      (ngSubmit)="updateProduct()"
+    >
+
+      <!-- =================================================
+           LEFT
+      ================================================== -->
+
+      <section class="main-column">
+
+        <!-- =================================================
+             IMAGES
+        ================================================== -->
+
+        <div class="form-card">
+
+          <div class="card-header">
+
+            <div>
+              <span class="card-kicker">
+                GALERIE
+              </span>
+
+              <h2>
+                Images du produit
+              </h2>
+
+              <p>
+                Vous pouvez utiliser jusqu'à 5 images.
+              </p>
+            </div>
+
+            <div class="image-counter">
+              {{ productForm.images.length }}/5
+            </div>
+
+          </div>
+
+
+          <div class="images-grid">
+
+            @for (
+              image of productForm.images;
+              track $index;
+              let i = $index
+            ) {
+
+              <div class="image-slot">
+
+                <img
+                  [src]="image"
+                  [alt]="'Image produit ' + (i + 1)"
+                />
+
+                <div class="image-overlay">
+
+                  <span>
+                    Image {{ i + 1 }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="replace-image-btn"
+                    (click)="imageInput.click()"
+                  >
+                    <span class="material-symbols-outlined">
+                      edit
+                    </span>
+                  </button>
+
+                  <input
+                    #imageInput
+                    type="file"
+                    hidden
+                    accept="image/png,image/jpeg,image/webp"
+                    (change)="replaceImage($event, i)"
+                  />
+
+                </div>
+
+              </div>
+
+            }
+
+
+            @for (
+              slot of emptyImageSlots;
+              track $index;
+              let i = $index
+            ) {
+
+              <label class="empty-image-slot">
+
+                <span class="material-symbols-outlined">
+                  add_photo_alternate
+                </span>
+
+                <strong>
+                  Ajouter une image
+                </strong>
+
+                <small>
+                  Image {{ productForm.images.length + i + 1 }}
+                </small>
+
+                <input
+                  type="file"
+                  hidden
+                  accept="image/png,image/jpeg,image/webp"
+                  (change)="addImage($event)"
+                />
+
+              </label>
+
+            }
+
+          </div>
+
+
+          <div class="image-info">
+
+            <span class="material-symbols-outlined">
+              info
+            </span>
+
+            <span>
+              Une présentation avec plusieurs images permet aux
+              clients de mieux découvrir votre produit.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INFORMATIONS
+        ================================================== -->
+
+        <div class="form-card">
+
+          <div class="card-header">
+
+            <div>
+              <span class="card-kicker">
+                INFORMATIONS
+              </span>
+
+              <h2>
+                Informations du produit
+              </h2>
+
+              <p>
+                Modifiez les informations principales.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <!-- NOM -->
+
+            <div class="form-group full">
+
+              <label>
+                Nom du produit
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+                <input
+                  type="text"
+                  name="title"
+                  [(ngModel)]="productForm.title"
+                  placeholder="Ex : Sac artisanal"
+                />
+
+              </div>
+
+            </div>
+
+
+            <!-- CATEGORIE -->
+
+            <div class="form-group">
+
+              <label>
+                Catégorie
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="material-symbols-outlined">
+                  category
+                </span>
+
+                <select
+                  name="category"
+                  [(ngModel)]="productForm.category"
+                >
+
+                  <option value="">
+                    Choisir une catégorie
+                  </option>
+
+                  <option value="Mode">
+                    Mode
+                  </option>
+
+                  <option value="Alimentation">
+                    Alimentation
+                  </option>
+
+                  <option value="Électronique">
+                    Électronique
+                  </option>
+
+                  <option value="Artisanat">
+                    Artisanat
+                  </option>
+
+                  <option value="Agriculture">
+                    Agriculture
+                  </option>
+
+                  <option value="Autre">
+                    Autre
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <!-- PRIX -->
+
+            <div class="form-group">
+
+              <label>
+                Prix
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="material-symbols-outlined">
+                  payments
+                </span>
+
+                <input
+                  type="number"
+                  name="price"
+                  min="0"
+                  [(ngModel)]="productForm.price"
+                  placeholder="0"
+                />
+
+                <span class="input-suffix">
+                  FCFA
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- STOCK -->
+
+            <div class="form-group">
+
+              <label>
+                Stock disponible
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="material-symbols-outlined">
+                  warehouse
+                </span>
+
+                <input
+                  type="number"
+                  name="stock"
+                  min="0"
+                  [(ngModel)]="productForm.stock"
+                  placeholder="0"
+                />
+
+                <span class="input-suffix">
+                  unités
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group full">
+
+              <label>
+                Description
+              </label>
+
+              <div class="textarea-wrapper">
+
+                <span class="material-symbols-outlined">
+                  description
+                </span>
+
+                <textarea
+                  name="description"
+                  rows="5"
+                  [(ngModel)]="productForm.description"
+                  placeholder="Décrivez votre produit..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           RIGHT SIDEBAR
+      ================================================== -->
+
+      <aside class="side-column">
+
+        <!-- =================================================
+             STATUS
+        ================================================== -->
+
+        <div class="form-card status-card">
+
+          <div class="card-header compact">
+
+            <div>
+
+              <span class="card-kicker">
+                DISPONIBILITÉ
+              </span>
+
+              <h2>
+                Statut du produit
+              </h2>
+
+            </div>
+
+          </div>
+
+
+          <div class="status-box">
+
+            <div class="status-icon"
+              [class.active]="productForm.active"
+              [class.inactive]="!productForm.active"
+            >
+
+              <span class="material-symbols-outlined">
+                {{ productForm.active ? 'check_circle' : 'pause_circle' }}
+              </span>
+
+            </div>
+
+
+            <div class="status-content">
+
+              <strong>
+                {{ productForm.active ? 'Produit actif' : 'Produit inactif' }}
+              </strong>
+
+              <small>
+                {{
+                  productForm.active
+                    ? 'Visible dans votre catalogue'
+                    : 'Masqué du catalogue'
+                }}
+              </small>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="toggle"
+              [class.active]="productForm.active"
+              (click)="toggleStatus()"
+              [attr.aria-label]="
+                productForm.active
+                  ? 'Désactiver le produit'
+                  : 'Activer le produit'
+              "
+            >
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <div class="form-card preview-card">
+
+          <div class="card-header compact">
+
+            <div>
+
+              <span class="card-kicker">
+                APERÇU
+              </span>
+
+              <h2>
+                Résumé
+              </h2>
+
+            </div>
+
+          </div>
+
+
+          <div class="preview-product">
+
+            @if (productForm.images.length > 0) {
+
+              <img
+                [src]="productForm.images[0]"
+                alt="Produit"
+              />
+
+            } @else {
+
+              <div class="preview-placeholder">
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+              </div>
+
+            }
+
+
+            <div class="preview-info">
+
+              <strong>
+                {{ productForm.title || 'Nom du produit' }}
+              </strong>
+
+              <span>
+                {{ productForm.category || 'Catégorie' }}
+              </span>
+
+              <strong class="preview-price">
+                {{ productForm.price || 0 }} FCFA
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="preview-divider"></div>
+
+
+          <div class="preview-row">
+
+            <span>
+              Stock
+            </span>
+
+            <strong>
+              {{ productForm.stock || 0 }} unités
+            </strong>
+
+          </div>
+
+
+          <div class="preview-row">
+
+            <span>
+              Images
+            </span>
+
+            <strong>
+              {{ productForm.images.length }}/5
+            </strong>
+
+          </div>
+
+
+          <div class="preview-row">
+
+            <span>
+              Statut
+            </span>
+
+            <strong
+              [class.active-text]="productForm.active"
+              [class.inactive-text]="!productForm.active"
+            >
+              {{ productForm.active ? 'Actif' : 'Inactif' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INFO
+        ================================================== -->
+
+        <div class="edit-info">
+
+          <div class="edit-info-icon">
+
+            <span class="material-symbols-outlined">
+              verified
+            </span>
+
+          </div>
+
+          <div>
+
+            <strong>
+              Modification sécurisée
+            </strong>
+
+            <p>
+              Les modifications seront enregistrées dans votre
+              catalogue B2WA.
+            </p>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </form>
+
+
+    <!-- =====================================================
+         FOOTER ACTIONS
+    ====================================================== -->
+
+    <div class="page-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          close
+        </span>
+
+        Annuler
+      </button>
+
+
+      <button
+        type="button"
+        class="save-btn"
+        [disabled]="!canUpdate"
+        (click)="updateProduct()"
+      >
+        <span class="material-symbols-outlined">
+          save
+        </span>
+
+        Enregistrer les modifications
+      </button>
+
+    </div>
+
+  }
+
+</div>
