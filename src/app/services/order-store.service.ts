@@ -68,10 +68,10 @@ export class OrderStoreService {
       id: 'ORD-102',
       orderNumber: 'CMD-2026-002',
       customerName: 'Mamadou Traoré',
-      customerPhone: '+223 66 98 76 54',
-      customerAddress: 'Badalabougou, Bamako',
-      customerCity: 'Bamako',
-      customerCountry: 'Mali',
+      customerPhone: '+225 66 98 76 54',
+      customerAddress: 'Marcory, Abidjan',
+      customerCity: 'Abidjan',
+      customerCountry: 'Côte d\'Ivoire',
       items: [
         { id: '2', productName: 'Smartphone X 128GB', quantity: 2, unitPrice: 210000 }
       ],
@@ -101,11 +101,11 @@ export class OrderStoreService {
     {
       id: 'ORD-104',
       orderNumber: 'CMD-2026-004',
-      customerName: 'Fatoumata Keïta',
-      customerPhone: '+223 75 44 55 66',
-      customerAddress: 'Korofina Nord, Bamako',
-      customerCity: 'Bamako',
-      customerCountry: 'Mali',
+      customerName: 'Fatimata Keïta',
+      customerPhone: '+221 77 44 55 66',
+      customerAddress: 'Nord, Dakar',
+      customerCity: 'Dakar',
+      customerCountry: 'Sénégal',
       items: [
         { id: '7', productName: 'Crème Hydratante Visage', quantity: 2, unitPrice: 9500 },
         { id: '6', productName: 'Lampe de Bureau LED', quantity: 1, unitPrice: 18500 }

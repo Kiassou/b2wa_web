@@ -113,28 +113,16 @@ export class TrackingComponent implements OnInit {
   /* =====================================================
      INITIALISATION
   ====================================================== */
-
   ngOnInit(): void {
+    // Lecture du paramètre de route : /dashboard/tracking/:shipmentId
+    this.route.paramMap.subscribe(params => {
+      const tracking = params.get('shipmentId');
 
-    this.route.queryParams.subscribe(
-
-      params => {
-
-        const tracking =
-          params['tracking'];
-
-
-        if (
-          tracking
-        ) {
-
-          this.trackingNumber =
-            String(tracking);
-
-          this.trackShipment();
-        }
+      if (tracking) {
+        this.trackingNumber = tracking;
+        this.trackShipment();
       }
-    );
+    });
   }
 
 

@@ -95,95 +95,39 @@ export class ShippingComponent {
     private shipmentStore: ShipmentStoreService
 
   ) {}
-  /* =====================================================
-     FILTERED SHIPMENTS
-  ====================================================== */
-  get filteredShipments(): Shipment[] {
-    let result: Shipment[];
-    if (
-      this.activeFilter === 'all'
-    ) {
-      result = this.shipments;
-    }
-    else if (
-      this.activeFilter === 'preparing'
-    ) {
-      result =
-        this.shipments.filter(
-          shipment =>
-            shipment.status === 'preparing'
-        );
-    }
-    else if (
-      this.activeFilter === 'transit'
-    ) {
+/* =====================================================
+   FILTERED SHIPMENTS (Trie du plus récent au plus ancien)
+====================================================== */
+get filteredShipments(): Shipment[] {
+  let result: Shipment[];
 
-      result =
-        this.shipments.filter(
-          shipment =>
-            shipment.status === 'transit' ||
-            shipment.status === 'picked'
-        );
-    }
+  if (this.activeFilter === 'all') {
+    result = [...this.shipments];
+  } else if (this.activeFilter === 'preparing') {
+    result = this.shipments.filter(s => s.status === 'preparing');
+  } else if (this.activeFilter === 'transit') {
+    result = this.shipments.filter(s => s.status === 'transit' || s.status === 'picked');
+  } else if (this.activeFilter === 'delivered') {
+    result = this.shipments.filter(s => s.status === 'delivered');
+  } else if (this.activeFilter === 'problem') {
+    result = this.shipments.filter(s => s.status === 'problem');
+  } else {
+    result = [...this.shipments];
+  }
 
-
-    else if (
-      this.activeFilter === 'delivered'
-    ) {
-
-      result =
-        this.shipments.filter(
-          shipment =>
-            shipment.status === 'delivered'
-        );
-    }
-
-
-    else if (
-      this.activeFilter === 'problem'
-    ) {
-
-      result =
-        this.shipments.filter(
-          shipment =>
-            shipment.status === 'problem'
-        );
-    }
-
-
-    else {
-
-      result = this.shipments;
-    }
-
-
-    const query =
-      this.searchQuery
-        .trim()
-        .toLowerCase();
-
-
-    if (!query) {
-      return result;
-    }
-
-
-    return result.filter(
-      shipment =>
-
-        shipment.trackingNumber
-          .toLowerCase()
-          .includes(query) ||
-
-        shipment.origin
-          .toLowerCase()
-          .includes(query) ||
-
-        shipment.destination
-          .toLowerCase()
-          .includes(query)
+  // Filtrage par recherche textuelle
+  const query = this.searchQuery.trim().toLowerCase();
+  if (query) {
+    result = result.filter(
+      s =>
+        s.trackingNumber.toLowerCase().includes(query) ||
+        s.origin.toLowerCase().includes(query) ||
+        s.destination.toLowerCase().includes(query)
     );
   }
+
+  return result.sort((a, b) => Number(b.id) - Number(a.id));
+}
 
 
   /* =====================================================
@@ -225,6 +169,7 @@ export class ShippingComponent {
         this.pageSize
       )
     );
+    
   }
 
 
@@ -289,18 +234,16 @@ export class ShippingComponent {
     this.currentPage = 1;
     this.openMenuShipmentId = null;
   }
-
+  
   /* =====================================================
      VIEW SHIPMENT
   ====================================================== */
-
-  viewShipment(
-    shipment: Shipment
-  ): void {
+  viewShipment(shipment: Shipment): void {
+    if (!shipment?.trackingNumber) return;
 
     this.router.navigate([
       '/dashboard/shipment-detail',
-      shipment.id
+    shipment.trackingNumber
     ]);
   }
 
@@ -529,16 +472,19 @@ export class ShippingComponent {
     );
   }
 
-  /* =====================================================
-     OUVRIR LE SUIVI
-  ====================================================== */
-  openTrackingPage(
-    shipment: Shipment
-  ): void {
+  openTrackingPage(shipment: Shipment): void {
+    if (!shipment) return;
+
+    // Récupérer le numéro de suivi ou repli sur l'ID
+    const target = shipment.trackingNumber || shipment.id;
+
+    console.log('Navigation vers :', target);
+
     this.closeQrModal();
+
     this.router.navigate([
       '/dashboard/shipment-detail',
-      shipment.id
+      target
     ]);
   }
 

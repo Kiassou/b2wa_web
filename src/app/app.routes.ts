@@ -219,7 +219,7 @@ export const routes: Routes = [
             .then(m => m.CreateShipmentComponent)
       },
       { 
-        path: 'shipment-detail/:id',
+        path: 'shipment-detail/:trackingNumber',
         loadComponent: () =>
           import('./pages/shipping/shipment-detail/shipment-detail')
             .then(m => m.ShipmentDetailComponent)

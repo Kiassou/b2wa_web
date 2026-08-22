@@ -322,23 +322,16 @@ export class ShipmentStoreService {
      RECHERCHE PAR NUMÉRO DE SUIVI
   ====================================================== */
 
-  findByTrackingNumber(
-    trackingNumber: string
-  ): Shipment | undefined {
+findByTrackingNumber(trackingNumber: string): Shipment | null {
+  if (!trackingNumber) return null;
 
-    const normalizedTracking =
-      String(trackingNumber)
-        .trim()
-        .toUpperCase();
+  const target = trackingNumber.trim().toUpperCase();
 
-
-    return this.shipments.find(
-
-      shipment =>
-        shipment.trackingNumber
-          .toUpperCase() === normalizedTracking
-    );
-  }
+  return this.shipments.find(s => 
+    s.trackingNumber?.trim().toUpperCase() === target ||
+    s.id?.toString().trim().toUpperCase() === target
+  ) || null;
+}
 
 
   /* =====================================================

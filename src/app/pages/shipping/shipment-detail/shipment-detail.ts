@@ -108,57 +108,33 @@ export class ShipmentDetailComponent
      INIT
   ====================================================== */
 
-  ngOnInit(): void {
+ngOnInit(): void {
+  const param = this.route.snapshot.paramMap.get('trackingNumber') 
+             || this.route.snapshot.paramMap.get('id');
 
-    this.shipmentId =
-      this.route.snapshot.paramMap.get(
-        'id'
-      );
-
-
-    const id =
-      Number(this.shipmentId);
-
-
-    if (
-      !this.shipmentId ||
-      Number.isNaN(id)
-    ) {
-
-      this.loading = false;
-
-      this.notFound = true;
-
-      return;
-    }
-
-
-    const shipment =
-      this.shipmentStore.getShipmentById(
-        id
-      );
-
-
-    if (!shipment) {
-
-      this.loading = false;
-
-      this.notFound = true;
-
-      return;
-    }
-
-
-    this.shipment = shipment;
-
-    this.trackingSteps =
-      this.buildTrackingSteps(
-        shipment
-      );
-
+  if (!param) {
     this.loading = false;
+    this.notFound = true;
+    return;
   }
 
+  // Utiliser l'opérateur de coalescence nulle (??) pour garantir 'null' au lieu de 'undefined'
+  let shipment: Shipment | null = this.shipmentStore.findByTrackingNumber(param) ?? null;
+
+  if (!shipment && !isNaN(Number(param))) {
+    shipment = this.shipmentStore.getShipmentById(Number(param)) ?? null;
+  }
+
+  if (!shipment) {
+    this.loading = false;
+    this.notFound = true;
+    return;
+  }
+
+  this.shipment = shipment;
+  this.trackingSteps = this.buildTrackingSteps(shipment);
+  this.loading = false;
+}
 
   /* =====================================================
      TIMELINE DYNAMIQUE
@@ -355,29 +331,16 @@ export class ShipmentDetailComponent
 
   trackShipment(): void {
 
-    if (
-      !this.shipment
-    ) {
+    if (!this.shipment) {
       return;
     }
 
+    console.log('Tracking shipment:', this.shipment.trackingNumber);
 
-    console.log(
-      'Tracking shipment:',
-      this.shipment.trackingNumber
-    );
+    // Utiliser l'ID ou le trackingNumber directement dans le chemin
+    const trackingId = this.shipment.id || this.shipment.trackingNumber;
 
-
-    this.router.navigate([
-      '/dashboard/tracking'
-    ], {
-
-      queryParams: {
-
-        tracking:
-          this.shipment.trackingNumber
-      }
-    });
+    this.router.navigate(['/dashboard/tracking', this.shipment.trackingNumber]);
   }
 
 
