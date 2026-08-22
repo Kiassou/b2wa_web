@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 
 /* =====================================================
-   STATUT D'UNE EXPÉDITION
+   STATUTS D'EXPÉDITION
 ===================================================== */
 
 export type ShipmentStatus =
@@ -15,101 +15,66 @@ export type ShipmentStatus =
 
 
 /* =====================================================
-   MODÈLE EXPÉDITION
+   PERSONNE / ENTREPRISE
+===================================================== */
+
+export interface ShipmentPerson {
+
+  name: string;
+
+  phone: string;
+
+  address: string;
+
+  city: string;
+
+  country: string;
+}
+
+
+/* =====================================================
+   EXPÉDITION
 ===================================================== */
 
 export interface Shipment {
 
   id: number;
 
-  /* RELATION AVEC LA COMMANDE */
   orderId: string;
+
   orderNumber: string;
 
-
-  /* IDENTIFICATION EXPÉDITION */
   reference: string;
+
   trackingNumber: string;
 
-
-  /* STATUT */
   status: ShipmentStatus;
 
-
-  /* DATES */
   createdAt: string;
+
   estimatedDelivery: string;
 
-
-  /* TARIFICATION */
   price: number;
+
   currency: string;
 
-
-  /* DESCRIPTION */
   description: string;
 
-
-  /* TRAJET */
   origin: string;
+
   destination: string;
-
-
-  /* ---------------------------------------------------
-     COLIS
-  --------------------------------------------------- */
 
   packages: number;
 
   weight: number;
 
-
-  /* ---------------------------------------------------
-     TRANSPORTEUR
-  --------------------------------------------------- */
-
   carrier: string;
 
   service: string;
 
+  sender: ShipmentPerson;
 
-  /* ---------------------------------------------------
-     EXPÉDITEUR
-  --------------------------------------------------- */
-
-  sender: {
-
-    name: string;
-
-    phone: string;
-
-    address: string;
-
-    city: string;
-
-    country: string;
-
-  };
-
-
-  /* ---------------------------------------------------
-     DESTINATAIRE
-  --------------------------------------------------- */
-
-  receiver: {
-
-    name: string;
-
-    phone: string;
-
-    address: string;
-
-    city: string;
-
-    country: string;
-
-  };
-
+  receiver: ShipmentPerson;
 }
 
 
@@ -123,595 +88,278 @@ export interface Shipment {
 export class ShipmentStoreService {
 
 
-  /* ===================================================
-     DONNÉES DE DÉMONSTRATION
-  =================================================== */
+  /* =====================================================
+     STOCKAGE
+  ====================================================== */
 
   private shipments: Shipment[] = [
 
-
-    /* -------------------------------------------------
-       EXPÉDITION 1
-    ------------------------------------------------- */
+    /* ===================================================
+       EXPÉDITION DEMO 1
+       BAMAKO → DAKAR
+    ==================================================== */
 
     {
       id: 1,
 
-      orderId: 'ORD-101',
+      orderId: 'ORD-2026-001',
 
-      orderNumber: 'CMD-2026-001',
+      orderNumber: 'B2WA-CMD-001',
 
-      reference:
-        'B2WA-EXP-2026-00001',
+      reference: 'B2WA-EXP-2026-00001',
 
-      trackingNumber:
-        'B2WA-ML-8F42K9',
+      trackingNumber: 'B2WA-ML-8F42K9',
 
-      status:
-        'transit',
+      status: 'transit',
 
-      createdAt:
-        '18 août 2026',
+      createdAt: '17 août 2026',
 
-      estimatedDelivery:
-        '22 août 2026',
+      estimatedDelivery: '22 août 2026',
 
-      price:
-        28500,
+      price: 45000,
 
-      currency:
-        'FCFA',
+      currency: 'FCFA',
 
       description:
-        'Expédition de marchandises commerciales à destination d’Abidjan.',
+        'Produits textiles et accessoires de mode.',
 
-      origin:
-        'Bamako 🇲🇱',
+      origin: 'Bamako',
 
-      destination:
-        'Abidjan 🇨🇮',
+      destination: 'Dakar',
 
-      packages:
-        3,
+      packages: 3,
 
-      weight:
-        12,
+      weight: 12,
 
-      carrier:
-        'B2WA Express',
+      carrier: 'B2WA Shipping',
 
-      service:
-        'Express',
-
+      service: 'Express',
 
       sender: {
 
-        name:
-          'Mali Commerce SARL',
+        name: 'B2WA Commerce',
 
-        phone:
-          '+223 70 00 00 01',
+        phone: '+223 70 00 00 01',
 
-        address:
-          'Hamdallaye ACI 2000',
+        address: 'Hamdallaye ACI 2000',
 
-        city:
-          'Bamako',
+        city: 'Bamako',
 
-        country:
-          'Mali'
-
+        country: 'Mali'
       },
-
 
       receiver: {
 
-        name:
-          'Aïssata Diallo',
+        name: 'Sénégal Distribution',
 
-        phone:
-          '+223 76 12 34 56',
+        phone: '+221 77 00 00 01',
 
-        address:
-          'Hamdallaye ACI 2000',
+        address: 'Plateau, Dakar',
 
-        city:
-          'Bamako',
+        city: 'Dakar',
 
-        country:
-          'Mali'
-
+        country: 'Sénégal'
       }
-
     },
 
 
-    /* -------------------------------------------------
-       EXPÉDITION 2
-    ------------------------------------------------- */
+    /* ===================================================
+       EXPÉDITION DEMO 2
+       BAMAKO → ABIDJAN
+    ==================================================== */
 
     {
       id: 2,
 
-      orderId: 'ORD-102',
+      orderId: 'ORD-2026-002',
 
-      orderNumber: 'CMD-2026-002',
+      orderNumber: 'B2WA-CMD-002',
 
-      reference:
-        'B2WA-EXP-2026-00002',
+      reference: 'B2WA-EXP-2026-00002',
 
-      trackingNumber:
-        'B2WA-ML-91KD72',
+      trackingNumber: 'B2WA-ML-P7X3Q2',
 
-      status:
-        'preparing',
+      status: 'delivered',
 
-      createdAt:
-        '19 août 2026',
+      createdAt: '10 août 2026',
 
-      estimatedDelivery:
-        '20 août 2026',
+      estimatedDelivery: '16 août 2026',
 
-      price:
-        7500,
+      price: 32500,
 
-      currency:
-        'FCFA',
+      currency: 'FCFA',
 
       description:
-        'Petite expédition locale entre Ségou et Bamako.',
+        'Accessoires électroniques et petits équipements.',
 
-      origin:
-        'Ségou 🇲🇱',
+      origin: 'Bamako',
 
-      destination:
-        'Bamako 🇲🇱',
+      destination: 'Abidjan',
 
-      packages:
-        1,
+      packages: 2,
 
-      weight:
-        4,
+      weight: 8,
 
-      carrier:
-        'B2WA Standard',
+      carrier: 'B2WA Shipping',
 
-      service:
-        'Standard',
-
+      service: 'Standard',
 
       sender: {
 
-        name:
-          'Moussa Koné',
+        name: 'Tech Mali',
 
-        phone:
-          '+223 76 00 00 02',
+        phone: '+223 70 00 00 02',
 
-        address:
-          'Quartier administratif',
+        address: 'ACI 2000',
 
-        city:
-          'Ségou',
+        city: 'Bamako',
 
-        country:
-          'Mali'
-
+        country: 'Mali'
       },
-
 
       receiver: {
 
-        name:
-          'Mamadou Traoré',
+        name: 'Abidjan Tech Store',
 
-        phone:
-          '+223 66 98 76 54',
+        phone: '+225 07 00 00 01',
 
-        address:
-          'Badalabougou',
+        address: 'Cocody',
 
-        city:
-          'Bamako',
+        city: 'Abidjan',
 
-        country:
-          'Mali'
-
+        country: 'Côte d\'Ivoire'
       }
-
-    },
-
-
-    /* -------------------------------------------------
-       EXPÉDITION 3
-    ------------------------------------------------- */
-
-    {
-      id: 3,
-
-      orderId: 'ORD-103',
-
-      orderNumber: 'CMD-2026-003',
-
-      reference:
-        'B2WA-EXP-2026-00003',
-
-      trackingNumber:
-        'B2WA-ML-72PQ41',
-
-      status:
-        'delivered',
-
-      createdAt:
-        '13 août 2026',
-
-      estimatedDelivery:
-        '18 août 2026',
-
-      price:
-        19000,
-
-      currency:
-        'FCFA',
-
-      description:
-        'Expédition livrée au destinataire à Ouagadougou.',
-
-      origin:
-        'Bamako 🇲🇱',
-
-      destination:
-        'Ouagadougou 🇧🇫',
-
-      packages:
-        2,
-
-      weight:
-        7.5,
-
-      carrier:
-        'B2WA Express',
-
-      service:
-        'Express',
-
-
-      sender: {
-
-        name:
-          'B2WA Market',
-
-        phone:
-          '+223 70 00 00 03',
-
-        address:
-          'Djelibougou',
-
-        city:
-          'Bamako',
-
-        country:
-          'Mali'
-
-      },
-
-
-      receiver: {
-
-        name:
-          'Oumar Coulibaly',
-
-        phone:
-          '+223 70 11 22 33',
-
-        address:
-          'Faladié SEMA',
-
-        city:
-          'Bamako',
-
-        country:
-          'Mali'
-
-      }
-
-    },
-
-
-    /* -------------------------------------------------
-       EXPÉDITION 4
-    ------------------------------------------------- */
-
-    {
-      id: 4,
-
-      orderId: 'ORD-104',
-
-      orderNumber: 'CMD-2026-004',
-
-      reference:
-        'B2WA-EXP-2026-00004',
-
-      trackingNumber:
-        'B2WA-ML-5HX812',
-
-      status:
-        'transit',
-
-      createdAt:
-        '17 août 2026',
-
-      estimatedDelivery:
-        '25 août 2026',
-
-      price:
-        42000,
-
-      currency:
-        'FCFA',
-
-      description:
-        'Transport de plusieurs colis vers Dakar.',
-
-      origin:
-        'Koulikoro 🇲🇱',
-
-      destination:
-        'Dakar 🇸🇳',
-
-      packages:
-        4,
-
-      weight:
-        18,
-
-      carrier:
-        'B2WA Cargo',
-
-      service:
-        'Cargo',
-
-
-      sender: {
-
-        name:
-          'Koulikoro Distribution',
-
-        phone:
-          '+223 70 00 00 04',
-
-        address:
-          'Centre-ville',
-
-        city:
-          'Koulikoro',
-
-        country:
-          'Mali'
-
-      },
-
-
-      receiver: {
-
-        name:
-          'Fatoumata Keïta',
-
-        phone:
-          '+223 75 44 55 66',
-
-        address:
-          'Korofina Nord',
-
-        city:
-          'Bamako',
-
-        country:
-          'Mali'
-
-      }
-
-    },
-
-
-    /* -------------------------------------------------
-       EXPÉDITION 5
-    ------------------------------------------------- */
-
-    {
-      id: 5,
-
-      orderId: 'ORD-105',
-
-      orderNumber: 'CMD-2026-005',
-
-      reference:
-        'B2WA-EXP-2026-00005',
-
-      trackingNumber:
-        'B2WA-ML-3LK921',
-
-      status:
-        'problem',
-
-      createdAt:
-        '16 août 2026',
-
-      estimatedDelivery:
-        'À confirmer',
-
-      price:
-        12500,
-
-      currency:
-        'FCFA',
-
-      description:
-        'Expédition temporairement bloquée à cause d’un problème de transport.',
-
-      origin:
-        'Bamako 🇲🇱',
-
-      destination:
-        'Conakry 🇬🇳',
-
-      packages:
-        1,
-
-      weight:
-        3,
-
-      carrier:
-        'B2WA Cargo',
-
-      service:
-        'Cargo',
-
-
-      sender: {
-
-        name:
-          'Bamako Store',
-
-        phone:
-          '+223 70 00 00 05',
-
-        address:
-          'Badalabougou',
-
-        city:
-          'Bamako',
-
-        country:
-          'Mali'
-
-      },
-
-
-      receiver: {
-
-        name:
-          'Aminata Camara',
-
-        phone:
-          '+224 62 00 00 05',
-
-        address:
-          'Kaloum',
-
-        city:
-          'Conakry',
-
-        country:
-          'Guinée'
-
-      }
-
     }
 
   ];
 
 
-  /* ===================================================
-     RÉCUPÉRER TOUTES LES EXPÉDITIONS
-  =================================================== */
+  /* =====================================================
+     CONSTRUCTEUR
+  ====================================================== */
 
-  getShipments(): Shipment[] {
+  constructor() {
 
-    return this.shipments;
-
+    this.loadFromStorage();
   }
 
 
-  /* ===================================================
+  /* =====================================================
+     RÉCUPÉRER TOUTES LES EXPÉDITIONS
+  ====================================================== */
+
+  getShipments(): Shipment[] {
+
+    return [
+      ...this.shipments
+    ];
+  }
+
+
+  /* =====================================================
      RÉCUPÉRER UNE EXPÉDITION PAR ID
-  =================================================== */
+  ====================================================== */
 
   getShipmentById(
     id: number
   ): Shipment | undefined {
 
     return this.shipments.find(
-      shipment =>
-        shipment.id === id
-    );
 
+      shipment =>
+        shipment.id === Number(id)
+    );
   }
 
 
-  /* ===================================================
-     RÉCUPÉRER PAR NUMÉRO DE SUIVI
-  =================================================== */
-
-  findByTrackingNumber(
-    trackingNumber: string
-  ): Shipment | undefined {
-
-    const value =
-      trackingNumber
-        .trim()
-        .toUpperCase();
-
-
-    return this.shipments.find(
-      shipment =>
-        shipment.trackingNumber
-          .toUpperCase() === value
-    );
-
-  }
-
-
-  /* ===================================================
-     RÉCUPÉRER L'EXPÉDITION D'UNE COMMANDE
-  =================================================== */
+  /* =====================================================
+     RÉCUPÉRER PAR ORDER ID
+  ====================================================== */
 
   getShipmentByOrderId(
     orderId: string
   ): Shipment | undefined {
 
+    const normalizedId =
+      String(orderId)
+        .trim()
+        .toUpperCase();
+
+
     return this.shipments.find(
-      shipment =>
-        shipment.orderId === orderId
-    );
 
+      shipment =>
+        shipment.orderId
+          .toUpperCase() === normalizedId
+    );
   }
 
 
-  /* ===================================================
-     VÉRIFIER SI UNE COMMANDE POSSÈDE UNE EXPÉDITION
-  =================================================== */
+  /* =====================================================
+     RÉCUPÉRER PAR ORDER NUMBER
+  ====================================================== */
 
-  hasShipment(
-    orderId: string
-  ): boolean {
+  getShipmentByOrderNumber(
+    orderNumber: string
+  ): Shipment | undefined {
 
-    return this.shipments.some(
+    const normalizedNumber =
+      String(orderNumber)
+        .trim()
+        .toUpperCase();
+
+
+    return this.shipments.find(
+
       shipment =>
-        shipment.orderId === orderId
+        shipment.orderNumber
+          .toUpperCase() === normalizedNumber
     );
-
   }
 
 
-  /* ===================================================
+  /* =====================================================
+     RECHERCHE PAR NUMÉRO DE SUIVI
+  ====================================================== */
+
+  findByTrackingNumber(
+    trackingNumber: string
+  ): Shipment | undefined {
+
+    const normalizedTracking =
+      String(trackingNumber)
+        .trim()
+        .toUpperCase();
+
+
+    return this.shipments.find(
+
+      shipment =>
+        shipment.trackingNumber
+          .toUpperCase() === normalizedTracking
+    );
+  }
+
+
+  /* =====================================================
      AJOUTER UNE EXPÉDITION
-  =================================================== */
+  ====================================================== */
 
   addShipment(
     shipment: Shipment
   ): void {
 
-    this.shipments.unshift(
+    this.shipments.push(
       shipment
     );
 
+    this.saveToStorage();
   }
 
 
-  /* ===================================================
+  /* =====================================================
      MODIFIER UNE EXPÉDITION
-  =================================================== */
+  ====================================================== */
 
   updateShipment(
     shipment: Shipment
@@ -719,6 +367,7 @@ export class ShipmentStoreService {
 
     const index =
       this.shipments.findIndex(
+
         item =>
           item.id === shipment.id
       );
@@ -727,22 +376,97 @@ export class ShipmentStoreService {
     if (index === -1) {
 
       return;
-
     }
 
 
     this.shipments[index] =
-      shipment;
+      {
+        ...shipment
+      };
 
+
+    this.saveToStorage();
   }
 
 
-  /* ===================================================
-     METTRE À JOUR LE STATUT
-  =================================================== */
+  /* =====================================================
+     SUPPRIMER UNE EXPÉDITION
+  ====================================================== */
 
-  updateShipmentStatus(
+  deleteShipment(
+    id: number
+  ): void {
+
+    this.shipments =
+      this.shipments.filter(
+
+        shipment =>
+          shipment.id !== Number(id)
+      );
+
+
+    this.saveToStorage();
+  }
+
+
+  /* =====================================================
+     PROCHAIN ID
+  ====================================================== */
+
+  getNextId(): number {
+
+    if (
+      this.shipments.length === 0
+    ) {
+
+      return 1;
+    }
+
+
+    return Math.max(
+
+      ...this.shipments.map(
+        shipment =>
+          shipment.id
+      )
+
+    ) + 1;
+  }
+
+
+  /* =====================================================
+     COMPTER LES EXPÉDITIONS
+  ====================================================== */
+
+  getShipmentCount(): number {
+
+    return this.shipments.length;
+  }
+
+
+  /* =====================================================
+     EXPÉDITIONS PAR STATUT
+  ====================================================== */
+
+  getShipmentsByStatus(
+    status: ShipmentStatus
+  ): Shipment[] {
+
+    return this.shipments.filter(
+
+      shipment =>
+        shipment.status === status
+    );
+  }
+
+
+  /* =====================================================
+     CHANGER LE STATUT
+  ====================================================== */
+
+  updateStatus(
     id: number,
+
     status: ShipmentStatus
   ): boolean {
 
@@ -753,7 +477,6 @@ export class ShipmentStoreService {
     if (!shipment) {
 
       return false;
-
     }
 
 
@@ -761,88 +484,229 @@ export class ShipmentStoreService {
       status;
 
 
+    this.saveToStorage();
+
+
     return true;
-
   }
 
 
-  /* ===================================================
-     GÉNÉRER LE PROCHAIN ID
-  =================================================== */
+  /* =====================================================
+     STORAGE
+  ====================================================== */
 
-  getNextId(): number {
+  private readonly storageKey =
+    'b2wa-shipments';
 
-    if (
-      this.shipments.length === 0
-    ) {
 
-      return 1;
+  /* =====================================================
+     SAUVEGARDER
+  ====================================================== */
 
+  private saveToStorage(): void {
+
+    try {
+
+      localStorage.setItem(
+
+        this.storageKey,
+
+        JSON.stringify(
+          this.shipments
+        )
+      );
+
+    } catch {
+
+      console.warn(
+        'Impossible de sauvegarder les expéditions.'
+      );
     }
-
-
-    return Math.max(
-      ...this.shipments.map(
-        shipment =>
-          shipment.id
-      )
-    ) + 1;
-
   }
 
 
-  /* ===================================================
-     GÉNÉRER UNE RÉFÉRENCE D'EXPÉDITION
-  =================================================== */
+  /* =====================================================
+     CHARGER
+  ====================================================== */
 
-  generateReference(): string {
+  private loadFromStorage(): void {
 
-    const year =
-      new Date()
-        .getFullYear();
+    try {
 
-
-    const nextId =
-      this.getNextId();
-
-
-    return `B2WA-EXP-${year}-${String(nextId).padStart(5, '0')}`;
-
-  }
-
-
-  /* ===================================================
-     GÉNÉRER UN NUMÉRO DE TRACKING
-  =================================================== */
-
-  generateTrackingNumber(): string {
-
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-
-    let code = '';
-
-
-    for (
-      let i = 0;
-      i < 6;
-      i++
-    ) {
-
-      code +=
-        characters.charAt(
-          Math.floor(
-            Math.random() *
-            characters.length
-          )
+      const stored =
+        localStorage.getItem(
+          this.storageKey
         );
 
+
+      if (!stored) {
+
+        return;
+      }
+
+
+      const parsed =
+        JSON.parse(stored);
+
+
+      if (
+        !Array.isArray(parsed)
+      ) {
+
+        return;
+      }
+
+
+      this.shipments =
+        parsed;
+
+    } catch {
+
+      console.warn(
+        'Impossible de charger les expéditions sauvegardées.'
+      );
     }
-
-
-    return `B2WA-ML-${code}`;
-
   }
 
+
+  /* =====================================================
+     RÉINITIALISER LES DONNÉES DE TEST
+  ====================================================== */
+
+  resetDemoData(): void {
+
+    this.shipments = [
+
+      {
+        id: 1,
+
+        orderId: 'ORD-2026-001',
+
+        orderNumber: 'B2WA-CMD-001',
+
+        reference: 'B2WA-EXP-2026-00001',
+
+        trackingNumber: 'B2WA-ML-8F42K9',
+
+        status: 'transit',
+
+        createdAt: '17 août 2026',
+
+        estimatedDelivery: '22 août 2026',
+
+        price: 45000,
+
+        currency: 'FCFA',
+
+        description:
+          'Produits textiles et accessoires de mode.',
+
+        origin: 'Bamako',
+
+        destination: 'Dakar',
+
+        packages: 3,
+
+        weight: 12,
+
+        carrier: 'B2WA Shipping',
+
+        service: 'Express',
+
+        sender: {
+
+          name: 'B2WA Commerce',
+
+          phone: '+223 70 00 00 01',
+
+          address: 'Hamdallaye ACI 2000',
+
+          city: 'Bamako',
+
+          country: 'Mali'
+        },
+
+        receiver: {
+
+          name: 'Sénégal Distribution',
+
+          phone: '+221 77 00 00 01',
+
+          address: 'Plateau, Dakar',
+
+          city: 'Dakar',
+
+          country: 'Sénégal'
+        }
+      },
+
+
+      {
+        id: 2,
+
+        orderId: 'ORD-2026-002',
+
+        orderNumber: 'B2WA-CMD-002',
+
+        reference: 'B2WA-EXP-2026-00002',
+
+        trackingNumber: 'B2WA-ML-P7X3Q2',
+
+        status: 'delivered',
+
+        createdAt: '10 août 2026',
+
+        estimatedDelivery: '16 août 2026',
+
+        price: 32500,
+
+        currency: 'FCFA',
+
+        description:
+          'Accessoires électroniques et petits équipements.',
+
+        origin: 'Bamako',
+
+        destination: 'Abidjan',
+
+        packages: 2,
+
+        weight: 8,
+
+        carrier: 'B2WA Shipping',
+
+        service: 'Standard',
+
+        sender: {
+
+          name: 'Tech Mali',
+
+          phone: '+223 70 00 00 02',
+
+          address: 'ACI 2000',
+
+          city: 'Bamako',
+
+          country: 'Mali'
+        },
+
+        receiver: {
+
+          name: 'Abidjan Tech Store',
+
+          phone: '+225 07 00 00 01',
+
+          address: 'Cocody',
+
+          city: 'Abidjan',
+
+          country: 'Côte d\'Ivoire'
+        }
+      }
+
+    ];
+
+
+    this.saveToStorage();
+  }
 }

@@ -1,27 +1,30 @@
 import {
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
-
 
 import {
   CommonModule
 } from '@angular/common';
 
-
 import {
   FormsModule
 } from '@angular/forms';
 
-
 import {
+  ActivatedRoute,
   Router
 } from '@angular/router';
-
 
 import {
   Shipment,
   ShipmentStoreService
 } from '../../../services/shipment-store.service';
+
+import {
+  OrderStoreService,
+  Order
+} from '../../../services/order-store.service';
 
 
 @Component({
@@ -38,7 +41,19 @@ import {
 
   styleUrl: './create-shipment.css'
 })
-export class CreateShipmentComponent {
+export class CreateShipmentComponent
+  implements OnInit {
+
+
+  /* =====================================================
+     COMMANDE À L'ORIGINE DE L'EXPÉDITION
+  ====================================================== */
+
+  orderId: string = '';
+
+  orderNumber: string = '';
+
+  currentOrder: Order | null = null;
 
 
   /* =====================================================
@@ -49,11 +64,11 @@ export class CreateShipmentComponent {
 
     reference: '',
 
-    packageType: '',
+    packageType: 'Colis Standard',
 
     quantity: 1,
 
-    weight: 0,
+    weight: 1,
 
     value: 0,
 
@@ -68,15 +83,16 @@ export class CreateShipmentComponent {
 
     sender: {
 
-      name: '',
+      name: 'B2WA Fournisseur',
 
-      phone: '',
+      phone: '+223 70 00 00 01',
 
-      address: '',
+      address: 'Hamdallaye ACI 2000',
 
-      city: '',
+      city: 'Bamako',
 
-      country: ''
+      country: 'Mali'
+
     },
 
 
@@ -91,7 +107,9 @@ export class CreateShipmentComponent {
       city: '',
 
       country: ''
+
     }
+
   };
 
 
@@ -111,7 +129,7 @@ export class CreateShipmentComponent {
 
 
   /* =====================================================
-     DONNÉES APRÈS CRÉATION
+     EXPÉDITION CRÉÉE
   ====================================================== */
 
   createdShipment = {
@@ -131,6 +149,7 @@ export class CreateShipmentComponent {
     service: '',
 
     cost: 0
+
   };
 
 
@@ -140,12 +159,141 @@ export class CreateShipmentComponent {
 
   constructor(
 
+    private route: ActivatedRoute,
+
     private router: Router,
 
-    private shipmentStore:
-      ShipmentStoreService
+    private shipmentStore: ShipmentStoreService,
+
+    private orderStore: OrderStoreService
 
   ) {}
+
+
+  /* =====================================================
+     INIT
+  ====================================================== */
+
+  ngOnInit(): void {
+
+    this.orderId =
+
+      this.route.snapshot.paramMap.get(
+
+        'orderId'
+
+      ) || '';
+
+
+    if (!this.orderId) {
+
+      this.errorMessage =
+
+        'Aucune commande n’a été associée à cette expédition.';
+
+      return;
+
+    }
+
+
+    /*
+
+     * Charger la commande depuis le OrderStoreService
+
+     */
+
+    this.loadOrderFromService(this.orderId);
+
+
+    /*
+
+     * Date du jour par défaut.
+
+     */
+
+    this.shipment.shippingDate =
+
+      this.getTodayForInput();
+
+
+    /*
+
+     * Charger un éventuel brouillon sauvegardé
+
+     */
+
+    this.loadDraft();
+
+  }
+
+
+  /* =====================================================
+     CHARGER LA COMMANDE DEPUIS LE SERVICE
+  ====================================================== */
+
+  private loadOrderFromService(orderId: string): void {
+
+    const order = this.orderStore.getOrderById(orderId);
+
+
+    if (!order) {
+
+      this.orderNumber = `Commande #${orderId}`;
+
+      return;
+
+    }
+
+
+    this.currentOrder = order;
+
+    this.orderNumber = order.orderNumber || `Commande #${order.id}`;
+
+
+    // Auto-remplissage à partir des données réelles de la commande du service
+
+    this.shipment.value = order.totalAmount || 0;
+
+
+    // Extraction de la ville depuis l'adresse du client
+
+    const addressParts = (order.customerAddress || '').split(',');
+
+    const extractedCity = addressParts.length > 1 
+
+      ? addressParts[addressParts.length - 1].trim() 
+
+      : (order.customerCity || 'Bamako');
+
+
+    this.shipment.receiver = {
+
+      name: order.customerName || '',
+
+      phone: order.customerPhone || '',
+
+      address: order.customerAddress || '',
+
+      city: extractedCity,
+
+      country: order.customerCountry || 'Mali'
+
+    };
+
+
+    // Description et quantité calculées dynamiquement selon les articles de la commande
+
+    if (order.items && order.items.length > 0) {
+
+      const itemsSummary = order.items.map((item: any) => `${item.productName} (x${item.quantity})`).join(', ');
+
+      this.shipment.description = `Articles de la commande ${this.orderNumber} : ${itemsSummary}`;
+
+      this.shipment.quantity = order.items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
+
+    }
+
+  }
 
 
   /* =====================================================
@@ -155,10 +303,12 @@ export class CreateShipmentComponent {
   get estimatedCost(): number {
 
     const weight =
+
       Number(this.shipment.weight) || 0;
 
 
     const quantity =
+
       Number(this.shipment.quantity) || 1;
 
 
@@ -166,18 +316,24 @@ export class CreateShipmentComponent {
 
 
     if (
+
       this.shipment.service === 'Express'
+
     ) {
 
       pricePerKg = 2500;
+
     }
 
 
     if (
+
       this.shipment.service === 'Prioritaire'
+
     ) {
 
       pricePerKg = 3500;
+
     }
 
 
@@ -185,31 +341,44 @@ export class CreateShipmentComponent {
 
 
     if (
+
       this.shipment.transport === 'Aérien'
+
     ) {
 
       transportMultiplier = 1.8;
+
     }
 
 
     if (
+
       this.shipment.transport === 'Maritime'
+
     ) {
 
       transportMultiplier = 0.8;
+
     }
 
 
     const weightCost =
+
       weight *
+
       pricePerKg *
+
       transportMultiplier;
 
 
     const quantityCost =
+
       Math.max(
+
         0,
+
         quantity - 1
+
       ) * 1000;
 
 
@@ -218,9 +387,13 @@ export class CreateShipmentComponent {
       2500,
 
       Math.round(
+
         weightCost + quantityCost
+
       )
+
     );
+
   }
 
 
@@ -231,6 +404,8 @@ export class CreateShipmentComponent {
   get canCreateShipment(): boolean {
 
     return (
+
+      !!this.orderId &&
 
       this.shipment.sender.name.trim().length > 0 &&
 
@@ -261,34 +436,57 @@ export class CreateShipmentComponent {
       this.shipment.service.trim().length > 0 &&
 
       this.shipment.shippingDate.trim().length > 0
+
     );
+
   }
 
 
   /* =====================================================
-     SÉLECTION TRANSPORT
+     TRANSPORT
   ====================================================== */
 
   selectTransport(
-    transport: 'Route' | 'Aérien' | 'Maritime'
+
+    transport:
+
+      'Route' |
+
+      'Aérien' |
+
+      'Maritime'
+
   ): void {
 
     this.shipment.transport =
+
       transport;
+
   }
 
 
   /* =====================================================
-     NETTOYAGE TEXTE
+     NETTOYAGE
   ====================================================== */
 
   private cleanText(
-    value: string | null | undefined
+
+    value:
+
+      string |
+
+      null |
+
+      undefined
+
   ): string {
 
     return String(
+
       value || ''
+
     ).trim();
+
   }
 
 
@@ -310,31 +508,47 @@ export class CreateShipmentComponent {
 
 
     return `B2WA-ML-${randomPart}`;
+
   }
 
 
   /* =====================================================
-     RÉFÉRENCE
+     RÉFÉRENCE EXPÉDITION
   ====================================================== */
 
   private generateReference(
+
     id: number
+
   ): string {
 
     const year =
+
       new Date().getFullYear();
 
 
     return (
 
       this.cleanText(
+
         this.shipment.reference
+
       ) ||
 
       `B2WA-EXP-${year}-${String(
+
         id
-      ).padStart(5, '0')}`
+
+      ).padStart(
+
+        5,
+
+        '0'
+
+      )}`
+
     );
+
   }
 
 
@@ -349,54 +563,73 @@ export class CreateShipmentComponent {
       'fr-FR',
 
       {
+
         day: 'numeric',
 
         month: 'long',
 
         year: 'numeric'
+
       }
+
     );
+
   }
 
 
   /* =====================================================
-     DATE MINIMALE
+     DATE POUR INPUT
   ====================================================== */
 
   getTodayForInput(): string {
 
     const today =
+
       new Date();
 
 
     const year =
+
       today.getFullYear();
 
 
     const month =
+
       String(
+
         today.getMonth() + 1
+
       ).padStart(
+
         2,
+
         '0'
+
       );
 
 
     const day =
+
       String(
+
         today.getDate()
+
       ).padStart(
+
         2,
+
         '0'
+
       );
 
 
     return `${year}-${month}-${day}`;
+
   }
 
 
   /* =====================================================
-     CRÉATION DE L'EXPÉDITION
+     CRÉATION EXPÉDITION
   ====================================================== */
 
   createShipment(): void {
@@ -409,7 +642,9 @@ export class CreateShipmentComponent {
 
 
     if (
+
       !this.canCreateShipment
+
     ) {
 
       this.errorMessage =
@@ -417,6 +652,7 @@ export class CreateShipmentComponent {
         'Veuillez remplir tous les champs obligatoires avant de continuer.';
 
       return;
+
     }
 
 
@@ -424,157 +660,271 @@ export class CreateShipmentComponent {
 
 
     const id =
+
       this.shipmentStore.getNextId();
 
 
     const trackingNumber =
+
       this.generateTrackingNumber();
 
 
     const reference =
+
       this.generateReference(
+
         id
+
       );
 
 
     const createdAt =
+
       this.getCreatedAt();
 
 
     const shipmentToStore: Shipment = {
+
       id,
+
+      orderId:
+
+        this.orderId,
+
+      orderNumber:
+
+        this.orderNumber,
+
 
       reference,
 
       trackingNumber,
 
-      status: 'preparing',
+      status:
+
+        'preparing',
 
       createdAt,
 
-      estimatedDelivery: this.shipment.shippingDate,
+      estimatedDelivery:
 
-      price: this.estimatedCost,
+        this.shipment.shippingDate,
 
-      currency: 'FCFA',
+      price:
 
-      description: this.cleanText(
-        this.shipment.description
-      ) ||
+        this.estimatedCost,
+
+      currency:
+
+        'FCFA',
+
+      description:
+
+        this.cleanText(
+
+          this.shipment.description
+
+        ) ||
 
         `Expédition de ${this.shipment.packageType}.`,
 
-      origin: this.cleanText(
-        this.shipment.sender.city
-      ),
+      origin:
 
-      destination: this.cleanText(
-        this.shipment.receiver.city
-      ),
+        this.cleanText(
 
-      packages: Number(
-        this.shipment.quantity
-      ),
+          this.shipment.sender.city
 
-      weight: Number(
-        this.shipment.weight
-      ),
+        ),
 
-      carrier: 'B2WA Shipping',
+      destination:
 
-      service: this.cleanText(
-        this.shipment.service
-      ),
+        this.cleanText(
+
+          this.shipment.receiver.city
+
+        ),
+
+      packages:
+
+        Number(
+
+          this.shipment.quantity
+
+        ),
+
+      weight:
+
+        Number(
+
+          this.shipment.weight
+
+        ),
+
+      carrier:
+
+        'B2WA Shipping',
+
+      service:
+
+        this.cleanText(
+
+          this.shipment.service
+
+        ),
 
 
       sender: {
-        name: this.cleanText(
-          this.shipment.sender.name
-        ),
 
-        phone: this.cleanText(
-          this.shipment.sender.phone
-        ),
+        name:
 
-        address: this.cleanText(
-          this.shipment.sender.address
-        ),
+          this.cleanText(
 
-        city: this.cleanText(
-          this.shipment.sender.city
-        ),
+            this.shipment.sender.name
 
-        country: this.cleanText(
-          this.shipment.sender.country
-        )
+          ),
+
+        phone:
+
+          this.cleanText(
+
+            this.shipment.sender.phone
+
+          ),
+
+        address:
+
+          this.cleanText(
+
+            this.shipment.sender.address
+
+          ),
+
+        city:
+
+          this.cleanText(
+
+            this.shipment.sender.city
+
+          ),
+
+        country:
+
+          this.cleanText(
+
+            this.shipment.sender.country
+
+          )
+
       },
 
 
       receiver: {
-        name: this.cleanText(
-          this.shipment.receiver.name
-        ),
 
-        phone: this.cleanText(
-          this.shipment.receiver.phone
-        ),
+        name:
 
-        address: this.cleanText(
-          this.shipment.receiver.address
-        ),
+          this.cleanText(
 
-        city: this.cleanText(
-          this.shipment.receiver.city
-        ),
+            this.shipment.receiver.name
 
-        country: this.cleanText(
-          this.shipment.receiver.country
-        )
-      },
-      orderId: '',
-      orderNumber: ''
+          ),
+
+        phone:
+
+          this.cleanText(
+
+            this.shipment.receiver.phone
+
+          ),
+
+        address:
+
+          this.cleanText(
+
+            this.shipment.receiver.address
+
+          ),
+
+        city:
+
+          this.cleanText(
+
+            this.shipment.receiver.city
+
+          ),
+
+        country:
+
+          this.cleanText(
+
+            this.shipment.receiver.country
+
+          )
+
+      }
+
     };
 
 
     this.shipmentStore.addShipment(
+
       shipmentToStore
+
     );
 
 
     this.createdShipment = {
 
       id:
+
         shipmentToStore.id,
 
       trackingNumber:
+
         shipmentToStore.trackingNumber,
 
       reference:
+
         shipmentToStore.reference,
 
       route:
+
         `${shipmentToStore.origin} → ${shipmentToStore.destination}`,
 
       quantity:
+
         shipmentToStore.packages,
 
       transport:
+
         this.shipment.transport,
 
       service:
+
         shipmentToStore.service,
 
       cost:
+
         shipmentToStore.price
+
     };
 
 
     this.successMessage =
+
       'Expédition créée avec succès.';
+
 
     this.submitting = false;
 
     this.showSuccessModal = true;
+
+
+    localStorage.removeItem(
+
+      'b2wa-shipment-draft'
+
+    );
+
   }
 
 
@@ -589,40 +939,53 @@ export class CreateShipmentComponent {
       'b2wa-shipment-draft',
 
       JSON.stringify(
+
         this.shipment
+
       )
+
     );
 
 
     this.successMessage =
+
       'Votre brouillon a été enregistré.';
 
     this.errorMessage = '';
+
   }
 
 
   /* =====================================================
-     CHARGER LE BROUILLON
+     CHARGER BROUILLON
   ====================================================== */
 
   loadDraft(): void {
 
     const draft =
+
       localStorage.getItem(
+
         'b2wa-shipment-draft'
+
       );
 
 
     if (!draft) {
+
       return;
+
     }
 
 
     try {
 
       const savedShipment =
+
         JSON.parse(
+
           draft
+
         );
 
 
@@ -632,32 +995,41 @@ export class CreateShipmentComponent {
 
         ...savedShipment,
 
+
         sender: {
 
           ...this.shipment.sender,
 
           ...savedShipment.sender
+
         },
+
 
         receiver: {
 
           ...this.shipment.receiver,
 
           ...savedShipment.receiver
+
         }
+
       };
 
     } catch {
 
       localStorage.removeItem(
+
         'b2wa-shipment-draft'
+
       );
+
     }
+
   }
 
 
   /* =====================================================
-     FERMER LA MODALE
+     FERMER MODALE
   ====================================================== */
 
   closeSuccessModal(): void {
@@ -665,31 +1037,40 @@ export class CreateShipmentComponent {
     this.showSuccessModal = false;
 
     this.trackingCopied = false;
+
   }
 
 
   /* =====================================================
-     COPIER LE SUIVI
+     COPIER TRACKING
   ====================================================== */
 
   async copyTrackingNumber(): Promise<void> {
 
     const trackingNumber =
+
       this.createdShipment.trackingNumber;
 
 
     if (
+
       !trackingNumber ||
+
       !navigator.clipboard
+
     ) {
+
       return;
+
     }
 
 
     try {
 
       await navigator.clipboard.writeText(
+
         trackingNumber
+
       );
 
 
@@ -697,32 +1078,42 @@ export class CreateShipmentComponent {
 
 
       window.setTimeout(
+
         () => {
 
           this.trackingCopied = false;
+
         },
 
         2500
+
       );
 
     } catch {
 
       this.errorMessage =
+
         'Impossible de copier le numéro de suivi.';
+
     }
+
   }
 
 
   /* =====================================================
-     VOIR L'EXPÉDITION
+     VOIR EXPÉDITION
   ====================================================== */
 
   viewShipment(): void {
 
     if (
+
       !this.createdShipment.id
+
     ) {
+
       return;
+
     }
 
 
@@ -734,7 +1125,9 @@ export class CreateShipmentComponent {
       '/dashboard/shipment-detail',
 
       this.createdShipment.id
+
     ]);
+
   }
 
 
@@ -744,9 +1137,25 @@ export class CreateShipmentComponent {
 
   goBack(): void {
 
+    if (this.orderId) {
+
+      this.router.navigate([
+
+        '/dashboard/orders'
+
+      ]);
+
+      return;
+
+    }
+
+
     this.router.navigate([
 
       '/dashboard/shipping'
+
     ]);
+
   }
+
 }

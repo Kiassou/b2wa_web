@@ -283,30 +283,40 @@ export class ShippingComponent {
       | 'transit'
       | 'delivered'
       | 'problem'
+
   ): void {
     this.activeFilter = filter;
     this.currentPage = 1;
     this.openMenuShipmentId = null;
   }
+
   /* =====================================================
      VIEW SHIPMENT
   ====================================================== */
+
   viewShipment(
     shipment: Shipment
   ): void {
+
     this.router.navigate([
       '/dashboard/shipment-detail',
       shipment.id
     ]);
   }
+
+
   /* =====================================================
      TRACK SHIPMENT
   ====================================================== */
+
   trackShipment(): void {
+
     const value =
       this.trackingNumber
         .trim()
         .toUpperCase();
+
+
     if (!value) {
       this.trackingError =
         'Veuillez saisir un numéro de suivi.';
