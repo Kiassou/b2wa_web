@@ -229,6 +229,13 @@
 
                 <small>
                   {{ shipment.sender.country }}
+                  @if (getCountryCode(shipment.sender.country)) {
+                  <img 
+                    [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.sender.country) + '.png'" 
+                    [alt]="shipment.sender.country"
+                    style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                  />
+                }
                 </small>
 
 
@@ -276,6 +283,13 @@
 
                 <small>
                   {{ shipment.receiver.country }}
+                  @if (getCountryCode(shipment.receiver.country)) {
+                  <img 
+                    [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.receiver.country) + '.png'" 
+                    [alt]="shipment.receiver.country"
+                    style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                  />
+                }
                 </small>
 
 
