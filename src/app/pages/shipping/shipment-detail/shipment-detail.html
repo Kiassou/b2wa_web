@@ -98,20 +98,6 @@
 
 
       <div class="header-actions">
-
-        <button
-          type="button"
-          class="secondary-btn"
-          (click)="copyTrackingNumber()">
-
-          <span class="material-symbols-outlined">
-            content_copy
-          </span>
-
-          Copier le suivi
-        </button>
-
-
         <button
           type="button"
           class="primary-btn"
@@ -720,6 +706,13 @@
               <small>
                 {{ shipment.sender.city }},
                 {{ shipment.sender.country }}
+                @if (getCountryCode(shipment.sender.country)) {
+                  <img 
+                    [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.sender.country) + '.png'" 
+                    [alt]="shipment.sender.country"
+                    style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                  />
+                }
               </small>
             </div>
           </div>
@@ -768,6 +761,13 @@
               <small>
                 {{ shipment.receiver.city }},
                 {{ shipment.receiver.country }}
+                @if (getCountryCode(shipment.receiver.country)) {
+                  <img 
+                    [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.receiver.country) + '.png'" 
+                    [alt]="shipment.receiver.country"
+                    style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                  />
+                }
               </small>
             </div>
           </div>

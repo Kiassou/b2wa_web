@@ -424,10 +424,14 @@
               <option value="">Choisir un pays</option>
               <option value="Mali">🇲🇱 Mali</option>
               <option value="Sénégal">🇸🇳 Sénégal</option>
+              <option value="Niger">🇳🇪 Niger</option>
               <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
               <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+              <option value="Mauritanie">🇲🇷 Mauritanie</option>
+              <option value="Bénin">🇧🇯 Bénin</option>
               <option value="Guinée">🇬🇳 Guinée</option>
               <option value="Ghana">🇬🇭 Ghana</option>
+              <option value="Togo">🇹🇬 Togo</option>
             </select>
           </div>
         </div>
@@ -594,6 +598,13 @@
               <small>Départ</small>
               <strong>
                 {{ shipment.sender.city || 'Ville de départ' }}
+                @if (getCountryCode(shipment.sender.country)) {
+                  <img 
+                    [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.sender.country) + '.png'" 
+                    [alt]="shipment.sender.country"
+                    style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                  />
+                }
               </strong>
               <span>
                 {{ shipment.sender.country || 'Pays' }}
@@ -613,6 +624,13 @@
               <small>Destination</small>
               <strong>
                 {{ shipment.receiver?.city || 'Ville d’arrivée' }}
+                @if (getCountryCode(shipment.receiver.country)) {
+                  <img 
+                    [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.receiver.country) + '.png'" 
+                    [alt]="shipment.receiver.country"
+                    style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                  />
+                }
               </strong>
               <span>
                 {{ shipment.receiver.country || 'Pays' }}

@@ -1,1 +1,460 @@
-<p>flash-sales works!</p>
+<div class="flash-sales-page">
+
+  <!-- =====================================================
+        HEADER
+  ====================================================== -->
+  <header class="flash-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <span class="material-symbols-outlined">bolt</span>
+      </div>
+
+      <div class="header-text">
+        <span class="page-kicker">B2WA FOURNISSEUR</span>
+        <h1>Ventes Flash</h1>
+        <p>
+          Créez des offres limitées et boostez vos ventes auprès des membres de vos communautés.
+        </p>
+      </div>
+    </div>
+
+    <button type="button" class="create-sale-btn" (click)="createFlashSale()">
+      <span class="material-symbols-outlined">add</span>
+      Nouvelle vente flash
+    </button>
+  </header>
+
+  <!-- =====================================================
+        STATISTIQUES
+  ====================================================== -->
+  <section class="stats-grid">
+
+    <!-- ACTIVE -->
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <span class="material-symbols-outlined">bolt</span>
+      </div>
+      <div class="stat-content">
+        <span>Ventes actives</span>
+        <strong>{{ stats.activeCount }}</strong>
+        <small>offres en cours</small>
+      </div>
+    </div>
+
+    <!-- VENDUES -->
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <span class="material-symbols-outlined">shopping_bag</span>
+      </div>
+      <div class="stat-content">
+        <span>Articles vendus</span>
+        <strong>{{ stats.soldQuantity }}</strong>
+        <small>via les ventes flash</small>
+      </div>
+    </div>
+
+    <!-- CA -->
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <span class="material-symbols-outlined">payments</span>
+      </div>
+      <div class="stat-content">
+        <span>CA généré</span>
+        <strong>
+          {{ formatPrice(stats.revenue) }}
+          <small>FCFA</small>
+        </strong>
+        <small>ventes flash</small>
+      </div>
+    </div>
+
+    <!-- EXPIRATION -->
+    <div class="stat-card">
+      <div class="stat-icon orange">
+        <span class="material-symbols-outlined">timer</span>
+      </div>
+      <div class="stat-content">
+        <span>Expirent bientôt</span>
+        <strong>{{ stats.endingSoonCount }}</strong>
+        <small>dans les prochaines 24h</small>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+        TOOLBAR
+  ====================================================== -->
+  <section class="sales-toolbar">
+
+    <div class="filter-tabs">
+      <button 
+        type="button" 
+        [class.active]="activeFilter === 'all'" 
+        (click)="setFilter('all')">
+        Toutes
+        <span>{{ flashSales.length }}</span>
+      </button>
+
+      <button 
+        type="button" 
+        [class.active]="activeFilter === 'active'" 
+        (click)="setFilter('active')">
+        <span class="filter-dot active-dot"></span>
+        Actives
+        <span>{{ getCount('active') }}</span>
+      </button>
+
+      <button 
+        type="button" 
+        [class.active]="activeFilter === 'scheduled'" 
+        (click)="setFilter('scheduled')">
+        Programmées
+        <span>{{ getCount('scheduled') }}</span>
+      </button>
+
+      <button 
+        type="button" 
+        [class.active]="activeFilter === 'ended'" 
+        (click)="setFilter('ended')">
+        Terminées
+        <span>{{ getCount('ended') }}</span>
+      </button>
+    </div>
+
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Rechercher une vente..."
+        aria-label="Rechercher une vente flash"
+      />
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+        LISTE DE VENTES
+  ====================================================== -->
+  <section class="sales-section">
+
+    <div class="section-heading">
+      <div>
+        <span class="section-kicker">OFFRES</span>
+        <h2>
+          {{ activeFilter === 'all' ? 'Vos ventes flash' : getStatusLabel(activeFilter) }}
+        </h2>
+      </div>
+
+      <span class="result-count">
+        {{ filteredSales.length }} {{ filteredSales.length > 1 ? 'offres' : 'offre' }}
+      </span>
+    </div>
+
+    <!-- GRID -->
+    @if (filteredSales.length > 0) {
+      <div class="sales-grid">
+        @for (sale of filteredSales; track sale.id) {
+
+          <article
+            class="sale-card"
+            [class.sale-ended]="sale.status === 'ended' || sale.status === 'cancelled'">
+
+            <!-- IMAGE -->
+            <div class="sale-image">
+              <img [src]="sale.productImage" [alt]="sale.productName" />
+
+              <span class="discount-badge">-{{ getDiscount(sale) }}%</span>
+
+              <span class="sale-status" [class]="getStatusClass(sale.status)">
+                <span></span>
+                {{ getStatusLabel(sale.status) }}
+              </span>
+
+              <!-- MENU ACTIONS -->
+              <div class="sale-actions">
+                <button
+                  type="button"
+                  class="more-btn"
+                  title="Actions"
+                  (click)="toggleActionMenu(sale.id); $event.stopPropagation()">
+                  <span class="material-symbols-outlined">more_vert</span>
+                </button>
+
+                @if (openActionMenuId === sale.id) {
+                  <div class="action-menu" (click)="$event.stopPropagation()">
+                    <button type="button" (click)="viewSale(sale)">
+                      <span class="material-symbols-outlined">visibility</span>
+                      Voir les détails
+                    </button>
+
+                    @if (sale.status !== 'ended' && sale.status !== 'cancelled') {
+                      <button type="button" (click)="editSale(sale)">
+                        <span class="material-symbols-outlined">edit</span>
+                        Modifier
+                      </button>
+
+                      <button type="button" class="danger-action" (click)="cancelSale(sale)">
+                        <span class="material-symbols-outlined">cancel</span>
+                        Annuler
+                      </button>
+                    }
+
+                    <button type="button" class="danger-action" (click)="confirmDelete(sale)">
+                      <span class="material-symbols-outlined">delete</span>
+                      Supprimer
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- CONTENU CARD -->
+            <div class="sale-body">
+              <div class="community-label">
+                <span class="material-symbols-outlined">groups</span>
+                {{ sale.communityName }}
+              </div>
+
+              <h3>{{ sale.productName }}</h3>
+              <p class="sale-description">{{ sale.description }}</p>
+
+              <!-- PRIX -->
+              <div class="price-row">
+                <div>
+                  <strong class="flash-price">
+                    {{ formatPrice(sale.flashPrice) }}
+                    <small>FCFA</small>
+                  </strong>
+
+                  <span class="original-price">
+                    {{ formatPrice(sale.originalPrice) }} FCFA
+                  </span>
+                </div>
+
+                <span class="saving">
+                  Économie {{ formatPrice(sale.originalPrice - sale.flashPrice) }} F
+                </span>
+              </div>
+
+              <!-- STOCK -->
+              <div class="stock-section">
+                <div class="stock-top">
+                  <span>Stock vendu</span>
+                  <strong>{{ sale.soldQuantity }} / {{ sale.quantity }}</strong>
+                </div>
+
+                <div class="stock-bar">
+                  <span [style.width.%]="getProgressWidth(sale)"></span>
+                </div>
+
+                <small>
+                  {{ getRemaining(sale) }} 
+                  {{ getRemaining(sale) > 1 ? 'articles restants' : 'article restant' }}
+                </small>
+              </div>
+
+              <!-- TIMER -->
+              <div class="sale-timer" [class.timer-ended]="sale.status === 'ended'">
+                <span class="material-symbols-outlined">
+                  {{ sale.status === 'scheduled' ? 'schedule' : 'timer' }}
+                </span>
+
+                <div>
+                  <small>
+                    @if (sale.status === 'scheduled') { Commence dans }
+                    @else if (sale.status === 'active') { Se termine dans }
+                    @else { Vente terminée }
+                  </small>
+                  <strong>{{ getCountdown(sale) }}</strong>
+                </div>
+              </div>
+
+              <!-- FOOTER -->
+              <div class="sale-footer">
+                <span>
+                  <span class="material-symbols-outlined">calendar_month</span>
+                  {{ formatDate(sale.startDate) }}
+                </span>
+
+                <button type="button" (click)="viewSale(sale)">
+                  Voir
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </div>
+
+            </div>
+          </article>
+
+        }
+      </div>
+    }
+
+    <!-- EMPTY STATE -->
+    @else {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <span class="material-symbols-outlined">bolt</span>
+        </div>
+
+        <h3>Aucune vente flash</h3>
+
+        <p>
+          @if (searchTerm) {
+            Aucune offre ne correspond à votre recherche.
+          } @else {
+            Vous n'avez aucune vente flash dans cette catégorie pour le moment.
+          }
+        </p>
+
+        @if (searchTerm) {
+          <button type="button" (click)="searchTerm = ''">
+            <span class="material-symbols-outlined">close</span>
+            Effacer la recherche
+          </button>
+        } @else {
+          <button type="button" (click)="createFlashSale()">
+            <span class="material-symbols-outlined">add</span>
+            Créer une vente flash
+          </button>
+        }
+      </div>
+    }
+
+  </section>
+
+  <!-- =====================================================
+        MODALE DÉTAILS
+  ====================================================== -->
+  @if (showDetailModal && selectedSale) {
+    <div class="modal-backdrop" (click)="closeDetailModal()">
+      <div class="detail-modal" (click)="$event.stopPropagation()">
+
+        <button type="button" class="modal-close" (click)="closeDetailModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="modal-product">
+          <img [src]="selectedSale.productImage" [alt]="selectedSale.productName" />
+          <div>
+            <span class="modal-kicker">VENTE FLASH</span>
+            <h2>{{ selectedSale.productName }}</h2>
+            <p>{{ selectedSale.communityName }}</p>
+          </div>
+        </div>
+
+        <div class="modal-status">
+          <span class="sale-status large" [class]="getStatusClass(selectedSale.status)">
+            <span></span>
+            {{ getStatusLabel(selectedSale.status) }}
+          </span>
+
+          <strong>-{{ getDiscount(selectedSale) }}%</strong>
+        </div>
+
+        <div class="modal-price-grid">
+          <div>
+            <small>Prix flash</small>
+            <strong>{{ formatPrice(selectedSale.flashPrice) }} FCFA</strong>
+          </div>
+          <div>
+            <small>Prix normal</small>
+            <strong class="muted-price">{{ formatPrice(selectedSale.originalPrice) }} FCFA</strong>
+          </div>
+        </div>
+
+        <div class="modal-info-grid">
+          <div>
+            <span class="material-symbols-outlined">inventory_2</span>
+            <div>
+              <small>Stock</small>
+              <strong>{{ getRemaining(selectedSale) }} restant(s)</strong>
+            </div>
+          </div>
+
+          <div>
+            <span class="material-symbols-outlined">shopping_bag</span>
+            <div>
+              <small>Vendu</small>
+              <strong>{{ selectedSale.soldQuantity }} / {{ selectedSale.quantity }}</strong>
+            </div>
+          </div>
+
+          <div>
+            <span class="material-symbols-outlined">calendar_month</span>
+            <div>
+              <small>Début</small>
+              <strong>{{ formatDate(selectedSale.startDate) }}</strong>
+            </div>
+          </div>
+
+          <div>
+            <span class="material-symbols-outlined">event_busy</span>
+            <div>
+              <small>Fin</small>
+              <strong>{{ formatDate(selectedSale.endDate) }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-description">
+          <small>DESCRIPTION</small>
+          <p>{{ selectedSale.description }}</p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" (click)="closeDetailModal()">
+            Fermer
+          </button>
+
+          @if (selectedSale.status === 'active' || selectedSale.status === 'scheduled') {
+            <button
+              type="button"
+              class="primary-btn"
+              (click)="editSale(selectedSale)">
+              <span class="material-symbols-outlined">edit</span>
+              Modifier
+            </button>
+          }
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- =====================================================
+        MODALE SUPPRESSION
+  ====================================================== -->
+  @if (showDeleteModal && saleToDelete) {
+    <div class="modal-backdrop" (click)="closeDeleteModal()">
+      <div class="delete-modal" (click)="$event.stopPropagation()">
+
+        <div class="delete-icon">
+          <span class="material-symbols-outlined">delete</span>
+        </div>
+
+        <h2>Supprimer cette vente ?</h2>
+
+        <p>
+          Vous êtes sur le point de supprimer la vente flash 
+          <strong>{{ saleToDelete.productName }}</strong>.
+          Cette action est irréversible.
+        </p>
+
+        <div class="delete-actions">
+          <button type="button" class="secondary-btn" (click)="closeDeleteModal()">
+            Annuler
+          </button>
+
+          <button type="button" class="delete-btn" (click)="deleteSale()">
+            <span class="material-symbols-outlined">delete</span>
+            Supprimer
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

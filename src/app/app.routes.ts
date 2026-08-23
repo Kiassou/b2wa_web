@@ -178,6 +178,18 @@ export const routes: Routes = [
             .then(m => m.FlashSalesComponent)
       },
       {
+        path: 'create-flash-sale',
+        loadComponent: () =>
+          import('./pages/flash-sales/create-flash-sale/create-flash-sale')
+            .then(m => m.CreateFlashSaleComponent)
+      },
+      {
+        path: 'update-flash-sale/:id',
+        loadComponent: () =>
+          import('./pages/flash-sales/update-flash-sale/update-flash-sale')
+            .then(m => m.UpdateFlashSaleComponent)
+      },
+      {
         path: 'orders',
 
         loadComponent: () =>

@@ -1,0 +1,1114 @@
+<div class="create-flash-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
+
+      <div>
+
+        <span class="page-kicker">
+          B2WA COMMUNITY
+        </span>
+
+        <h1>
+          Créer une vente flash
+        </h1>
+
+        <p>
+          Proposez une offre limitée aux membres de votre communauté.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="header-badge">
+
+      <span class="status-dot"></span>
+
+      <span>
+        Vente Flash
+      </span>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main class="create-content">
+
+    <!-- ===================================================
+         FORMULAIRE
+    ==================================================== -->
+
+    <section class="form-column">
+
+
+      <!-- =================================================
+           COMMUNAUTÉ
+      ================================================== -->
+
+      <section class="form-card">
+
+        <div class="card-header">
+
+          <div class="card-icon blue">
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="card-kicker">
+              ÉTAPE 01
+            </span>
+
+            <h2>
+              Communauté
+            </h2>
+
+            <p>
+              Choisissez la communauté qui bénéficiera de cette offre.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+
+            <label for="community">
+              Communauté
+            </label>
+
+            <div class="input-icon">
+
+              <span class="material-symbols-outlined">
+                groups
+              </span>
+
+              <select
+                id="community"
+                [(ngModel)]="form.communityId"
+                (change)="onCommunityChange()"
+              >
+
+                <option value="">
+                  Choisir une communauté
+                </option>
+
+                @for (
+                  community of communities;
+                  track community.id
+                ) {
+
+                  <option [value]="community.id">
+                    {{ community.name }}
+                  </option>
+
+                }
+
+              </select>
+
+            </div>
+
+            @if (form.communityId) {
+
+              <small class="field-success">
+
+                <span class="material-symbols-outlined">
+                  check_circle
+                </span>
+
+                Offre réservée aux membres de cette communauté.
+
+              </small>
+
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           PRODUIT
+      ================================================== -->
+
+      <section class="form-card">
+
+        <div class="card-header">
+
+          <div class="card-icon purple">
+
+            <span class="material-symbols-outlined">
+              inventory_2
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="card-kicker">
+              ÉTAPE 02
+            </span>
+
+            <h2>
+              Produit
+            </h2>
+
+            <p>
+              Sélectionnez le produit concerné par la vente flash.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+
+            <label for="productName">
+              Nom du produit
+            </label>
+
+            <div class="input-icon">
+
+              <span class="material-symbols-outlined">
+                shopping_bag
+              </span>
+
+              <input
+                id="productName"
+                type="text"
+                [(ngModel)]="form.productName"
+                placeholder="Ex : Samsung Galaxy A25"
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="productImage">
+              Image du produit
+            </label>
+
+            <div class="input-icon">
+
+              <span class="material-symbols-outlined">
+                image
+              </span>
+
+              <input
+                id="productImage"
+                type="text"
+                [(ngModel)]="form.productImage"
+                placeholder="assets/images/products/produit.jpg"
+              />
+
+            </div>
+
+            <small>
+              Chemin de l'image du produit.
+            </small>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="productId">
+              Identifiant produit
+            </label>
+
+            <div class="input-icon">
+
+              <span class="material-symbols-outlined">
+                tag
+              </span>
+
+              <input
+                id="productId"
+                type="text"
+                [(ngModel)]="form.productId"
+                placeholder="product-001"
+              />
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="quantity">
+              Quantité disponible
+            </label>
+
+            <div class="input-with-suffix">
+
+              <input
+                id="quantity"
+                type="number"
+                min="1"
+                [(ngModel)]="form.quantity"
+              />
+
+              <span>
+                unités
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           PRIX
+      ================================================== -->
+
+      <section class="form-card">
+
+        <div class="card-header">
+
+          <div class="card-icon orange">
+
+            <span class="material-symbols-outlined">
+              payments
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="card-kicker">
+              ÉTAPE 03
+            </span>
+
+            <h2>
+              Offre promotionnelle
+            </h2>
+
+            <p>
+              Définissez le prix normal et le prix spécial de la vente flash.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="originalPrice">
+              Prix normal
+            </label>
+
+            <div class="input-with-suffix">
+
+              <input
+                id="originalPrice"
+                type="number"
+                min="0"
+                [(ngModel)]="form.originalPrice"
+              />
+
+              <span>
+                FCFA
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="flashPrice">
+              Prix flash
+            </label>
+
+            <div class="input-with-suffix flash-price">
+
+              <input
+                id="flashPrice"
+                type="number"
+                min="0"
+                [(ngModel)]="form.flashPrice"
+              />
+
+              <span>
+                FCFA
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- DISCOUNT -->
+
+        <div class="discount-preview">
+
+          <div class="discount-icon">
+
+            <span class="material-symbols-outlined">
+              local_offer
+            </span>
+
+          </div>
+
+          <div>
+
+            <small>
+              Réduction appliquée
+            </small>
+
+            <strong>
+              -{{ discountPercentage }}%
+            </strong>
+
+          </div>
+
+          <div class="discount-saving">
+
+            <small>
+              Économie client
+            </small>
+
+            <strong>
+              {{ savingAmount | number:'1.0-0' }}
+              FCFA
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           PÉRIODE
+      ================================================== -->
+
+      <section class="form-card">
+
+        <div class="card-header">
+
+          <div class="card-icon green">
+
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="card-kicker">
+              ÉTAPE 04
+            </span>
+
+            <h2>
+              Période de la vente
+            </h2>
+
+            <p>
+              Définissez quand votre offre sera disponible.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="startDate">
+              Début
+            </label>
+
+            <div class="input-icon">
+
+              <span class="material-symbols-outlined">
+                event
+              </span>
+
+              <input
+                id="startDate"
+                type="datetime-local"
+                [(ngModel)]="form.startDate"
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="endDate">
+              Fin
+            </label>
+
+            <div class="input-icon">
+
+              <span class="material-symbols-outlined">
+                event_available
+              </span>
+
+              <input
+                id="endDate"
+                type="datetime-local"
+                [(ngModel)]="form.endDate"
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <div
+              class="period-status"
+              [class.active]="periodStatus === 'active'"
+              [class.scheduled]="periodStatus === 'scheduled'"
+              [class.invalid]="periodStatus === 'invalid'"
+            >
+
+              <span class="material-symbols-outlined">
+
+                @if (periodStatus === 'active') {
+                  bolt
+                }
+
+                @else if (periodStatus === 'scheduled') {
+                  schedule
+                }
+
+                @else {
+                  warning
+                }
+
+              </span>
+
+
+              <div>
+
+                <strong>
+
+                  @if (periodStatus === 'active') {
+                    Vente flash active immédiatement
+                  }
+
+                  @else if (periodStatus === 'scheduled') {
+                    Vente flash programmée
+                  }
+
+                  @else {
+                    Période invalide
+                  }
+
+                </strong>
+
+
+                <small>
+
+                  @if (periodStatus === 'active') {
+                    L'offre sera disponible dès sa création.
+                  }
+
+                  @else if (periodStatus === 'scheduled') {
+                    L'offre deviendra active à la date de début.
+                  }
+
+                  @else {
+                    Vérifiez les dates de début et de fin.
+                  }
+
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           DESCRIPTION
+      ================================================== -->
+
+      <section class="form-card">
+
+        <div class="card-header">
+
+          <div class="card-icon blue">
+
+            <span class="material-symbols-outlined">
+              description
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="card-kicker">
+              ÉTAPE 05
+            </span>
+
+            <h2>
+              Description
+            </h2>
+
+            <p>
+              Présentez l'offre aux membres de votre communauté.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label for="description">
+            Description de l'offre
+          </label>
+
+          <textarea
+            id="description"
+            rows="5"
+            maxlength="500"
+            [(ngModel)]="form.description"
+            placeholder="Ex : Profitez de cette offre exceptionnelle réservée aux membres de notre communauté..."
+          ></textarea>
+
+          <small class="character-count">
+            {{ form.description.length }}/500
+          </small>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           ERREUR
+      ================================================== -->
+
+      @if (errorMessage) {
+
+        <div class="error-message">
+
+          <span class="material-symbols-outlined">
+            error
+          </span>
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+
+      <!-- =================================================
+           ACTIONS
+      ================================================== -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="goBack()"
+        >
+
+          Annuler
+
+        </button>
+
+
+        <button
+          type="button"
+          class="create-btn"
+          [disabled]="!canCreate || submitting"
+          (click)="createFlashSale()"
+        >
+
+          @if (submitting) {
+
+            <span class="material-symbols-outlined spin">
+              progress_activity
+            </span>
+
+            Création...
+
+          }
+
+          @else {
+
+            <span class="material-symbols-outlined">
+              bolt
+            </span>
+
+            Créer la vente flash
+
+          }
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         APERÇU
+    ==================================================== -->
+
+    <aside class="preview-column">
+
+      <div class="preview-card">
+
+        <div class="preview-header">
+
+          <div>
+
+            <span class="card-kicker">
+              APERÇU
+            </span>
+
+            <h2>
+              Votre offre
+            </h2>
+
+          </div>
+
+          <span class="material-symbols-outlined">
+            visibility
+          </span>
+
+        </div>
+
+
+        <!-- PRODUCT -->
+
+        <div class="product-preview">
+
+          <div class="product-image">
+
+            @if (form.productImage) {
+
+              <img
+                [src]="form.productImage"
+                [alt]="form.productName"
+                (error)="imageError = true"
+              />
+
+            }
+
+            @if (!form.productImage || imageError) {
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+            }
+
+          </div>
+
+
+          <div class="product-info">
+
+            <span class="flash-badge">
+
+              <span class="material-symbols-outlined">
+                bolt
+              </span>
+
+              VENTE FLASH
+
+            </span>
+
+
+            <h3>
+              {{ form.productName || 'Nom du produit' }}
+            </h3>
+
+
+            <small>
+              {{ selectedCommunityName || 'Votre communauté' }}
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <!-- PRICES -->
+
+        <div class="preview-prices">
+
+          <div>
+
+            <small>
+              Prix flash
+            </small>
+
+            <strong>
+              {{ form.flashPrice || 0 | number:'1.0-0' }}
+              <span>FCFA</span>
+            </strong>
+
+          </div>
+
+
+          <div class="old-price">
+
+            <small>
+              Prix normal
+            </small>
+
+            <del>
+              {{ form.originalPrice || 0 | number:'1.0-0' }}
+              FCFA
+            </del>
+
+          </div>
+
+        </div>
+
+
+        <!-- DISCOUNT -->
+
+        <div class="preview-discount">
+
+          <span>
+            {{ discountPercentage }}% DE RÉDUCTION
+          </span>
+
+          <strong>
+            Économisez
+            {{ savingAmount | number:'1.0-0' }}
+            FCFA
+          </strong>
+
+        </div>
+
+
+        <!-- STOCK -->
+
+        <div class="preview-stock">
+
+          <div>
+
+            <span>
+              Stock disponible
+            </span>
+
+            <strong>
+              {{ form.quantity || 0 }}
+            </strong>
+
+          </div>
+
+
+          <div class="stock-bar">
+
+            <span
+              [style.width.%]="previewStockPercentage"
+            ></span>
+
+          </div>
+
+        </div>
+
+
+        <!-- PERIOD -->
+
+        <div class="preview-period">
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
+
+            <div>
+
+              <small>
+                Période
+              </small>
+
+              <strong>
+                {{ formattedPeriod }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        @if (form.description) {
+
+          <div class="preview-description">
+
+            <p>
+              {{ form.description }}
+            </p>
+
+          </div>
+
+        }
+
+
+        <!-- COMMUNITY -->
+
+        <div class="preview-community">
+
+          <span class="material-symbols-outlined">
+            groups
+          </span>
+
+          <div>
+
+            <small>
+              Réservée aux membres de
+            </small>
+
+            <strong>
+              {{ selectedCommunityName || 'Votre communauté' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFO CARD -->
+
+      <div class="info-card">
+
+        <span class="material-symbols-outlined">
+          info
+        </span>
+
+        <div>
+
+          <strong>
+            Comment fonctionne une vente flash ?
+          </strong>
+
+          <p>
+            L'offre devient visible aux membres de la communauté
+            pendant la période définie et reste limitée à la quantité
+            disponible.
+          </p>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+
+  <!-- =====================================================
+       SUCCESS MODAL
+  ====================================================== -->
+
+  @if (showSuccessModal) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeSuccessModal()"
+    >
+
+      <div
+        class="success-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <div class="success-icon">
+
+          <span class="material-symbols-outlined">
+            check
+          </span>
+
+        </div>
+
+
+        <span class="success-kicker">
+          B2WA COMMUNITY
+        </span>
+
+
+        <h2>
+          Vente flash créée !
+        </h2>
+
+
+        <p>
+          Votre offre a été enregistrée avec succès.
+        </p>
+
+
+        <div class="success-summary">
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              shopping_bag
+            </span>
+
+            <div>
+
+              <small>
+                Produit
+              </small>
+
+              <strong>
+                {{ createdSale.productName }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              payments
+            </span>
+
+            <div>
+
+              <small>
+                Prix flash
+              </small>
+
+              <strong>
+                {{ createdSale.flashPrice | number:'1.0-0' }}
+                FCFA
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              percent
+            </span>
+
+            <div>
+
+              <small>
+                Réduction
+              </small>
+
+              <strong>
+                -{{ createdSale.discount }}%
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="success-actions">
+
+          <button
+            type="button"
+            class="secondary-btn"
+            (click)="closeSuccessModal()"
+          >
+            Fermer
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-btn"
+            (click)="viewFlashSales()"
+          >
+
+            <span class="material-symbols-outlined">
+              bolt
+            </span>
+
+            Voir les ventes flash
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

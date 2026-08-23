@@ -1,0 +1,306 @@
+<div class="update-flash-sale-container">
+
+  <!-- En-tête de la page avec bouton retour -->
+  <header class="page-header">
+    <div class="header-top">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Retour
+      </button>
+    </div>
+    <h1>Modifier la Vente Flash</h1>
+    <p>Mettez à jour les caractéristiques de l'offre promotionnelle #{{ saleId }}</p>
+  </header>
+
+  <!-- État de chargement initial -->
+  @if (loading) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spinner">progress_activity</span>
+      <p>Chargement des détails de la vente flash...</p>
+    </div>
+  }
+
+  <!-- Message d'erreur global -->
+  @if (errorMessage && !loading) {
+    <div class="alert alert-danger">
+      <span class="material-symbols-outlined">error</span>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  <!-- =====================================================
+        FORMULAIRE DE MODIFICATION
+  ====================================================== -->
+  @if (!loading && form.productId) {
+    <form (ngSubmit)="updateFlashSale()" #updateForm="ngForm" class="flash-sale-form">
+
+      <!-- Sélection de la communauté -->
+      <div class="form-group">
+        <label for="communityId">Communauté ciblée</label>
+        <div class="input-icon">
+          <span class="material-symbols-outlined">group</span>
+          <select
+            id="communityId"
+            [(ngModel)]="form.communityId"
+            name="communityId"
+            (change)="onCommunityChange()"
+            required
+          >
+            <option value="" disabled>Sélectionnez une communauté</option>
+            @for (comm of communities; track comm.id) {
+              <option [value]="comm.id">{{ comm.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Identifiant produit (Rendu non modifiable) -->
+      <div class="form-group">
+        <label for="productId">Identifiant produit (non modifiable)</label>
+        <div class="input-icon">
+          <span class="material-symbols-outlined">tag</span>
+          <input
+            id="productId"
+            type="text"
+            [(ngModel)]="form.productId"
+            name="productId"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Nom du produit -->
+      <div class="form-group">
+        <label for="productName">Nom du produit</label>
+        <div class="input-icon">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <input
+            id="productName"
+            type="text"
+            [(ngModel)]="form.productName"
+            name="productName"
+            placeholder="Ex: iPhone 15 Pro"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Image du produit (Aperçu + Upload) -->
+      <div class="form-group">
+        <label for="productImage">Image du produit</label>
+        @if (form.productImage) {
+          <div class="image-preview">
+            <img [src]="form.productImage" alt="Aperçu du produit" />
+          </div>
+        }
+        <div class="input-icon">
+          <span class="material-symbols-outlined">image</span>
+          <input
+            id="productImage"
+            type="file"
+            accept="image/*"
+            (change)="onImageSelected($event)"
+          />
+        </div>
+      </div>
+
+      <!-- Configuration des prix -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="originalPrice">Prix d'origine (FCFA)</label>
+          <div class="input-icon">
+            <span class="material-symbols-outlined">payments</span>
+            <input
+              id="originalPrice"
+              type="number"
+              [(ngModel)]="form.originalPrice"
+              name="originalPrice"
+              placeholder="750000"
+              required
+              min="1"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="flashPrice">Prix flash (FCFA)</label>
+          <div class="input-icon">
+            <span class="material-symbols-outlined">bolt</span>
+            <input
+              id="flashPrice"
+              type="number"
+              [(ngModel)]="form.flashPrice"
+              name="flashPrice"
+              placeholder="500000"
+              required
+              min="1"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Résumé économique (Réduction calculée & Économie) -->
+      @if (form.originalPrice > 0 && form.flashPrice > 0) {
+        <div class="pricing-summary">
+          <div class="badge discount">
+            <span class="material-symbols-outlined">percent</span>
+            Réduction : -{{ discountPercentage }}%
+          </div>
+          <div class="badge saving">
+            <span class="material-symbols-outlined">savings</span>
+            Économie : {{ savingAmount | number:'1.0-0' }} FCFA
+          </div>
+        </div>
+      }
+
+      <!-- Quantité totale & Quantité vendue -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="quantity">Quantité totale du stock</label>
+          <div class="input-icon">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <input
+              id="quantity"
+              type="number"
+              [(ngModel)]="form.quantity"
+              name="quantity"
+              required
+              [min]="form.soldQuantity || 1"
+            />
+          </div>
+          <small class="help-text">Déjà vendus : {{ form.soldQuantity }} unités</small>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description (Optionnel)</label>
+          <div class="input-icon">
+            <span class="material-symbols-outlined">description</span>
+            <input
+              id="description"
+              type="text"
+              [(ngModel)]="form.description"
+              name="description"
+              placeholder="Description courte de l'offre..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Période de validité -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="startDate">Date de début</label>
+          <div class="input-icon">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <input
+              id="startDate"
+              type="datetime-local"
+              [(ngModel)]="form.startDate"
+              name="startDate"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">Date de fin</label>
+          <div class="input-icon">
+            <span class="material-symbols-outlined">event_busy</span>
+            <input
+              id="endDate"
+              type="datetime-local"
+              [(ngModel)]="form.endDate"
+              name="endDate"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="secondary-btn"
+          (click)="goBack()"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+          [disabled]="!canUpdate || submitting"
+        >
+          @if (submitting) {
+            <span class="material-symbols-outlined spinner">progress_activity</span>
+            Enregistrement...
+          } @else {
+            <span class="material-symbols-outlined">save</span>
+            Mettre à jour la vente flash
+          }
+        </button>
+      </div>
+
+    </form>
+  }
+
+  <!-- =====================================================
+        MODALE DE SUCCÈS
+  ====================================================== -->
+  @if (showSuccessModal) {
+    <div class="modal-backdrop" (click)="closeSuccessModal()">
+      <div class="success-modal" (click)="$event.stopPropagation()">
+
+        <div class="success-icon">
+          <span class="material-symbols-outlined">check</span>
+        </div>
+
+        <span class="success-kicker">B2WA COMMUNITY</span>
+
+        <h2>Vente flash mise à jour !</h2>
+
+        <p>Les modifications de votre offre ont été enregistrées avec succès.</p>
+
+        <div class="success-summary">
+          <div>
+            <span class="material-symbols-outlined">shopping_bag</span>
+            <div>
+              <small>Produit</small>
+              <strong>{{ updatedSale.productName }}</strong>
+            </div>
+          </div>
+
+          <div>
+            <span class="material-symbols-outlined">payments</span>
+            <div>
+              <small>Prix flash</small>
+              <strong>{{ updatedSale.flashPrice | number:'1.0-0' }} FCFA</strong>
+            </div>
+          </div>
+
+          <div>
+            <span class="material-symbols-outlined">percent</span>
+            <div>
+              <small>Réduction</small>
+              <strong>-{{ updatedSale.discount }}%</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="success-actions">
+          <button type="button" class="secondary-btn" (click)="closeSuccessModal()">
+            Fermer
+          </button>
+
+          <button type="button" class="primary-btn" (click)="viewFlashSales()">
+            <span class="material-symbols-outlined">bolt</span>
+            Voir les ventes flash
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

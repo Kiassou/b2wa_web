@@ -461,6 +461,13 @@
 
                     <strong>
                       {{ shipment.origin }}
+                      @if (getCountryCode(shipment.origin)) {
+                        <img 
+                          [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.origin) + '.png'" 
+                          [alt]="shipment.origin"
+                          style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;" 
+                        />
+                      }
                     </strong>
                   </div>
 
@@ -489,6 +496,13 @@
 
                     <strong>
                       {{ shipment.destination }}
+                      @if (getCountryCode(shipment.destination)) {
+                        <img 
+                          [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.destination) + '.png'" 
+                          [alt]="shipment.destination"
+                          style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;" 
+                        />
+                      }
                     </strong>
                   </div>
 
@@ -893,6 +907,13 @@
 
                 <strong>
                   {{ qrModalShipment.origin }}
+                  @if (getCountryCode(qrModalShipment.origin)) {
+                        <img 
+                          [src]="'https://flagcdn.com/24x18/' + getCountryCode(qrModalShipment.origin) + '.png'" 
+                          [alt]="qrModalShipment.origin"
+                          style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;" 
+                        />
+                      }
                 </strong>
               </div>
             </div>
@@ -924,6 +945,13 @@
 
                 <strong>
                   {{ qrModalShipment.destination }}
+                  @if (getCountryCode(qrModalShipment.destination)) {
+                        <img 
+                          [src]="'https://flagcdn.com/24x18/' + getCountryCode(qrModalShipment.destination) + '.png'" 
+                          [alt]="qrModalShipment.destination"
+                          style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;" 
+                        />
+                      }
                 </strong>
               </div>
             </div>

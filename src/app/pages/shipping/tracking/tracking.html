@@ -1,14 +1,10 @@
 <div class="tracking-page">
-
-
   <!-- =====================================================
        HEADER
   ====================================================== -->
 
   <section class="tracking-header">
-
     <div class="header-content">
-
       <button
         type="button"
         class="back-btn"
@@ -41,7 +37,6 @@
       </p>
     </div>
   </section>
-
 
   <!-- =====================================================
        MESSAGE D'ERREUR
@@ -190,6 +185,13 @@
 
             <strong>
               {{ shipment.sender.city }}
+              @if (getCountryCode(shipment.sender.country)) {
+                <img 
+                  [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.sender.country) + '.png'" 
+                  [alt]="shipment.sender.country"
+                  style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                />
+              }
             </strong>
 
 
@@ -233,6 +235,13 @@
 
             <strong>
               {{ shipment.receiver.city }}
+              @if (getCountryCode(shipment.receiver.country)) {
+                <img 
+                  [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.receiver.country) + '.png'" 
+                  [alt]="shipment.receiver.country"
+                  style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;"
+                />
+              }
             </strong>
 
 
