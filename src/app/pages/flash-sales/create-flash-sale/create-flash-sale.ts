@@ -96,15 +96,14 @@ export class CreateFlashSaleComponent {
     this.form.productId = `PROD-${String(nextId).padStart(4, '0')}`;
   }
 
-  /* =====================================================
-     GESTION DE L'UPLOADER D'IMAGE (FILE)
+/* =====================================================
+     GESTION DE L'UPLOADER D'IMAGE
   ====================================================== */
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
 
-      // Vérification facultative du type/taille
       if (!file.type.startsWith('image/')) {
         this.imageError = true;
         this.errorMessage = 'Veuillez sélectionner un fichier image valide.';
@@ -114,11 +113,16 @@ export class CreateFlashSaleComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.form.productImage = reader.result as string;
-        this.imageError = false;
+        this.imageError = false; // Réinitialisation directe de l'erreur
         this.errorMessage = '';
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  removeImage(): void {
+    this.form.productImage = '';
+    this.imageError = false;
   }
 
   /* =====================================================

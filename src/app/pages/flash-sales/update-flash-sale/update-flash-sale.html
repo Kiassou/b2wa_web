@@ -1,306 +1,1322 @@
-<div class="update-flash-sale-container">
+<div class="update-flash-sale-page">
 
-  <!-- En-tête de la page avec bouton retour -->
-  <header class="page-header">
-    <div class="header-top">
-      <button type="button" class="back-btn" (click)="goBack()">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Retour
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="flash-sale-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
       </button>
+
+      <div>
+
+        <span class="page-kicker">
+          B2WA COMMUNITY
+        </span>
+
+        <h1>
+          Modifier la vente flash
+        </h1>
+
+        <p>
+          Mettez à jour les informations de votre offre
+          réservée aux membres de la communauté.
+        </p>
+
+      </div>
+
     </div>
-    <h1>Modifier la Vente Flash</h1>
-    <p>Mettez à jour les caractéristiques de l'offre promotionnelle #{{ saleId }}</p>
+
+
+    <div class="header-status">
+
+      <span class="status-dot"></span>
+
+      <span>
+        Modification
+      </span>
+
+    </div>
+
   </header>
 
-  <!-- État de chargement initial -->
-  @if (loading) {
-    <div class="loading-state">
-      <span class="material-symbols-outlined spinner">progress_activity</span>
-      <p>Chargement des détails de la vente flash...</p>
-    </div>
-  }
-
-  <!-- Message d'erreur global -->
-  @if (errorMessage && !loading) {
-    <div class="alert alert-danger">
-      <span class="material-symbols-outlined">error</span>
-      <span>{{ errorMessage }}</span>
-    </div>
-  }
 
   <!-- =====================================================
-        FORMULAIRE DE MODIFICATION
+       LOADING
   ====================================================== -->
-  @if (!loading && form.productId) {
-    <form (ngSubmit)="updateFlashSale()" #updateForm="ngForm" class="flash-sale-form">
 
-      <!-- Sélection de la communauté -->
-      <div class="form-group">
-        <label for="communityId">Communauté ciblée</label>
-        <div class="input-icon">
-          <span class="material-symbols-outlined">group</span>
-          <select
-            id="communityId"
-            [(ngModel)]="form.communityId"
-            name="communityId"
-            (change)="onCommunityChange()"
-            required
+  @if (loading) {
+
+    <section class="state-section loading-state">
+
+      <div class="state-icon">
+
+        <span class="material-symbols-outlined">
+          sync
+        </span>
+
+      </div>
+
+      <h2>
+        Chargement de la vente flash...
+      </h2>
+
+      <p>
+        Nous récupérons les informations de votre offre.
+      </p>
+
+    </section>
+
+  }
+
+
+  <!-- =====================================================
+       ERREUR / INTROUVABLE
+  ====================================================== -->
+
+  @if (!loading && errorMessage && !showSuccessModal) {
+
+    <div class="error-message">
+
+      <span class="material-symbols-outlined">
+        error
+      </span>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       CONTENU
+  ====================================================== -->
+
+  @if (!loading && !showSuccessModal) {
+
+    <main class="flash-sale-content">
+
+
+      <!-- =================================================
+           COLONNE FORMULAIRE
+      ================================================== -->
+
+      <div class="form-column">
+
+
+        <!-- ===============================================
+             COMMUNAUTÉ
+        ================================================ -->
+
+        <section class="form-card">
+
+          <div class="card-header">
+
+            <div class="card-icon blue">
+
+              <span class="material-symbols-outlined">
+                groups
+              </span>
+
+            </div>
+
+            <div>
+
+              <span class="card-kicker">
+                ÉTAPE 01
+              </span>
+
+              <h2>
+                Communauté
+              </h2>
+
+              <p>
+                Choisissez la communauté qui bénéficiera
+                de cette vente flash.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="form-group full">
+
+              <label for="community">
+                Communauté
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  groups
+                </span>
+
+                <select
+                  id="community"
+                  name="communityId"
+                  [(ngModel)]="form.communityId"
+                  (change)="onCommunityChange()"
+                >
+
+                  <option value="">
+                    Choisir une communauté
+                  </option>
+
+                  @for (
+                    community of communities;
+                    track community.id
+                  ) {
+
+                    <option
+                      [value]="community.id"
+                    >
+                      {{ community.name }}
+                    </option>
+
+                  }
+
+                </select>
+
+              </div>
+
+              @if (selectedCommunityName) {
+
+                <small class="field-info">
+
+                  <span class="material-symbols-outlined">
+                    check_circle
+                  </span>
+
+                  Cette vente sera proposée aux membres de
+                  <strong>
+                    {{ selectedCommunityName }}
+                  </strong>.
+
+                </small>
+
+              }
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===============================================
+             PRODUIT
+        ================================================ -->
+
+        <section class="form-card">
+
+          <div class="card-header">
+
+            <div class="card-icon orange">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+            </div>
+
+            <div>
+
+              <span class="card-kicker">
+                PRODUIT
+              </span>
+
+              <h2>
+                Produit concerné
+              </h2>
+
+              <p>
+                Informations sur le produit proposé en promotion.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- PRODUCT ID -->
+
+            <div class="form-group">
+
+              <label for="productId">
+                Identifiant du produit
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  tag
+                </span>
+
+                <input
+                  id="productId"
+                  name="productId"
+                  type="text"
+                  placeholder="Ex : PROD-001"
+                  [(ngModel)]="form.productId"
+                />
+
+              </div>
+
+            </div>
+
+
+            <!-- PRODUCT NAME -->
+
+            <div class="form-group">
+
+              <label for="productName">
+                Nom du produit
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  shopping_bag
+                </span>
+
+                <input
+                  id="productName"
+                  name="productName"
+                  type="text"
+                  placeholder="Nom du produit"
+                  [(ngModel)]="form.productName"
+                />
+
+              </div>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="form-group full">
+
+              <label>
+                Image du produit
+              </label>
+
+              <div class="image-upload-area">
+
+                @if (form.productImage) {
+
+                  <div class="product-preview">
+
+                    <img
+                      [src]="form.productImage"
+                      [alt]="form.productName || 'Produit'"
+                    />
+
+                    <div class="preview-overlay">
+
+                      <span class="material-symbols-outlined">
+                        image
+                      </span>
+
+                      Image actuelle
+
+                    </div>
+
+                  </div>
+
+                }
+
+                <label
+                  class="upload-box"
+                  [class.has-image]="!!form.productImage"
+                >
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    (change)="onImageSelected($event)"
+                    hidden
+                  />
+
+                  <span class="material-symbols-outlined">
+                    cloud_upload
+                  </span>
+
+                  <strong>
+                    {{ form.productImage
+                      ? 'Changer l’image'
+                      : 'Ajouter une image'
+                    }}
+                  </strong>
+
+                  <small>
+                    PNG, JPG ou WEBP
+                  </small>
+
+                </label>
+
+              </div>
+
+              @if (imageError) {
+
+                <small class="field-error">
+
+                  <span class="material-symbols-outlined">
+                    error
+                  </span>
+
+                  Veuillez sélectionner une image valide.
+
+                </small>
+
+              }
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group full">
+
+              <label for="description">
+                Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                placeholder="Décrivez l'offre et le produit..."
+                [(ngModel)]="form.description"
+              ></textarea>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===============================================
+             PRIX
+        ================================================ -->
+
+        <section class="form-card">
+
+          <div class="card-header">
+
+            <div class="card-icon green">
+
+              <span class="material-symbols-outlined">
+                payments
+              </span>
+
+            </div>
+
+            <div>
+
+              <span class="card-kicker">
+                TARIFICATION
+              </span>
+
+              <h2>
+                Prix de la vente flash
+              </h2>
+
+              <p>
+                Définissez le prix normal et le prix promotionnel.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- PRIX ORIGINAL -->
+
+            <div class="form-group">
+
+              <label for="originalPrice">
+                Prix original
+              </label>
+
+              <div class="input-with-suffix">
+
+                <input
+                  id="originalPrice"
+                  name="originalPrice"
+                  type="number"
+                  min="0"
+                  [(ngModel)]="form.originalPrice"
+                />
+
+                <span>
+                  FCFA
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- PRIX FLASH -->
+
+            <div class="form-group">
+
+              <label for="flashPrice">
+                Prix flash
+              </label>
+
+              <div class="input-with-suffix flash-price-input">
+
+                <input
+                  id="flashPrice"
+                  name="flashPrice"
+                  type="number"
+                  min="0"
+                  [(ngModel)]="form.flashPrice"
+                />
+
+                <span>
+                  FCFA
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- RÉDUCTION -->
+
+            <div class="pricing-highlight full">
+
+              <div class="pricing-highlight-icon">
+
+                <span class="material-symbols-outlined">
+                  local_offer
+                </span>
+
+              </div>
+
+              <div>
+
+                <small>
+                  Réduction appliquée
+                </small>
+
+                <strong>
+                  -{{ discountPercentage }}%
+                </strong>
+
+              </div>
+
+              <div class="saving">
+
+                <small>
+                  Économie pour le membre
+                </small>
+
+                <strong>
+                  {{ savingAmount | number:'1.0-0' }} FCFA
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===============================================
+             STOCK
+        ================================================ -->
+
+        <section class="form-card">
+
+          <div class="card-header">
+
+            <div class="card-icon purple">
+
+              <span class="material-symbols-outlined">
+                inventory
+              </span>
+
+            </div>
+
+            <div>
+
+              <span class="card-kicker">
+                STOCK
+              </span>
+
+              <h2>
+                Quantité disponible
+              </h2>
+
+              <p>
+                Définissez le nombre de produits disponibles.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label for="quantity">
+                Quantité totale
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+                <input
+                  id="quantity"
+                  name="quantity"
+                  type="number"
+                  min="1"
+                  [(ngModel)]="form.quantity"
+                />
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="soldQuantity">
+                Quantité déjà vendue
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  shopping_cart
+                </span>
+
+                <input
+                  id="soldQuantity"
+                  name="soldQuantity"
+                  type="number"
+                  min="0"
+                  [value]="form.soldQuantity"
+                  disabled
+                />
+
+              </div>
+
+            </div>
+
+
+            <div class="stock-summary full">
+
+              <div>
+
+                <span class="material-symbols-outlined">
+                  stacked_bar_chart
+                </span>
+
+                <div>
+
+                  <small>
+                    Disponible
+                  </small>
+
+                  <strong>
+                    {{
+                      form.quantity > form.soldQuantity ? form.quantity - form.soldQuantity : 0
+                    }}
+                    produits
+                  </strong>
+
+                </div>
+
+              </div>
+
+              <div class="stock-progress">
+
+                <div class="stock-progress-bar"
+                  [style.width.%]="
+                  form.quantity > 0
+                    ? (
+                        form.soldQuantity / form.quantity * 100 > 100
+                          ? 100
+                          : form.soldQuantity / form.quantity * 100
+                      )
+                    : 0"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===============================================
+             PÉRIODE
+        ================================================ -->
+
+        <section class="form-card">
+
+          <div class="card-header">
+
+            <div class="card-icon blue">
+
+              <span class="material-symbols-outlined">
+                schedule
+              </span>
+
+            </div>
+
+            <div>
+
+              <span class="card-kicker">
+                PROGRAMMATION
+              </span>
+
+              <h2>
+                Période de la vente
+              </h2>
+
+              <p>
+                Définissez quand l'offre sera disponible.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label for="startDate">
+                Date et heure de début
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  calendar_month
+                </span>
+
+                <input
+                  id="startDate"
+                  name="startDate"
+                  type="datetime-local"
+                  [(ngModel)]="form.startDate"
+                />
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="endDate">
+                Date et heure de fin
+              </label>
+
+              <div class="input-icon">
+
+                <span class="material-symbols-outlined">
+                  event
+                </span>
+
+                <input
+                  id="endDate"
+                  name="endDate"
+                  type="datetime-local"
+                  [(ngModel)]="form.endDate"
+                />
+
+              </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="period-status full">
+
+              @if (periodStatus === 'active') {
+
+                <span class="period-badge active">
+
+                  <span class="status-dot"></span>
+
+                  Vente active
+
+                </span>
+
+                <span>
+                  Cette vente flash est actuellement active.
+                </span>
+
+              }
+
+              @else if (periodStatus === 'scheduled') {
+
+                <span class="period-badge scheduled">
+
+                  <span class="status-dot"></span>
+
+                  Programmée
+
+                </span>
+
+                <span>
+                  Cette vente flash démarrera à la date définie.
+                </span>
+
+              }
+
+              @else {
+
+                <span class="period-badge invalid">
+
+                  <span class="material-symbols-outlined">
+                    error
+                  </span>
+
+                  Période invalide
+
+                </span>
+
+                <span>
+                  Vérifiez les dates de début et de fin.
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===============================================
+             ACTIONS
+        ================================================ -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="goBack()"
+            [disabled]="submitting"
           >
-            <option value="" disabled>Sélectionnez une communauté</option>
-            @for (comm of communities; track comm.id) {
-              <option [value]="comm.id">{{ comm.name }}</option>
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+            Annuler
+
+          </button>
+
+
+          <button
+            type="button"
+            class="update-btn"
+            [disabled]="!canUpdate || submitting"
+            (click)="updateFlashSale()"
+          >
+
+            @if (submitting) {
+
+              <span class="material-symbols-outlined spinning">
+                progress_activity
+              </span>
+
+              Mise à jour...
+
             }
-          </select>
+
+            @else {
+
+              <span class="material-symbols-outlined">
+                save
+              </span>
+
+              Enregistrer les modifications
+
+            }
+
+          </button>
+
         </div>
+
       </div>
 
-      <!-- Identifiant produit (Rendu non modifiable) -->
-      <div class="form-group">
-        <label for="productId">Identifiant produit (non modifiable)</label>
-        <div class="input-icon">
-          <span class="material-symbols-outlined">tag</span>
-          <input
-            id="productId"
-            type="text"
-            [(ngModel)]="form.productId"
-            name="productId"
-            readonly
-          />
-        </div>
-      </div>
 
-      <!-- Nom du produit -->
-      <div class="form-group">
-        <label for="productName">Nom du produit</label>
-        <div class="input-icon">
-          <span class="material-symbols-outlined">shopping_bag</span>
-          <input
-            id="productName"
-            type="text"
-            [(ngModel)]="form.productName"
-            name="productName"
-            placeholder="Ex: iPhone 15 Pro"
-            required
-          />
-        </div>
-      </div>
+      <!-- =================================================
+           SIDEBAR / APERÇU
+      ================================================== -->
 
-      <!-- Image du produit (Aperçu + Upload) -->
-      <div class="form-group">
-        <label for="productImage">Image du produit</label>
-        @if (form.productImage) {
-          <div class="image-preview">
-            <img [src]="form.productImage" alt="Aperçu du produit" />
+      <aside class="preview-column">
+
+        <div class="preview-card">
+
+          <div class="preview-header">
+
+            <div>
+
+              <span class="card-kicker">
+                APERÇU
+              </span>
+
+              <h2>
+                Vente flash
+              </h2>
+
+            </div>
+
+            <span class="material-symbols-outlined">
+              visibility
+            </span>
+
           </div>
-        }
-        <div class="input-icon">
-          <span class="material-symbols-outlined">image</span>
-          <input
-            id="productImage"
-            type="file"
-            accept="image/*"
-            (change)="onImageSelected($event)"
-          />
-        </div>
-      </div>
 
-      <!-- Configuration des prix -->
-      <div class="form-row">
-        <div class="form-group">
-          <label for="originalPrice">Prix d'origine (FCFA)</label>
-          <div class="input-icon">
-            <span class="material-symbols-outlined">payments</span>
-            <input
-              id="originalPrice"
-              type="number"
-              [(ngModel)]="form.originalPrice"
-              name="originalPrice"
-              placeholder="750000"
-              required
-              min="1"
-            />
+
+          <!-- IMAGE -->
+
+          <div class="preview-image">
+
+            @if (form.productImage) {
+
+              <img
+                [src]="form.productImage"
+                [alt]="form.productName"
+              />
+
+            }
+
+            @else {
+
+              <div class="preview-image-empty">
+
+                <span class="material-symbols-outlined">
+                  image
+                </span>
+
+              </div>
+
+            }
+
+
+            <span class="flash-badge">
+              -{{ discountPercentage }}%
+            </span>
+
           </div>
+
+
+          <!-- COMMUNITY -->
+
+          @if (selectedCommunityName) {
+
+            <div class="preview-community">
+
+              <span class="material-symbols-outlined">
+                groups
+              </span>
+
+              <span>
+                {{ selectedCommunityName }}
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- PRODUCT -->
+
+          <div class="preview-product">
+
+            <small>
+              PRODUIT
+            </small>
+
+            <h3>
+              {{ form.productName || 'Nom du produit' }}
+            </h3>
+
+            <p>
+              {{ form.description || 'Description du produit...' }}
+            </p>
+
+          </div>
+
+
+          <!-- PRICE -->
+
+          <div class="preview-price">
+
+            <div>
+
+              <small>
+                Prix flash
+              </small>
+
+              <strong>
+                {{ form.flashPrice | number:'1.0-0' }}
+                <span>FCFA</span>
+              </strong>
+
+            </div>
+
+            <div class="old-price">
+
+              <small>
+                Prix normal
+              </small>
+
+              <del>
+                {{ form.originalPrice | number:'1.0-0' }}
+                FCFA
+              </del>
+
+            </div>
+
+          </div>
+
+
+          <!-- STOCK -->
+
+          <div class="preview-info">
+
+            <div>
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+              <span>
+                Stock disponible
+              </span>
+
+              <strong>
+                {{
+                  form.quantity > form.soldQuantity
+                    ? form.quantity - form.soldQuantity
+                    : 0
+                }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- PERIOD -->
+
+          <div class="preview-period">
+
+            <div>
+
+              <span class="material-symbols-outlined">
+                schedule
+              </span>
+
+              <div>
+
+                <small>
+                  Période
+                </small>
+
+                <strong>
+                  {{ form.startDate || 'Non définie' }}
+                </strong>
+
+                <span>
+                  jusqu'au
+                  {{ form.endDate || 'Non définie' }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <div
+            class="preview-status"
+            [class.active]="periodStatus === 'active'"
+            [class.scheduled]="periodStatus === 'scheduled'"
+            [class.invalid]="periodStatus === 'invalid'"
+          >
+
+            @if (periodStatus === 'active') {
+
+              <span class="status-dot"></span>
+
+              Vente actuellement active
+
+            }
+
+            @else if (periodStatus === 'scheduled') {
+
+              <span class="material-symbols-outlined">
+                schedule
+              </span>
+
+              Vente programmée
+
+            }
+
+            @else {
+
+              <span class="material-symbols-outlined">
+                error
+              </span>
+
+              Période invalide
+
+            }
+
+          </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="flashPrice">Prix flash (FCFA)</label>
-          <div class="input-icon">
-            <span class="material-symbols-outlined">bolt</span>
-            <input
-              id="flashPrice"
-              type="number"
-              [(ngModel)]="form.flashPrice"
-              name="flashPrice"
-              placeholder="500000"
-              required
-              min="1"
-            />
-          </div>
-        </div>
-      </div>
 
-      <!-- Résumé économique (Réduction calculée & Économie) -->
-      @if (form.originalPrice > 0 && form.flashPrice > 0) {
-        <div class="pricing-summary">
-          <div class="badge discount">
-            <span class="material-symbols-outlined">percent</span>
-            Réduction : -{{ discountPercentage }}%
-          </div>
-          <div class="badge saving">
-            <span class="material-symbols-outlined">savings</span>
-            Économie : {{ savingAmount | number:'1.0-0' }} FCFA
-          </div>
-        </div>
-      }
+        <!-- ===============================================
+             INFO
+        ================================================ -->
 
-      <!-- Quantité totale & Quantité vendue -->
-      <div class="form-row">
-        <div class="form-group">
-          <label for="quantity">Quantité totale du stock</label>
-          <div class="input-icon">
-            <span class="material-symbols-outlined">inventory_2</span>
-            <input
-              id="quantity"
-              type="number"
-              [(ngModel)]="form.quantity"
-              name="quantity"
-              required
-              [min]="form.soldQuantity || 1"
-            />
+        <div class="info-card">
+
+          <div class="info-icon">
+
+            <span class="material-symbols-outlined">
+              info
+            </span>
+
           </div>
-          <small class="help-text">Déjà vendus : {{ form.soldQuantity }} unités</small>
+
+          <div>
+
+            <h3>
+              À propos de la modification
+            </h3>
+
+            <p>
+              Les nouvelles informations seront appliquées
+              à la vente flash existante.
+            </p>
+
+            <p>
+              Les membres de la communauté verront
+              automatiquement les informations mises à jour.
+            </p>
+
+          </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="description">Description (Optionnel)</label>
-          <div class="input-icon">
-            <span class="material-symbols-outlined">description</span>
-            <input
-              id="description"
-              type="text"
-              [(ngModel)]="form.description"
-              name="description"
-              placeholder="Description courte de l'offre..."
-            />
-          </div>
-        </div>
-      </div>
+      </aside>
 
-      <!-- Période de validité -->
-      <div class="form-row">
-        <div class="form-group">
-          <label for="startDate">Date de début</label>
-          <div class="input-icon">
-            <span class="material-symbols-outlined">calendar_today</span>
-            <input
-              id="startDate"
-              type="datetime-local"
-              [(ngModel)]="form.startDate"
-              name="startDate"
-              required
-            />
-          </div>
-        </div>
+    </main>
 
-        <div class="form-group">
-          <label for="endDate">Date de fin</label>
-          <div class="input-icon">
-            <span class="material-symbols-outlined">event_busy</span>
-            <input
-              id="endDate"
-              type="datetime-local"
-              [(ngModel)]="form.endDate"
-              name="endDate"
-              required
-            />
-          </div>
-        </div>
-      </div>
+  }
 
-      <!-- Boutons d'action -->
-      <div class="form-actions">
+
+  <!-- =====================================================
+       SUCCESS MODAL
+  ====================================================== -->
+
+  @if (showSuccessModal) {
+
+    <div
+      class="modal-backdrop"
+      (click)="closeSuccessModal()"
+    >
+
+      <div
+        class="success-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+
+        <!-- CLOSE -->
+
         <button
           type="button"
-          class="secondary-btn"
-          (click)="goBack()"
+          class="success-close"
+          (click)="closeSuccessModal()"
         >
-          Annuler
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
         </button>
 
-        <button
-          type="submit"
-          class="primary-btn"
-          [disabled]="!canUpdate || submitting"
-        >
-          @if (submitting) {
-            <span class="material-symbols-outlined spinner">progress_activity</span>
-            Enregistrement...
-          } @else {
-            <span class="material-symbols-outlined">save</span>
-            Mettre à jour la vente flash
-          }
-        </button>
-      </div>
 
-    </form>
-  }
-
-  <!-- =====================================================
-        MODALE DE SUCCÈS
-  ====================================================== -->
-  @if (showSuccessModal) {
-    <div class="modal-backdrop" (click)="closeSuccessModal()">
-      <div class="success-modal" (click)="$event.stopPropagation()">
+        <!-- ICON -->
 
         <div class="success-icon">
-          <span class="material-symbols-outlined">check</span>
+
+          <span class="material-symbols-outlined">
+            check
+          </span>
+
         </div>
 
-        <span class="success-kicker">B2WA COMMUNITY</span>
 
-        <h2>Vente flash mise à jour !</h2>
+        <span class="success-kicker">
+          B2WA COMMUNITY
+        </span>
 
-        <p>Les modifications de votre offre ont été enregistrées avec succès.</p>
 
-        <div class="success-summary">
-          <div>
-            <span class="material-symbols-outlined">shopping_bag</span>
+        <h2>
+          Vente flash mise à jour !
+        </h2>
+
+
+        <p class="success-description">
+          Les informations de votre vente flash ont été
+          modifiées avec succès.
+        </p>
+
+
+        <!-- UPDATED SALE -->
+
+        <div class="updated-sale-box">
+
+          <div class="updated-product">
+
+            @if (form.productImage) {
+
+              <img
+                [src]="form.productImage"
+                [alt]="updatedSale.productName"
+              />
+
+            }
+
             <div>
-              <small>Produit</small>
-              <strong>{{ updatedSale.productName }}</strong>
+
+              <small>
+                PRODUIT
+              </small>
+
+              <strong>
+                {{ updatedSale.productName }}
+              </strong>
+
             </div>
+
           </div>
 
-          <div>
-            <span class="material-symbols-outlined">payments</span>
+
+          <div class="updated-details">
+
             <div>
-              <small>Prix flash</small>
-              <strong>{{ updatedSale.flashPrice | number:'1.0-0' }} FCFA</strong>
+
+              <small>
+                NOUVEAU PRIX
+              </small>
+
+              <strong>
+                {{ updatedSale.flashPrice | number:'1.0-0' }}
+                FCFA
+              </strong>
+
             </div>
+
+
+            <div>
+
+              <small>
+                RÉDUCTION
+              </small>
+
+              <strong>
+                -{{ updatedSale.discount }}%
+              </strong>
+
+            </div>
+
           </div>
 
-          <div>
-            <span class="material-symbols-outlined">percent</span>
-            <div>
-              <small>Réduction</small>
-              <strong>-{{ updatedSale.discount }}%</strong>
-            </div>
-          </div>
         </div>
+
+
+        <!-- ACTIONS -->
 
         <div class="success-actions">
-          <button type="button" class="secondary-btn" (click)="closeSuccessModal()">
-            Fermer
+
+          <button
+            type="button"
+            class="secondary-btn"
+            (click)="closeSuccessModal()"
+          >
+            Continuer
           </button>
 
-          <button type="button" class="primary-btn" (click)="viewFlashSales()">
-            <span class="material-symbols-outlined">bolt</span>
+
+          <button
+            type="button"
+            class="primary-success-btn"
+            (click)="viewFlashSales()"
+          >
+
+            <span class="material-symbols-outlined">
+              visibility
+            </span>
+
             Voir les ventes flash
+
           </button>
+
         </div>
 
       </div>
+
     </div>
+
   }
 
 </div>
