@@ -1,8 +1,18 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  ChangeDetectorRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FlashSale, FlashSaleStatus, FlashSaleStoreService } from '../../services/flash-sale-store.service';
+import {
+  FlashSale,
+  FlashSaleStatus,
+  FlashSaleStoreService
+} from '../../services/flash-sale-store.service';
 
 @Component({
   selector: 'app-flash-sales',
@@ -15,13 +25,16 @@ import { FlashSale, FlashSaleStatus, FlashSaleStoreService } from '../../service
   styleUrl: './flash-sales.css'
 })
 export class FlashSalesComponent implements OnInit, OnDestroy {
+
   // Injection moderne des services
   private flashSaleStore = inject(FlashSaleStoreService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   /* =====================================================
      DONNÉES & FILTRES
   ====================================================== */
+
   flashSales: FlashSale[] = [];
   activeFilter: 'all' | FlashSaleStatus = 'all';
   searchTerm = '';
@@ -29,6 +42,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   /* =====================================================
      MODALES ET MENUS
   ====================================================== */
+
   openActionMenuId: number | null = null;
   selectedSale: FlashSale | null = null;
   showDetailModal = false;
@@ -38,6 +52,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   /* =====================================================
      STATISTIQUES
   ====================================================== */
+
   stats = {
     activeCount: 0,
     soldQuantity: 0,
@@ -48,6 +63,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   /* =====================================================
      HORLOGE
   ====================================================== */
+
   private timer: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit(): void {
@@ -57,12 +73,17 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
     this.timer = setInterval(() => {
       this.flashSaleStore.refreshStatuses();
       this.loadData();
+
+      // Force le rafraîchissement de l'affichage
+      this.cdr.detectChanges();
+
     }, 1000);
   }
 
   ngOnDestroy(): void {
     if (this.timer) {
       clearInterval(this.timer);
+      this.timer = null;
     }
   }
 
@@ -74,14 +95,18 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   /* =====================================================
      LISTE FILTRÉE ET TRIÉE
   ====================================================== */
+
   get filteredSales(): FlashSale[] {
     let sales = [...this.flashSales];
 
     if (this.activeFilter !== 'all') {
-      sales = sales.filter(sale => sale.status === this.activeFilter);
+      sales = sales.filter(
+        sale => sale.status === this.activeFilter
+      );
     }
 
     const search = this.searchTerm.trim().toLowerCase();
+
     if (search) {
       sales = sales.filter(
         sale =>
@@ -98,7 +123,9 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
       cancelled: 4
     };
 
-    return sales.sort((a, b) => priority[a.status] - priority[b.status]);
+    return sales.sort(
+      (a, b) => priority[a.status] - priority[b.status]
+    );
   }
 
   setFilter(filter: 'all' | FlashSaleStatus): void {
@@ -106,14 +133,18 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   }
 
   getCount(status: FlashSaleStatus): number {
-    return this.flashSales.filter(sale => sale.status === status).length;
+    return this.flashSales.filter(
+      sale => sale.status === status
+    ).length;
   }
 
   /* =====================================================
      ACTIONS MENUS & MODALES
   ====================================================== */
+
   toggleActionMenu(id: number): void {
-    this.openActionMenuId = this.openActionMenuId === id ? null : id;
+    this.openActionMenuId =
+      this.openActionMenuId === id ? null : id;
   }
 
   closeActionMenu(): void {
@@ -122,6 +153,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
 
   viewSale(sale: FlashSale): void {
     this.closeActionMenu();
+
     this.selectedSale = sale;
     this.showDetailModal = true;
   }
@@ -132,19 +164,30 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   }
 
   createFlashSale(): void {
-    this.router.navigate(['/dashboard/create-flash-sale']);
+    this.router.navigate([
+      '/dashboard/create-flash-sale'
+    ]);
   }
 
   editSale(sale: FlashSale): void {
     this.closeActionMenu();
-    this.router.navigate(['/dashboard/update-flash-sale', sale.id]);
+
+    this.router.navigate([
+      '/dashboard/update-flash-sale',
+      sale.id
+    ]);
   }
 
   cancelSale(sale: FlashSale): void {
     this.closeActionMenu();
+
     if (sale.status === 'ended') return;
 
-    if (window.confirm(`Voulez-vous vraiment annuler la vente flash "${sale.productName}" ?`)) {
+    if (
+      window.confirm(
+        `Voulez-vous vraiment annuler la vente flash "${sale.productName}" ?`
+      )
+    ) {
       this.flashSaleStore.cancel(sale.id);
       this.loadData();
     }
@@ -152,6 +195,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
 
   confirmDelete(sale: FlashSale): void {
     this.closeActionMenu();
+
     this.saleToDelete = sale;
     this.showDeleteModal = true;
   }
@@ -164,7 +208,10 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   deleteSale(): void {
     if (!this.saleToDelete) return;
 
-    this.flashSaleStore.delete(this.saleToDelete.id);
+    this.flashSaleStore.delete(
+      this.saleToDelete.id
+    );
+
     this.closeDeleteModal();
     this.loadData();
   }
@@ -172,6 +219,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   /* =====================================================
      HELPERS / FORMATTEURS
   ====================================================== */
+
   getStatusLabel(status: FlashSaleStatus): string {
     const labels: Record<FlashSaleStatus, string> = {
       active: 'Active',
@@ -179,6 +227,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
       ended: 'Terminée',
       cancelled: 'Annulée'
     };
+
     return labels[status] || 'Inconnue';
   }
 
@@ -200,6 +249,7 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
 
   getCountdown(sale: FlashSale): string {
     const now = Date.now();
+
     const target =
       sale.status === 'scheduled'
         ? new Date(sale.startDate).getTime()
@@ -208,13 +258,27 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
     const difference = target - now;
 
     if (difference <= 0) {
-      return sale.status === 'scheduled' ? 'Démarrage imminent' : 'Terminée';
+      return sale.status === 'scheduled'
+        ? 'Démarrage imminent'
+        : 'Terminée';
     }
 
-    const totalSeconds = Math.floor(difference / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const totalSeconds = Math.floor(
+      difference / 1000
+    );
+
+    const days = Math.floor(
+      totalSeconds / 86400
+    );
+
+    const hours = Math.floor(
+      (totalSeconds % 86400) / 3600
+    );
+
+    const minutes = Math.floor(
+      (totalSeconds % 3600) / 60
+    );
+
     const seconds = totalSeconds % 60;
 
     if (days > 0) {
@@ -230,7 +294,10 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
 
   formatDate(value: string): string {
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return value;
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
 
     return date.toLocaleDateString('fr-FR', {
       day: 'numeric',
@@ -244,10 +311,19 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   }
 
   getProgressWidth(sale: FlashSale): number {
-    return Math.min(100, Math.max(0, this.getSoldPercentage(sale)));
+    return Math.min(
+      100,
+      Math.max(
+        0,
+        this.getSoldPercentage(sale)
+      )
+    );
   }
 
-  trackBySale(index: number, sale: FlashSale): number {
+  trackBySale(
+    index: number,
+    sale: FlashSale
+  ): number {
     return sale.id;
   }
 }

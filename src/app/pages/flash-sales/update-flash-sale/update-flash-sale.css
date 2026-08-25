@@ -5,27 +5,22 @@
 .update-flash-sale-page {
   min-height: 100vh;
   color: #172033;
+  font-family: 'Poppins', sans-serif;
 }
 
 
 /* =========================================================
    HEADER
-   ========================================================= */
+========================================================= */
 
-.flash-sale-header {
-  max-width: 1500px;
-  margin: 0 auto 28px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+.page-header {
+  margin-bottom: 26px;
 }
 
 .header-left {
   display: flex;
-  align-items: flex-start;
-  gap: 18px;
+  align-items: center;
+  gap: 14px;
 }
 
 .back-btn {
@@ -56,67 +51,58 @@
   border-color: #cbd5e1;
 }
 
+
+.back-btn .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 215, 122, .24);
+}
+
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
 .page-kicker,
 .card-kicker {
-  display: block;
-
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-
-  color: #2563eb;
-  text-transform: uppercase;
-}
-
-.flash-sale-header h1 {
-  margin: 5px 0 7px;
-
-  font-size: clamp(28px, 3vw, 38px);
-  line-height: 1.1;
-  font-weight: 800;
-
-  letter-spacing: -0.035em;
-}
-
-.flash-sale-header p {
-  margin: 0;
-
-  max-width: 700px;
-
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.header-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-
-  padding: 10px 15px;
-
-  border: 1px solid #dbe4ef;
-  border-radius: 999px;
-
-  background: rgba(255, 255, 255, 0.9);
-
-  color: #475569;
-
-  font-size: 13px;
+  color: #16a34a;
+  font-size: 10px;
   font-weight: 700;
-
-  white-space: nowrap;
+  letter-spacing: 1px;
 }
 
-.status-dot {
-  width: 8px;
-  height: 8px;
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
 
-  border-radius: 50%;
 
-  background: #22c55e;
-
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
 }
 
 
@@ -231,14 +217,15 @@
    ========================================================= */
 
 .form-card {
-  padding: 27px;
-
-  background: #ffffff;
-
-  border: 1px solid #e5eaf2;
-  border-radius: 20px;
-
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.035);
+  background: linear-gradient(
+    135deg,
+    #f2ffef,
+    #b0eea4
+  );
+  border: 1px solid #e6eaf0;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 5px 20px rgba(25, 42, 70, .035);
 }
 
 .card-header {
@@ -387,7 +374,7 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #3b82f6;
+  border-color: #00da50;
 
   box-shadow:
     0 0 0 4px rgba(59, 130, 246, 0.1);
@@ -418,7 +405,7 @@
 
   transform: translateY(-50%);
 
-  color: #94a3b8;
+  color: #00da50;
 
   font-size: 19px;
 
@@ -590,17 +577,16 @@
   align-items: center;
   justify-content: center;
 
-  padding: 20px;
+  padding: 90px;
 
   border: 1.5px dashed #cbd5e1;
   border-radius: 15px;
 
   background: #f8fafc;
 
-  color: #475569;
+  color: #00da50;
 
   text-align: center;
-
   cursor: pointer;
 
   transition:
@@ -611,7 +597,7 @@
 
 .upload-box:hover {
   background: #eff6ff;
-  border-color: #60a5fa;
+  border-color: #00da50;
   transform: translateY(-2px);
 }
 
@@ -619,7 +605,7 @@
   margin-bottom: 10px;
 
   font-size: 32px;
-  color: #3b82f6;
+  color: #00da50;
 }
 
 .upload-box strong {
@@ -907,7 +893,7 @@
 .update-btn {
   border: none;
 
-  background: #2563eb;
+  background:  #00da50;
   color: #ffffff;
 
   box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
@@ -916,9 +902,9 @@
 .update-btn:hover:not(:disabled) {
   transform: translateY(-1px);
 
-  background: #1d4ed8;
+  background: #15953f;
 
-  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 12px 25px rgba(37, 235, 37, 0.25);
 }
 
 .cancel-btn:disabled,
@@ -949,7 +935,11 @@
 .preview-card {
   overflow: hidden;
 
-  background: #ffffff;
+  background: linear-gradient(
+    135deg,
+    #f2ffef,
+    #b0eea4
+  );
 
   border: 1px solid #e5eaf2;
   border-radius: 20px;
@@ -1054,7 +1044,7 @@
   border-radius: 999px;
 
   background: #eff6ff;
-  color: #2563eb;
+  color: #15803d;
 
   font-size: 11px;
   font-weight: 800;
@@ -1134,7 +1124,7 @@
 
   margin-top: 4px;
 
-  color: #16a34a;
+  color:  #2563eb;
 
   font-size: 22px;
   font-weight: 900;
@@ -1609,13 +1599,13 @@
 .primary-success-btn {
   border: none;
 
-  background: #2563eb;
+  background: #16a34a;
   color: #ffffff;
 }
 
 .primary-success-btn:hover {
   transform: translateY(-1px);
-  background: #1d4ed8;
+  background: #00da50;
 }
 
 

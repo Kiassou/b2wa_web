@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 1.25rem;
-  background: #0f2c59; /* Bleu B2WA uniforme */
+  background: white; /* Bleu B2WA uniforme */
   border-bottom: 1px solid rgba(22, 163, 74, 0.2);
   box-sizing: border-box;
 }
@@ -26,7 +26,7 @@
 .icon-btn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  color: #16a34a;
   width: 38px;
   height: 38px;
   border-radius: 8px;
@@ -59,8 +59,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #16a34a; /* Vert B2WA */
-  box-shadow: 0 0 8px #16a34a;
+  background-color: #00da50; /* Vert B2WA */
   animation: pulse 2s infinite;
 }
 
@@ -88,7 +87,7 @@
 .search-box {
   display: flex;
   align-items: center;
-  background: rgba(10, 25, 47, 0.6);
+  background: rgba(193, 250, 186, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   padding: 0 0.75rem;
@@ -113,7 +112,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #ffffff;
+  color: #16a34a;
   font-size: 0.78rem;
   width: 100%;
 }
@@ -125,7 +124,7 @@
 .search-shortcut {
   font-size: 0.65rem;
   background: rgba(255, 255, 255, 0.1);
-  color: #cbd5e1;
+  color: #16a34a;
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 600;
@@ -146,7 +145,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #0f2c59;
 }
 
 .divider {
@@ -174,7 +172,12 @@
 
 .user-profile-btn:hover,
 .user-profile-btn.active {
-  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+    background: linear-gradient(
+    135deg,
+    #f2ffef,
+    #b0eea4
+  );
   border-color: rgba(255, 255, 255, 0.15);
 }
 
@@ -200,7 +203,7 @@
 .user-name {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #16a34a;
   line-height: 1.2;
 }
 
@@ -226,7 +229,11 @@
   top: calc(100% + 8px);
   right: 0;
   width: 220px;
-  background: #0f2c59;
+    background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
   border: 1px solid rgba(22, 163, 74, 0.3);
   border-radius: 12px;
   padding: 0.5rem;
@@ -251,7 +258,7 @@
 
 .dropdown-user-email {
   font-size: 0.68rem;
-  color: #94a3b8;
+  color: black;
 }
 
 .dropdown-divider {
@@ -280,7 +287,7 @@
 
 .dropdown-item span.material-symbols-outlined {
   font-size: 1.1rem;
-  color: #94a3b8;
+  color: white;
 }
 
 .dropdown-item:hover {

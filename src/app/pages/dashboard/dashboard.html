@@ -1,32 +1,38 @@
 <div class="dashboard-page">
 
-  <!-- EN-TÊTE -->
-  <header class="page-header">
+    <!-- =====================================================
+        HEADER
+  ====================================================== -->
 
-    <div class="page-heading">
-      <span class="page-eyebrow">
-        ESPACE COMMERÇANT
+    <header class="page-header">
+
+    <div class="header-left">
+
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          space_dashboard
+        </span>
+      </div>
+
+      <div class="header-text">
+      <span class="page-kicker">
+        ESPACE FOURNISSEUR B2WA
       </span>
 
       <h1 class="page-title">
-        Tableau de bord Commerçant
+        Tableau de bord Fournisseur
       </h1>
 
       <p class="page-subtitle">
         Aperçu en temps réel de votre activité commerciale sur B2WA
       </p>
-    </div>
+      </div>
 
-    <div class="header-actions">
 
-      <small class="last-update">
-        Dernière mise à jour :
-        {{ lastUpdate | date: 'dd/MM/yyyy à HH:mm' }}
-      </small>
 
       <button
         type="button"
-        class="btn btn-secondary"
+        class="btn-primary"
         (click)="refreshDashboard()"
         [disabled]="loading"
       >
@@ -35,8 +41,12 @@
         </span>
 
         <span>
-          {{ loading ? 'Actualisation...' : 'Actualiser' }}
+          {{ loading ? 'Actualisation...' : 'Dernière mise à jour :' }}
         </span>
+
+        <small class="last-update">
+          {{ loading ?  '' : lastUpdate | date: 'dd/MM/yyyy à HH:mm' }}
+        </small>
       </button>
 
     </div>
@@ -320,11 +330,11 @@
 
           <!-- GRILLE -->
           @for (line of chartGridLines(); track line.y) {
-  <line
-    x1="45"
-    [attr.y1]="line.y"
-    x2="680"
-    [attr.y2]="line.y"
+            <line
+            x1="45"
+            [attr.y1]="line.y"
+            x2="680"
+            [attr.y2]="line.y"
     stroke="#e2e8f0"
     stroke-width="1"
     stroke-dasharray="4 5"

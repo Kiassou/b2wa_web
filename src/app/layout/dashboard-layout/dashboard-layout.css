@@ -47,18 +47,7 @@ app-sidebar {
   min-width: 0;
   height: 100vh;
   --bg-page: #f8fafc;
-    background:
-    radial-gradient(
-      circle at 0% 0%,
-      rgba(22, 163, 74, 0.06),
-      transparent 28rem
-    ),
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(15, 44, 89, 0.06),
-      transparent 30rem
-    ),
-    var(--bg-page);
+    background:white;
   overflow: hidden;
 }
 

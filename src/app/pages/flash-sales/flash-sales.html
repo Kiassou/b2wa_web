@@ -1,27 +1,38 @@
 <div class="flash-sales-page">
 
-  <!-- =====================================================
+    <!-- =====================================================
         HEADER
   ====================================================== -->
-  <header class="flash-header">
-    <div class="header-content">
+
+    <header class="page-header">
+
+    <div class="header-left">
+
       <div class="header-icon">
-        <span class="material-symbols-outlined">bolt</span>
+        <span class="material-symbols-outlined">
+          bolt
+        </span>
       </div>
 
       <div class="header-text">
-        <span class="page-kicker">B2WA FOURNISSEUR</span>
+        <span class="page-kicker">B2WA COMMUNAUTES</span>
         <h1>Ventes Flash</h1>
         <p>
           Créez des offres limitées et boostez vos ventes auprès des membres de vos communautés.
         </p>
       </div>
-    </div>
 
-    <button type="button" class="create-sale-btn" (click)="createFlashSale()">
+      <button
+      type="button"
+      class="btn-primary"
+      (click)="createFlashSale()">
       <span class="material-symbols-outlined">add</span>
       Nouvelle vente flash
+
     </button>
+
+    </div>
+
   </header>
 
   <!-- =====================================================
@@ -328,7 +339,7 @@
         MODALE DÉTAILS
   ====================================================== -->
   @if (showDetailModal && selectedSale) {
-    <div class="modal-backdrop" (click)="closeDetailModal()">
+    <div class="modal-backdrop">
       <div class="detail-modal" (click)="$event.stopPropagation()">
 
         <button type="button" class="modal-close" (click)="closeDetailModal()">

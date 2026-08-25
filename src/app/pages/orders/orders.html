@@ -1,21 +1,32 @@
 <div class="orders-container">
 
   <!-- HEADER -->
-  <header class="orders-header">
-    <div class="header-titles">
-      <span class="eyebrow">
-        <span class="material-symbols-outlined">shopping_bag</span>
-        VENTES & COMMANDES
-      </span>
+
+    <header class="page-header">
+
+    <div class="header-left">
+
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          shopping_bag
+        </span>
+      </div>
+
+      <div class="header-text">
+        <span class="page-kicker">
+          VENTES & COMMANDES B2WA
+        </span>
 
       <h1>Gestion des Commandes</h1>
 
       <p>
         Gérez vos commandes, préparez les expéditions et suivez chaque livraison.
       </p>
-    </div>
-  </header>
+      </div>
 
+    </div>
+
+  </header>
 
   <!-- STATS -->
   <section class="stats-grid">
@@ -83,7 +94,8 @@
 
 
   <!-- FILTERS -->
-  <section class="filter-bar">
+
+    <section class="filter-bar">
 
     <div class="search-box">
 
@@ -124,6 +136,15 @@
         <option value="UNPAID">Non payé</option>
         <option value="REFUNDED">Remboursé</option>
       </select>
+
+
+      @if (
+        searchQuery ||
+        selectedStatus !== 'ALL' ||
+        selectedPaymentStatus !== 'ALL'
+      ) {
+
+      }
 
     </div>
 
@@ -663,6 +684,15 @@
 
                 <strong>
                   {{ selectedOrder.customerAddress }}
+
+                  @if (getCountryCode(selectedOrder.customerAddress)) {
+                    <img 
+                      [src]="'https://flagcdn.com/24x18/' + getCountryCode(selectedOrder.customerAddress) + '.png'" 
+                      [alt]="selectedOrder.customerAddress"
+                      style="width: 20px; height: 14px; margin-left: 6px; vertical-align: middle;" 
+                    />
+                  }
+
                 </strong>
 
               </div>
@@ -828,6 +858,15 @@
 
                   <strong>
                     {{ shipment.origin }}
+
+                    @if (getCountryCode(shipment.origin)) {
+                      <img 
+                        [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.origin) + '.png'" 
+                        [alt]="shipment.origin"
+                        style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;" 
+                      />
+                    }
+
                   </strong>
 
                 </div>
@@ -844,26 +883,20 @@
 
                   <strong>
                     {{ shipment.destination }}
+
+                  @if (getCountryCode(shipment.destination)) {
+                    <img 
+                      [src]="'https://flagcdn.com/24x18/' + getCountryCode(shipment.destination) + '.png'" 
+                      [alt]="shipment.destination"
+                      style="width: 20px; height: 14px; margin-right: 6px; vertical-align: middle;" 
+                    />
+                  }
+
                   </strong>
 
                 </div>
 
               </div>
-
-
-              <button
-                type="button"
-                class="view-shipment-btn"
-                (click)="viewShipment(shipment)"
-              >
-
-                <span class="material-symbols-outlined">
-                  route
-                </span>
-
-                Voir le suivi de l'expédition
-
-              </button>
 
             </div>
 

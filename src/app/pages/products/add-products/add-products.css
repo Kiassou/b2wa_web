@@ -3,9 +3,9 @@
 ===================================================== */
 
 .add-product-page {
-  min-height: 100vh;
+  min-height: 100%;
   color: #172033;
-  padding-bottom: 110px;
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -14,73 +14,88 @@
 ===================================================== */
 
 .page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  margin-bottom: 26px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
 .back-btn {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid #dce4f0;
+  border-radius: 14px;
+
+  background: #fff;
+  color: #334155;
+
+  display: grid;
+  place-items: center;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.back-btn:hover {
+  transform: translateX(-3px);
+  background: #f8fbff;
+  box-shadow: 0 8px 22px rgba(30, 64, 175, .08);
+}
+
+.back-btn .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #475569;
-  cursor: pointer;
-  transition:
-    background .2s ease,
-    color .2s ease,
-    transform .2s ease;
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 215, 122, .24);
+}
+
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
 }
 
 
-.back-btn:hover {
-  background: #eff6ff;
-  color: #2563eb;
-  transform: translateX(-2px);
-}
-
-.page-kicker {
-  display: block;
-  color: #2563eb;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  margin-bottom: 5px;
-}
-
-.page-header h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 800;
-}
-
-.page-header p {
-  margin: 5px 0 0;
-  color: #7b8495;
-  font-size: 14px;
-}
-
-.header-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  border-radius: 10px;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 13px;
+.page-kicker,
+.card-kicker {
+  color: #16a34a;
+  font-size: 10px;
   font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
 }
 
 
@@ -89,10 +104,8 @@
 ===================================================== */
 
 .product-content {
-  width: min(1400px, calc(100% - 60px));
-  margin: 30px auto;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-columns: minmax(0, 1fr) 330px;
   gap: 24px;
 }
 
@@ -110,14 +123,18 @@
 .product-card,
 .preview-card,
 .checklist-card {
-  background: #ffffff;
+     background: linear-gradient(
+    135deg,
+    #f2ffef,
+    #b0eea4
+  );
   border: 1px solid #e7ebf2;
-  border-radius: 18px;
-  box-shadow: 0 8px 30px rgba(20, 34, 60, .04);
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(25, 42, 70, .035);
 }
 
 .product-card {
-  padding: 25px;
+  padding: 22px;
 }
 
 
@@ -142,12 +159,12 @@
 
 .section-icon.blue {
   background: #eff6ff;
-  color: #2563eb;
+  color: #00da50
 }
 
 .section-icon.purple {
   background: #f4f0ff;
-  color: #7c3aed;
+  color: #00da50;
 }
 
 .section-icon.green {
@@ -207,7 +224,7 @@
 
 .main-upload .material-symbols-outlined {
   font-size: 40px;
-  color: #2563eb;
+  color: #00da50;
 }
 
 .main-upload strong {
@@ -261,7 +278,7 @@
 
 .small-upload .material-symbols-outlined {
   font-size: 28px;
-  color: #2563eb;
+  color: #00da50;
 }
 
 .small-upload small {
@@ -398,7 +415,7 @@
 }
 
 .input-wrapper:focus-within {
-  border-color: #2563eb;
+  border-color: #16a34a;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
 }
 
@@ -432,7 +449,7 @@ textarea {
 }
 
 textarea:focus {
-  border-color: #2563eb;
+  border-color: #00da50;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
 }
 
@@ -708,13 +725,17 @@ textarea:focus {
 }
 
 .create-btn {
-  background: #2563eb;
+    background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
   color: #fff;
   box-shadow: 0 6px 18px rgba(37,99,235,.2);
 }
 
 .create-btn:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: #06682f;
   transform: translateY(-1px);
 }
 

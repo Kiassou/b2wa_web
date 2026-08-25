@@ -44,6 +44,8 @@
   display: block;
   min-width: 0;
   min-height: 100%;
+  color: #172033;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ==========================================================================
@@ -86,20 +88,127 @@ select:focus-visible {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
   color: var(--text-main);
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    sans-serif;
+font-family: 'Poppins', sans-serif;
 
   overflow-x: hidden;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.page-header {
+  margin-bottom: 26px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 163, 74, .18);
+}
+
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-kicker,
+.card-kicker {
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 18px;
+  margin-left: auto;
+  border: 0;
+  border-radius: 12px;
+     background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow:
+    0 10px 24px rgba(16, 94, 215, .18);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 28px rgba(16, 215, 122, 0.24);
+}
+
+.btn-primary .material-symbols-outlined {
+  font-size: 20px;
 }
 
 /* ==========================================================================
@@ -146,12 +255,7 @@ select:focus-visible {
   line-height: 1.5;
 }
 
-.last-update {
-  display: block;
 
-  color: var(--text-light);
-  font-size: 0.8rem;
-}
 
 .header-actions {
   display: flex;
@@ -162,88 +266,16 @@ select:focus-visible {
 }
 
 /* ==========================================================================
-   BOUTONS
-   ========================================================================== */
-
-.btn {
-  min-height: 42px;
-  padding: 0.625rem 1.25rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.btn .material-symbols-outlined {
-  font-size: 1.15rem;
-}
-
-.btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  border-color: var(--primary);
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    var(--primary-hover)
-  );
-  color: #ffffff;
-  box-shadow: 0 5px 14px rgba(22, 163, 74, 0.18);
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: var(--primary-hover);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-secondary {
-  border-color: var(--border-color);
-  background: var(--bg-card);
-  color: var(--b2wa-blue);
-  box-shadow: var(--shadow-sm);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  border-color: var(--border-dark);
-  background: var(--bg-soft);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-pdf {
-  border-color: rgba(15, 44, 89, 0.18);
-  background: var(--b2wa-blue);
-  color: #ffffff;
-}
-
-.btn-pdf:hover:not(:disabled) {
-  background: var(--b2wa-blue-dark);
-  box-shadow: 0 6px 16px rgba(15, 44, 89, 0.25);
-}
-
-/* ==========================================================================
    TOOLBAR STYLE CHIC / MODERN SAAS
    ========================================================================== */
 .dashboard-toolbar {
-  background: rgba(255, 255, 255, 0.85);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(190, 236, 182, 0.95) 0%,
+      rgba(168, 250, 158, 0.88) 48%,
+      rgba(89, 248, 92, 0.82) 100%
+    );
   backdrop-filter: blur(12px);
   padding: 1.125rem 1.5rem;
   border-radius: 16px;
@@ -475,24 +507,43 @@ select:focus-visible {
 }
 
 .kpi-card {
-  padding: 1.25rem;
-
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  padding: 17px;
 
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
 
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 255, 214, 0.92) 0%,
+      rgba(186, 244, 181, 0.82) 45%,
+      rgba(145, 222, 151, 0.72) 100%
+    );
 
-  transition: var(--transition);
+  box-shadow:
+    0 10px 30px rgba(36, 120, 54, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .kpi-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transform: translateY(-3px);
+  border-color: rgba(76, 175, 80, 0.28);
+  box-shadow:
+    0 16px 35px rgba(36, 120, 54, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .kpi-icon-wrapper {
@@ -572,160 +623,490 @@ select:focus-visible {
   font-size: 0.75rem;
 }
 
-/* ==========================================================================
-   ACTIONS RAPIDES
-   ========================================================================== */
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
 
 .quick-actions-section {
+  margin-top: 28px;
+}
+
+
+/* =====================================================
+   SECTION HEADING
+===================================================== */
+
+.section-heading {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.section-eyebrow {
+  display: inline-block;
+
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
 }
 
 .section-title {
-  margin: 0;
+  margin: 4px 0 0;
 
-  color: var(--b2wa-blue);
-
-  font-size: 1.25rem;
-  font-weight: 700;
+  color: #263244;
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.025em;
 }
+
+
+/* =====================================================
+   QUICK ACTIONS GRID
+===================================================== */
 
 .quick-actions-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(200px, 1fr)
-  );
-  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
 }
+
+
+/* =====================================================
+   QUICK ACTION CARD
+===================================================== */
 
 .quick-action-btn {
-  padding: 1rem;
+  position: relative;
+
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
-  color: var(--text-main);
-  font-size: 0.875rem;
-  font-weight: 600;
+  gap: 12px;
+
+  min-height: 72px;
+  padding: 13px 14px;
+
+  border: 1px solid #e8edf2;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #fbfdfc 100%
+    );
+
+  color: #344054;
+
   text-decoration: none;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+
+  box-shadow:
+    0 5px 18px rgba(31, 49, 79, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
-.quick-action-btn:hover {
-  border-color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+
+/* Petite lumière verte dans le coin */
+
+.quick-action-btn::before {
+  content: "";
+
+  position: absolute;
+  top: -35px;
+  right: -35px;
+
+  width: 90px;
+  height: 90px;
+
+  border-radius: 50%;
+
+  background: rgba(193, 250, 186, 0.28);
+
+  filter: blur(2px);
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
+
+
+/* =====================================================
+   ACTION ICON
+===================================================== */
 
 .action-icon {
-  width: 38px;
-  height: 38px;
+  position: relative;
+  z-index: 1;
+
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  border-radius: var(--radius-sm);
+
+  border: 1px solid rgba(22, 163, 74, 0.08);
+  border-radius: 13px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  transition:
+    transform 0.25s ease,
+    border-radius 0.25s ease;
 }
 
 .action-icon .material-symbols-outlined {
-  font-size: 1.2rem;
+  font-size: 21px;
 }
 
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.quick-action-btn > span:not(.action-arrow) {
+  position: relative;
+  z-index: 1;
+
+  flex: 1;
+
+  color: #344054;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  transition: color 0.2s ease;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
 .action-arrow {
-  margin-left: auto;
-  color: var(--text-light);
-  font-size: 1.1rem;
-  transition: var(--transition);
+  position: relative;
+  z-index: 1;
+
+  flex-shrink: 0;
+
+  color: #a1acb9;
+  font-size: 18px;
+
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.quick-action-btn:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(22, 163, 74, 0.20);
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #caffd9 100%
+    );
+
+  box-shadow:
+    0 14px 30px rgba(22, 163, 74, 0.10),
+    0 3px 8px rgba(31, 49, 79, 0.035);
+}
+
+.quick-action-btn:hover::before {
+  transform: scale(1.35);
+  opacity: 0.8;
+}
+
+.quick-action-btn:hover .action-icon {
+  transform: scale(1.06);
+  border-radius: 14px;
+}
+
+.quick-action-btn:hover > span:not(.action-arrow) {
+  color: #15945b;
 }
 
 .quick-action-btn:hover .action-arrow {
-  color: var(--primary);
-  transform: translateX(3px);
+  color: #16a34a;
+  transform: translateX(4px);
+}
+
+
+/* =====================================================
+   ACTIVE
+===================================================== */
+
+.quick-action-btn:active {
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-action-btn {
+    min-height: 68px;
+  }
+
 }
 
 /* ==========================================================================
-   CARTES ANALYTIQUES
+   CARTES ANALYTIQUES — B2WA PREMIUM
    ========================================================================== */
 
 .dashboard-card {
+  position: relative;
+
   min-width: 0;
   padding: 1.5rem;
+
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #fcfefd 100%
+    );
+
+  box-shadow:
+    0 8px 28px rgba(31, 49, 79, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
+
+
+/* Petite lumière verte */
+
+.dashboard-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: -80px;
+  right: -70px;
+
+  width: 180px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(193, 250, 186, 0.22) 0%,
+      rgba(193, 250, 186, 0) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* ========================================================================== 
+   HOVER
+   ========================================================================== */
 
 .dashboard-card:hover {
-  transform: translateY(-5px);
-  transition: var(--transition);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px);
+    background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #caffd9 100%
+    );
+  border-color: rgba(1, 255, 94, 0.699);
+  box-shadow:
+    0 18px 38px rgba(31, 49, 79, 0.08),
+    0 5px 12px rgba(22, 163, 74, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  cursor: pointer;
 }
 
+
+/* ==========================================================================
+   CARD HEADER
+   ========================================================================== */
+
 .card-header {
+  position: relative;
+  z-index: 1;
+
   margin-bottom: 1.25rem;
+
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   gap: 1rem;
 }
 
 .card-header h2 {
   margin: 0 0 0.25rem;
-  color: var(--b2wa-blue);
+
+  color: #263244;
+
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: 800;
+
+  letter-spacing: -0.025em;
 }
 
 .card-header p {
   margin: 0;
-  color: var(--text-muted);
+
+  color: #8a94a5;
+
   font-size: 0.8rem;
-  line-height: 1.4;
+  line-height: 1.5;
 }
+
+
+/* ==========================================================================
+   PERIOD / CATEGORY BADGES
+   ========================================================================== */
 
 .badge-period,
 .category-count {
-  padding: 0.25rem 0.625rem;
-  border-radius: 20px;
-  background: var(--bg-soft);
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+
+  padding: 0.25rem 0.7rem;
+
+  border: 1px solid rgba(22, 163, 74, 0.10);
+  border-radius: 10px;
+
+  background:
+    rgba(193, 250, 186, 0.32);
+
+  color: #168044;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
   white-space: nowrap;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+
+/* ==========================================================================
+   LINK BUTTON
+   ========================================================================== */
+
 .link-btn {
-  color: var(--primary);
+  position: relative;
+  z-index: 1;
+
+  color: #16a34a;
+
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
+
   text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .link-btn:hover {
-  text-decoration: underline;
+  color: #087f4f;
+  text-decoration: none;
 }
 
+
+/* ==========================================================================
+   ICON BUTTON
+   ========================================================================== */
+
 .icon-btn {
-  padding: 0.25rem;
-  border: none;
-  border-radius: var(--radius-sm);
+  position: relative;
+  z-index: 1;
+
+  width: 34px;
+  height: 34px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+
   background: transparent;
-  color: var(--text-muted);
+  color: #8a94a5;
+
   cursor: pointer;
-  transition: var(--transition);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .icon-btn:hover {
-  background: var(--bg-soft);
-  color: var(--text-main);
+  background: rgba(193, 250, 186, 0.35);
+
+  border-color: rgba(22, 163, 74, 0.10);
+
+  color: #16a34a;
+
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================

@@ -378,4 +378,26 @@ export class OrdersComponent implements OnInit {
     this.toast.visible = false;
     this.refreshView();
   }
+
+  /* =====================================================
+     GET COUNTRY CODE
+  ====================================================== */
+  getCountryCode(location: string): string {
+    if (!location) return '';
+  
+    const loc = location.toLowerCase();
+  
+    if (loc.includes('mali') || loc.includes('bamako')) return 'ml';
+    if (loc.includes('sénégal') || loc.includes('senegal') || loc.includes('dakar')) return 'sn';
+    if (loc.includes('niger') || loc.includes('niamey')) return 'ne';
+    if (loc.includes('ivoire') || loc.includes('abidjan')) return 'ci';
+    if (loc.includes('burkina') || loc.includes('ouagadougou')) return 'bf';
+    if (loc.includes('mauritanie') || loc.includes('nouakchott')) return 'mr';
+    if (loc.includes('bénin') || loc.includes('benin') || loc.includes('cotonou')) return 'bj';
+    if (loc.includes('guinée') || loc.includes('guinee') || loc.includes('conakry')) return 'gn';
+    if (loc.includes('ghana') || loc.includes('accra')) return 'gh';
+    if (loc.includes('togo') || loc.includes('lomé') || loc.includes('lome')) return 'tg';
+
+    return '';
+  }
 }

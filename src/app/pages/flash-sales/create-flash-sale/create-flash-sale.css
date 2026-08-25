@@ -4,6 +4,7 @@
 
 .create-flash-page {
   min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -12,19 +13,13 @@
 ===================================================== */
 
 .page-header {
-  max-width: 1500px;
-  margin: 0 auto 30px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  margin-bottom: 26px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
 .back-btn {
@@ -54,61 +49,53 @@
   box-shadow: 0 8px 22px rgba(30, 64, 175, .08);
 }
 
-.page-kicker,
-.card-kicker {
-  display: block;
-
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .16em;
-
-  color: #2563eb;
+.back-btn .material-symbols-outlined {
+  font-size: 20px;
 }
 
-.page-header h1 {
-  margin: 5px 0 5px;
-
-  font-size: 31px;
-  font-weight: 800;
-  letter-spacing: -.03em;
-}
-
-.page-header p {
-  margin: 0;
-
-  color: #718096;
-  font-size: 14px;
-}
-
-.header-badge {
-  padding: 11px 16px;
-
-  border: 1px solid #dce6f5;
-  border-radius: 999px;
-
-  background: rgba(255,255,255,.85);
-
+.header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 215, 122, .24);
+}
 
-  color: #475569;
-  font-size: 13px;
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+
+
+.page-kicker,
+.card-kicker {
+  color: #16a34a;
+  font-size: 10px;
   font-weight: 700;
+  letter-spacing: 1px;
 }
 
-.status-dot {
-  width: 8px;
-  height: 8px;
-
-  border-radius: 50%;
-
-  background: #22c55e;
-
-  box-shadow:
-    0 0 0 5px rgba(34,197,94,.10);
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
 }
 
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
+}
 
 /* =====================================================
    CONTENT
@@ -139,13 +126,18 @@
 .form-card,
 .preview-card,
 .info-card {
-  background: rgba(255,255,255,.95);
+     background: linear-gradient(
+    135deg,
+    #f2ffef,
+    #b0eea4
+  );
+  border: 1px solid #e7ebf2;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(25, 42, 70, .035);
+}
 
-  border: 1px solid #e2e8f0;
-  border-radius: 22px;
-
-  box-shadow:
-    0 14px 40px rgba(15, 23, 42, .055);
+.product-card {
+  padding: 22px;
 }
 
 .form-card {
@@ -277,10 +269,10 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #3b82f6;
+  border-color: #00da50;
 
   box-shadow:
-    0 0 0 4px rgba(59,130,246,.10);
+    0 0 0 4px rgba(0, 218, 80,.10);
 }
 
 .input-icon {
@@ -320,10 +312,10 @@
 }
 
 .input-with-suffix:focus-within {
-  border-color: #3b82f6;
+  border-color: #00da50;
 
   box-shadow:
-    0 0 0 4px rgba(59,130,246,.10);
+    0 0 0 4px rgba(0, 218, 80,.10);
 }
 
 .input-with-suffix input {
@@ -352,9 +344,6 @@
   font-weight: 700;
 }
 
-.flash-price {
-  border-color: #fbbf24;
-}
 
 .field-success {
   display: flex;
@@ -476,7 +465,7 @@
 }
 
 .upload-box:hover {
-  border-color: #3b82f6;
+  border-color: #00da50;
   background-color: #eff6ff;
 }
 
@@ -491,7 +480,7 @@
 }
 
 .upload-box:hover .upload-icon {
-  color: #3b82f6;
+  color: #00da50;
 }
 
 .upload-box strong {
@@ -548,7 +537,7 @@
 
   background: #fff;
 
-  color: #2563eb;
+  color: #00da50;
 
   display: grid;
   place-items: center;
@@ -567,7 +556,7 @@
 
   margin-top: 2px;
 
-  color: #2563eb;
+  color: #00da50;
 
   font-size: 21px;
 }
@@ -578,7 +567,7 @@
 }
 
 .discount-saving strong {
-  color: #16a34a;
+  color: #00da50;
   font-size: 15px;
 }
 
@@ -628,7 +617,7 @@
 .period-status.scheduled {
   background: #eff6ff;
   border-color: #bfdbfe;
-  color: #1d4ed8;
+  color: #00da50;
 }
 
 .period-status.invalid {
@@ -717,7 +706,7 @@
 }
 
 .create-btn {
-  background: #2563eb;
+  background: #00da50;
   color: #fff;
 
   box-shadow:
