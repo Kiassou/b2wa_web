@@ -15,143 +15,550 @@
 ===================================================== */
 
 .page-header {
+  margin-bottom: 26px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 28px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+}
+
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 163, 74, .18);
+}
+
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-kicker,
+.card-kicker {
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 18px;
+  margin-left: auto;
+  border: 0;
+  border-radius: 12px;
+     background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow:
+    0 10px 24px rgba(16, 94, 215, .18);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 28px rgba(16, 215, 122, 0.24);
+}
+
+.btn-primary .material-symbols-outlined {
+  font-size: 20px;
 }
 
 .back-btn {
   width: 46px;
   height: 46px;
-  border: 1px solid #e5e9f2;
-  background: #fff;
+
+  border: 1px solid #dce4f0;
   border-radius: 14px;
+
+  background: #fff;
+  color: #334155;
+
   display: grid;
   place-items: center;
+
   cursor: pointer;
-  color: #334155;
-  transition: .2s ease;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
 }
 
 .back-btn:hover {
-  transform: translateX(-2px);
-  border-color: #2563eb;
-  color: #2563eb;
+  transform: translateX(-3px);
+  background: #f8fbff;
+  box-shadow: 0 8px 22px rgba(30, 64, 175, .08);
 }
 
-.page-kicker,
-.card-kicker,
-.summary-label {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  color: #2563eb;
-}
-
-.page-header h1 {
-  margin: 4px 0;
-  font-size: 28px;
-  font-weight: 800;
-}
-
-.page-header p {
-  margin: 0;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.primary-btn,
-.secondary-btn {
-  height: 44px;
-  border-radius: 12px;
-  padding: 0 17px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-}
-
-.primary-btn {
-  color: #fff;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
-
-.secondary-btn {
-  background: #fff;
-  color: #334155;
-  border: 1px solid #e2e8f0;
+.back-btn .material-symbols-outlined {
+  font-size: 20px;
 }
 
 
 /* =====================================================
-   SUMMARY
+   SHIPMENT SUMMARY — B2WA PREMIUM
 ===================================================== */
 
 .shipment-summary {
-  background:
-    linear-gradient(
-      135deg,
-      #f8fbff,
-      #eef5ff
-    );
+  position: relative;
 
-  border: 1px solid #dbeafe;
-  border-radius: 22px;
-  padding: 22px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 20px;
-  margin-bottom: 24px;
+
+  margin-bottom: 20px;
+  padding: 18px 20px;
+
+  border: 1px solid #9cff9c;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #fbfdfc 100%
+    );
+
+  box-shadow:
+    0 7px 24px rgba(31, 49, 79, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
+
+
+/* =====================================================
+   SOFT GREEN LIGHT
+===================================================== */
+
+.shipment-summary::before {
+  content: "";
+
+  position: absolute;
+
+  top: -80px;
+  left: -70px;
+
+  width: 170px;
+  height: 170px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(193, 250, 186, 0.25) 0%,
+      rgba(193, 250, 186, 0) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.shipment-summary:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(22, 163, 74, 0.14);
+
+  box-shadow:
+    0 13px 30px rgba(31, 49, 79, 0.07),
+    0 4px 10px rgba(22, 163, 74, 0.035);
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
 
 .summary-main {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   align-items: center;
-  gap: 16px;
+
+  gap: 13px;
+
+  min-width: 0;
 }
+
+
+/* =====================================================
+   SHIPMENT ICON
+===================================================== */
 
 .shipment-icon {
-  width: 58px;
-  height: 58px;
-  border-radius: 17px;
-  display: grid;
-  place-items: center;
-  color: #2563eb;
-  background: #dbeafe;
+  position: relative;
+
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.10);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5fff6 0%,
+      #dff7e2 100%
+    );
+
+  color: #16a34a;
+
+  box-shadow:
+    0 6px 16px rgba(22, 163, 74, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.shipment-icon span {
-  font-size: 29px;
+.shipment-icon .material-symbols-outlined {
+  font-size: 24px;
 }
 
-.shipment-summary h2 {
-  margin: 3px 0;
-  font-size: 20px;
+
+/* =====================================================
+   ICON HOVER
+===================================================== */
+
+.shipment-summary:hover .shipment-icon {
+  transform: scale(1.04);
+
+  box-shadow:
+    0 9px 20px rgba(22, 163, 74, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
-.shipment-summary p {
+
+/* =====================================================
+   SUMMARY LABEL
+===================================================== */
+
+.summary-label {
+  display: inline-block;
+
+  margin-bottom: 3px;
+
+  color: #16a34a;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+/* =====================================================
+   REFERENCE
+===================================================== */
+
+.summary-main h2 {
   margin: 0;
-  color: #64748b;
-  font-size: 13px;
+
+  color: #263244;
+
+  font-size: 17px;
+  line-height: 1.25;
+
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
 }
 
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.summary-main p {
+  margin: 3px 0 0;
+
+  color: #929cab;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* =====================================================
+   STATUS BADGE
+===================================================== */
+
+.status-badge {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 32px;
+
+  padding: 0 11px;
+
+  border: 1px solid #e5e9ed;
+  border-radius: 10px;
+
+  background: #f8fafb;
+
+  color: #667085;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* =====================================================
+   STATUS DOT
+===================================================== */
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #98a2b3;
+}
+
+
+/* =====================================================
+   STATUS — ACTIVE
+===================================================== */
+
+.status-badge.status-active {
+  border-color: rgba(22, 163, 74, 0.14);
+
+  background:
+    rgba(193, 250, 186, 0.35);
+
+  color: #168044;
+}
+
+.status-badge.status-active .status-dot {
+  background: #16a34a;
+
+  box-shadow:
+    0 0 0 3px rgba(22, 163, 74, 0.10);
+}
+
+
+/* =====================================================
+   STATUS — PENDING
+===================================================== */
+
+.status-badge.status-pending {
+  border-color: rgba(234, 179, 8, 0.14);
+
+  background: rgba(254, 249, 195, 0.45);
+
+  color: #9a7600;
+}
+
+.status-badge.status-pending .status-dot {
+  background: #eab308;
+}
+
+
+/* =====================================================
+   STATUS — IN TRANSIT
+===================================================== */
+
+.status-badge.status-in-transit {
+  border-color: rgba(59, 130, 246, 0.12);
+
+  background: rgba(219, 234, 254, 0.55);
+
+  color: #2563a8;
+}
+
+.status-badge.status-in-transit .status-dot {
+  background: #3b82f6;
+}
+
+
+/* =====================================================
+   STATUS — DELIVERED
+===================================================== */
+
+.status-badge.status-delivered {
+  border-color: rgba(22, 163, 74, 0.14);
+
+  background: rgba(220, 252, 231, 0.55);
+
+  color: #15803d;
+}
+
+.status-badge.status-delivered .status-dot {
+  background: #16a34a;
+}
+
+
+/* =====================================================
+   STATUS — CANCELLED
+===================================================== */
+
+.status-badge.status-cancelled {
+  border-color: rgba(239, 68, 68, 0.12);
+
+  background: rgba(254, 226, 226, 0.55);
+
+  color: #b42318;
+}
+
+.status-badge.status-cancelled .status-dot {
+  background: #ef4444;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .shipment-summary {
+    align-items: flex-start;
+
+    padding: 16px;
+
+    gap: 14px;
+  }
+
+  .summary-main {
+    align-items: flex-start;
+  }
+
+  .shipment-icon {
+    width: 43px;
+    height: 43px;
+
+    border-radius: 12px;
+  }
+
+  .shipment-icon .material-symbols-outlined {
+    font-size: 22px;
+  }
+
+  .summary-main h2 {
+    font-size: 15px;
+  }
+
+  .status-badge {
+    min-height: 29px;
+
+    padding: 0 9px;
+
+    font-size: 9px;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .shipment-summary {
+    flex-direction: column;
+  }
+
+  .status-badge {
+    align-self: flex-start;
+  }
+
+}
 
 /* =====================================================
    STATUS
@@ -232,7 +639,536 @@
   gap: 20px;
 }
 
+/* =====================================================
+   ROUTE CARD — B2WA PREMIUM
+===================================================== */
 
+.route-card {
+  position: relative;
+
+  padding: 22px;
+
+  border: 1px solid #e7edf0;
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #fbfdfc 100%
+    );
+
+  box-shadow:
+    0 8px 26px rgba(31, 49, 79, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  overflow: hidden;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+
+/* =====================================================
+   GREEN LIGHT
+===================================================== */
+
+.route-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: -120px;
+  right: -100px;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(193, 250, 186, 0.22) 0%,
+      rgba(193, 250, 186, 0) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.route-card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(22, 163, 74, 0.12);
+
+  box-shadow:
+    0 15px 32px rgba(31, 49, 79, 0.065),
+    0 4px 12px rgba(22, 163, 74, 0.035);
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.route-card .card-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+
+/* =====================================================
+   KICKER
+===================================================== */
+
+.route-card .card-kicker {
+  display: inline-block;
+
+  margin-bottom: 4px;
+
+  color: #16a34a;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.25px;
+
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.route-card .card-header h2 {
+  margin: 0;
+
+  color: #263244;
+
+  font-size: 17px;
+  line-height: 1.25;
+
+  font-weight: 800;
+
+  letter-spacing: -0.025em;
+}
+
+
+/* =====================================================
+   HEADER ICON
+===================================================== */
+
+.route-card .card-header-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.10);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5fff6,
+      #e5f8e8
+    );
+
+  color: #16a34a;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 5px 14px rgba(22, 163, 74, 0.07);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.route-card:hover .card-header-icon {
+  transform: rotate(-4deg) scale(1.04);
+
+  box-shadow:
+    0 8px 18px rgba(22, 163, 74, 0.11);
+}
+
+
+/* =====================================================
+   ROUTE
+===================================================== */
+
+.route {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: stretch;
+
+  gap: 0;
+
+  padding: 6px 4px 4px;
+}
+
+
+/* =====================================================
+   ROUTE POINT
+===================================================== */
+
+.route-point {
+  flex: 1;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 13px;
+
+  min-width: 0;
+}
+
+
+/* =====================================================
+   ROUTE ICON
+===================================================== */
+
+.route-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.route-icon .material-symbols-outlined {
+  font-size: 21px;
+}
+
+
+/* DÉPART */
+
+.route-icon.departure {
+  border: 1px solid rgba(22, 163, 74, 0.12);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f3fff5,
+      #ddf5e1
+    );
+
+  color: #16a34a;
+
+  box-shadow:
+    0 6px 15px rgba(22, 163, 74, 0.07);
+}
+
+
+/* ARRIVÉE */
+
+.route-icon.arrival {
+  border: 1px solid rgba(22, 163, 74, 0.12);
+
+  background:
+    linear-gradient(
+      145deg,
+      #f3fff5,
+      #e3f7e6
+    );
+
+  color: #15803d;
+
+  box-shadow:
+    0 6px 15px rgba(22, 163, 74, 0.07);
+}
+
+
+/* =====================================================
+   ICON HOVER
+===================================================== */
+
+.route-point:hover .route-icon {
+  transform: translateY(-3px) scale(1.04);
+
+  box-shadow:
+    0 9px 20px rgba(22, 163, 74, 0.11);
+}
+
+
+/* =====================================================
+   ROUTE CONTENT
+===================================================== */
+
+.route-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 1px;
+}
+
+
+/* LABEL */
+
+.route-content > span {
+  margin-bottom: 4px;
+
+  color: #9aa4b2;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 1.1px;
+}
+
+
+/* CITY */
+
+.route-content strong {
+  color: #263244;
+
+  font-size: 15px;
+  line-height: 1.3;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* COUNTRY */
+
+.route-content small {
+  display: flex;
+  align-items: center;
+
+  margin-top: 3px;
+
+  color: #7e8998;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* ADDRESS */
+
+.route-content .route-address {
+  display: block;
+
+  max-width: 230px;
+
+  margin-top: 5px;
+
+  color: #a0a8b4;
+
+  font-size: 9px;
+  line-height: 1.45;
+
+  white-space: normal;
+}
+
+
+/* =====================================================
+   ROUTE LINE
+===================================================== */
+
+.route-line {
+  position: relative;
+
+  width: 105px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Ligne */
+
+.route-line::before {
+  content: "";
+
+  position: absolute;
+
+  left: 8px;
+  right: 8px;
+
+  top: 50%;
+
+  height: 2px;
+
+  background:
+    repeating-linear-gradient(
+      to right,
+      #b9dfc1 0,
+      #b9dfc1 6px,
+      transparent 6px,
+      transparent 11px
+    );
+
+  transform: translateY(-50%);
+}
+
+
+/* =====================================================
+   TRUCK
+===================================================== */
+
+.route-line .material-symbols-outlined {
+  position: relative;
+  z-index: 2;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  color: #16a34a;
+
+  font-size: 18px;
+
+  box-shadow:
+    0 5px 13px rgba(22, 163, 74, 0.10);
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+
+.route-card:hover
+.route-line
+.material-symbols-outlined {
+  transform: translateX(7px);
+
+  box-shadow:
+    0 7px 17px rgba(22, 163, 74, 0.15);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 750px) {
+
+  .route {
+    flex-direction: column;
+
+    gap: 0;
+  }
+
+  .route-point {
+    width: 100%;
+
+    padding: 4px 0 10px;
+  }
+
+  .route-line {
+    width: 42px;
+    height: 40px;
+
+    margin-left: 0;
+
+    justify-content: center;
+  }
+
+  .route-line::before {
+    top: 0;
+    bottom: 0;
+
+    left: 50%;
+    right: auto;
+
+    width: 2px;
+    height: auto;
+
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        #b9dfc1 0,
+        #b9dfc1 6px,
+        transparent 6px,
+        transparent 11px
+      );
+
+    transform: translateX(-50%);
+  }
+
+  .route-line .material-symbols-outlined {
+    width: 30px;
+    height: 30px;
+
+    font-size: 16px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .route-card {
+    padding: 18px;
+  }
+
+  .route-card .card-header h2 {
+    font-size: 15px;
+  }
+
+  .route-card .card-header-icon {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 11px;
+
+    font-size: 19px;
+  }
+
+  .route-content strong {
+    font-size: 14px;
+  }
+
+}
 /* =====================================================
    CARDS
 ===================================================== */
@@ -270,79 +1206,6 @@
 }
 
 
-/* =====================================================
-   ROUTE
-===================================================== */
-
-.route {
-  display: grid;
-  grid-template-columns: 1fr 90px 1fr;
-  align-items: center;
-}
-
-.route-point {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.route-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-}
-
-.route-icon.departure {
-  color: #2563eb;
-  background: #dbeafe;
-}
-
-.route-icon.arrival {
-  color: #059669;
-  background: #d1fae5;
-}
-
-.route-content {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.route-content span {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .1em;
-  color: #94a3b8;
-}
-
-.route-content strong {
-  font-size: 15px;
-}
-
-.route-content small {
-  color: #64748b;
-}
-
-.route-line {
-  height: 2px;
-  background: #dbe3ef;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.route-line span {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #eff6ff;
-  color: #2563eb;
-}
 
 
 /* =====================================================
@@ -438,6 +1301,7 @@
 }
 
 
+
 /* =====================================================
    INFO GRID
 ===================================================== */
@@ -488,116 +1352,532 @@
   font-size: 14px;
 }
 
-
 /* =====================================================
-   SIDEBAR
+   TRACKING CARD — B2WA PREMIUM
 ===================================================== */
 
 .tracking-card {
+  position: relative;
+
+  padding: 18px;
+
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  border-radius: 18px;
+
   background:
     linear-gradient(
       145deg,
-      #172554,
-      #1e40af
+      #ffffff 0%,
+      #dafce1 100%
     );
 
-  color: #fff;
-  border: none;
+  box-shadow:
+    0 8px 24px rgba(31, 49, 79, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  overflow: hidden;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
 }
+
+
+/* =====================================================
+   GREEN GLOW
+===================================================== */
+
+.tracking-card::before {
+  content: "";
+
+  position: absolute;
+
+  right: -75px;
+  top: -75px;
+
+  width: 170px;
+  height: 170px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(193, 250, 186, 0.30) 0%,
+      rgba(193, 250, 186, 0) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   LEFT ACCENT
+===================================================== */
+
+.tracking-card::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+
+  width: 3px;
+
+  border-radius: 0 4px 4px 0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #16a34a,
+      #7bd58b
+    );
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.tracking-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(31, 49, 79, 0.065),
+    0 4px 12px rgba(22, 163, 74, 0.045);
+}
+
+
+/* =====================================================
+   KICKER
+===================================================== */
 
 .tracking-card .card-kicker {
-  color: #bfdbfe;
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #16a34a;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+
+  text-transform: uppercase;
 }
+
+
+/* =====================================================
+   TRACKING NUMBER CONTAINER
+===================================================== */
 
 .tracking-number {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 10px;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 11px 11px 11px 13px;
+
+  border: 1px solid #e4ece6;
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.82);
+
+  box-shadow:
+    inset 0 1px 2px rgba(31, 49, 79, 0.025);
+
+  transition:
+    border-color .2s ease,
+    background .2s ease;
 }
 
-.tracking-number strong {
-  font-size: 17px;
-  letter-spacing: .04em;
+
+.tracking-number:hover {
+  border-color: rgba(22, 163, 74, 0.18);
+
+  background:
+    rgba(255, 255, 255, 0.96);
 }
+
+
+/* =====================================================
+   NUMBER
+===================================================== */
+
+.tracking-number strong {
+  min-width: 0;
+
+  color: #263244;
+
+  font-family:
+    'SFMono-Regular',
+    Consolas,
+    'Liberation Mono',
+    monospace;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  letter-spacing: .25px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =====================================================
+   COPY BUTTON
+===================================================== */
 
 .tracking-number button {
   width: 34px;
   height: 34px;
-  border: none;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.12);
   border-radius: 9px;
-  background: rgba(255,255,255,.12);
-  color: #fff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4fff5,
+      #e5f8e8
+    );
+
+  color: #16a34a;
+
   cursor: pointer;
+
+  box-shadow:
+    0 4px 10px rgba(22, 163, 74, 0.06);
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    box-shadow .2s ease,
+    color .2s ease;
 }
 
-.tracking-card p {
-  color: #bfdbfe;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-bottom: 0;
+
+.tracking-number button:hover {
+  transform: translateY(-1px);
+
+  background:
+    linear-gradient(
+      145deg,
+      #e9faec,
+      #d8f4dd
+    );
+
+  color: #15803d;
+
+  box-shadow:
+    0 7px 15px rgba(22, 163, 74, 0.12);
+}
+
+
+.tracking-number button:active {
+  transform: scale(.94);
+}
+
+
+.tracking-number button .material-symbols-outlined {
+  font-size: 18px;
 }
 
 
 /* =====================================================
-   PERSON
+   DESCRIPTION
+===================================================== */
+
+.tracking-card > p {
+  position: relative;
+  z-index: 1;
+
+  margin: 9px 2px 0;
+
+  color: #8a95a2;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .tracking-card {
+    padding: 16px;
+  }
+
+  .tracking-number {
+    padding: 9px 9px 9px 11px;
+  }
+
+  .tracking-number strong {
+    font-size: 11px;
+  }
+
+  .tracking-number button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .tracking-card > p {
+    font-size: 9px;
+  }
+
+}
+
+/* =====================================================
+   SIDEBAR CARD — B2WA PREMIUM
+===================================================== */
+
+.sidebar-card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(22, 163, 74, 0.10);
+
+  box-shadow:
+    0 13px 28px rgba(31, 49, 79, 0.06),
+    0 4px 12px rgba(22, 163, 74, 0.035);
+}
+
+
+/* =====================================================
+   SIDEBAR TITLE
 ===================================================== */
 
 .sidebar-title {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   align-items: center;
+
   gap: 9px;
-  margin-bottom: 17px;
+
+  margin-bottom: 16px;
 }
 
-.sidebar-title span {
-  color: #2563eb;
+
+.sidebar-title .material-symbols-outlined {
+  width: 31px;
+  height: 31px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.10);
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4fff5,
+      #e6f8e9
+    );
+
+  color: #16a34a;
+
+  font-size: 17px;
 }
+
 
 .sidebar-title h3 {
   margin: 0;
-  font-size: 14px;
+
+  color: #344054;
+
+  font-size: 13px;
+  line-height: 1.3;
+
+  font-weight: 800;
+
+  letter-spacing: -0.01em;
 }
+
+
+/* =====================================================
+   PERSON INFO
+===================================================== */
 
 .person-info {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   align-items: center;
+
   gap: 12px;
-}
 
-.avatar {
-  width: 43px;
-  height: 43px;
+  padding: 12px;
+
+  border: 1px solid #edf1ef;
   border-radius: 13px;
-  background: #dbeafe;
-  color: #2563eb;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 800;
+
+  background:
+    rgba(248, 251, 249, 0.72);
 }
 
-.receiver-avatar {
-  background: #d1fae5;
-  color: #059669;
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+.person-info .avatar {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #ffffff;
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #16a34a,
+      #55c875
+    );
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 850;
+
+  letter-spacing: .2px;
+
+  box-shadow:
+    0 6px 15px rgba(22, 163, 74, 0.16);
 }
+
+
+/* =====================================================
+   PERSON CONTENT
+===================================================== */
 
 .person-info > div:last-child {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
-  gap: 3px;
 }
+
+
+/* =====================================================
+   NAME
+===================================================== */
 
 .person-info strong {
-  font-size: 13px;
+  color: #263244;
+
+  font-size: 12px;
+  line-height: 1.35;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.person-info span,
+
+/* =====================================================
+   PHONE
+===================================================== */
+
+.person-info span {
+  margin-top: 3px;
+
+  color: #7d8998;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
 .person-info small {
-  color: #64748b;
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+
+  margin-top: 4px;
+
+  color: #99a3ae;
+
+  font-size: 9px;
+  line-height: 1.4;
 }
 
+
+
+/* =====================================================
+   AVATAR HOVER
+===================================================== */
+
+.sidebar-card:hover .person-info .avatar {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 19px rgba(22, 163, 74, 0.20);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .sidebar-card {
+    padding: 16px;
+  }
+
+  .person-info {
+    padding: 10px;
+  }
+
+  .person-info .avatar {
+    width: 41px;
+    height: 41px;
+
+    border-radius: 11px;
+
+    font-size: 12px;
+  }
+
+}
 
 /* =====================================================
    DELIVERY
@@ -648,12 +1928,16 @@
 
 .primary-action {
   color: #fff;
-  background: #2563eb;
-  border-color: #2563eb;
+  background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  border-color: #00da50;
 }
 
 .primary-action:hover {
-  background: #1d4ed8;
+  background: #00da50;
 }
 
 .danger-action {
@@ -664,6 +1948,389 @@
   background: #fef2f2;
 }
 
+/* =====================================================
+   PACKAGE / INFORMATIONS COLIS — B2WA PREMIUM
+===================================================== */
+
+.detail-card {
+  position: relative;
+
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid #e7edf0;
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #fbfdfc 100%
+    );
+
+  box-shadow:
+    0 8px 26px rgba(31, 49, 79, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  overflow: hidden;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+
+/* =====================================================
+   SOFT GREEN GLOW
+===================================================== */
+
+.detail-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: -110px;
+  right: -90px;
+
+  width: 240px;
+  height: 240px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(193, 250, 186, 0.20) 0%,
+      rgba(193, 250, 186, 0) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.detail-card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(22, 163, 74, 0.10);
+
+  box-shadow:
+    0 15px 32px rgba(31, 49, 79, 0.06),
+    0 4px 12px rgba(22, 163, 74, 0.035);
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.detail-card .card-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+}
+
+
+/* =====================================================
+   KICKER
+===================================================== */
+
+.detail-card .card-kicker {
+  display: inline-block;
+
+  margin-bottom: 4px;
+
+  color: #16a34a;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.25px;
+
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.detail-card .card-header h2 {
+  margin: 0;
+
+  color: #263244;
+
+  font-size: 17px;
+  line-height: 1.25;
+
+  font-weight: 800;
+
+  letter-spacing: -0.025em;
+}
+
+
+/* =====================================================
+   HEADER ICON
+===================================================== */
+
+.detail-card .card-header-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.10);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4fff5,
+      #e5f8e8
+    );
+
+  color: #16a34a;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 5px 14px rgba(22, 163, 74, 0.07);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+
+.detail-card:hover .card-header-icon {
+  transform: rotate(-4deg) scale(1.03);
+
+  box-shadow:
+    0 8px 18px rgba(22, 163, 74, 0.11);
+}
+
+
+/* =====================================================
+   INFO GRID
+===================================================== */
+
+.info-grid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+/* =====================================================
+   INFO ITEM
+===================================================== */
+
+.info-item {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-height: 68px;
+
+  padding: 12px;
+
+  border: 1px solid #edf1ef;
+  border-radius: 13px;
+
+  background:
+    rgba(248, 251, 249, 0.70);
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+
+/* =====================================================
+   ITEM HOVER
+===================================================== */
+
+.info-item:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(22, 163, 74, 0.12);
+
+  background:
+    rgba(245, 252, 247, 0.95);
+
+  box-shadow:
+    0 7px 17px rgba(31, 49, 79, 0.045);
+}
+
+
+/* =====================================================
+   ITEM ICON
+===================================================== */
+
+.info-item > .material-symbols-outlined {
+  width: 35px;
+  height: 35px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(22, 163, 74, 0.09);
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4fff5,
+      #e8f8eb
+    );
+
+  color: #16a34a;
+
+  font-size: 18px;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+
+.info-item:hover > .material-symbols-outlined {
+  transform: scale(1.05);
+
+  box-shadow:
+    0 5px 12px rgba(22, 163, 74, 0.08);
+}
+
+
+/* =====================================================
+   ITEM CONTENT
+===================================================== */
+
+.info-item > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.info-item small {
+  margin-bottom: 3px;
+
+  color: #98a2ae;
+
+  font-size: 9px;
+  line-height: 1.3;
+
+  font-weight: 650;
+}
+
+
+/* =====================================================
+   VALUE
+===================================================== */
+
+.info-item strong {
+  min-width: 0;
+
+  color: #303b4d;
+
+  font-size: 12px;
+  line-height: 1.35;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =====================================================
+   RESPONSIVE — TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .info-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE — MOBILE
+===================================================== */
+
+@media (max-width: 560px) {
+
+  .detail-card {
+    padding: 18px;
+  }
+
+  .detail-card .card-header {
+    margin-bottom: 18px;
+  }
+
+  .detail-card .card-header h2 {
+    font-size: 15px;
+  }
+
+  .detail-card .card-header-icon {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 11px;
+
+    font-size: 19px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+  }
+
+  .info-item {
+    min-height: 62px;
+  }
+
+}
 
 /* =====================================================
    RESPONSIVE

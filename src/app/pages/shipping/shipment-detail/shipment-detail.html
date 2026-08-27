@@ -52,15 +52,13 @@
 
   <div class="shipment-detail-page">
 
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+      <!-- =====================================================
+        HEADER
+  ====================================================== -->
 
     <header class="page-header">
 
-      <div class="header-left">
-
+    <div class="header-left">
         <button
           type="button"
           class="back-btn"
@@ -72,45 +70,47 @@
           </span>
         </button>
 
-
-        <div>
-
-          <span class="page-kicker">
-
-            <span class="material-symbols-outlined">
-              local_shipping
-            </span>
-
-            B2WA EXPEDITIONS
-          </span>
-
-
-          <h1>
-            Détails de l'expédition
-          </h1>
-
-
-          <p>
-            Suivez l'évolution de votre livraison.
-          </p>
-        </div>
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          local_shipping
+        </span>
       </div>
 
+      <div class="header-text">
+        <span class="page-kicker">
+          B2WA EXPEDITIONS
+        </span>
 
-      <div class="header-actions">
-        <button
-          type="button"
-          class="primary-btn"
-          (click)="trackShipment()">
+        <h1>
+          Détails de l'expédition
+        </h1>
 
-          <span class="material-symbols-outlined">
-            location_on
-          </span>
-
-          Suivre
-        </button>
+      <p>
+        Gérez votre catalogue, vos stocks et la
+        disponibilité de vos produits.
+      </p>
       </div>
-    </header>
+
+      <button
+      type="button"
+      class="btn-primary"
+      (click)="trackShipment()">
+
+      <span class="material-symbols-outlined">
+        location_on
+      </span>
+
+      Suivre
+
+    </button>
+
+    </div>
+
+  </header>
+
+
+
+
 
 
     <!-- =====================================================

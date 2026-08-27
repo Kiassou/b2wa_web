@@ -1,25 +1,34 @@
 <div class="create-shipment-page">
 
   <!-- =====================================================
-       HEADER
+        HEADER
   ====================================================== -->
 
-  <header class="shipment-header">
+    <header class="page-header">
+
     <div class="header-left">
+
       <button
         type="button"
         class="back-btn"
-        (click)="goBack()"
-      >
+        (click)="goBack()">
+
         <span class="material-symbols-outlined">
           arrow_back
         </span>
       </button>
 
-      <div>
-        <span class="page-kicker">
-          B2WA SHIPPING
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          local_shipping
         </span>
+      </div>
+
+      <div class="header-text">
+        <span class="page-kicker">
+          B2WA EXPEDITIONS
+        </span>
+
         <h1>
           Nouvelle expédition
         </h1>
@@ -27,14 +36,9 @@
           Vérifiez les informations pré-remplies et complétez les détails de transport.
         </p>
       </div>
+
     </div>
 
-    <div class="header-status">
-      <span class="status-dot"></span>
-      <span>
-        Service Shipping
-      </span>
-    </div>
   </header>
 
 

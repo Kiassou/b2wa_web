@@ -1,42 +1,105 @@
 <div class="community-page">
 
-  <!-- PAGE HEADER -->
-  <section class="community-header">
-    <div class="header-content">
-      <div class="page-label">
-        <span class="material-symbols-outlined">groups</span>
-        B2WA Communities
-      </div>
-      <h1>
-        Connectez-vous à votre
-        <span>communauté business.</span>
-      </h1>
+    <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-left">
+
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+      </div> 
+
+      <div class="header-text">
+          <span class="header-kicker">
+            B2WA COMMUNAUTES
+          </span>
+
+          <h1>
+            Communautés
+          </h1>
+
       <p>
         Découvrez des communautés professionnelles, échangez avec des
-        fournisseurs et développez votre réseau à travers l'Afrique de l'Ouest.
+        commerçants, d'autres fournisseurs et développez votre réseau
+        à travers l'Afrique de l'Ouest.
       </p>
-    </div>
-    <div class="header-actions">
-      <div class="community-limit">
-        <div class="limit-icon">
-          <span class="material-symbols-outlined">groups</span>
-        </div>
-        <div>
-          <span class="limit-label">Mes communautés</span>
-          <strong>{{ myCommunities.length }} / 3</strong>
-        </div>
       </div>
-      <button
-        class="create-btn"
-        type="button"
-        [disabled]="myCommunities.length >= 3"
-        (click)="createCommunity()"
-      >
-        <span class="material-symbols-outlined">add</span>
-        Créer une communauté
-      </button>
+
     </div>
-  </section>
+
+  </header>
+
+
+  <!-- PAGE HEADER 2 -->
+  <section class="community-header">
+
+  <div class="header-content">
+
+    <h1>
+      Construisez votre réseau,
+      <span>développez votre business.</span>
+    </h1>
+
+    <p>
+      Rejoignez des communautés professionnelles,
+      échangez avec des fournisseurs et partenaires,
+      partagez vos opportunités et développez votre activité
+      au cœur du réseau B2WA.
+    </p>
+
+  </div>
+
+
+  <div class="header-actions">
+
+    <div class="community-limit">
+
+      <div class="limit-icon">
+
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+
+      </div>
+
+      <div>
+
+        <span class="limit-label">
+          Mes communautés
+        </span>
+
+        <strong>
+          {{ myCommunities.length }} / 3
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="create-btn"
+      type="button"
+      [disabled]="myCommunities.length >= 3"
+      (click)="createCommunity()"
+    >
+
+      <span class="material-symbols-outlined">
+        group_add
+      </span>
+
+      Créer une communauté
+
+    </button>
+
+  </div>
+
+</section>
 
 
   <!-- MY COMMUNITIES -->

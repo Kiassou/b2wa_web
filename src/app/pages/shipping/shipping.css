@@ -5,151 +5,104 @@
 .shipping-page {
   min-height: 100vh;
   color: #0f172a;
+  font-family: 'Poppins', sans-serif;
 }
-
 
 /* =====================================================
    HEADER
 ===================================================== */
 
-.shipping-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 32px;
+.page-header {
+  margin-bottom: 26px;
 }
-
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
-
 
 .back-btn {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e1e7ef;
+  border-radius: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #475569;
+  background: #fff;
+  color: #64748b;
   cursor: pointer;
-  transition:
-    background .2s ease,
-    color .2s ease,
-    transform .2s ease;
+  transition: .2s ease;
 }
-
 
 .back-btn:hover {
-  background: #eff6ff;
-  color: #2563eb;
-  transform: translateX(-2px);
+  color: #16a34a;
+  border-color: #16a34a;
+  background: #9affbf;
 }
 
-
-.header-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.back-btn .material-symbols-outlined {
+  font-size: 20px;
 }
 
-
-.shipping-logo {
+.header-icon {
   width: 48px;
   height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #0ea5e9
-    );
-
-  color: #ffffff;
-
-  box-shadow:
-    0 10px 24px rgba(37, 99, 235, .18);
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(16, 215, 122, .24);
 }
 
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+
+
+.page-kicker,
+.card-kicker {
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
+}
 
 .header-kicker,
 .section-kicker,
 .tracking-kicker {
   display: block;
-
   font-size: 10px;
   font-weight: 800;
-
   letter-spacing: .14em;
-
   color: #64748b;
 }
 
 
-.header-title h1 {
-  margin: 2px 0 0;
-
-  font-size: 24px;
-  font-weight: 800;
-
-  letter-spacing: -.03em;
-}
-
-
-.create-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  border: 0;
-  border-radius: 12px;
-
-  padding: 12px 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #1d4ed8
-    );
-
-  color: #ffffff;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 8px 20px rgba(37, 99, 235, .20);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.create-btn:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 12px 26px rgba(37, 99, 235, .28);
-}
-
-
 /* =====================================================
-   INTRO
+   SHIPPING INTRO — B2WA PREMIUM
 ===================================================== */
 
 .shipping-intro {
@@ -159,70 +112,271 @@
   align-items: center;
   justify-content: space-between;
 
-  overflow: hidden;
-
-  min-height: 150px;
-
-  padding: 28px 32px;
+  gap: 24px;
 
   margin-bottom: 24px;
+  padding: 24px 26px;
 
-  border: 1px solid #dbeafe;
+  border: 1px solid rgba(22, 163, 74, 0.10);
   border-radius: 20px;
 
   background:
     linear-gradient(
       135deg,
-      #eff6ff,
-      #f8fbff
+      #eeffe7 0%,
+      #e3ffe7 55%,
+      #98ffab 100%
     );
+
+  box-shadow:
+    0 10px 30px rgba(31, 49, 79, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  overflow: hidden;
 }
 
 
-.shipping-intro h2 {
-  margin: 6px 0;
+/* =====================================================
+   LIGHT EFFECT
+===================================================== */
 
-  font-size: 28px;
+.shipping-intro::before {
+  content: "";
+
+  position: absolute;
+
+  top: -100px;
+  right: 80px;
+
+  width: 240px;
+  height: 240px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(193, 250, 186, 0.28) 0%,
+      rgba(193, 250, 186, 0) 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* Petite ligne décorative */
+
+.shipping-intro::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+
+  width: 3px;
+
+  border-radius: 0 4px 4px 0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #16a34a,
+      #7bd58b
+    );
+
+  opacity: 0.85;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.shipping-intro > div:first-child {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =====================================================
+   KICKER
+===================================================== */
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+
+  color: #16a34a;
+
+  font-size: 10px;
   font-weight: 800;
 
-  letter-spacing: -.04em;
+  letter-spacing: 1.2px;
+
+  text-transform: uppercase;
 }
 
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.shipping-intro h2 {
+  margin: 6px 0 5px;
+
+  color: #263244;
+
+  font-size: 23px;
+  line-height: 1.2;
+
+  font-weight: 850;
+
+  letter-spacing: -0.035em;
+}
+
+.shipping-intro span {
+  color: #04c812;
+}
+
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
 
 .shipping-intro p {
   max-width: 620px;
 
   margin: 0;
 
-  color: #64748b;
+  color: #7d8998;
 
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 
+/* =====================================================
+   DECORATION
+===================================================== */
+
 .intro-decoration {
-  width: 90px;
-  height: 90px;
+  position: relative;
+  z-index: 1;
+
+  width: 64px;
+  height: 64px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 28px;
+  border: 1px solid rgba(22, 163, 74, 0.12);
+  border-radius: 18px;
 
-  background: rgba(255, 255, 255, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(193, 250, 186, 0.42)
+    );
 
-  color: #2563eb;
+  color: #16a34a;
 
-  transform: rotate(-8deg);
+  box-shadow:
+    0 8px 20px rgba(22, 163, 74, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 
-.intro-decoration span {
-  font-size: 48px;
+/* =====================================================
+   ICON
+===================================================== */
+
+.intro-decoration .material-symbols-outlined {
+  font-size: 31px;
+
+  transition:
+    transform 0.3s ease;
 }
 
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.shipping-intro:hover .intro-decoration {
+  transform: translateY(-2px) rotate(-2deg);
+
+  box-shadow:
+    0 12px 25px rgba(22, 163, 74, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.shipping-intro:hover
+.intro-decoration
+.material-symbols-outlined {
+  transform: scale(1.08);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 650px) {
+
+  .shipping-intro {
+    padding: 20px;
+
+    gap: 16px;
+  }
+
+  .shipping-intro h2 {
+    font-size: 20px;
+  }
+
+  .shipping-intro p {
+    font-size: 12px;
+  }
+
+  .intro-decoration {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 15px;
+  }
+
+  .intro-decoration .material-symbols-outlined {
+    font-size: 26px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .shipping-intro {
+    align-items: flex-start;
+  }
+
+  .intro-decoration {
+    width: 46px;
+    height: 46px;
+  }
+
+  .intro-decoration .material-symbols-outlined {
+    font-size: 23px;
+  }
+
+}
 
 /* =====================================================
    TRACKING
@@ -259,7 +413,7 @@
   border-radius: 14px;
 
   background: #eff6ff;
-  color: #2563eb;
+  color: #00da50;
 }
 
 
@@ -294,7 +448,13 @@
   border: 1px solid #dbe3ee;
   border-radius: 12px;
 
-  background: #f8fafc;
+  background:
+    linear-gradient(
+      135deg,
+      #eeffe7 0%,
+      #e3ffe7 55%,
+      #98ffab 100%
+    );
 
   overflow: hidden;
 
@@ -305,7 +465,7 @@
 
 
 .tracking-search:focus-within {
-  border-color: #60a5fa;
+  border-color: #00da50;
 
   box-shadow:
     0 0 0 4px rgba(37, 99, 235, .08);
@@ -357,7 +517,11 @@
   border: 0;
   border-radius: 9px;
 
-  background: #2563eb;
+     background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
   color: #ffffff;
 
   font-size: 12px;
@@ -406,36 +570,56 @@
 .stat-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-
+  gap: 13px;
   min-width: 0;
+  padding: 17px;
 
-  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
 
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-
-  background: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 255, 214, 0.92) 0%,
+      rgba(186, 244, 181, 0.82) 45%,
+      rgba(145, 222, 151, 0.72) 100%
+    );
 
   box-shadow:
-    0 6px 22px rgba(15, 23, 42, .035);
+    0 10px 30px rgba(36, 120, 54, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
+
+.stat-card:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  border-color: rgba(76, 175, 80, 0.28);
+  box-shadow:
+    0 16px 35px rgba(36, 120, 54, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
 
 .stat-icon {
-  flex: 0 0 46px;
-
-  width: 46px;
-  height: 46px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 13px;
+  display: grid;
+  flex: 0 0 43px;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border-radius: 12px;
 }
 
-
+.stat-icon .material-symbols-outlined {
+  font-size: 21px;
+}
 .stat-icon.blue {
   background: #eff6ff;
   color: #2563eb;
@@ -529,8 +713,12 @@
   border: 1px solid #e2e8f0;
   border-radius: 10px;
 
-  background: #ffffff;
-  color: #475569;
+       background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #ffffff;
 
   font-size: 12px;
   font-weight: 700;
@@ -540,8 +728,9 @@
 
 
 .refresh-btn:hover {
-  border-color: #bfdbfe;
-  color: #2563eb;
+  transform: translateY(-2px);
+  border-color: #a1c094;
+  color: #f3fff8;
 }
 
 
@@ -598,7 +787,7 @@
   border-color: #dbeafe;
 
   background: #eff6ff;
-  color: #2563eb;
+  color: #00da50;
 }
 
 
@@ -650,7 +839,7 @@
 .shipment-card:hover {
   transform: translateY(-2px);
 
-  border-color: #cbd5e1;
+  border-color: #00da50;
 
   box-shadow:
     0 12px 28px rgba(15, 23, 42, .06);
@@ -719,7 +908,7 @@
 
 .copy-btn:hover {
   background: #eff6ff;
-  color: #2563eb;
+  color: #00da50;
 }
 
 
@@ -1056,7 +1245,7 @@
   border-radius: 18px;
 
   background: #eff6ff;
-  color: #2563eb;
+  color: #00da50;
 }
 
 
@@ -1569,16 +1758,6 @@
     transform: translateY(0);
   }
 }
-
-/* =========================================================
-   AJOUTS — menu "plus d'options" + modale QR code
-   (à coller à la fin de shipping.css existant)
-========================================================= */
-
-/* =====================================================
-   MODALE QR CODE
-===================================================== */
-
 
 /* -----------------------------------------------------
    BACKDROP
@@ -2469,14 +2648,13 @@
 
 
 .qr-primary-btn {
-  border: 1px solid #2563eb;
+  border: 1px solid #00da50;
 
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #1d4ed8
-    );
+  background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
 
   color: #ffffff;
 
@@ -2486,8 +2664,8 @@
 
 
 .qr-primary-btn:hover {
-  border-color: #1d4ed8;
-  background: #1d4ed8;
+  border-color: #036425;
+  background: #036425;
 
   box-shadow:
     0 10px 22px rgba(37, 99, 235, 0.28);
@@ -2841,8 +3019,8 @@
 }
 
 .shipment-search:focus-within {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+  border-color: #00da50;
+  box-shadow: 0 0 0 4px rgba(0, 218, 80, 0.08);
 }
 
 .shipment-search > .material-symbols-outlined {
