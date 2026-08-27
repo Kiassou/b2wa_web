@@ -77,23 +77,7 @@ export class CreateCommunityComponent {
     'Autre'
   ];
 
-  icons: string[] = [
-    '🌍',
-    '🛍️',
-    '💼',
-    '🚀',
-    '🌱',
-    '💻',
-    '📱',
-    '🏠',
-    '👗',
-    '🍎',
-    '🚗',
-    '🎨',
-    '⚡',
-    '🤝',
-    '💡'
-  ];
+  icons: string[] = ['🌍','🛍️','💼','🚀','🌱','💻','📱','🏠','👗','🍎','🚗','🎨','⚡','🤝','💡'];
 
 
   /* =========================================================
@@ -268,43 +252,50 @@ export class CreateCommunityComponent {
   }
 
 
-  /* =========================================================
-     COVER
-     ========================================================= */
+/* =========================================================
+   COVER
+   ========================================================= */
 
-  onCoverSelected(event: Event): void {
+onCoverSelected(event: Event): void {
 
-    const input =
-      event.target as HTMLInputElement;
+  const input =
+    event.target as HTMLInputElement;
 
-    if (!input.files || input.files.length === 0) {
-      return;
-    }
-
-    const file = input.files[0];
-
-    if (!file.type.startsWith('image/')) {
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      alert(
-        'L’image ne doit pas dépasser 5 Mo.'
-      );
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-
-      this.community.cover =
-        reader.result as string;
-
-    };
-
-    reader.readAsDataURL(file);
+  if (!input.files || input.files.length === 0) {
+    return;
   }
+
+  const file = input.files[0];
+
+  if (!file.type.startsWith('image/')) {
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert(
+      'L’image ne doit pas dépasser 5 Mo.'
+    );
+
+    input.value = '';
+    return;
+  }
+
+  // Libérer l'ancienne URL si elle existe
+  if (
+    this.community.cover &&
+    this.community.cover.startsWith('blob:')
+  ) {
+    URL.revokeObjectURL(this.community.cover);
+  }
+
+  // Création immédiate de l'aperçu
+  this.community.cover =
+    URL.createObjectURL(file);
+
+  // Réinitialise l'input pour permettre
+  // de sélectionner à nouveau la même image
+  input.value = '';
+}
 
 
   removeCover(): void {
@@ -410,22 +401,23 @@ export class CreateCommunityComponent {
   }
 
 
-  /* =========================================================
-     DEFAULT COVER
-     ========================================================= */
+/* =========================================================
+   DEFAULT / PREVIEW COVER
+   ========================================================= */
 
-  get previewCover(): string {
+get previewCover(): string {
 
-    if (this.community.cover) {
-      return this.community.cover;
-    }
+  if (this.community.cover) {
 
-    return `
-      linear-gradient(
-        135deg,
-        #1769e0,
-        #0d47a1
-      )
-    `;
+    return `url("${this.community.cover}")`;
+
   }
-}
+
+  return `
+    linear-gradient(
+      135deg,
+      #1769e0,
+      #0d47a1
+    )
+  `;
+}}

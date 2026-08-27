@@ -1,48 +1,43 @@
 <div class="create-community-page">
 
-  <!-- ===================================================== -->
-  <!-- TOPBAR -->
-  <!-- ===================================================== -->
+    <!-- HEADER -->
 
-  <header class="page-topbar">
+    <header class="page-header">
 
-    <button
-      type="button"
-      class="back-btn"
-      (click)="goBack()"
-    >
+    <div class="header-left">
 
-      <span class="material-symbols-outlined">
-        arrow_back
-      </span>
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
 
-      <span>Communautés</span>
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          group_add
+        </span>
+      </div>
 
-    </button>
-
-
-    <div class="topbar-title">
-
-      <span class="material-symbols-outlined">
-        groups
-      </span>
-
-      <div>
+      <div class="header-text">
+        <span class="page-kicker">
+          COMMUNAUTES B2WA
+        </span>
 
         <h1>
-          Créer une communauté
+          Ajouter une communauté
         </h1>
 
         <p>
           Construisez votre espace professionnel sur B2WA.
         </p>
-
       </div>
 
-    </div>
-
-
-    <div class="community-limit">
+      <div class="community-limit"
+      (click)="goBack()">
 
       <span class="material-symbols-outlined">
         workspace_premium
@@ -60,9 +55,9 @@
 
     </div>
 
+    </div>
+
   </header>
-
-
 
   <!-- ===================================================== -->
   <!-- STEPS -->
@@ -70,126 +65,134 @@
 
   <div class="steps-wrapper">
 
-    <div class="steps">
+  <div class="steps">
 
-      <!-- STEP 1 -->
+    <!-- =====================================================
+         STEP 1 — IDENTITÉ
+    ====================================================== -->
 
-      <button
-        type="button"
-        class="step"
-        [class.active]="currentStep === 1"
-        [class.completed]="currentStep > 1"
-        (click)="goToStep(1)"
-      >
+    <button
+      type="button"
+      class="step"
+      [class.active]="currentStep === 1"
+      [class.completed]="currentStep > 1"
+      (click)="goToStep(1)"
+    >
 
-        <span class="step-number">
+      <span class="step-number">
 
-          @if (currentStep > 1) {
+        @if (currentStep > 1) {
 
-            <span class="material-symbols-outlined">
-              check
-            </span>
+          <span class="material-symbols-outlined">
+            check
+          </span>
 
-          } @else {
+        } @else {
 
-            1
+          1
 
-          }
+        }
 
-        </span>
-
-        <span class="step-info">
-
-          <strong>
-            Identité
-          </strong>
-
-          <small>
-            Présentez votre communauté
-          </small>
-
-        </span>
-
-      </button>
+      </span>
 
 
-      <span class="step-line"></span>
+      <span class="step-info">
+
+        <strong>
+          Identité
+        </strong>
+
+        <small>
+          Donnez une identité à votre communauté
+        </small>
+
+      </span>
+
+    </button>
 
 
-      <!-- STEP 2 -->
-
-      <button
-        type="button"
-        class="step"
-        [class.active]="currentStep === 2"
-        [class.completed]="currentStep > 2"
-        (click)="goToStep(2)"
-      >
-
-        <span class="step-number">
-
-          @if (currentStep > 2) {
-
-            <span class="material-symbols-outlined">
-              check
-            </span>
-
-          } @else {
-
-            2
-
-          }
-
-        </span>
-
-        <span class="step-info">
-
-          <strong>
-            Configuration
-          </strong>
-
-          <small>
-            Définissez votre espace
-          </small>
-
-        </span>
-
-      </button>
+    <span class="step-line"></span>
 
 
-      <span class="step-line"></span>
+    <!-- =====================================================
+         STEP 2 — CONFIGURATION
+    ====================================================== -->
+
+    <button
+      type="button"
+      class="step"
+      [class.active]="currentStep === 2"
+      [class.completed]="currentStep > 2"
+      (click)="goToStep(2)"
+    >
+
+      <span class="step-number">
+
+        @if (currentStep > 2) {
+
+          <span class="material-symbols-outlined">
+            check
+          </span>
+
+        } @else {
+
+          2
+
+        }
+
+      </span>
 
 
-      <!-- STEP 3 -->
+      <span class="step-info">
 
-      <button
-        type="button"
-        class="step"
-        [class.active]="currentStep === 3"
-        (click)="goToStep(3)"
-      >
+        <strong>
+          Configuration
+        </strong>
 
-        <span class="step-number">
-          3
-        </span>
+        <small>
+          Personnalisez votre espace business
+        </small>
 
-        <span class="step-info">
+      </span>
 
-          <strong>
-            Règles
-          </strong>
+    </button>
 
-          <small>
-            Encadrez votre communauté
-          </small>
 
-        </span>
+    <span class="step-line"></span>
 
-      </button>
 
-    </div>
+    <!-- =====================================================
+         STEP 3 — RÈGLES
+    ====================================================== -->
+
+    <button
+      type="button"
+      class="step"
+      [class.active]="currentStep === 3"
+    >
+
+      <span class="step-number">
+        3
+      </span>
+
+
+      <span class="step-info">
+
+        <strong>
+          Règles
+        </strong>
+
+        <small>
+          Définissez le cadre de votre communauté
+        </small>
+
+      </span>
+
+    </button>
 
   </div>
+
+</div>
 
 
 
@@ -521,335 +524,464 @@
 
       @if (currentStep === 2) {
 
-        <section class="form-section">
+<section class="form-section">
 
-          <div class="section-header">
+  <div class="section-header">
 
-            <span class="section-kicker">
-              ÉTAPE 02
+    <span class="section-kicker">
+      ÉTAPE 02
+    </span>
+
+    <h2>
+      Configurez votre communauté
+    </h2>
+
+    <p>
+      Choisissez comment les membres pourront interagir
+      avec votre communauté.
+    </p>
+
+  </div>
+
+
+  <!-- LONG DESCRIPTION -->
+
+  <div class="form-group">
+
+    <label for="long-description">
+      Présentation de la communauté
+      <span>*</span>
+    </label>
+
+    <div
+      class="textarea-wrapper"
+      [class.input-error]="errors.longDescription"
+    >
+
+      <textarea
+        id="long-description"
+        [(ngModel)]="community.longDescription"
+        maxlength="1000"
+        rows="7"
+        placeholder="Présentez votre communauté, son objectif, les activités proposées, les produits que vous partagez..."
+      ></textarea>
+
+      <small>
+        {{ longDescriptionLength }}/1000
+      </small>
+
+    </div>
+
+    @if (errors.longDescription) {
+
+      <div class="field-error">
+
+        <span class="material-symbols-outlined">
+          error
+        </span>
+
+        {{ errors.longDescription }}
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- SETTINGS -->
+
+  <div class="settings-card">
+
+    <div class="settings-heading">
+
+      <span class="material-symbols-outlined">
+        tune
+      </span>
+
+      <div>
+
+        <h3>
+          Paramètres de la communauté
+        </h3>
+
+        <p>
+          Vous pourrez modifier ces paramètres plus tard.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- PUBLIC -->
+
+    <div class="setting-row">
+
+      <div class="setting-icon">
+        <span class="material-symbols-outlined">
+          public
+        </span>
+      </div>
+
+      <div class="setting-info">
+
+        <strong>
+          Communauté publique
+        </strong>
+
+        <span>
+          Votre communauté peut être découverte dans B2WA.
+        </span>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="community.isPublic"
+        />
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+
+    <!-- MEMBERS -->
+
+    <div class="setting-row">
+
+      <div class="setting-icon">
+
+        <span class="material-symbols-outlined">
+          group_add
+        </span>
+
+      </div>
+
+      <div class="setting-info">
+
+        <strong>
+          Autoriser les nouveaux membres
+        </strong>
+
+        <span>
+          Les utilisateurs pourront rejoindre votre communauté.
+        </span>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="community.allowMembers"
+        />
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+
+    <!-- COMMENTS -->
+
+    <div class="setting-row">
+
+      <div class="setting-icon">
+
+        <span class="material-symbols-outlined">
+          chat
+        </span>
+
+      </div>
+
+      <div class="setting-info">
+
+        <strong>
+          Commentaires
+        </strong>
+
+        <span>
+          Autoriser les membres à commenter vos publications.
+        </span>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="community.allowComments"
+        />
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+
+    <!-- LIVE -->
+
+    <div class="setting-row">
+
+      <div class="setting-icon live-setting">
+
+        <span class="material-symbols-outlined">
+          videocam
+        </span>
+
+      </div>
+
+      <div class="setting-info">
+
+        <strong>
+          B2WA Live
+        </strong>
+
+        <span>
+          Organisez des lives et permettez aux membres
+          de réserver leur place.
+        </span>
+
+      </div>
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="community.allowLives"
+        />
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       LIVE OPTIONS
+  ====================================================== -->
+
+  @if (community.allowLives) {
+
+    <div class="live-options">
+
+      <!-- HEADER -->
+
+      <div class="live-options-header">
+
+        <div class="live-options-icon">
+
+          <span class="material-symbols-outlined">
+            live_tv
+          </span>
+
+        </div>
+
+        <div>
+
+          <div class="live-title-row">
+
+            <h3>
+              Paramètres B2WA Live
+            </h3>
+
+            <span class="plan-badge">
+              STANDARD
             </span>
 
-            <h2>
-              Configurez votre communauté
-            </h2>
+          </div>
 
-            <p>
-              Choisissez comment les membres pourront interagir
-              avec votre communauté.
-            </p>
+          <p>
+            Configurez les paramètres par défaut de vos
+            prochaines sessions B2WA Live.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- LIMITES STANDARD -->
+
+      <div class="live-limit-info">
+
+        <div class="limit-info-icon">
+
+          <span class="material-symbols-outlined">
+            workspace_premium
+          </span>
+
+        </div>
+
+        <div>
+
+
+
+          <p> 
+            <strong>
+              Les limites du plan Standard
+            </strong>
+            Jusqu'à 300 participants et 3 heures par session.
+            Passez à B2WA Premium pour aller au-delà de ces limites.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- LIVE FIELDS -->
+
+      <!-- CAPACITÉ -->
+
+      <div class="form-group">
+
+        <label>
+          Capacité
+        </label>
+
+        <div class="live-fixed-value">
+
+          <div class="fixed-value-icon">
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
 
           </div>
 
+          <div class="fixed-value-content">
 
-          <!-- LONG DESCRIPTION -->
+            <strong>
+              300
+            </strong>
 
-          <div class="form-group">
-
-            <label for="long-description">
-              Présentation de la communauté
-              <span>*</span>
-            </label>
-
-            <div
-              class="textarea-wrapper"
-              [class.input-error]="errors.longDescription"
-            >
-
-              <textarea
-                id="long-description"
-                [(ngModel)]="community.longDescription"
-                maxlength="1000"
-                rows="7"
-                placeholder="Présentez votre communauté, son objectif, les activités proposées, les produits que vous partagez..."
-              ></textarea>
-
-              <small>
-                {{ longDescriptionLength }}/1000
-              </small>
-
-            </div>
-
-            @if (errors.longDescription) {
-
-              <div class="field-error">
-
-                <span class="material-symbols-outlined">
-                  error
-                </span>
-
-                {{ errors.longDescription }}
-
-              </div>
-
-            }
+            <span>
+              places
+            </span>
 
           </div>
 
+          <span class="fixed-badge">
+            STANDARD
+          </span>
 
-          <!-- SETTINGS -->
+  </div>
 
-          <div class="settings-card">
+  <div class="field-hint">
 
-            <div class="settings-heading">
+    <span class="material-symbols-outlined">
+      info
+    </span>
 
-              <span class="material-symbols-outlined">
-                tune
-              </span>
+    <span>
+      Les lives B2WA Standard peuvent accueillir
+      jusqu'à <strong>300 participants</strong>.
+    </span>
 
-              <div>
+  </div>
 
-                <h3>
-                  Paramètres de la communauté
-                </h3>
+  <label>
+    Durée maximale
+  </label>
 
-                <p>
-                  Vous pourrez modifier ces paramètres plus tard.
-                </p>
+  <div class="live-fixed-value">
 
-              </div>
+    <div class="fixed-value-icon">
 
-            </div>
+      <span class="material-symbols-outlined">
+        schedule
+      </span>
 
+    </div>
 
-            <!-- PUBLIC -->
+    <div class="fixed-value-content">
 
-            <div class="setting-row">
+      <strong>
+        180
+      </strong>
 
-              <div class="setting-icon">
-                <span class="material-symbols-outlined">
-                  public
-                </span>
-              </div>
+      <span>
+        min
+      </span>
 
-              <div class="setting-info">
+    </div>
 
-                <strong>
-                  Communauté publique
-                </strong>
+    <span class="fixed-badge">
+      3 HEURES
+    </span>
 
-                <span>
-                  Votre communauté peut être découverte dans B2WA.
-                </span>
+  </div>
 
-              </div>
+  <div class="field-hint">
 
-              <label class="switch">
+    <span class="material-symbols-outlined">
+      info
+    </span>
 
-                <input
-                  type="checkbox"
-                  [(ngModel)]="community.isPublic"
-                />
+    <span>
+      La durée maximale d'un live Standard est de
+      <strong>3 heures</strong>.
+    </span>
 
-                <span class="slider"></span>
+  </div>
 
-              </label>
+  
+      <div class="premium-footer">
 
-            </div>
+        <div class="premium-footer-icon">
 
+          <span class="material-symbols-outlined">
+            diamond
+          </span>
 
-            <!-- MEMBERS -->
+        </div>
 
-            <div class="setting-row">
+        <div class="premium-footer-content">
 
-              <div class="setting-icon">
-                <span class="material-symbols-outlined">
-                  group_add
-                </span>
-              </div>
+          <strong>
+            Besoin de plus ?
+          </strong>
 
-              <div class="setting-info">
+          <p>
+            Avec <strong>B2WA Premium</strong>, augmentez la capacité
+            de vos lives et organisez des sessions plus longues.
+          </p>
 
-                <strong>
-                  Autoriser les nouveaux membres
-                </strong>
+        </div>
 
-                <span>
-                  Les utilisateurs pourront rejoindre votre communauté.
-                </span>
+        <button
+          type="button"
+          class="premium-button"
+        >
 
-              </div>
+          Découvrir Premium
 
-              <label class="switch">
+          <span class="material-symbols-outlined">
+            arrow_forward
+          </span>
 
-                <input
-                  type="checkbox"
-                  [(ngModel)]="community.allowMembers"
-                />
+        </button>
 
-                <span class="slider"></span>
+      </div>
 
-              </label>
+  </div>
 
-            </div>
+    </div>
 
+  }
 
-            <!-- COMMENTS -->
-
-            <div class="setting-row">
-
-              <div class="setting-icon">
-                <span class="material-symbols-outlined">
-                  chat
-                </span>
-              </div>
-
-              <div class="setting-info">
-
-                <strong>
-                  Commentaires
-                </strong>
-
-                <span>
-                  Autoriser les membres à commenter vos publications.
-                </span>
-
-              </div>
-
-              <label class="switch">
-
-                <input
-                  type="checkbox"
-                  [(ngModel)]="community.allowComments"
-                />
-
-                <span class="slider"></span>
-
-              </label>
-
-            </div>
-
-
-            <!-- LIVE -->
-
-            <div class="setting-row">
-
-              <div class="setting-icon live-setting">
-                <span class="material-symbols-outlined">
-                  videocam
-                </span>
-              </div>
-
-              <div class="setting-info">
-
-                <strong>
-                  B2WA Live
-                </strong>
-
-                <span>
-                  Organisez des lives et permettez aux membres
-                  de réserver leur place.
-                </span>
-
-              </div>
-
-              <label class="switch">
-
-                <input
-                  type="checkbox"
-                  [(ngModel)]="community.allowLives"
-                />
-
-                <span class="slider"></span>
-
-              </label>
-
-            </div>
-
-          </div>
-
-
-          <!-- LIVE OPTIONS -->
-
-          @if (community.allowLives) {
-
-            <div class="live-options">
-
-              <div class="live-options-header">
-
-                <span class="material-symbols-outlined">
-                  live_tv
-                </span>
-
-                <div>
-
-                  <h3>
-                    Paramètres B2WA Live
-                  </h3>
-
-                  <p>
-                    Ces paramètres seront utilisés par défaut
-                    lors de la programmation de vos lives.
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              <div class="live-fields">
-
-                <div class="form-group">
-
-                  <label>
-                    Capacité
-                  </label>
-
-                  <div class="input-wrapper">
-
-                    <span class="material-symbols-outlined">
-                      groups
-                    </span>
-
-                    <input
-                      type="number"
-                      min="1"
-                      max="10000"
-                      [(ngModel)]="community.liveCapacity"
-                    />
-
-                    <small>
-                      places
-                    </small>
-
-                  </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label>
-                    Durée
-                  </label>
-
-                  <div class="input-wrapper">
-
-                    <span class="material-symbols-outlined">
-                      schedule
-                    </span>
-
-                    <input
-                      type="number"
-                      min="15"
-                      max="480"
-                      [(ngModel)]="community.liveDuration"
-                    />
-
-                    <small>
-                      min
-                    </small>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          }
-
-        </section>
+</section>
 
       }
 
@@ -861,125 +993,148 @@
 
       @if (currentStep === 3) {
 
-        <section class="form-section">
+        <!-- =====================================================
+     ÉTAPE 03 — RÈGLES
+====================================================== -->
 
-          <div class="section-header">
+<section class="form-section">
 
-            <span class="section-kicker">
-              ÉTAPE 03
-            </span>
+  <div class="section-header">
 
-            <h2>
-              Définissez les règles
-            </h2>
+    <span class="section-kicker">
+      ÉTAPE 03
+    </span>
 
-            <p>
-              Des règles claires permettent de créer un espace
-              professionnel et agréable pour tous les membres.
-            </p>
+    <h2>
+      Définissez les règles de votre communauté
+    </h2>
 
-          </div>
+    <p>
+      Établissez des règles claires pour maintenir un espace
+      professionnel, respectueux et utile à tous les membres.
+    </p>
 
-
-          <div class="rules-intro">
-
-            <div class="rules-icon">
-
-              <span class="material-symbols-outlined">
-                shield
-              </span>
-
-            </div>
-
-            <div>
-
-              <strong>
-                Votre communauté, vos règles.
-              </strong>
-
-              <p>
-                En tant que créateur, vous êtes l'administrateur
-                de cette communauté. Vous pourrez gérer les
-                publications, produits, membres et lives.
-              </p>
-
-            </div>
-
-          </div>
+  </div>
 
 
-          <div class="form-group">
+  <!-- =================================================
+       ADMINISTRATION
+  ================================================== -->
 
-            <label for="community-rules">
-              Règles de la communauté
-              <span>*</span>
-            </label>
+  <div class="rules-intro">
 
-            <div
-              class="textarea-wrapper"
-              [class.input-error]="errors.rules"
-            >
+    <div class="rules-icon">
 
-              <textarea
-                id="community-rules"
-                [(ngModel)]="community.rules"
-                maxlength="1200"
-                rows="9"
-                placeholder="Ex :
+      <span class="material-symbols-outlined">
+        shield
+      </span>
+
+    </div>
+
+    <div>
+
+      <strong>
+        Votre communauté, vos règles.
+      </strong>
+
+      <p>
+        En tant que créateur, vous êtes automatiquement
+        nommé administrateur de cette communauté. Vous pourrez
+        gérer les publications, produits, membres et B2WA Lives.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =================================================
+       RÈGLES
+  ================================================== -->
+
+  <div class="form-group">
+
+    <label for="community-rules">
+
+      Règles de la communauté
+
+      <span>*</span>
+
+    </label>
+
+
+    <div
+      class="textarea-wrapper"
+      [class.input-error]="errors.rules"
+    >
+
+      <textarea
+        id="community-rules"
+        [(ngModel)]="community.rules"
+        maxlength="1200"
+        rows="9"
+        placeholder="Ex :
 1. Respecter les autres membres.
-2. Pas de contenu frauduleux.
-3. Les publications doivent être liées à l'activité de la communauté.
-4. Pas de spam ou de publicité abusive."
-              ></textarea>
-
-              <small>
-                {{ community.rules.length }}/1200
-              </small>
-
-            </div>
-
-            @if (errors.rules) {
-
-              <div class="field-error">
-
-                <span class="material-symbols-outlined">
-                  error
-                </span>
-
-                {{ errors.rules }}
-
-              </div>
-
-            }
-
-          </div>
+2. Ne publier aucun contenu frauduleux.
+3. Publier uniquement du contenu lié à l'activité de la communauté.
+4. Ne pas envoyer de spam ou de publicité abusive.
+5. Respecter les conditions d'utilisation de B2WA."
+      ></textarea>
 
 
-          <div class="final-notice">
+      <small>
+        {{ community.rules.length }}/1200
+      </small>
 
-            <span class="material-symbols-outlined">
-              info
-            </span>
+    </div>
 
-            <div>
 
-              <strong>
-                Avant de créer votre communauté
-              </strong>
+    @if (errors.rules) {
 
-              <p>
-                Vous serez automatiquement nommé
-                <strong>Administrateur</strong>.
-                Vous aurez le contrôle sur les publications,
-                produits, lives, membres et paramètres de
-                votre communauté.
-              </p>
+      <div class="field-error">
 
-            </div>
+        <span class="material-symbols-outlined">
+          error
+        </span>
 
-          </div>
+        {{ errors.rules }}
 
-        </section>
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- =================================================
+       NOTICE FINALE
+  ================================================== -->
+
+  <div class="final-notice">
+
+    <span class="material-symbols-outlined">
+      admin_panel_settings
+    </span>
+
+    <div>
+
+      <strong>
+        Avant de créer votre communauté
+      </strong>
+
+      <p>
+        Vous serez automatiquement nommé
+        <strong>Administrateur</strong>.
+        Vous aurez le contrôle sur les publications,
+        produits, B2WA Lives, membres et paramètres
+        de votre communauté.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
 
       }
 
