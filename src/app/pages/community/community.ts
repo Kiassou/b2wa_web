@@ -412,7 +412,7 @@ export class CommunityComponent implements OnInit {
   viewAllJoinedCommunities(): void {
 
     this.router.navigate([
-      '/dashboard/community/joined'
+      '/dashboard/joined-communities'
     ]);
 
   }

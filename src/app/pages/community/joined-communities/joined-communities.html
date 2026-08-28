@@ -1,0 +1,628 @@
+<div class="joined-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+        title="Retour"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </button>
+
+      <div class="header-icon">
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+      </div>
+
+      <div class="header-text">
+
+        <span class="header-kicker">
+          MON RÉSEAU B2WA
+        </span>
+
+        <h1>
+          Communautés rejointes
+        </h1>
+
+        <p>
+          Retrouvez les communautés professionnelles dont
+          vous êtes membre et développez votre réseau
+          à travers l'Afrique de l'Ouest.
+        </p>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       INTRO
+  ====================================================== -->
+
+  <section class="joined-hero">
+
+    <div class="hero-content">
+
+      <span class="hero-kicker">
+        VOTRE RÉSEAU
+      </span>
+
+      <h2>
+        Les communautés qui font
+        <span>grandir votre réseau.</span>
+      </h2>
+
+      <p>
+        Échangez avec des fournisseurs, commerçants et
+        professionnels de votre secteur. Découvrez des
+        opportunités et restez connecté à votre réseau B2WA.
+      </p>
+
+    </div>
+
+
+    <!-- COUNTER -->
+
+    <div class="hero-counter">
+
+      <div class="counter-icon">
+
+        <span class="material-symbols-outlined">
+          diversity_3
+        </span>
+
+      </div>
+
+      <div class="counter-content">
+        
+        <div>
+          <strong>
+            {{ joinedCommunities.length }}
+            <span>
+              Communautés rejointes
+            </span>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SEARCH & FILTER
+  ====================================================== -->
+
+  <section class="community-tools">
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <span class="material-symbols-outlined">
+        search
+      </span>
+
+      <input
+        type="text"
+        placeholder="Rechercher une communauté..."
+        [(ngModel)]="searchTerm"
+      />
+
+      @if (searchTerm) {
+
+        <button
+          type="button"
+          class="clear-search"
+          (click)="clearSearch()"
+          title="Effacer"
+        >
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
+        </button>
+
+      }
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="category-filters">
+
+      @for (
+        category of categories;
+        track category
+      ) {
+
+        <button
+          type="button"
+          class="category-btn"
+          [class.active]="
+            selectedCategory === category
+          "
+          (click)="selectCategory(category)"
+        >
+
+          @if (category === 'Toutes') {
+
+            <span class="material-symbols-outlined">
+              apps
+            </span>
+
+          }
+
+          {{ category }}
+
+        </button>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       RESULT HEADER
+  ====================================================== -->
+
+  <div class="results-header">
+
+    <div>
+
+      <span class="section-kicker">
+        COMMUNAUTÉS
+      </span>
+
+      <h2>
+        Mes communautés
+      </h2>
+
+    </div>
+
+    <span class="result-count">
+
+      {{ filteredCommunities.length }}
+
+      @if (filteredCommunities.length <= 1) {
+        communauté
+      } @else {
+        communautés
+      }
+
+    </span>
+
+  </div>
+
+
+  <!-- =====================================================
+       COMMUNITIES
+  ====================================================== -->
+
+  @if (filteredCommunities.length > 0) {
+
+    <section class="community-grid">
+
+      @for (
+        community of filteredCommunities;
+        track community.id
+      ) {
+
+        <article class="community-card">
+
+          <!-- =================================================
+               COVER
+          ================================================= -->
+
+          <div
+            class="card-cover"
+            [style.background-image]="
+              'url(' + community.cover + ')'
+            "
+          >
+
+            <div class="cover-overlay"></div>
+
+
+            <!-- CATEGORY -->
+
+            <span class="category-badge">
+
+              {{ community.category }}
+
+            </span>
+
+
+            <!-- VERIFIED -->
+
+            @if (community.verified) {
+
+              <span
+                class="verified-badge"
+                title="Communauté vérifiée"
+              >
+
+                <span class="material-symbols-outlined">
+                  verified
+                </span>
+
+              </span>
+
+            }
+            <!-- ICON -->
+
+            <div class="community-emoji">
+
+              {{ community.icon }}
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               BODY
+          ================================================= -->
+
+          <div class="card-content">
+
+
+            <!-- TITLE -->
+
+            <div class="community-title-row">
+
+              <div>
+
+                <h3>
+                  {{ community.name }}
+                </h3>
+
+                <span class="admin-name">
+
+                  <span class="material-symbols-outlined">
+                    person
+                  </span>
+
+                  Par {{ community.admin }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="community-description">
+
+              {{ community.description }}
+
+            </p>
+
+
+            <!-- =================================================
+                 STATS
+            ================================================= -->
+
+            <div class="card-stats">
+
+              <!-- MEMBERS -->
+
+              <div class="stat">
+
+                <span class="material-symbols-outlined">
+                  group
+                </span>
+
+                <div>
+
+                  <strong>
+                    {{ formatNumber(community.members) }}
+                  </strong>
+
+                  <small>
+                    Membres
+                  </small>
+
+                </div>
+
+              </div>
+
+
+              <!-- POSTS -->
+
+              <div class="stat">
+
+                <span class="material-symbols-outlined">
+                  article
+                </span>
+
+                <div>
+
+                  <strong>
+                    {{ community.posts }}
+                  </strong>
+
+                  <small>
+                    Posts
+                  </small>
+
+                </div>
+
+              </div>
+
+
+              <!-- PRODUCTS -->
+
+              <div class="stat">
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+                <div>
+
+                  <strong>
+                    {{ community.products }}
+                  </strong>
+
+                  <small>
+                    Produits
+                  </small>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================= -->
+
+            <div class="card-footer">
+
+
+              <!-- MEMBER AVATARS -->
+
+              <div class="member-preview">
+
+                <div class="avatars">
+
+                  @for (
+                    avatar of community.avatars;
+                    track avatar
+                  ) {
+
+                    <img
+                      [src]="avatar"
+                      alt="Membre"
+                    />
+
+                  }
+
+                </div>
+
+
+                @if (community.members > 4) {
+
+                  <span>
+                    +{{ formatNumber(community.members - 4) }}
+                  </span>
+
+                }
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="card-actions">
+
+
+                <!-- VIEW -->
+
+                <button
+                  type="button"
+                  class="view-btn"
+                  (click)="viewCommunity(community)"
+                  title="Voir la communauté"
+                >
+
+                  <span class="material-symbols-outlined">
+                    visibility
+                  </span>
+
+                  Voir
+
+                </button>
+
+
+                <!-- LEAVE -->
+
+                @if (community.isMember) {
+
+                  <button
+                    class="joined-btn"
+                    type="button"
+                    (click)="leaveCommunity(community)"
+                  >
+
+                    <span class="material-symbols-outlined icon-default">
+                      check_circle
+                    </span>
+                    <span class="material-symbols-outlined icon-hover">
+                      logout
+                    </span>
+
+                    <span class="text-default">Membre</span>
+                    <span class="text-hover">Quitter</span>
+
+                  </button>
+
+                }
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </section>
+
+  } @else {
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <section class="empty-state">
+
+      <div class="empty-icon">
+
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+
+      </div>
+
+      @if (joinedCommunities.length === 0) {
+
+        <span class="empty-kicker">
+          VOTRE RÉSEAU
+        </span>
+
+        <h3>
+          Vous n'avez rejoint aucune communauté
+        </h3>
+
+        <p>
+          Explorez les communautés B2WA et rejoignez celles
+          qui correspondent à votre activité professionnelle.
+        </p>
+
+        <button
+          type="button"
+          class="explore-btn"
+          (click)="goToExplorer()"
+        >
+
+          <span class="material-symbols-outlined">
+            explore
+          </span>
+
+          Explorer les communautés
+
+          <span class="material-symbols-outlined">
+            arrow_forward
+          </span>
+
+        </button>
+
+      } @else {
+
+        <span class="empty-kicker">
+          AUCUN RÉSULTAT
+        </span>
+
+        <h3>
+          Aucune communauté trouvée
+        </h3>
+
+        <p>
+          Aucune de vos communautés ne correspond à votre
+          recherche ou au filtre sélectionné.
+        </p>
+
+        <button
+          type="button"
+          class="reset-btn"
+          (click)="resetFilters()"
+        >
+
+          <span class="material-symbols-outlined">
+            restart_alt
+          </span>
+
+          Réinitialiser les filtres
+
+        </button>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- =====================================================
+       B2WA NETWORK BANNER
+  ====================================================== -->
+
+  <section class="community-banner">
+
+    <div class="banner-icon">
+
+      <span class="material-symbols-outlined">
+        hub
+      </span>
+
+    </div>
+
+
+    <div class="banner-content">
+
+      <span class="banner-label">
+        LE RÉSEAU B2WA
+      </span>
+
+      <h2>
+        Une communauté. Des opportunités.
+      </h2>
+
+      <p>
+        Développez votre réseau professionnel, découvrez
+        de nouveaux produits et créez de nouvelles
+        opportunités commerciales à travers l'Afrique de l'Ouest.
+      </p>
+
+    </div>
+
+
+    <div class="banner-decoration">
+
+      <span>
+        WA
+      </span>
+
+    </div>
+
+  </section>
+
+</div>
