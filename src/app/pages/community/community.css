@@ -760,7 +760,7 @@
   border: 0;
   border-radius: 10px;
   background: #eff6ff;
-  color: #2563eb;
+  color: #0a8638;
   font-family: inherit;
   font-size: 12px;
   font-weight: 700;
@@ -769,7 +769,7 @@
 }
 
 .open-btn:hover {
-  background: #2563eb;
+  background: #0a8638;
   color: #ffffff;
 }
 
@@ -798,6 +798,296 @@
 
 .icon-action .material-symbols-outlined {
   font-size: 18px;
+}
+
+/* =========================================================
+   COMMUNAUTÉS REJOINTES
+   ========================================================= */
+
+.joined-communities-section {
+  margin-top: 56px;
+  padding-top: 42px;
+
+  border-top: 1px solid #e8edf4;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.joined-communities-section .section-heading {
+  margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   VIEW ALL BUTTON
+   ========================================================= */
+
+.view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 40px;
+
+  padding: 0 15px;
+
+  border: 1px solid #d8e4f4;
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #1769e0;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.view-all-btn:hover {
+  background: #f4f8fe;
+
+  border-color: #bcd2f0;
+
+  color: #0d58c7;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 18px rgba(23, 105, 224, 0.08);
+}
+
+.view-all-btn:active {
+  transform: translateY(0);
+}
+
+.view-all-btn .material-symbols-outlined {
+  font-size: 18px;
+
+  transition: transform 0.2s ease;
+}
+
+.view-all-btn:hover .material-symbols-outlined {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   JOINED CARD
+   ========================================================= */
+
+.joined-communities-section .my-community-card {
+  border-color: #e3eaf3;
+
+  box-shadow:
+    0 7px 22px rgba(15, 23, 42, 0.035);
+}
+
+.joined-communities-section .my-community-card:hover {
+  border-color: #cdddf2;
+
+  box-shadow:
+    0 17px 38px rgba(15, 23, 42, 0.075);
+}
+
+
+/* =========================================================
+   MEMBER BADGE
+   ========================================================= */
+
+.joined-communities-section .member-badge {
+  background: rgba(17, 24, 39, 0.70);
+
+  color: #ffffff;
+
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.joined-communities-section .member-badge .material-symbols-outlined {
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   COMMUNITY COVER
+   ========================================================= */
+
+.joined-communities-section .community-cover {
+  height: 155px;
+
+  background-color: #edf4ff;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
+/* =========================================================
+   COVER OVERLAY
+   ========================================================= */
+
+.joined-communities-section .cover-overlay {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 25, 50, 0.06) 0%,
+      rgba(10, 25, 50, 0.16) 45%,
+      rgba(10, 25, 50, 0.70) 100%
+    );
+}
+
+
+/* =========================================================
+   COMMUNITY ICON
+   ========================================================= */
+
+.joined-communities-section .community-icon {
+  background: #ffffff;
+
+  border-color: #e0e8f2;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.09);
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.joined-communities-section .community-category {
+  color: #1769e0;
+}
+
+
+/* =========================================================
+   META
+   ========================================================= */
+
+.joined-communities-section .community-meta {
+  border-top-color: #edf1f6;
+}
+
+
+/* =========================================================
+   OPEN BUTTON
+   ========================================================= */
+
+.joined-communities-section .open-btn {
+  background: #1769e0;
+}
+
+.joined-communities-section .open-btn:hover {
+  background: #0d58c7;
+
+  box-shadow:
+    0 7px 18px rgba(23, 105, 224, 0.20);
+}
+
+
+/* =========================================================
+   EMPTY / VISUAL SEPARATION
+   ========================================================= */
+
+.joined-communities-section::before {
+  content: "";
+
+  display: block;
+
+  width: 46px;
+  height: 3px;
+
+  margin-bottom: 28px;
+
+  border-radius: 999px;
+
+  background: #1769e0;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .joined-communities-section {
+    margin-top: 48px;
+    padding-top: 36px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .joined-communities-section {
+    margin-top: 42px;
+    padding-top: 32px;
+  }
+
+  .joined-communities-section .section-heading {
+    align-items: flex-start;
+  }
+
+  .view-all-btn {
+    min-height: 38px;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+  }
+
+  .joined-communities-section .community-cover {
+    height: 165px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .joined-communities-section {
+    margin-top: 36px;
+    padding-top: 28px;
+  }
+
+  .joined-communities-section .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .view-all-btn {
+    width: 100%;
+  }
+
+  .joined-communities-section .community-cover {
+    height: 150px;
+  }
+
 }
 
 /* =========================================================

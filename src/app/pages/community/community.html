@@ -197,6 +197,202 @@
       </div>
     </section>
   }
+
+  <!-- =========================================================
+     COMMUNAUTÉS REJOINTES
+========================================================== -->
+
+@if (joinedCommunities.length > 0) {
+
+  <section class="community-section joined-communities-section">
+
+    <!-- HEADER -->
+
+    <div class="section-heading">
+
+      <div>
+
+        <span class="section-kicker">
+          RÉSEAU B2WA
+        </span>
+
+        <h2>
+          Communautés rejointes
+        </h2>
+
+        <p>
+          Retrouvez les communautés professionnelles dont
+          vous êtes membre et développez votre réseau B2WA.
+        </p>
+
+      </div>
+
+
+      <!-- VOIR TOUT -->
+
+      @if (joinedCommunities.length > 4) {
+
+        <button
+          type="button"
+          class="view-all-btn"
+          (click)="viewAllJoinedCommunities()"
+        >
+
+          Voir toutes
+
+          <span class="material-symbols-outlined">
+            arrow_forward
+          </span>
+
+        </button>
+
+      }
+
+    </div>
+
+
+    <!-- COMMUNITY GRID -->
+
+    <div class="my-community-grid">
+
+      @for (
+        community of joinedCommunities.slice(0, 4);
+        track community.id
+      ) {
+
+        <article class="my-community-card">
+
+          <!-- COVER -->
+
+          <div
+            class="community-cover"
+            [style.background-image]="'url(' + community.cover + ')'"
+          >
+
+            <div class="cover-overlay"></div>
+
+
+            <!-- MEMBER BADGE -->
+
+            <div class="community-status">
+
+              <span class="member-badge">
+
+                <span class="material-symbols-outlined">
+                  person
+                </span>
+
+                Membre
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- BODY -->
+
+          <div class="my-card-body">
+
+            <!-- ICON -->
+
+            <div class="community-icon">
+              {{ community.icon }}
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="community-info">
+
+              <h3>
+                {{ community.name }}
+              </h3>
+
+
+              <span class="community-category">
+                {{ community.category }}
+              </span>
+
+
+              <p>
+                {{ community.description }}
+              </p>
+
+            </div>
+
+
+            <!-- META -->
+
+            <div class="community-meta">
+
+              <span>
+
+                <span class="material-symbols-outlined">
+                  group
+                </span>
+
+                {{ formatNumber(community.members) }}
+
+              </span>
+
+
+              <span>
+
+                <span class="material-symbols-outlined">
+                  article
+                </span>
+
+                {{ community.posts }}
+
+              </span>
+
+
+              <span>
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+                {{ community.products }}
+
+              </span>
+
+            </div>
+
+
+            <!-- ACTION -->
+
+            <div class="card-actions">
+
+              <button
+                type="button"
+                class="open-btn"
+                (click)="openCommunity(community)"
+              >
+
+                Ouvrir
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+}
   <!-- EXPLORE -->
   <section class="community-section explore-section">
     <div class="section-heading">
