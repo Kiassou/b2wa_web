@@ -138,6 +138,12 @@ export const routes: Routes = [
             .then(m => m.CreateCommunityComponent)
       },
       {
+        path: 'community-explorer',
+        loadComponent: () =>
+          import('./pages/community/community-explorer/community-explorer')
+            .then(m => m.CommunityExplorerComponent)
+      },
+      {
         path: 'manage-community/:id/manage',
         loadComponent: () =>
           import('./pages/community/manage-community/manage-community')

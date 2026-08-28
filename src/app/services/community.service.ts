@@ -28,7 +28,7 @@ export class CommunityService {
       cover:
         'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
 
-      admin: 'AgriWest Business',
+      admin: 'vous',
 
       members: 1248,
 

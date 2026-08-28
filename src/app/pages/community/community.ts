@@ -21,11 +21,13 @@ export class CommunityComponent implements OnInit {
   /* =========================================================
      SEARCH
   ========================================================= */
-
   searchTerm = '';
-
   selectedCategory = 'Toutes';
 
+  /* =========================================================
+     PREMIUM MODAL
+  ========================================================= */
+  showPremiumModal = false;
 
   /* =========================================================
      DATA
@@ -175,6 +177,15 @@ export class CommunityComponent implements OnInit {
 
   }
 
+  get recentCommunities(): Community[] {
+    return this.communities.slice(0, 4);
+  }
+
+  exploreAllCommunities(): void {
+    this.router.navigate([
+      '/dashboard/community-explorer'
+    ]);
+  }
 
   /* =========================================================
      SEARCH
@@ -339,6 +350,29 @@ export class CommunityComponent implements OnInit {
     this.router.navigate([
       '/dashboard/create-community'
     ]);
+
+  }
+
+    /* =========================================================
+     PREMIUM MODAL
+  ========================================================= */
+
+  openPremiumModal(): void {
+
+    this.showPremiumModal = true;
+
+    document.body.style.overflow =
+      'hidden';
+
+  }
+
+
+  closePremiumModal(): void {
+
+    this.showPremiumModal = false;
+
+    document.body.style.overflow =
+      'auto';
 
   }
 

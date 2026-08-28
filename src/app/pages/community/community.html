@@ -24,9 +24,8 @@
           </h1>
 
       <p>
-        Découvrez des communautés professionnelles, échangez avec des
-        commerçants, d'autres fournisseurs et développez votre réseau
-        à travers l'Afrique de l'Ouest.
+        Echangez avec des commerçants, d'autres fournisseurs et développez votre réseau
+        à travers B2WA communautés.
       </p>
       </div>
 
@@ -83,17 +82,17 @@
 
 
     <button
-      class="create-btn"
       type="button"
-      [disabled]="myCommunities.length >= 3"
-      (click)="createCommunity()"
+      class="create-btn"
+      [class.limit-reached]="myCommunities.length >= 3"
+      (click)="myCommunities.length >= 3 ? openPremiumModal() : createCommunity()"
     >
 
-      <span class="material-symbols-outlined">
-        group_add
-      </span>
+        <span class="material-symbols-outlined">
+          {{ myCommunities.length >= 3 ? 'workspace_premium' : 'group_add' }}
+        </span>
 
-      Créer une communauté
+        {{ myCommunities.length >= 3 ? 'Plus de communautés' : 'Créer une communauté' }}
 
     </button>
 
@@ -253,7 +252,7 @@
 
     <!-- COMMUNITY GRID -->
 
-    <div class="my-community-grid">
+    <div class="my-community-grid2">
 
       @for (
         community of joinedCommunities.slice(0, 4);
@@ -393,219 +392,339 @@
   </section>
 
 }
-  <!-- EXPLORE -->
-  <section class="community-section explore-section">
-    <div class="section-heading">
-      <div>
-        <span class="section-kicker">RÉSEAU B2WA</span>
-        <h2>Explorer les communautés</h2>
-        <p>
-          Trouvez des communautés qui correspondent à vos activités
-          et à vos centres d'intérêt.
-        </p>
-      </div>
-      <span class="result-count">
-        {{ filteredCommunities.length }} communautés
+
+<!-- =========================================================
+     EXPLORER LES COMMUNAUTÉS
+========================================================== -->
+
+<section class="community-section explore-section">
+
+  <!-- HEADER -->
+
+  <div class="section-heading">
+
+    <div>
+
+      <span class="section-kicker">
+        RÉSEAU B2WA
       </span>
+
+      <h2>
+        Explorer les communautés
+      </h2>
+
+      <p>
+        Découvrez les communautés professionnelles les plus récentes
+        et trouvez celles qui correspondent à votre activité.
+      </p>
+
     </div>
 
-      <!-- SEARCH + FILTER -->
-  <section class="community-tools">
-    <div class="search-box">
-      <span class="material-symbols-outlined">search</span>
-      <input
-        type="text"
-        placeholder="Rechercher une communauté..."
-        [(ngModel)]="searchTerm"
-      />
-      @if (searchTerm) {
-        <button
-          class="clear-search"
-          type="button"
-          (click)="clearSearch()"
-        >
-          <span class="material-symbols-outlined">close</span>
-        </button>
-      }
-    </div>
-    <div class="category-filters">
-      @for (category of categories; track category) {
-        <button
-          type="button"
-          class="category-btn"
-          [class.active]="selectedCategory === category"
-          (click)="selectCategory(category)"
-        >
-          {{ category }}
-        </button>
-      }
-    </div>
-  </section>
-  
-    @if (filteredCommunities.length > 0) {
-      <div class="community-grid">
-        @for (community of filteredCommunities; track community.id) {
-          <article class="community-card">
-            <!-- COVER -->
-            <div
-              class="card-cover"
-              [style.background-image]="'url(' + community.cover + ')'"
-            >
-              <div class="cover-overlay"></div>
-              <div class="card-top">
-                <span class="category-badge">
-                  {{ community.category }}
-                </span>
-                @if (community.verified) {
-                  <span
-                    class="verified-badge"
-                    title="Communauté vérifiée"
-                  >
-                    <span class="material-symbols-outlined">
-                      verified
-                    </span>
-                  </span>
-                }
-              </div>
-              <div class="community-emoji">
-                {{ community.icon }}
-              </div>
-            </div>
-            <!-- BODY -->
-            <div class="card-content">
-              <div class="community-title-row">
-                <div>
-                  <h3>{{ community.name }}</h3>
-                  <span class="admin-name">
-                    Par {{ community.admin }}
-                  </span>
-                </div>
-              </div>
-              <p class="community-description">
-                {{ community.description }}
-              </p>
-              <div class="card-stats">
-                <div class="stat">
-                  <span class="material-symbols-outlined">group</span>
-                  <div>
-                    <strong>
-                      {{ formatNumber(community.members) }}
-                    </strong>
-                    <small>Membres</small>
-                  </div>
-                </div>
-                <div class="stat">
-                  <span class="material-symbols-outlined">article</span>
-                  <div>
-                    <strong>{{ community.posts }}</strong>
-                    <small>Posts</small>
-                  </div>
-                </div>
-                <div class="stat">
-                  <span class="material-symbols-outlined">
-                    inventory_2
-                  </span>
-                  <div>
-                    <strong>{{ community.products }}</strong>
-                    <small>Produits</small>
-                  </div>
-                </div>
-              </div>
-<div class="card-footer">
 
-  <!-- MEMBRES -->
-  <div class="member-preview">
-    <div class="avatars">
-      @for (avatar of community.avatars; track avatar) {
-        <img
-          [src]="avatar"
-          alt="Membre"
-        />
-      }
-    </div>
+    <!-- VOIR TOUTES -->
 
-    @if (community.members > 4) {
-      <span>
-        +{{ formatNumber(community.members - 4) }}
-      </span>
-    }
-  </div>
-
-  <!-- ACTIONS -->
-  <div class="card-actions">
-
-    <!-- VOIR LA COMMUNAUTÉ -->
-    <button
-      class="view-btn"
-      type="button"
-      (click)="viewCommunity(community)"
-      title="Voir la communauté"
-    >
-      <span class="material-symbols-outlined">
-        visibility
-      </span>
-      Voir
-    </button>
-
-    <!-- MEMBRE / REJOINDRE -->
-    @if (community.isMember) {
+    @if (communities.length > 4) {
 
       <button
-        class="joined-btn"
         type="button"
-        (click)="leaveCommunity(community)"
+        class="view-all-btn"
+        (click)="exploreAllCommunities()"
       >
-        <span class="material-symbols-outlined">
-          check_circle
-        </span>
-        Membre
-      </button>
 
-    } @else {
-
-      <button
-        class="join-btn"
-        type="button"
-        (click)="joinCommunity(community)"
-      >
-        Rejoindre
+        Explorer toutes
 
         <span class="material-symbols-outlined">
           arrow_forward
         </span>
+
       </button>
 
     }
 
   </div>
 
-</div>
+
+  <!-- COMMUNITY GRID -->
+
+  @if (recentCommunities.length > 0) {
+
+    <div class="community-grid">
+
+      @for (
+        community of recentCommunities;
+        track community.id
+      ) {
+
+        <article class="community-card">
+
+          <!-- COVER -->
+
+          <div
+            class="card-cover"
+            [style.background-image]="'url(' + community.cover + ')'"
+          >
+
+            <div class="cover-overlay"></div>
+
+
+            <div class="card-top">
+
+              <span class="category-badge">
+                {{ community.category }}
+              </span>
+
+
+              @if (community.verified) {
+
+                <span
+                  class="verified-badge"
+                  title="Communauté vérifiée"
+                >
+
+                  <span class="material-symbols-outlined">
+                    verified
+                  </span>
+
+                </span>
+
+              }
+
             </div>
-          </article>
-        }
+
+
+            <div class="community-emoji">
+              {{ community.icon }}
+            </div>
+
+          </div>
+
+
+          <!-- BODY -->
+
+          <div class="card-content">
+
+            <div class="community-title-row">
+
+              <div>
+
+                <h3>
+                  {{ community.name }}
+                </h3>
+
+                <span class="admin-name">
+                  Par {{ community.admin }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <p class="community-description">
+              {{ community.description }}
+            </p>
+
+
+            <!-- STATS -->
+
+            <div class="card-stats">
+
+              <div class="stat">
+
+                <span class="material-symbols-outlined">
+                  group
+                </span>
+
+                <div>
+
+                  <strong>
+                    {{ formatNumber(community.members) }}
+                  </strong>
+
+                  <small>
+                    Membres
+                  </small>
+
+                </div>
+
+              </div>
+
+
+              <div class="stat">
+
+                <span class="material-symbols-outlined">
+                  article
+                </span>
+
+                <div>
+
+                  <strong>
+                    {{ community.posts }}
+                  </strong>
+
+                  <small>
+                    Posts
+                  </small>
+
+                </div>
+
+              </div>
+
+
+              <div class="stat">
+
+                <span class="material-symbols-outlined">
+                  inventory_2
+                </span>
+
+                <div>
+
+                  <strong>
+                    {{ community.products }}
+                  </strong>
+
+                  <small>
+                    Produits
+                  </small>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="card-footer">
+
+              <!-- MEMBRES -->
+
+              <div class="member-preview">
+
+                <div class="avatars">
+
+                  @for (
+                    avatar of community.avatars;
+                    track avatar
+                  ) {
+
+                    <img
+                      [src]="avatar"
+                      alt="Membre"
+                    />
+
+                  }
+
+                </div>
+
+
+                @if (community.members > 4) {
+
+                  <span>
+                    +{{ formatNumber(community.members - 4) }}
+                  </span>
+
+                }
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="card-actions">
+
+                <button
+                  class="view-btn"
+                  type="button"
+                  (click)="viewCommunity(community)"
+                >
+
+                  <span class="material-symbols-outlined">
+                    visibility
+                  </span>
+
+                  Voir
+
+                </button>
+
+
+                @if (community.isMember) {
+
+                  <button
+                    class="joined-btn"
+                    type="button"
+                    (click)="leaveCommunity(community)"
+                  >
+
+                    <span class="material-symbols-outlined icon-default">
+                      check_circle
+                    </span>
+                    <span class="material-symbols-outlined icon-hover">
+                      logout
+                    </span>
+
+                    <span class="text-default">Membre</span>
+                    <span class="text-hover">Quitter</span>
+
+                  </button>
+
+                } @else {
+
+                  <button
+                    class="join-btn"
+                    type="button"
+                    (click)="joinCommunity(community)"
+                  >
+
+                    Rejoindre
+
+                    <span class="material-symbols-outlined">
+                      arrow_forward
+                    </span>
+
+                  </button>
+
+                }
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  } @else {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+
       </div>
-    } @else {
-      <!-- EMPTY STATE -->
-      <div class="empty-state">
-        <div class="empty-icon">
-          <span class="material-symbols-outlined">
-            search_off
-          </span>
-        </div>
-        <h3>Aucune communauté trouvée</h3>
-        <p>
-          Nous n'avons trouvé aucune communauté correspondant à votre recherche.
-        </p>
-        <button
-          type="button"
-          class="reset-btn"
-          (click)="resetFilters()"
-        >
-          Réinitialiser les filtres
-        </button>
-      </div>
-    }
-  </section>
+
+      <h3>
+        Aucune communauté disponible
+      </h3>
+
+      <p>
+        Les nouvelles communautés apparaîtront ici.
+      </p>
+
+    </div>
+
+  }
+
+</section>
+
   <!-- COMMUNITY INFO BANNER -->
   <section class="community-banner">
     <div class="banner-icon">
@@ -629,4 +748,247 @@
       <span>WA</span>
     </div>
   </section>
+
+   <!-- =====================================================
+     MODAL B2WA PREMIUM
+  ====================================================== -->
+
+@if (showPremiumModal) {
+
+  <div
+    class="premium-modal-backdrop">
+
+    <div
+      class="premium-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- CLOSE -->
+
+      <button
+        type="button"
+        class="premium-modal-close"
+        aria-label="Fermer"
+        (click)="closePremiumModal()"
+      >
+
+        <span class="material-symbols-outlined">
+          close
+        </span>
+
+      </button>
+
+
+      <!-- ICON -->
+
+      <div class="premium-modal-icon">
+
+        <span class="material-symbols-outlined">
+          workspace_premium
+        </span>
+
+      </div>
+
+
+      <!-- KICKER -->
+
+      <span class="premium-modal-kicker">
+        B2WA PREMIUM
+      </span>
+
+
+      <!-- TITLE -->
+
+      <h2>
+        Développez votre
+        <span>réseau B2WA.</span>
+      </h2>
+
+
+      <!-- DESCRIPTION -->
+
+      <p class="premium-modal-description">
+        Avec le plan Standard, chaque fournisseur peut créer
+        jusqu'à <strong>3 communautés</strong>.
+        Vous souhaitez développer davantage votre réseau ?
+        Passez à B2WA Premium.
+      </p>
+
+
+      <!-- LIMIT CARD -->
+
+      <div class="premium-limit-card">
+
+        <div class="premium-limit-item">
+
+          <div class="limit-item-icon">
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+
+          </div>
+
+          <div>
+
+            <small>
+              PLAN STANDARD
+            </small>
+
+            <strong>
+              3 communautés
+            </strong>
+
+            <span>
+              Maximum par fournisseur
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="premium-limit-divider"></div>
+
+
+        <div class="premium-limit-item premium-next">
+
+          <div class="limit-item-icon">
+
+            <span class="material-symbols-outlined">
+              diamond
+            </span>
+
+          </div>
+
+          <div>
+
+            <small>
+              B2WA PREMIUM
+            </small>
+
+            <strong>
+              Plus de communautés
+            </strong>
+
+            <span>
+              Développez votre activité
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FEATURES -->
+
+      <div class="premium-features">
+
+        <div class="premium-feature">
+
+          <span class="material-symbols-outlined">
+            add_business
+          </span>
+
+          <span>
+            Créez davantage de communautés
+          </span>
+
+        </div>
+
+
+        <div class="premium-feature">
+
+          <span class="material-symbols-outlined">
+            groups
+          </span>
+
+          <span>
+            Développez votre réseau de membres
+          </span>
+
+        </div>
+
+
+        <div class="premium-feature">
+
+          <span class="material-symbols-outlined">
+            trending_up
+          </span>
+
+          <span>
+            Faites grandir votre activité sur B2WA
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- UNAVAILABLE NOTICE -->
+
+      <div class="premium-unavailable">
+
+        <div class="unavailable-icon">
+
+          <span class="material-symbols-outlined">
+            construction
+          </span>
+
+        </div>
+
+        <div>
+
+          <strong>
+            B2WA Premium arrive bientôt
+          </strong>
+
+          <p>
+            Le service Premium est actuellement
+            <strong>indisponible</strong>.
+            Nous travaillons pour vous proposer
+            cette fonctionnalité prochainement.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="premium-modal-actions">
+
+        <button
+          type="button"
+          class="premium-secondary-btn"
+          (click)="closePremiumModal()"
+        >
+          Fermer
+        </button>
+
+
+        <button
+          type="button"
+          class="premium-disabled-btn"
+          disabled
+        >
+
+          <span class="material-symbols-outlined">
+            lock
+          </span>
+
+          Bientôt disponible
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
 </div>
