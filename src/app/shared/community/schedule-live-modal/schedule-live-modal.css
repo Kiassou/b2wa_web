@@ -2,25 +2,49 @@
    LIVE MODAL
 ========================================================= */
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(10, 18, 28, 0.68);
+
+  backdrop-filter: blur(8px);
+
+  animation: liveBackdropIn .25s ease;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
 .live-modal {
-  width: min(620px, calc(100vw - 32px));
-  max-height: calc(100dvh - 32px);
+  width: min(680px, 100%);
+  max-height: 92vh;
 
   display: flex;
   flex-direction: column;
 
-  background: #ffffff;
-
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 24px;
-
   overflow: hidden;
 
-  box-shadow:
-    0 30px 80px rgba(15, 23, 42, 0.22),
-    0 10px 30px rgba(15, 23, 42, 0.08);
+  background: #fff;
 
-  animation: liveModalIn 0.28s ease;
+  border-radius: 22px;
+
+  border: 1px solid rgba(220, 70, 70, .08);
+
+  box-shadow:
+    0 30px 80px rgba(10, 25, 40, .22),
+    0 8px 25px rgba(10, 25, 40, .08);
+
+  animation: liveModalIn .3s cubic-bezier(.22, 1, .36, 1);
 }
 
 
@@ -29,125 +53,116 @@
 ========================================================= */
 
 .live-modal .modal-header {
-  flex: 0 0 auto;
-
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 
-  padding: 20px 24px;
+  padding: 24px 26px;
 
-  border-bottom: 1px solid #e2e8f0;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff 0%,
-      #fffafa 100%
-    );
+  border-bottom: 1px solid #edf1f4;
 }
 
 
 .live-modal .modal-title {
   display: flex;
   align-items: center;
-  gap: 13px;
-
-  min-width: 0;
+  gap: 15px;
 }
 
 
-.live-modal .modal-icon.red {
-  width: 46px;
-  height: 46px;
+.live-modal .modal-icon {
+  width: 48px;
+  height: 48px;
 
-  flex: 0 0 46px;
+  flex: 0 0 48px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   border-radius: 14px;
+}
+
+
+.live-modal .modal-icon.red {
+  color: #d94848;
 
   background:
     linear-gradient(
       135deg,
-      #fee2e2,
-      #fecaca
+      #fff0f0,
+      #ffe3e3
     );
 
-  color: #dc2626;
-
-  box-shadow:
-    0 7px 18px rgba(220, 38, 38, 0.12);
+  border: 1px solid #f5cccc;
 }
 
 
 .live-modal .modal-icon .material-symbols-outlined {
-  font-size: 23px;
+  font-size: 25px;
 }
 
 
 .live-modal .modal-kicker {
   display: block;
 
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 
-  color: #64748b;
-
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
 
-  letter-spacing: 0.12em;
+  letter-spacing: .14em;
 }
 
 
 .live-modal .red-kicker {
-  color: #dc2626;
+  color: #d94848;
 }
 
 
 .live-modal .modal-title h2 {
   margin: 0;
 
-  color: #0f172a;
+  color: #172636;
 
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.25;
+  font-size: 21px;
+  font-weight: 750;
 }
 
 
-.live-modal .modal-close {
-  width: 36px;
-  height: 36px;
+/* =========================================================
+   CLOSE
+========================================================= */
 
-  flex: 0 0 36px;
+.live-modal .modal-close {
+  width: 38px;
+  height: 38px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 0;
-  border-radius: 50%;
+  padding: 0;
 
-  background: #f8fafc;
-  color: #64748b;
+  border: 0;
+  border-radius: 10px;
+
+  color: #6b7885;
+  background: #f5f7f8;
 
   cursor: pointer;
 
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+    .2s ease;
 }
 
 
 .live-modal .modal-close:hover {
-  background: #fee2e2;
-  color: #dc2626;
+  color: #273645;
 
-  transform: rotate(90deg);
+  background: #e9edf0;
+
+  transform: rotate(4deg);
 }
 
 
@@ -156,17 +171,24 @@
 ========================================================= */
 
 .live-modal .modal-body {
-  flex: 1 1 auto;
-
-  min-height: 0;
-
-  padding: 20px 24px;
+  flex: 1;
 
   overflow-y: auto;
-  overflow-x: hidden;
+
+  padding: 26px;
 
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+}
+
+
+.live-modal .modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+
+.live-modal .modal-body::-webkit-scrollbar-thumb {
+  background: #d2d9de;
+  border-radius: 10px;
 }
 
 
@@ -175,96 +197,90 @@
 ========================================================= */
 
 .live-modal .form-group {
-  margin-bottom: 13px;
+  margin-bottom: 20px;
 }
 
 
-.live-modal .form-group:last-child {
-  margin-bottom: 0;
-}
-
-
-.live-modal .form-group label:not(.live-upload) {
+.live-modal .form-group > label {
   display: block;
 
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 
-  color: #334155;
+  color: #243443;
 
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 
 
 .live-modal input,
-.live-modal select,
 .live-modal textarea {
   width: 100%;
 
   box-sizing: border-box;
 
-  border: 1px solid #dbe3ec;
-  border-radius: 10px;
+  border: 1px solid #dce3e8;
 
-  background: #ffffff;
-  color: #0f172a;
+  border-radius: 11px;
+
+  background: #fff;
+
+  color: #1d2b38;
 
   font-family: inherit;
+
   font-size: 13px;
 
   outline: none;
 
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
 
-.live-modal input,
-.live-modal select {
-  height: 42px;
+.live-modal input {
+  height: 45px;
 
-  padding: 0 12px;
+  padding: 0 13px;
 }
 
 
 .live-modal textarea {
-  min-height: 72px;
+  min-height: 90px;
 
-  padding: 10px 12px;
+  padding: 12px 13px;
 
   resize: vertical;
 }
 
 
-.live-modal input::placeholder,
-.live-modal textarea::placeholder {
-  color: #94a3b8;
+.live-modal input:focus,
+.live-modal textarea:focus {
+  border-color: #e05a5a;
+
+  box-shadow:
+    0 0 0 3px rgba(224, 90, 90, .10);
 }
 
 
-.live-modal input:focus,
-.live-modal select:focus,
-.live-modal textarea:focus {
-  border-color: #ef4444;
-
-  box-shadow:
-    0 0 0 3px rgba(239, 68, 68, 0.08);
-
-  background: #fffafa;
+.live-modal input::placeholder,
+.live-modal textarea::placeholder {
+  color: #a3adb5;
 }
 
 
 /* =========================================================
-   FORM ROW
+   ROW
 ========================================================= */
 
 .live-modal .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
 
-  gap: 12px;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
 }
 
 
@@ -272,131 +288,359 @@
    LIVE UPLOAD
 ========================================================= */
 
-.live-upload {
+.live-modal .live-upload {
   position: relative;
 
-  min-height: 74px;
+  min-height: 175px;
 
   display: flex;
+  flex-direction: column;
+
   align-items: center;
-  gap: 12px;
+  justify-content: center;
 
-  padding: 10px 13px;
+  gap: 7px;
 
-  box-sizing: border-box;
+  padding: 18px;
 
-  border: 1.5px dashed #cbd5e1;
-  border-radius: 12px;
+  overflow: hidden;
+
+  border: 1.5px dashed #e6bcbc;
+
+  border-radius: 15px;
 
   background:
     linear-gradient(
-      135deg,
-      #ffffff,
-      #f8fafc
+      180deg,
+      #fffafa,
+      #fff5f5
     );
+
+  color: #d94848;
 
   cursor: pointer;
 
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s ease;
+    border-color .2s ease,
+    background .2s ease,
+    transform .2s ease;
 }
 
 
-.live-upload:hover {
-  border-color: #ef4444;
+.live-modal .live-upload:hover {
+  border-color: #d94848;
 
-  background: #fffafa;
+  background:
+    linear-gradient(
+      180deg,
+      #fff5f5,
+      #ffeded
+    );
+
+  transform: translateY(-1px);
 }
 
 
-.live-upload > .material-symbols-outlined {
-  width: 40px;
-  height: 40px;
+.live-modal .live-upload
+  > .material-symbols-outlined {
+  font-size: 38px;
+}
 
-  flex: 0 0 40px;
+
+.live-modal .live-upload strong {
+  color: #4a3030;
+
+  font-size: 14px;
+}
+
+
+.live-modal .live-upload small {
+  color: #8b7373;
+
+  font-size: 11px;
+}
+
+
+.live-modal .live-upload input[type="file"] {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   COVER PREVIEW
+========================================================= */
+
+.live-modal .live-upload img {
+  display: block;
+
+  max-width: 100%;
+  max-height: 160px;
+
+  border-radius: 11px;
+
+  object-fit: cover;
+
+  box-shadow:
+    0 8px 22px rgba(40, 20, 20, .12);
+}
+
+
+.live-modal .live-upload img + strong {
+  color: #d94848;
+}
+
+
+/* =========================================================
+   B2WA LIVE STANDARD
+========================================================= */
+
+.live-standard {
+  margin: 7px 0 20px;
+
+  padding: 17px;
+
+  border: 1px solid #eadfe0;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffafa,
+      #fff
+    );
+}
+
+
+/* =========================================================
+   STANDARD HEADER
+========================================================= */
+
+.standard-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding-bottom: 15px;
+
+  border-bottom: 1px solid #f0e7e7;
+}
+
+
+.standard-icon {
+  width: 38px;
+  height: 38px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   border-radius: 11px;
 
-  background: #fee2e2;
-  color: #dc2626;
+  color: #d94848;
 
-  font-size: 21px;
+  background: #fff0f0;
 }
 
 
-.live-upload strong {
-  display: block;
-
-  color: #334155;
-
-  font-size: 12px;
-  font-weight: 700;
+.standard-icon .material-symbols-outlined {
+  font-size: 20px;
 }
 
 
-.live-upload small {
+.standard-kicker {
   display: block;
 
-  margin-top: 2px;
+  margin-bottom: 3px;
 
-  color: #94a3b8;
+  color: #d94848;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: .12em;
+}
+
+
+.standard-header strong {
+  display: block;
+
+  color: #293845;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   STANDARD VALUES
+========================================================= */
+
+.standard-values {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 15px 0;
+}
+
+
+.standard-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+
+  padding: 12px;
+
+  border: 1px solid #edf0f1;
+
+  border-radius: 11px;
+
+  background: #fff;
+}
+
+
+.standard-item-icon {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  color: #d94848;
+
+  background: #fff3f3;
+}
+
+
+.standard-item-icon
+  .material-symbols-outlined {
+  font-size: 18px;
+}
+
+
+.standard-item > div:nth-child(2) {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.standard-item small {
+  color: #84909a;
 
   font-size: 10px;
 }
 
 
-.live-upload input {
-  position: absolute;
+.standard-item strong {
+  color: #263744;
 
-  width: 1px;
-  height: 1px;
+  font-size: 12px;
 
-  opacity: 0;
-  pointer-events: none;
+  white-space: nowrap;
 }
 
 
-/* PREVIEW */
+.locked-icon {
+  margin-left: auto;
 
-.live-upload img {
-  width: 72px;
-  height: 54px;
+  flex: 0 0 auto;
 
-  flex: 0 0 72px;
+  color: #9ba5ad;
 
-  border-radius: 9px;
-
-  object-fit: cover;
+  font-size: 17px;
 }
 
 
 /* =========================================================
-   LIVE LINK INFO
+   STANDARD NOTE
+========================================================= */
+
+.standard-note {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 7px;
+
+  margin: 0;
+
+  padding-top: 12px;
+
+  border-top: 1px solid #f0e7e7;
+
+  color: #7b6868;
+
+  font-size: 10px;
+
+  line-height: 1.55;
+}
+
+
+.standard-note
+  .material-symbols-outlined {
+  flex: 0 0 auto;
+
+  margin-top: 1px;
+
+  color: #d94848;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   LINK INFO
 ========================================================= */
 
 .live-link-info {
   display: flex;
-  align-items: center;
-  gap: 12px;
 
-  margin-top: 14px;
+  align-items: flex-start;
 
-  padding: 12px 14px;
+  gap: 13px;
 
-  border: 1px solid #fecaca;
-  border-radius: 12px;
+  padding: 15px;
+
+  border: 1px solid #e4ebf0;
+
+  border-radius: 13px;
 
   background:
     linear-gradient(
       135deg,
-      #fff7f7,
-      #fef2f2
+      #f8fafc,
+      #ffffff
     );
 }
 
@@ -408,40 +652,43 @@
   flex: 0 0 38px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   border-radius: 10px;
 
-  background: #fee2e2;
-  color: #dc2626;
+  color: #1769e0;
+
+  background: #edf4ff;
 }
 
 
-.live-link-icon .material-symbols-outlined {
-  font-size: 19px;
+.live-link-icon
+  .material-symbols-outlined {
+  font-size: 20px;
 }
 
 
 .live-link-info strong {
   display: block;
 
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 
-  color: #991b1b;
+  color: #2b3b48;
 
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 12px;
 }
 
 
 .live-link-info p {
   margin: 0;
 
-  color: #7f1d1d;
+  color: #74818b;
 
-  font-size: 10px;
-  line-height: 1.45;
+  font-size: 11px;
+
+  line-height: 1.55;
 }
 
 
@@ -450,74 +697,100 @@
 ========================================================= */
 
 .live-modal .modal-footer {
-  flex: 0 0 auto;
-
   display: flex;
+
   align-items: center;
+
   justify-content: flex-end;
+
   gap: 10px;
 
-  padding: 15px 24px;
+  padding: 17px 26px;
 
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #edf1f4;
 
-  background: #ffffff;
+  background: #fff;
 }
 
 
-.live-modal .cancel-btn,
-.live-modal .primary-btn {
-  min-height: 42px;
+/* =========================================================
+   BUTTONS
+========================================================= */
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+.live-modal .cancel-btn {
+  height: 43px;
 
-  padding: 0 17px;
+  padding: 0 18px;
+
+  border: 1px solid #dce3e7;
 
   border-radius: 10px;
 
+  color: #5d6b77;
+
+  background: #fff;
+
   font-family: inherit;
+
   font-size: 12px;
+
   font-weight: 700;
 
   cursor: pointer;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-
-.live-modal .cancel-btn {
-  border: 1px solid #e2e8f0;
-
-  background: #ffffff;
-  color: #475569;
 }
 
 
 .live-modal .cancel-btn:hover {
-  background: #f8fafc;
+  background: #f5f7f8;
+
+  color: #263746;
+}
+
+
+.live-modal .primary-btn {
+  height: 43px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 20px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    opacity .2s ease;
 }
 
 
 .live-modal .red-btn {
-  border: 0;
-
   background:
     linear-gradient(
       135deg,
-      #ef4444,
-      #dc2626
+      #e05252,
+      #c93636
     );
 
-  color: #ffffff;
-
   box-shadow:
-    0 7px 18px rgba(220, 38, 38, 0.20);
+    0 7px 18px rgba(201, 54, 54, .20);
 }
 
 
@@ -525,12 +798,12 @@
   transform: translateY(-1px);
 
   box-shadow:
-    0 10px 24px rgba(220, 38, 38, 0.28);
+    0 10px 24px rgba(201, 54, 54, .28);
 }
 
 
-.live-modal .red-btn:disabled {
-  opacity: 0.45;
+.live-modal .primary-btn:disabled {
+  opacity: .45;
 
   cursor: not-allowed;
 
@@ -539,349 +812,126 @@
 
 
 /* =========================================================
-   BACKDROP
+   ANIMATIONS
 ========================================================= */
 
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
+@keyframes liveBackdropIn {
 
-  z-index: 9999;
+  from {
+    opacity: 0;
+  }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  to {
+    opacity: 1;
+  }
 
-  padding: 16px;
-
-  background: rgba(15, 23, 42, 0.62);
-
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
-  overflow-y: auto;
 }
 
-
-/* =========================================================
-   ANIMATION
-========================================================= */
 
 @keyframes liveModalIn {
 
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.97);
+
+    transform:
+      translateY(18px)
+      scale(.97);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+
+    transform:
+      translateY(0)
+      scale(1);
   }
 
 }
 
 
 /* =========================================================
-   TABLET
+   RESPONSIVE
 ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
   .modal-backdrop {
-    padding: 10px;
+    padding: 12px;
+
+    align-items: flex-end;
   }
+
 
   .live-modal {
-    width: 100%;
-    max-width: 500px;
+    max-height: 94vh;
 
-    max-height: calc(100dvh - 20px);
-
-    border-radius: 19px;
+    border-radius:
+      20px
+      20px
+      0
+      0;
   }
+
 
   .live-modal .modal-header {
-    padding: 15px 16px;
+    padding: 19px;
   }
+
 
   .live-modal .modal-body {
-    padding: 15px 16px;
+    padding: 20px 19px;
   }
+
 
   .live-modal .modal-footer {
-    padding: 12px 16px;
+    padding: 15px 19px;
   }
 
-  .live-modal .modal-icon.red {
-    width: 40px;
-    height: 40px;
-
-    flex-basis: 40px;
-
-    border-radius: 11px;
-  }
-
-  .live-modal .modal-title h2 {
-    font-size: 17px;
-  }
-
-  .live-modal .form-group {
-    margin-bottom: 10px;
-  }
 
   .live-modal .form-row {
-    gap: 9px;
+    grid-template-columns: 1fr;
+
+    gap: 0;
   }
 
-  .live-modal input,
-  .live-modal select {
-    height: 39px;
 
-    font-size: 12px;
-  }
-
-  .live-modal textarea {
-    min-height: 62px;
-  }
-
-  .live-upload {
-    min-height: 62px;
-  }
-
-  .live-link-info {
-    margin-top: 10px;
-    padding: 10px 11px;
+  .standard-values {
+    grid-template-columns: 1fr;
   }
 
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media (max-width: 480px) {
 
-  .modal-backdrop {
-    align-items: center;
-
-    padding: 7px;
+  .live-modal .modal-title h2 {
+    font-size: 18px;
   }
 
-  .live-modal {
-    max-height: calc(100dvh - 14px);
 
-    border-radius: 17px;
+  .live-modal .modal-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-basis: 43px;
   }
 
-  .live-modal .modal-header {
-    padding: 12px 13px;
-  }
-
-  .live-modal .modal-body {
-    padding: 12px 13px;
-
-    /*
-     * Le body reste scrollable uniquement si
-     * l'écran est réellement trop petit.
-     */
-    overflow-y: auto;
-  }
 
   .live-modal .modal-footer {
-    padding: 10px 13px;
+    flex-direction: column-reverse;
 
-    gap: 7px;
+    align-items: stretch;
   }
 
-  .live-modal .modal-kicker {
-    font-size: 8px;
-  }
-
-  .live-modal .modal-title h2 {
-    font-size: 16px;
-  }
-
-  .live-modal .modal-close {
-    width: 32px;
-    height: 32px;
-    flex-basis: 32px;
-  }
-
-  .live-modal .form-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
-  }
-
-  .live-modal .form-group label:not(.live-upload) {
-    margin-bottom: 4px;
-
-    font-size: 10px;
-  }
-
-  .live-modal input,
-  .live-modal select {
-    height: 37px;
-
-    padding: 0 9px;
-
-    border-radius: 8px;
-
-    font-size: 11px;
-  }
-
-  .live-modal textarea {
-    min-height: 55px;
-
-    padding: 8px 9px;
-
-    border-radius: 8px;
-
-    font-size: 11px;
-  }
-
-  .live-upload {
-    min-height: 58px;
-
-    padding: 8px 10px;
-
-    gap: 9px;
-
-    border-radius: 9px;
-  }
-
-  .live-upload > .material-symbols-outlined {
-    width: 32px;
-    height: 32px;
-
-    flex-basis: 32px;
-
-    font-size: 17px;
-  }
-
-  .live-upload strong {
-    font-size: 10px;
-  }
-
-  .live-upload small {
-    font-size: 8px;
-  }
-
-  .live-upload img {
-    width: 58px;
-    height: 42px;
-
-    flex-basis: 58px;
-  }
-
-  .live-link-info {
-    gap: 8px;
-
-    margin-top: 8px;
-
-    padding: 8px 9px;
-
-    border-radius: 9px;
-  }
-
-  .live-link-icon {
-    width: 30px;
-    height: 30px;
-
-    flex-basis: 30px;
-
-    border-radius: 8px;
-  }
-
-  .live-link-icon .material-symbols-outlined {
-    font-size: 16px;
-  }
-
-  .live-link-info strong {
-    font-size: 9px;
-  }
-
-  .live-link-info p {
-    font-size: 8px;
-    line-height: 1.35;
-  }
 
   .live-modal .cancel-btn,
   .live-modal .primary-btn {
-    min-height: 38px;
-
-    padding: 0 11px;
-
-    border-radius: 8px;
-
-    font-size: 10px;
+    width: 100%;
   }
 
-}
 
-
-/* =========================================================
-   VERY SMALL MOBILE
-========================================================= */
-
-@media (max-width: 360px) {
-
-  .live-modal .modal-header {
-    padding: 10px;
-  }
-
-  .live-modal .modal-body {
-    padding: 10px;
-  }
-
-  .live-modal .modal-footer {
-    padding: 8px 10px;
-  }
-
-  .live-modal .modal-title {
-    gap: 8px;
-  }
-
-  .live-modal .modal-icon.red {
-    width: 34px;
-    height: 34px;
-
-    flex-basis: 34px;
-  }
-
-  .live-modal .modal-title h2 {
-    font-size: 14px;
-  }
-
-  .live-modal .form-row {
-    gap: 5px;
-  }
-
-  .live-modal input,
-  .live-modal select {
-    height: 34px;
-
-    padding: 0 7px;
-
-    font-size: 10px;
-  }
-
-  .live-modal textarea {
-    min-height: 48px;
-  }
-
-  .live-modal .form-group {
-    margin-bottom: 7px;
-  }
-
-  .live-modal .cancel-btn,
-  .live-modal .primary-btn {
-    min-height: 34px;
-
-    padding: 0 8px;
-
-    font-size: 9px;
+  .standard-item strong {
+    white-space: normal;
   }
 
 }

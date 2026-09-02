@@ -7,6 +7,7 @@ import {
   FlashSale,
   FlashSaleStoreService
 } from '../../../services/flash-sale-store.service';
+import { CommunityService } from '../../../services/community.service';
 
 interface CommunityOption {
   id: string;
@@ -28,22 +29,9 @@ export class UpdateFlashSaleComponent implements OnInit {
   saleId!: number;
 
   /* =====================================================
-     COMMUNAUTÉS
+     COMMUNAUTÉS (uniquement celles dont l'utilisateur est admin)
   ====================================================== */
-  communities: CommunityOption[] = [
-    {
-      id: 'community-1',
-      name: 'Tech & Électronique Mali'
-    },
-    {
-      id: 'community-2',
-      name: 'Mode & Shopping Bamako'
-    },
-    {
-      id: 'community-3',
-      name: 'Maison & Lifestyle'
-    }
-  ];
+  communities: CommunityOption[] = [];
 
   /* =====================================================
      FORMULAIRE
@@ -87,7 +75,8 @@ export class UpdateFlashSaleComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private flashSaleStore: FlashSaleStoreService
+    private flashSaleStore: FlashSaleStoreService,
+    private communityService: CommunityService
   ) {}
 
   /* =====================================================
@@ -98,11 +87,22 @@ export class UpdateFlashSaleComponent implements OnInit {
 
     if (idParam) {
       this.saleId = Number(idParam);
+      this.loadAdminCommunities();
       this.loadFlashSale(this.saleId);
     } else {
       this.errorMessage = 'Identifiant de vente flash introuvable.';
       this.loading = false;
     }
+  }
+
+  private loadAdminCommunities(): void {
+    const allCommunities = this.communityService.getCommunities();
+    const adminCommunities = allCommunities.filter(c => c.isAdmin);
+
+    this.communities = adminCommunities.map(c => ({
+      id: c.id,
+      name: c.name
+    }));
   }
 
   private loadFlashSale(id: number): void {

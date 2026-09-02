@@ -8,7 +8,7 @@
 
     <div
       class="hero-cover"
-      [style.background-image]="'url(' + community.cover + ')'"
+      [style.background-image]="'url(' + community?.cover + ')'"
     >
       <div class="hero-overlay"></div>
 
@@ -23,7 +23,7 @@
 
       <div class="hero-status">
 
-        @if (community.isAdmin) {
+        @if (community?.isAdmin) {
 
           <span class="status-badge admin">
             <span class="material-symbols-outlined">
@@ -32,7 +32,7 @@
             Admin
           </span>
 
-        } @else if (community.isMember) {
+        } @else if (community?.isMember) {
 
           <span class="status-badge member">
             <span class="material-symbols-outlined">
@@ -56,7 +56,7 @@
     <div class="hero-content">
 
       <div class="community-avatar">
-        {{ community.icon }}
+        {{ community?.icon }}
       </div>
 
 
@@ -69,10 +69,10 @@
             <div class="title-row">
 
               <h1>
-                {{ community.name }}
+                {{ community?.name }}
               </h1>
 
-              @if (community.verified) {
+              @if (community?.verified) {
 
                 <span
                   class="verified-icon"
@@ -88,7 +88,7 @@
             </div>
 
             <span class="community-category">
-              {{ community.category }}
+              {{ community?.category }}
             </span>
 
           </div>
@@ -111,7 +111,7 @@
 
 
         <p class="community-description">
-          {{ community.description }}
+          {{ community?.description }}
         </p>
 
 
@@ -121,28 +121,28 @@
             <span class="material-symbols-outlined">
               group
             </span>
-            {{ formatNumber(community.members) }} membres
+            {{ formatNumber(community?.members || 0) }} membres
           </span>
 
           <span>
             <span class="material-symbols-outlined">
               article
             </span>
-            {{ community.posts }} publications
+            {{ community?.posts }} publications
           </span>
 
           <span>
             <span class="material-symbols-outlined">
               inventory_2
             </span>
-            {{ community.products }} produits
+            {{ community?.products }} produits
           </span>
 
           <span>
             <span class="material-symbols-outlined">
               person
             </span>
-            Admin : {{ community.admin }}
+            Admin : {{ community?.admin }}
           </span>
 
         </div>
@@ -189,7 +189,7 @@
         Produits
 
         <span class="tab-count">
-          {{ community.products }}
+          {{ community?.products || 0 }}
         </span>
       </button>
 
@@ -228,7 +228,7 @@
         Membres
 
         <span class="tab-count">
-          {{ formatNumber(community.members) }}
+          {{ formatNumber(community?.members || 0) }}
         </span>
       </button>
 
@@ -255,7 +255,7 @@
            ADMIN QUICK ACTIONS
       ================================================= -->
 
-      @if (community.isAdmin) {
+      @if (community?.isAdmin) {
 
         <section class="admin-actions">
 
@@ -415,12 +415,12 @@
             <div class="live-host">
 
               <div class="host-avatar">
-                {{ community.icon }}
+                {{ community?.icon }}
               </div>
 
               <div>
                 <strong>
-                  {{ community.admin }}
+                  {{ community?.admin }}
                 </strong>
 
                 <span>
@@ -569,200 +569,294 @@
 
           <div class="post-list">
 
-            @for (post of posts; track post.id) {
-
-              <article class="post-card">
-
-                <!-- POST HEADER -->
-
-                <div class="post-header">
-
-                  <div class="author-avatar">
-                    {{ post.authorAvatar }}
-                  </div>
-
-                  <div class="author-info">
-
-                    <div class="author-name-row">
-
-                      <strong>
-                        {{ post.author }}
-                      </strong>
-
-                      @if (post.isAdmin) {
-
-                        <span class="author-admin">
-                          Admin
-                        </span>
-
-                      }
-
-                    </div>
-
-                    <span>
-                      {{ post.time }}
-                    </span>
-
-                  </div>
-
-
-                  <button
-                    class="post-menu"
-                    type="button"
-                  >
-                    <span class="material-symbols-outlined">
-                      more_horiz
-                    </span>
-                  </button>
-
-                </div>
-
-
-                <!-- POST CONTENT -->
-
-                <div class="post-content">
-
-                  <p>
-                    {{ post.content }}
-                  </p>
-
-
-                  @if (post.image) {
-
-                    <div class="post-image">
-
-                      <img
-                        [src]="post.image"
-                        alt="Publication"
-                      />
-
-                    </div>
-
-                  }
-
-
-                  @if (post.product) {
-
-                    <div class="product-post">
-
-                      <div class="product-image">
-
-                        <img
-                          [src]="post.product.image"
-                          [alt]="post.product.name"
-                        />
-
-                      </div>
-
-
-                      <div class="product-info">
-
-                        <span class="product-label">
-                          PRODUIT
-                        </span>
-
-                        <h3>
-                          {{ post.product.name }}
-                        </h3>
-
-                        <p>
-                          {{ post.product.description }}
-                        </p>
-
-                        <div class="product-bottom">
-
-                          <strong>
-                            {{ post.product.price }}
-                          </strong>
-
-                          <span>
-                            {{ post.product.stock }}
-                          </span>
-
-                        </div>
-
-                      </div>
-
-
-                      <button
-                        type="button"
-                        class="view-product"
-                        (click)="viewProduct(post.product)"
-                      >
-                        Voir
-                        <span class="material-symbols-outlined">
-                          arrow_forward
-                        </span>
-                      </button>
-
-                    </div>
-
-                  }
-
-                </div>
-
-
-                <!-- POST FOOTER -->
-
-                <div class="post-stats">
-
-                  <span>
-                    <span class="material-symbols-outlined">
-                      thumb_up
-                    </span>
-                    {{ post.likes }}
-                  </span>
-
-                  <span>
-                    {{ post.comments }} commentaires
-                  </span>
-
-                </div>
-
-
-                <div class="post-actions">
-
-                  <button
-                    type="button"
-                    [class.liked]="post.liked"
-                    (click)="toggleLike(post)"
-                  >
-                    <span class="material-symbols-outlined">
-                      {{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
-                    </span>
-
-                    J'aime
-                  </button>
-
-
-                  <button
-                    type="button"
-                    (click)="commentPost(post)"
-                  >
-                    <span class="material-symbols-outlined">
-                      chat_bubble_outline
-                    </span>
-
-                    Commenter
-                  </button>
-
-
-                  <button
-                    type="button"
-                    (click)="sharePost(post)"
-                  >
-                    <span class="material-symbols-outlined">
-                      share
-                    </span>
-
-                    Partager
-                  </button>
-
-                </div>
-
-              </article>
-
+@for (post of posts; track post.id) {
+  @if (post.type === 'flash-sale') {
+    <!-- POST VENTE FLASH -->
+    <article class="post-card flash-sale-post">
+      <!-- POST HEADER -->
+      <div class="post-header">
+        <div class="author-avatar">
+          {{ post.authorAvatar }}
+        </div>
+        <div class="author-info">
+          <div class="author-name-row">
+            <strong>
+              {{ post.author }}
+            </strong>
+            @if (post.isAdmin) {
+              <span class="author-admin">
+                Admin
+              </span>
             }
+          </div>
+          <span>
+            {{ post.time }}
+          </span>
+        </div>
+
+        <button
+          class="post-menu"
+          type="button"
+        >
+          <span class="material-symbols-outlined">
+            more_horiz
+          </span>
+        </button>
+      </div>
+
+      <!-- POST CONTENT -->
+      <div class="post-content">
+
+        <!-- Badge Vente Flash -->
+        <div class="flash-sale-badge">
+          <span class="material-symbols-outlined">
+            local_fire_department
+          </span>
+          <span>Vente Flash</span>
+        </div>
+
+        <p>
+          {{ post.content }}
+        </p>
+
+        @if (post.image) {
+          <div class="post-image">
+            <img
+              [src]="post.image"
+              alt="Vente flash"
+            />
+          </div>
+        }
+
+        @if (post.product) {
+          <div class="product-post">
+            <div class="product-image">
+              <img
+                [src]="post.product.image"
+                [alt]="post.product.name"
+              />
+            </div>
+
+            <div class="product-info">
+              <span class="product-label">
+                PRODUIT
+              </span>
+              <h3>
+                {{ post.product.name }}
+              </h3>
+              <p>
+                {{ post.product.description }}
+              </p>
+              <div class="product-bottom">
+                <strong>
+                  {{ post.product.price }}
+                </strong>
+                <span>
+                  {{ post.product.stock }}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="view-product"
+              (click)="viewProduct(post.product)"
+            >
+              Voir
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- POST FOOTER -->
+      <div class="post-stats">
+        <span>
+          <span class="material-symbols-outlined">
+            thumb_up
+          </span>
+          {{ post.likes }}
+        </span>
+        <span>
+          {{ post.comments }} commentaires
+        </span>
+      </div>
+
+      <div class="post-actions">
+        <button
+          type="button"
+          [class.liked]="post.liked"
+          (click)="toggleLike(post)"
+        >
+          <span class="material-symbols-outlined">
+            {{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
+          </span>
+          J'aime
+        </button>
+
+        <button
+          type="button"
+          (click)="commentPost(post)"
+        >
+          <span class="material-symbols-outlined">
+            chat_bubble_outline
+          </span>
+          Commenter
+        </button>
+
+        <button
+          type="button"
+          (click)="sharePost(post)"
+        >
+          <span class="material-symbols-outlined">
+            share
+          </span>
+          Partager
+        </button>
+      </div>
+    </article>
+  } @else {
+    <!-- POST NORMAL (ton code actuel) -->
+    <article class="post-card">
+      <!-- POST HEADER -->
+      <div class="post-header">
+        <div class="author-avatar">
+          {{ post.authorAvatar }}
+        </div>
+        <div class="author-info">
+          <div class="author-name-row">
+            <strong>
+              {{ post.author }}
+            </strong>
+            @if (post.isAdmin) {
+              <span class="author-admin">
+                Admin
+              </span>
+            }
+          </div>
+          <span>
+            {{ post.time }}
+          </span>
+        </div>
+
+        <button
+          class="post-menu"
+          type="button"
+        >
+          <span class="material-symbols-outlined">
+            more_horiz
+          </span>
+        </button>
+      </div>
+
+      <!-- POST CONTENT -->
+      <div class="post-content">
+        <p>
+          {{ post.content }}
+        </p>
+
+        @if (post.image) {
+          <div class="post-image">
+            <img
+              [src]="post.image"
+              alt="Publication"
+            />
+          </div>
+        }
+
+        @if (post.product) {
+          <div class="product-post">
+            <div class="product-image">
+              <img
+                [src]="post.product.image"
+                [alt]="post.product.name"
+              />
+            </div>
+
+            <div class="product-info">
+              <span class="product-label">
+                PRODUIT
+              </span>
+              <h3>
+                {{ post.product.name }}
+              </h3>
+              <p>
+                {{ post.product.description }}
+              </p>
+              <div class="product-bottom">
+                <strong>
+                  {{ post.product.price }}
+                </strong>
+                <span>
+                  {{ post.product.stock }}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="view-product"
+              (click)="viewProduct(post.product)"
+            >
+              Voir
+              <span class="material-symbols-outlined">
+                arrow_forward
+              </span>
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- POST FOOTER -->
+      <div class="post-stats">
+        <span>
+          <span class="material-symbols-outlined">
+            thumb_up
+          </span>
+          {{ post.likes }}
+        </span>
+        <span>
+          {{ post.comments }} commentaires
+        </span>
+      </div>
+
+      <div class="post-actions">
+        <button
+          type="button"
+          [class.liked]="post.liked"
+          (click)="toggleLike(post)"
+        >
+          <span class="material-symbols-outlined">
+            {{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
+          </span>
+          J'aime
+        </button>
+
+        <button
+          type="button"
+          (click)="commentPost(post)"
+        >
+          <span class="material-symbols-outlined">
+            chat_bubble_outline
+          </span>
+          Commenter
+        </button>
+
+        <button
+          type="button"
+          (click)="sharePost(post)"
+        >
+          <span class="material-symbols-outlined">
+            share
+          </span>
+          Partager
+        </button>
+      </div>
+    </article>
+  }
+}
 
           </div>
 
@@ -795,7 +889,7 @@
               </p>
             </div>
 
-            @if (community.isAdmin) {
+            @if (community?.isAdmin) {
 
               <button
                 type="button"
@@ -950,12 +1044,12 @@
             <div class="live-host">
 
               <div class="host-avatar">
-                {{ community.icon }}
+                {{ community?.icon }}
               </div>
 
               <div>
                 <strong>
-                  {{ community.admin }}
+                  {{ community?.admin }}
                 </strong>
 
                 <span>
@@ -1002,7 +1096,7 @@
               </p>
             </div>
 
-            @if (community.isAdmin) {
+            @if (community?.isAdmin) {
 
               <button
                 type="button"
@@ -1156,7 +1250,7 @@
             </div>
 
             <span class="members-total">
-              {{ formatNumber(community.members) }} membres
+              {{ formatNumber(community?.members || 0) }} membres
             </span>
 
           </div>
@@ -1239,7 +1333,7 @@
 
 
         <p class="sidebar-description">
-          {{ community.description }}
+          {{ community?.description }}
         </p>
 
 
@@ -1253,7 +1347,7 @@
 
             <div>
               <small>Catégorie</small>
-              <strong>{{ community.category }}</strong>
+              <strong>{{ community?.category }}</strong>
             </div>
 
           </div>
@@ -1281,7 +1375,7 @@
 
             <div>
               <small>Créée le</small>
-              <strong>{{ community.createdAt }}</strong>
+              <strong>{{ community?.createdAt }}</strong>
             </div>
 
           </div>
@@ -1311,13 +1405,13 @@
         <div class="admin-profile">
 
           <div class="admin-avatar">
-            {{ community.icon }}
+            {{ community?.icon }}
           </div>
 
           <div>
 
             <strong>
-              {{ community.admin }}
+              {{ community?.admin }}
             </strong>
 
             <span>
@@ -1352,21 +1446,21 @@
 
           <div>
             <strong>
-              {{ formatNumber(community.members) }}
+              {{ formatNumber(community?.members || 0) }}
             </strong>
             <span>Membres</span>
           </div>
 
           <div>
             <strong>
-              {{ community.posts }}
+              {{ community?.posts || 0 }}
             </strong>
             <span>Posts</span>
           </div>
 
           <div>
             <strong>
-              {{ community.products }}
+              {{ community?.products || 0 }}
             </strong>
             <span>Produits</span>
           </div>

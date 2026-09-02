@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // Modales partagées
 import { CreatePostModalComponent } from '../../../shared/community/create-post-modal/create-post-modal';
@@ -9,6 +9,15 @@ import { CreateProductModalComponent } from '../../../shared/community/create-pr
 import { ProductSuccessModalComponent } from '../../../shared/community/create-product-modal/product-success-modal/product-success-modal';
 import { LiveSuccessModalComponent } from '../../../shared/community/schedule-live-modal/live-success-modal/live-success-modal';
 import { ScheduleLiveModalComponent } from '../../../shared/community/schedule-live-modal/schedule-live-modal';
+
+import { Community, CommunityService } from '../../../services/community.service';
+import {
+  CommunityContentService,
+  Post,
+  Product,
+  Live,
+  Member
+} from '../../../services/community-content.service';
 
 @Component({
   selector: 'app-community-detail',
@@ -27,7 +36,6 @@ import { ScheduleLiveModalComponent } from '../../../shared/community/schedule-l
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommunityDetailComponent {
-
   // Onglet actif
   activeTab: 'home' | 'products' | 'lives' | 'members' = 'home';
 
@@ -46,23 +54,9 @@ export class CommunityDetailComponent {
   createdProduct: any = null;
   createdLive: any = null;
 
-  // Données de la communauté
-  community = {
-    id: 'comm-123', // AJOUTÉ : 'id' nécessaire pour manageCommunity()
-    name: 'Commerce & Import Mali',
-    category: 'Commerce International',
-    icon: '🛍️',
-    cover: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
-    description: 'Réseau d\'échange et d\'affaires pour les commerçants, importateurs et fournisseurs au Mali.',
-    members: 1420,
-    posts: 86,
-    products: 24,
-    admin: 'Mamadou Diallo',
-    verified: true,
-    isAdmin: true,
-    isMember: true,
-    createdAt: '15 Janvier 2024'
-  };
+  // Données de la communauté (liées au service via l'ID)
+  communityId = '';
+  community: Community | null = null;
 
   // Live en cours
   liveNow = {
@@ -73,118 +67,62 @@ export class CommunityDetailComponent {
   };
 
   // Prochains lives
-  upcomingLives = [
-    {
-      id: 'live-1',
-      title: 'Opportunités d\'importation Chine-Mali 2026',
-      date: '25 Février 2026',
-      month: 'FEB',
-      day: '25',
-      time: '16:00',
-      duration: '1 heure'
-    },
-    {
-      id: 'live-2',
-      title: 'Session Q&R Douane & Dédouanement',
-      date: '02 Mars 2026',
-      month: 'MAR',
-      day: '02',
-      time: '15:30',
-      duration: '45 min'
-    }
-  ];
+  upcomingLives: {
+    id: string;
+    title: string;
+    date: string;
+    month: string;
+    day: string;
+    time: string;
+    duration: string;
+  }[] = [];
 
   // Publications du fil d'actualités
-  posts = [
-    {
-      id: 'post-1',
-      author: 'Mamadou Diallo',
-      authorAvatar: '🛍️',
-      isAdmin: true,
-      time: 'Il y a 2 heures',
-      content: 'Nous venons de recevoir un nouveau lot de tissus de qualité supérieure disponible pour la commande en gros.',
-      image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=800&q=80',
-      likes: 18,
-      comments: 5,
-      liked: false,
-      product: null
-    },
-    {
-      id: 'post-2',
-      author: 'Mamadou Diallo',
-      authorAvatar: '🛍️',
-      isAdmin: true,
-      time: 'Hier à 14:30',
-      content: 'Nouveau produit disponible dans notre catalogue B2WA. Commandez directement en gros.',
-      image: null,
-      likes: 24,
-      comments: 8,
-      liked: true,
-      product: {
-        name: 'Sac artisanal en cuir',
-        description: 'Sac fait main en cuir véritable par nos artisans partenaires.',
-        price: '15 000 FCFA',
-        stock: '25 unités',
-        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=400&q=80'
-      }
-    }
-  ];
+  posts: Post[] = [];
 
   // Catalogue de produits
-  products = [
-    {
-      id: 'prod-1',
-      name: 'Sac artisanal en cuir',
-      category: 'Artisanat',
-      description: 'Sac fait main en cuir véritable par nos artisans partenaires.',
-      price: '15 000 FCFA',
-      stock: '25 unités disponibles',
-      status: 'En Stock',
-      image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'prod-2',
-      name: 'Bazin Riche Gangnerie (3m)',
-      category: 'Mode',
-      description: 'Bazin de très haute qualité disponible en plusieurs coloris.',
-      price: '35 000 FCFA',
-      stock: '10 unités disponibles',
-      status: 'En Stock',
-      image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=400&q=80'
-    }
-  ];
+  products: Product[] = [];
 
   // Liste des membres
-  members = [
-    {
-      id: 'mem-1',
-      name: 'Mamadou Diallo',
-      role: 'Importateur & Grossiste',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      isAdmin: true
-    },
-    {
-      id: 'mem-2',
-      name: 'Aïssata Traoré',
-      role: 'Commerçante',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
-      isAdmin: false
-    },
-    {
-      id: 'mem-3',
-      name: 'Ibrahima Koné',
-      role: 'Fournisseur Local',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      isAdmin: false
-    }
-  ];
+  members: Member[] = [];
 
-  // CORRIGÉ : router est maintenant injecté directement dans le constructeur
   constructor(
     private cdr: ChangeDetectorRef,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private communityService: CommunityService,
+    private contentService: CommunityContentService
   ) {}
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.communityId = id;
+    this.community = this.communityService.getCommunityById(id) || null;
+
+    // 1️⃣ Synchroniser d'abord les ventes flash vers les posts
+    this.contentService.syncFlashSalesToPosts(id);
+
+    // 2️⃣ Puis charger le contenu (posts déjà enrichis)
+    const content = this.contentService.getContentForCommunity(id);
+    this.posts = content.posts;
+    this.products = content.products;
+
+    // Pour les lives, on peut mapper vers ton format "upcomingLives"
+    this.upcomingLives = content.lives.map(live => ({
+      id: live.id,
+      title: live.title,
+      date: live.date,
+      month: new Date(live.date).toLocaleString('en-US', { month: 'short' }).toUpperCase(),
+      day: new Date(live.date).getDate().toString().padStart(2, '0'),
+      time: live.time,
+      duration: 'À définir' // ou un champ dédié si tu l'ajoutes dans Live
+    }));
+
+    this.members = content.members;
+  }
 
   // Navigation
   goBack(): void {
@@ -201,6 +139,7 @@ export class CommunityDetailComponent {
   }
 
   manageCommunity(): void {
+    if (!this.community) return;
     this.router.navigate([
       '/dashboard/manage-community',
       this.community.id,
@@ -261,21 +200,30 @@ export class CommunityDetailComponent {
     this.createdPost = postData;
     this.showPostSuccessModal = true;
 
-    // Ajout local du post créé dans la liste
     this.posts.unshift({
       id: `post-${Date.now()}`,
-      author: this.community.admin,
-      authorAvatar: this.community.icon,
-      isAdmin: true,
-      time: 'À l\'instant',
+      author: this.community?.admin || 'Admin',
+      authorInitial: (this.community?.admin || 'Admin').slice(0, 2).toUpperCase(),
+      date: 'À l\'instant',
+      title: 'Nouvelle publication',
       content: postData.content,
-      image: postData.image || null,
+      image: postData.image || undefined,
       likes: 0,
       comments: 0,
+      shares: 0,
+      isLiked: false,
       liked: false,
-      product: null
+      product: null as any,
+
+      // nouveaux champs
+      authorAvatar: this.community?.icon || '🌍',
+      isAdmin: true,
+      time: 'À l\'instant'
     });
-    this.community.posts++;
+
+    if (this.community) {
+      this.community.posts++;
+    }
     this.cdr.markForCheck();
   }
 
@@ -308,11 +256,15 @@ export class CommunityDetailComponent {
       category: productData.category,
       description: productData.description,
       price: productData.price,
-      stock: `${productData.stock} unités disponibles`,
-      status: 'En Stock',
       image: productData.image || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=400&q=80'
     });
-    this.community.products++;
+
+    if (this.community) {
+      this.community.products++;
+      // Optionnel : mettre à jour dans le service
+      // this.communityService.updateCommunity(this.community);
+    }
+
     this.cdr.markForCheck();
   }
 
@@ -352,6 +304,7 @@ export class CommunityDetailComponent {
       time: liveData.time,
       duration: liveData.duration
     });
+
     this.cdr.markForCheck();
   }
 

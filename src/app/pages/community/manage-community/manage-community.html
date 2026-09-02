@@ -43,7 +43,7 @@
 
     <div
       class="hero-cover"
-      [style.background-image]="'url(' + community.cover + ')'"
+      [style.background-image]="'url(' + community?.cover + ')'"
     >
 
       <div class="hero-overlay"></div>
@@ -55,7 +55,7 @@
 
       <div class="community-avatar">
 
-        {{ community.icon }}
+        {{ community?.icon }}
 
       </div>
 
@@ -65,10 +65,10 @@
         <div class="hero-title">
 
           <h1>
-            {{ community.name }}
+            {{ community?.name }}
           </h1>
 
-          @if (community.verified) {
+          @if (community?.verified) {
 
             <span
               class="verified"
@@ -87,7 +87,7 @@
 
 
         <p>
-          {{ community.description }}
+          {{ community?.description }}
         </p>
 
 
@@ -99,7 +99,7 @@
               category
             </span>
 
-            {{ community.category }}
+            {{ community?.category }}
 
           </span>
 
@@ -110,7 +110,7 @@
               calendar_month
             </span>
 
-            Créée le {{ community.createdAt }}
+            Créée le {{ community?.createdAt }}
 
           </span>
 
@@ -308,7 +308,7 @@
               </span>
 
               <strong>
-                {{ community.members | number }}
+                {{ community?.members  | number }}
               </strong>
 
               <small>
@@ -337,7 +337,7 @@
               </span>
 
               <strong>
-                {{ community.posts }}
+                {{ community?.posts }}
               </strong>
 
               <small>
@@ -366,7 +366,7 @@
               </span>
 
               <strong>
-                {{ community.products }}
+                {{ community?.products }}
               </strong>
 
               <small>
@@ -395,7 +395,7 @@
               </span>
 
               <strong>
-                {{ community.lives }}
+                {{ community?.lives }}
               </strong>
 
               <small>
@@ -766,7 +766,7 @@
           </div>
 
           <span class="count-badge">
-            {{ community.members }} membres
+            {{ community?.members }} membres
           </span>
 
         </div>

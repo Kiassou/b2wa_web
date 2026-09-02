@@ -28,14 +28,38 @@ export class CreatePostModalComponent {
 
   onPostImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.postForm.imagePreview = e.target.result;
-        this.cdr.markForCheck();
-      };
-      reader.readAsDataURL(input.files[0]);
+    if (!input.files || input.files.length === 0) {
+      return;
     }
+
+    const file = input.files[0];
+
+    // Vérification du type
+    if (!file.type.startsWith('image/')) {
+      return;
+    }
+
+    // Limite : 5 Mo
+    if (file.size > 5 * 1024 * 1024) {
+      alert('L’image ne doit pas dépasser 5 Mo.');
+      input.value = '';
+      return;
+    }
+
+    // Libérer l'ancienne image
+    if (
+      this.postForm.imagePreview &&
+      this.postForm.imagePreview.startsWith('blob:')
+    ) {
+      URL.revokeObjectURL(this.postForm.imagePreview);
+    }
+
+    // Création immédiate de l'aperçu
+    this.postForm.imagePreview =
+      URL.createObjectURL(file);
+    // Permet de sélectionner à nouveau la même image
+    input.value = '';
+    this.cdr.markForCheck();
   }
 
   closeModal(): void {

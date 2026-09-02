@@ -1,0 +1,542 @@
+@if (visible) {
+
+  <div class="modal-backdrop">
+
+<div
+  class="story-modal"
+  (click)="$event.stopPropagation()"
+>
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="modal-header">
+
+    <div class="modal-title">
+
+      <div class="modal-icon">
+        <span class="material-symbols-outlined">
+          photo_camera
+        </span>
+      </div>
+
+      <div class="modal-heading">
+
+        <span class="modal-kicker">
+          B2WA • CONTENU
+        </span>
+
+        <h2>
+          {{ isEditing ? 'Modifier le Story' : 'Créer un Story / Statut' }}
+        </h2>
+
+        <p>
+          Partagez une actualité avec votre communauté
+        </p>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="modal-close"
+      (click)="closeModal()"
+      aria-label="Fermer"
+    >
+      <span class="material-symbols-outlined">
+        close
+      </span>
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       BODY
+  ====================================================== -->
+
+  <div class="modal-body">
+
+    <!-- CONTENU -->
+    <div class="form-group">
+
+      <label for="story-content">
+
+        <span class="material-symbols-outlined">
+          edit_note
+        </span>
+
+        Contenu
+
+      </label>
+
+      <div class="textarea-wrapper">
+
+        <textarea
+          id="story-content"
+          rows="5"
+          maxlength="500"
+          placeholder="Que souhaitez-vous partager ?"
+          [(ngModel)]="form.content"
+        ></textarea>
+
+        <span class="character-count">
+          {{ contentLength }}/500
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MÉDIA
+    ================================================== -->
+
+    <div class="form-group">
+
+      <label>
+
+        <span class="material-symbols-outlined">
+          perm_media
+        </span>
+
+        Média
+
+        <span class="optional">
+          Facultatif
+        </span>
+
+      </label>
+
+
+      <!-- PREVIEW -->
+      @if (imagePreview || videoPreview) {
+
+        <div class="media-preview">
+
+          @if (imagePreview) {
+
+            <img
+              [src]="imagePreview"
+              alt="Aperçu du Story"
+            />
+
+          }
+
+          @if (videoPreview) {
+
+            <video
+              [src]="videoPreview"
+              controls
+              playsinline
+            ></video>
+
+          }
+
+          <button
+            type="button"
+            class="remove-media"
+            (click)="removeMedia()"
+            aria-label="Supprimer le média"
+          >
+            <span class="material-symbols-outlined">
+              delete
+            </span>
+          </button>
+
+        </div>
+
+      } @else {
+
+        <div class="media-upload-grid">
+
+          <!-- IMAGE -->
+
+          <label class="media-upload image-upload">
+
+            <span class="material-symbols-outlined">
+              image
+            </span>
+
+            <strong>
+              Ajouter une image
+            </strong>
+
+            <small>
+              PNG, JPG, WEBP • 5 Mo max
+            </small>
+
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              (change)="onImageSelected($event)"
+            />
+
+          </label>
+
+
+          <!-- VIDEO -->
+
+          <label class="media-upload video-upload">
+
+            <span class="material-symbols-outlined">
+              videocam
+            </span>
+
+            <strong>
+              Ajouter une vidéo
+            </strong>
+
+            <small>
+              MP4, WEBM • 30 Mo max
+            </small>
+
+            <input
+              type="file"
+              accept="video/mp4,video/webm"
+              (change)="onVideoSelected($event)"
+            />
+
+          </label>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- =================================================
+         VISIBILITÉ
+    ================================================== -->
+
+    <div class="form-group">
+
+      <label>
+
+        <span class="material-symbols-outlined">
+          visibility
+        </span>
+
+        Visibilité
+
+      </label>
+
+
+      <div class="visibility-options">
+
+        <!-- COMMUNAUTÉ -->
+
+        <button
+          type="button"
+          class="visibility-option"
+          [class.active]="form.visibility === 'community'"
+          (click)="selectVisibility('community')"
+        >
+
+          <div class="visibility-icon community-icon">
+
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+
+          </div>
+
+          <div class="visibility-content">
+
+            <strong>
+              Communauté
+            </strong>
+
+            <span>
+              Visible uniquement par les membres
+            </span>
+
+            <small class="free-badge">
+              GRATUIT
+            </small>
+
+          </div>
+
+          <span
+            class="material-symbols-outlined check-icon"
+            *ngIf="form.visibility === 'community'"
+          >
+            check_circle
+          </span>
+
+        </button>
+
+
+        <!-- PUBLIC -->
+
+        <button
+          type="button"
+          class="visibility-option public-option"
+          [class.active]="form.visibility === 'public'"
+          (click)="selectVisibility('public')"
+        >
+
+          <div class="visibility-icon public-icon">
+
+            <span class="material-symbols-outlined">
+              public
+            </span>
+
+          </div>
+
+          <div class="visibility-content">
+
+            <strong>
+              Public
+            </strong>
+
+            <span>
+              Visible par tous les utilisateurs B2WA
+            </span>
+
+            @if (isPremium) {
+
+              <small class="premium-badge">
+                PREMIUM
+              </small>
+
+            } @else {
+
+              <small class="premium-badge locked">
+                <span class="material-symbols-outlined">
+                  lock
+                </span>
+
+                PREMIUM
+              </small>
+
+            }
+
+          </div>
+
+          <span
+            class="material-symbols-outlined check-icon"
+            *ngIf="form.visibility === 'public'"
+          >
+            check_circle
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         COMMUNAUTÉ
+    ================================================== -->
+
+    @if (form.visibility === 'community') {
+
+      <div class="form-group community-group">
+
+        <label for="story-community">
+
+          <span class="material-symbols-outlined">
+            groups
+          </span>
+
+          Choisir une communauté
+
+        </label>
+
+        <div class="select-wrapper">
+
+          <span class="material-symbols-outlined select-icon">
+            account_tree
+          </span>
+
+          <select
+            id="story-community"
+            [(ngModel)]="form.communityId"
+            (change)="onCommunityChange($event)"
+          >
+
+            <option value="">
+              Sélectionner une communauté
+            </option>
+
+            @for (community of communities; track community.id) {
+
+              <option [value]="community.id">
+                {{ community.name }}
+              </option>
+
+            }
+
+          </select>
+
+          <span class="material-symbols-outlined arrow-icon">
+            expand_more
+          </span>
+
+        </div>
+
+        @if (!form.communityId && submitted) {
+
+          <p class="field-error">
+            <span class="material-symbols-outlined">
+              error
+            </span>
+
+            Sélectionnez une communauté.
+          </p>
+
+        }
+
+      </div>
+
+    }
+
+
+    <!-- =================================================
+         INFORMATION
+    ================================================== -->
+
+    <div class="story-info">
+
+      <div class="info-icon">
+
+        <span class="material-symbols-outlined">
+          schedule
+        </span>
+
+      </div>
+
+      <div class="info-content">
+
+        <strong>
+          Durée du Story
+        </strong>
+
+        <p>
+          Votre Story restera visible pendant
+          <strong>24 heures</strong>
+          avant de disparaître automatiquement.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         PREMIUM INFORMATION
+    ================================================== -->
+
+    @if (form.visibility === 'public' && !isPremium) {
+
+      <div class="premium-warning">
+
+        <div class="premium-warning-icon">
+
+          <span class="material-symbols-outlined">
+            lock
+          </span>
+
+        </div>
+
+        <div>
+
+          <strong>
+            Diffusion publique Premium
+          </strong>
+
+          <p>
+            La diffusion publique des contenus est réservée
+            aux membres Premium.
+          </p>
+
+          <button
+            type="button"
+            class="premium-link"
+            (click)="requestPremium()"
+          >
+            Découvrir Premium
+            <span class="material-symbols-outlined">
+              arrow_forward
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="modal-footer">
+
+    <div class="footer-status">
+
+      <span
+        class="status-dot"
+        [class.ready]="canPublish"
+      ></span>
+
+      @if (canPublish) {
+
+        <span>
+          Prêt à publier
+        </span>
+
+      } @else {
+
+        <span>
+          Complétez les informations
+        </span>
+
+      }
+
+    </div>
+
+
+    <div class="footer-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="closeModal()"
+      >
+        Annuler
+      </button>
+
+      <button
+        type="button"
+        class="primary-btn"
+        [disabled]="!canPublish"
+        (click)="publishStory()"
+      >
+
+        <span class="material-symbols-outlined">
+          {{ isEditing ? 'save' : 'publish' }}
+        </span>
+
+        {{ isEditing ? 'Enregistrer' : 'Publier le Story' }}
+
+      </button>
+
+    </div>
+
+  </footer>
+
+</div>
+
+  </div>
+}

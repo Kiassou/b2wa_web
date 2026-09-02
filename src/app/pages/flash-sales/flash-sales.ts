@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FlashSale,
   FlashSaleStatus,
   FlashSaleStoreService
 } from '../../services/flash-sale-store.service';
+import { CommunityService } from '../../services/community.service';
 
 @Component({
   selector: 'app-flash-sales',
@@ -28,7 +29,9 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
 
   // Injection moderne des services
   private flashSaleStore = inject(FlashSaleStoreService);
+  private communityService = inject(CommunityService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private cdr = inject(ChangeDetectorRef);
 
   /* =====================================================
@@ -36,7 +39,13 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   ====================================================== */
 
   flashSales: FlashSale[] = [];
+
+  // Filtre global (all / active / scheduled / etc.)
   activeFilter: 'all' | FlashSaleStatus = 'all';
+
+  // Filtre par communauté (optionnel)
+  selectedCommunityId: string | 'all' = 'all';
+
   searchTerm = '';
 
   /* =====================================================
@@ -67,6 +76,12 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   private timer: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit(): void {
+    // Si tu veux filtrer par communauté via l'URL (ex: /flash-sales?community=comm-1)
+    const communityId = this.route.snapshot.queryParamMap.get('community');
+    if (communityId) {
+      this.selectedCommunityId = communityId;
+    }
+
     this.loadData();
 
     // Actualisation automatique du statut et du compte à rebours
@@ -76,7 +91,6 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
 
       // Force le rafraîchissement de l'affichage
       this.cdr.detectChanges();
-
     }, 1000);
   }
 
@@ -88,7 +102,14 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
   }
 
   loadData(): void {
-    this.flashSales = this.flashSaleStore.getAll();
+    // Tu peux charger toutes les ventes, ou filtrer par communauté ici
+    if (this.selectedCommunityId === 'all') {
+      this.flashSales = this.flashSaleStore.getAll();
+    } else {
+      this.flashSales =
+        this.flashSaleStore.getAllByCommunity(this.selectedCommunityId);
+    }
+
     this.stats = this.flashSaleStore.getStats();
   }
 
@@ -325,5 +346,11 @@ export class FlashSalesComponent implements OnInit, OnDestroy {
     sale: FlashSale
   ): number {
     return sale.id;
+  }
+
+  // Optionnel : pour changer la communauté filtrée depuis l'UI
+  setCommunityFilter(communityId: string | 'all'): void {
+    this.selectedCommunityId = communityId;
+    this.loadData();
   }
 }

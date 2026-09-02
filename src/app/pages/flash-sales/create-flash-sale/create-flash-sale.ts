@@ -7,6 +7,11 @@ import {
   FlashSale,
   FlashSaleStoreService
 } from '../../../services/flash-sale-store.service';
+import { CommunityService } from '../../../services/community.service';
+import {
+  CommunityContentService,
+  Post
+} from '../../../services/community-content.service';
 
 interface CommunityOption {
   id: string;
@@ -26,22 +31,9 @@ interface CommunityOption {
 export class CreateFlashSaleComponent {
 
   /* =====================================================
-     COMMUNAUTÉS
+     COMMUNAUTÉS (uniquement celles dont l'utilisateur est admin)
   ====================================================== */
-  communities: CommunityOption[] = [
-    {
-      id: 'community-1',
-      name: 'Tech & Électronique Mali'
-    },
-    {
-      id: 'community-2',
-      name: 'Mode & Shopping Bamako'
-    },
-    {
-      id: 'community-3',
-      name: 'Maison & Lifestyle'
-    }
-  ];
+  communities: CommunityOption[] = [];
 
   /* =====================================================
      FORMULAIRE
@@ -82,10 +74,30 @@ export class CreateFlashSaleComponent {
   ====================================================== */
   constructor(
     private router: Router,
-    private flashSaleStore: FlashSaleStoreService
+    private flashSaleStore: FlashSaleStoreService,
+    private communityService: CommunityService,
+    private contentService: CommunityContentService
   ) {
+    this.loadAdminCommunities();
     this.generateProductId();
     this.initializeDates();
+  }
+
+  /* =====================================================
+     CHARGER LES COMMUNAUTÉS DONT L'UTILISATEUR EST ADMIN
+  ====================================================== */
+  private loadAdminCommunities(): void {
+    const allCommunities = this.communityService.getCommunities();
+    const adminCommunities = allCommunities.filter(c => c.isAdmin);
+
+    this.communities = adminCommunities.map(c => ({
+      id: c.id,
+      name: c.name
+    }));
+
+    if (this.communities.length > 0) {
+      this.form.communityId = this.communities[0].id;
+    }
   }
 
   /* =====================================================
@@ -96,7 +108,7 @@ export class CreateFlashSaleComponent {
     this.form.productId = `PROD-${String(nextId).padStart(4, '0')}`;
   }
 
-/* =====================================================
+  /* =====================================================
      GESTION DE L'UPLOADER D'IMAGE
   ====================================================== */
   onImageSelected(event: Event): void {
@@ -113,7 +125,7 @@ export class CreateFlashSaleComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.form.productImage = reader.result as string;
-        this.imageError = false; // Réinitialisation directe de l'erreur
+        this.imageError = false;
         this.errorMessage = '';
       };
       reader.readAsDataURL(file);
@@ -169,6 +181,19 @@ export class CreateFlashSaleComponent {
 
   onCommunityChange(): void {
     this.errorMessage = '';
+  }
+
+  /* =====================================================
+     VÉRIFICATION : PEUT CRÉER UNE VENTE FLASH ICI ?
+  ====================================================== */
+  get canCreateFlashSaleForSelectedCommunity(): boolean {
+    if (!this.form.communityId) {
+      return false;
+    }
+
+    return this.flashSaleStore.canCreateFlashSaleForCommunity(
+      this.form.communityId
+    );
   }
 
   /* =====================================================
@@ -275,7 +300,8 @@ export class CreateFlashSaleComponent {
       quantity >= 1 &&
       this.form.startDate.trim().length > 0 &&
       this.form.endDate.trim().length > 0 &&
-      this.periodStatus !== 'invalid'
+      this.periodStatus !== 'invalid' &&
+      this.canCreateFlashSaleForSelectedCommunity
     );
   }
 
@@ -284,6 +310,10 @@ export class CreateFlashSaleComponent {
   ====================================================== */
   private cleanText(value: string | null | undefined): string {
     return String(value || '').trim();
+  }
+
+  private formatPrice(value: number): string {
+    return new Intl.NumberFormat('fr-FR').format(value);
   }
 
   /* =====================================================
@@ -332,6 +362,33 @@ export class CreateFlashSaleComponent {
       };
 
       this.flashSaleStore.add(sale);
+
+      // --- CRÉER UN POST "VENTE FLASH" DANS LA COMMUNAUTÉ ---
+      const newPost: Post = {
+        id: `post-flash-${sale.id}`,
+        author: sale.communityName,
+        authorInitial: sale.communityName.slice(0, 2).toUpperCase(),
+        date: 'À l\'instant',
+        title: '🔥 Vente Flash',
+        content: `Vente flash sur ${sale.productName} : -${this.discountPercentage}%`,
+        image: sale.productImage,
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        isLiked: false,
+        liked: false,
+        type: 'flash-sale',
+        flashSaleId: sale.id,
+        product: {
+          name: sale.productName,
+          description: sale.description,
+          price: `${this.formatPrice(sale.flashPrice)} FCFA`,
+          stock: `${sale.quantity} unités`,
+          image: sale.productImage
+        }
+      };
+
+      this.contentService.addPostToCommunity(sale.communityId, newPost);
 
       this.createdSale = {
         id: sale.id,

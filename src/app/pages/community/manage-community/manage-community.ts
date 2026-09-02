@@ -1,31 +1,21 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { Community, CommunityService } from '../../../services/community.service';
 import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  FormsModule
-} from '@angular/forms';
-
-import {
-  ActivatedRoute,
-  Router
-} from '@angular/router';
-
+  CommunityContentService,
+  Post,
+  Product,
+  Live,
+  Member
+} from '../../../services/community-content.service';
 
 @Component({
   selector: 'app-manage-community',
   standalone: true,
-
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
-
+  imports: [CommonModule, FormsModule],
   templateUrl: './manage-community.html',
   styleUrl: './manage-community.css'
 })
@@ -34,41 +24,12 @@ export class ManageCommunityComponent implements OnInit {
   /* =====================================================
      COMMUNITY
   ====================================================== */
-
   communityId = '';
-
-  community = {
-    id: 1,
-
-    name: 'Commerce Mali',
-    icon: '🛍️',
-
-    category: 'Commerce',
-
-    description:
-      'Une communauté dédiée aux commerçants et entrepreneurs maliens.',
-
-    longDescription:
-      'Commerce Mali rassemble les acteurs du commerce au Mali afin de partager leurs produits, leurs actualités et leurs opportunités.',
-
-    cover:
-      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80',
-
-    members: 1248,
-    posts: 86,
-    products: 42,
-    lives: 8,
-
-    verified: true,
-
-    createdAt: '12 août 2026'
-  };
-
+  community: Community | null = null;
 
   /* =====================================================
      ACTIVE TAB
   ====================================================== */
-
   activeTab:
     | 'overview'
     | 'information'
@@ -78,365 +39,117 @@ export class ManageCommunityComponent implements OnInit {
     | 'lives'
     | 'settings' = 'overview';
 
-
   /* =====================================================
      SEARCH
   ====================================================== */
-
   memberSearch = '';
   postSearch = '';
   productSearch = '';
 
-
   /* =====================================================
-     MEMBERS
+     MEMBERS, POSTS, PRODUCTS, LIVES (via ContentService)
   ====================================================== */
 
-  members = [
-
-    {
-      id: 1,
-      name: 'Aminata Traoré',
-      avatar: 'https://i.pravatar.cc/150?img=47',
-      role: 'Membre',
-      joinedAt: '15 août 2026'
-    },
-
-    {
-      id: 2,
-      name: 'Moussa Diarra',
-      avatar: 'https://i.pravatar.cc/150?img=12',
-      role: 'Membre',
-      joinedAt: '14 août 2026'
-    },
-
-    {
-      id: 3,
-      name: 'Fatoumata Coulibaly',
-      avatar: 'https://i.pravatar.cc/150?img=32',
-      role: 'Membre',
-      joinedAt: '13 août 2026'
-    },
-
-    {
-      id: 4,
-      name: 'Ibrahim Konaté',
-      avatar: 'https://i.pravatar.cc/150?img=11',
-      role: 'Membre',
-      joinedAt: '12 août 2026'
-    },
-
-    {
-      id: 5,
-      name: 'Oumar Keita',
-      avatar: 'https://i.pravatar.cc/150?img=68',
-      role: 'Membre',
-      joinedAt: '11 août 2026'
-    }
-
-  ];
-
-
-  /* =====================================================
-     POSTS
-  ====================================================== */
-
-  posts = [
-
-    {
-      id: 1,
-
-      title:
-        'Nouvelle collection disponible',
-
-      content:
-        'Découvrez notre nouvelle sélection de produits disponibles cette semaine.',
-
-      date:
-        '17 août 2026',
-
-      likes: 42,
-      comments: 8,
-
-      status: 'Publié'
-    },
-
-    {
-      id: 2,
-
-      title:
-        'Bienvenue dans Commerce Mali',
-
-      content:
-        'Bienvenue à tous les nouveaux membres de notre communauté.',
-
-      date:
-        '15 août 2026',
-
-      likes: 31,
-      comments: 5,
-
-      status: 'Publié'
-    },
-
-    {
-      id: 3,
-
-      title:
-        'Informations importantes',
-
-      content:
-        'Retrouvez ici toutes les informations importantes concernant nos activités.',
-
-      date:
-        '13 août 2026',
-
-      likes: 18,
-      comments: 3,
-
-      status: 'Publié'
-    }
-
-  ];
-
-
-  /* =====================================================
-     PRODUCTS
-  ====================================================== */
-
-  products = [
-
-    {
-      id: 1,
-
-      name:
-        'Sac artisanal malien',
-
-      category:
-        'Artisanat',
-
-      price:
-        '25 000 FCFA',
-
-      stock:
-        18,
-
-      status:
-        'Publié',
-
-      image:
-        'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80'
-    },
-
-    {
-      id: 2,
-
-      name:
-        'Boubou traditionnel',
-
-      category:
-        'Mode',
-
-      price:
-        '45 000 FCFA',
-
-      stock:
-        7,
-
-      status:
-        'Publié',
-
-      image:
-        'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&w=700&q=80'
-    },
-
-    {
-      id: 3,
-
-      name:
-        'Panier artisanal',
-
-      category:
-        'Artisanat',
-
-      price:
-        '12 500 FCFA',
-
-      stock:
-        25,
-
-      status:
-        'Publié',
-
-      image:
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80'
-    }
-
-  ];
-
-
-  /* =====================================================
-     LIVES
-  ====================================================== */
-
-  lives = [
-
-    {
-      id: 1,
-
-      title:
-        'Les nouveautés du commerce malien',
-
-      date:
-        '22 août 2026',
-
-      time:
-        '20:00',
-
-      duration:
-        '60 minutes',
-
-      reservations:
-        42,
-
-      capacity:
-        100,
-
-      status:
-        'Programmé',
-
-      link:
-        'https://b2wa.com/live/B2WA-COMMERCE01'
-    },
-
-    {
-      id: 2,
-
-      title:
-        'Rencontre avec les entrepreneurs',
-
-      date:
-        '29 août 2026',
-
-      time:
-        '18:30',
-
-      duration:
-        '90 minutes',
-
-      reservations:
-        27,
-
-      capacity:
-        80,
-
-      status:
-        'Programmé',
-
-      link:
-        'https://b2wa.com/live/B2WA-COMMERCE02'
-    }
-
-  ];
-
+  members: (Member & { joinedAt?: string })[] = [];
+  posts: (Post & { status?: string })[] = [];
+  products: (Product & { status?: string })[] = [];
+  lives: (Live & {
+    status?: string;
+    link: string;
+    duration: string;
+  })[] = [];
 
   /* =====================================================
      COMMUNITY INFORMATION FORM
   ====================================================== */
-
   communityForm = {
-
-    name:
-      this.community.name,
-
-    category:
-      this.community.category,
-
-    description:
-      this.community.description,
-
-    longDescription:
-      this.community.longDescription
+    name: '',
+    category: '',
+    description: '',
+    longDescription: ''
   };
-
 
   /* =====================================================
      SETTINGS
   ====================================================== */
-
   communitySettings = {
-
     publicCommunity: true,
-
     allowMembersPosts: false,
-
     allowMemberProducts: false,
-
     allowMemberLives: false
   };
-
 
   /* =====================================================
      CONFIRMATION MODAL
   ====================================================== */
-
   showConfirmModal = false;
-
   confirmTitle = '';
-
   confirmMessage = '';
-
   confirmButtonText = 'Confirmer';
-
   confirmButtonClass = 'danger';
-
-  pendingAction:
-    | (() => void)
-    | null = null;
-
+  pendingAction: (() => void) | null = null;
 
   /* =====================================================
      SUCCESS MODAL
   ====================================================== */
-
   showSuccessModal = false;
-
   successTitle = '';
-
   successMessage = '';
-
-
-  /* =====================================================
-     INIT
-  ====================================================== */
-
-  ngOnInit(): void {
-
-    this.communityId =
-      this.route.snapshot.paramMap.get('id') ?? '';
-
-  }
-
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private communityService: CommunityService,
+    private contentService: CommunityContentService,
+    private cdr: ChangeDetectorRef
   ) {}
 
+  ngOnInit(): void {
+    this.communityId = this.route.snapshot.paramMap.get('id') ?? '';
+    this.community = this.communityService.getCommunityById(this.communityId) || null;
 
-  /* =====================================================
-     NAVIGATION
-  ====================================================== */
+    if (this.community) {
+      this.communityForm = {
+        name: this.community.name,
+        category: this.community.category,
+        description: this.community.description,
+        longDescription: this.community.longDescription || ''
+      };
+    }
 
-  goBack(): void {
+    // Charger le contenu de la communauté
+    const content = this.contentService.getContentForCommunity(this.communityId);
 
-    this.router.navigate([
-      '/dashboard/community',
-      this.community.id
-    ]);
+    // Members
+    this.members = content.members.map(m => ({
+      ...m,
+      joinedAt: 'Date à définir' // ou un champ dédié si tu l’ajoutes
+    }));
 
+    // Posts
+    this.posts = content.posts.map(p => ({
+      ...p,
+      status: 'Publié'
+    }));
+
+    // Products
+    this.products = content.products.map(p => ({
+      ...p,
+      status: p.status || 'Publié'
+    }));
+
+    // Lives
+    this.lives = content.lives.map((l, idx) => ({
+      ...l,
+      status: 'Programmé',
+      link: `https://b2wa.com/live/${this.communityId}-live-${idx + 1}`,
+      duration: l.time // ou un champ dédié si tu veux
+    }));
   }
 
+  goBack(): void {
+    this.router.navigate(['/dashboard/community', this.communityId]);
+  }
 
   setActiveTab(
     tab:
@@ -448,329 +161,195 @@ export class ManageCommunityComponent implements OnInit {
       | 'lives'
       | 'settings'
   ): void {
-
     this.activeTab = tab;
-
+    this.cdr.markForCheck();
   }
 
-
-  /* =====================================================
-     SAVE COMMUNITY
-  ====================================================== */
-
   saveCommunityInformation(): void {
+    if (!this.community) return;
 
-    this.community.name =
-      this.communityForm.name;
+    const updated: Community = {
+      ...this.community,
+      name: this.communityForm.name,
+      category: this.communityForm.category,
+      description: this.communityForm.description,
+      longDescription: this.communityForm.longDescription
+    };
 
-    this.community.category =
-      this.communityForm.category;
-
-    this.community.description =
-      this.communityForm.description;
-
-    this.community.longDescription =
-      this.communityForm.longDescription;
-
+    this.communityService.updateCommunity(updated);
+    this.community = updated;
 
     this.openSuccess(
       'Informations mises à jour',
       'Les informations de votre communauté ont été enregistrées avec succès.'
     );
-
+    this.cdr.markForCheck();
   }
 
-
-  /* =====================================================
-     MEMBER ACTIONS
-  ====================================================== */
-
   removeMember(member: any): void {
-
     this.openConfirmation(
-
       'Retirer ce membre ?',
-
-      `Voulez-vous vraiment retirer ${member.name} de cette communauté ? Cette personne ne pourra plus accéder aux contenus réservés aux membres.`,
-
+      `Voulez-vous vraiment retirer ${member.name} de cette communauté ?`,
       'Retirer',
-
       'danger',
-
       () => {
-
-        this.members =
-          this.members.filter(
-            item => item.id !== member.id
-          );
-
-        this.community.members--;
-
+        this.members = this.members.filter(item => item.id !== member.id);
+        if (this.community) {
+          this.community.members = Math.max(0, this.community.members - 1);
+          this.communityService.updateCommunity(this.community);
+        }
         this.openSuccess(
           'Membre retiré',
           `${member.name} a été retiré de la communauté.`
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
-  /* =====================================================
-     POST ACTIONS
-  ====================================================== */
-
   deletePost(post: any): void {
-
     this.openConfirmation(
-
       'Supprimer cette publication ?',
-
       'Cette publication sera définitivement supprimée de votre communauté.',
-
       'Supprimer',
-
       'danger',
-
       () => {
-
-        this.posts =
-          this.posts.filter(
-            item => item.id !== post.id
-          );
-
-        this.community.posts--;
-
+        this.posts = this.posts.filter(item => item.id !== post.id);
+        if (this.community) {
+          this.community.posts = Math.max(0, this.community.posts - 1);
+          this.communityService.updateCommunity(this.community);
+        }
         this.openSuccess(
           'Publication supprimée',
           'La publication a été supprimée avec succès.'
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
   hidePost(post: any): void {
-
     this.openConfirmation(
-
       'Masquer cette publication ?',
-
       'La publication ne sera plus visible par les membres de votre communauté.',
-
       'Masquer',
-
       'warning',
-
       () => {
-
         post.status = 'Masqué';
-
         this.openSuccess(
           'Publication masquée',
           'La publication est maintenant masquée pour les membres.'
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
-  /* =====================================================
-     PRODUCT ACTIONS
-  ====================================================== */
-
   deleteProduct(product: any): void {
-
     this.openConfirmation(
-
       'Supprimer ce produit ?',
-
       `Le produit "${product.name}" sera retiré de votre communauté.`,
-
       'Supprimer',
-
       'danger',
-
       () => {
-
-        this.products =
-          this.products.filter(
-            item => item.id !== product.id
-          );
-
-        this.community.products--;
-
+        this.products = this.products.filter(item => item.id !== product.id);
+        if (this.community) {
+          this.community.products = Math.max(0, this.community.products - 1);
+          this.communityService.updateCommunity(this.community);
+        }
         this.openSuccess(
           'Produit supprimé',
           'Le produit a été supprimé de votre communauté.'
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
   hideProduct(product: any): void {
-
     this.openConfirmation(
-
       'Masquer ce produit ?',
-
       'Le produit ne sera plus visible dans la communauté.',
-
       'Masquer',
-
       'warning',
-
       () => {
-
         product.status = 'Masqué';
-
         this.openSuccess(
           'Produit masqué',
           'Le produit est maintenant masqué.'
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
-  /* =====================================================
-     LIVE ACTIONS
-  ====================================================== */
-
   cancelLive(live: any): void {
-
     this.openConfirmation(
-
       'Annuler ce Live ?',
-
       `Le Live "${live.title}" sera annulé et les membres ayant réservé leur place seront informés.`,
-
       'Annuler le Live',
-
       'danger',
-
       () => {
-
         live.status = 'Annulé';
-
         this.openSuccess(
           'Live annulé',
           'Le Live a été annulé avec succès.'
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
   deleteLive(live: any): void {
-
     this.openConfirmation(
-
       'Supprimer ce Live ?',
-
       'Cet événement sera définitivement supprimé de votre communauté.',
-
       'Supprimer',
-
       'danger',
-
       () => {
-
-        this.lives =
-          this.lives.filter(
-            item => item.id !== live.id
-          );
-
-        this.community.lives--;
-
+        this.lives = this.lives.filter(item => item.id !== live.id);
+        if (this.community) {
+          this.community.lives = Math.max(0, this.community.lives - 1);
+          this.communityService.updateCommunity(this.community);
+        }
         this.openSuccess(
           'Live supprimé',
           'Le Live a été supprimé.'
         );
-
+        this.cdr.markForCheck();
       }
-
     );
-
   }
 
-
   copyLiveLink(link: string): void {
-
     navigator.clipboard.writeText(link);
-
     this.openSuccess(
       'Lien copié',
       'Le lien B2WA Live a été copié dans votre presse-papiers.'
     );
-
   }
 
-
-  /* =====================================================
-     SETTINGS
-  ====================================================== */
-
   saveSettings(): void {
-
     this.openSuccess(
       'Paramètres enregistrés',
       'Les paramètres de votre communauté ont été mis à jour.'
     );
-
   }
-
-
-  /* =====================================================
-     DELETE COMMUNITY
-  ====================================================== */
 
   deleteCommunity(): void {
-
     this.openConfirmation(
-
       'Supprimer la communauté ?',
-
       'Cette action est définitive. Toutes les publications, produits, lives et données associées à cette communauté seront supprimés.',
-
       'Supprimer définitivement',
-
       'danger',
-
       () => {
-
-        this.router.navigate([
-          '/dashboard/community'
-        ]);
-
+        const ok = this.communityService.deleteCommunity(this.communityId);
+        if (ok) {
+          this.router.navigate(['/dashboard/community']);
+        }
       }
-
     );
-
   }
-
-
-  /* =====================================================
-     CONFIRMATION
-  ====================================================== */
 
   openConfirmation(
     title: string,
@@ -779,148 +358,62 @@ export class ManageCommunityComponent implements OnInit {
     buttonClass: string,
     action: () => void
   ): void {
-
-    this.confirmTitle =
-      title;
-
-    this.confirmMessage =
-      message;
-
-    this.confirmButtonText =
-      buttonText;
-
-    this.confirmButtonClass =
-      buttonClass;
-
-    this.pendingAction =
-      action;
-
-    this.showConfirmModal =
-      true;
-
+    this.confirmTitle = title;
+    this.confirmMessage = message;
+    this.confirmButtonText = buttonText;
+    this.confirmButtonClass = buttonClass;
+    this.pendingAction = action;
+    this.showConfirmModal = true;
+    this.cdr.markForCheck();
   }
-
 
   confirmAction(): void {
-
     if (this.pendingAction) {
-
-      const action =
-        this.pendingAction;
-
+      const action = this.pendingAction;
       this.closeConfirmModal();
-
       action();
-
     }
-
   }
-
 
   closeConfirmModal(): void {
-
-    this.showConfirmModal =
-      false;
-
-    this.pendingAction =
-      null;
-
+    this.showConfirmModal = false;
+    this.pendingAction = null;
+    this.cdr.markForCheck();
   }
 
-
-  /* =====================================================
-     SUCCESS
-  ====================================================== */
-
-  openSuccess(
-    title: string,
-    message: string
-  ): void {
-
-    this.successTitle =
-      title;
-
-    this.successMessage =
-      message;
-
-    this.showSuccessModal =
-      true;
-
+  openSuccess(title: string, message: string): void {
+    this.successTitle = title;
+    this.successMessage = message;
+    this.showSuccessModal = true;
+    this.cdr.markForCheck();
   }
-
 
   closeSuccess(): void {
-
-    this.showSuccessModal =
-      false;
-
+    this.showSuccessModal = false;
+    this.cdr.markForCheck();
   }
-
-
-  /* =====================================================
-     HELPERS
-  ====================================================== */
 
   get filteredMembers(): any[] {
-
-    const search =
-      this.memberSearch
-        .toLowerCase()
-        .trim();
-
-    if (!search) {
-      return this.members;
-    }
-
-    return this.members.filter(
-      member =>
-        member.name
-          .toLowerCase()
-          .includes(search)
+    const search = this.memberSearch.toLowerCase().trim();
+    if (!search) return this.members;
+    return this.members.filter(member =>
+      member.name.toLowerCase().includes(search)
     );
-
   }
-
 
   get filteredPosts(): any[] {
-
-    const search =
-      this.postSearch
-        .toLowerCase()
-        .trim();
-
-    if (!search) {
-      return this.posts;
-    }
-
-    return this.posts.filter(
-      post =>
-        post.title
-          .toLowerCase()
-          .includes(search)
+    const search = this.postSearch.toLowerCase().trim();
+    if (!search) return this.posts;
+    return this.posts.filter(post =>
+      post.title.toLowerCase().includes(search)
     );
-
   }
-
 
   get filteredProducts(): any[] {
-
-    const search =
-      this.productSearch
-        .toLowerCase()
-        .trim();
-
-    if (!search) {
-      return this.products;
-    }
-
-    return this.products.filter(
-      product =>
-        product.name
-          .toLowerCase()
-          .includes(search)
+    const search = this.productSearch.toLowerCase().trim();
+    if (!search) return this.products;
+    return this.products.filter(product =>
+      product.name.toLowerCase().includes(search)
     );
-
   }
-
 }

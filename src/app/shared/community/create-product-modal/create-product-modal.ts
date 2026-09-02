@@ -36,14 +36,37 @@ export class CreateProductModalComponent {
 
   onProductImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.productForm.imagePreview = e.target.result;
-        this.cdr.markForCheck();
-      };
-      reader.readAsDataURL(input.files[0]);
+    if (!input.files || input.files.length === 0) {
+      return;
     }
+
+    const file = input.files[0];
+
+    if (!file.type.startsWith('image/')) {
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('L’image ne doit pas dépasser 5 Mo.');
+      input.value = '';
+      return;
+    }
+
+    if (
+      this.productForm.imagePreview &&
+      this.productForm.imagePreview.startsWith('blob:')
+    ) {
+      URL.revokeObjectURL(this.productForm.imagePreview);
+    }
+
+    // Aperçu immédiat
+    this.productForm.imagePreview =
+      URL.createObjectURL(file);
+
+    // Permet de sélectionner à nouveau la même image
+    input.value = '';
+
+    this.cdr.markForCheck();
   }
 
   closeModal(): void {
