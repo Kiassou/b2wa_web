@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {
-  FlashSale,
-  FlashSaleStoreService
-} from '../../../services/flash-sale-store.service';
+
+import { FlashSale, FlashSaleStoreService } from '../../../services/flash-sale-store.service';
 import { CommunityService } from '../../../services/community.service';
-import {
-  CommunityContentService,
-  Post
-} from '../../../services/community-content.service';
+import { CommunityContentService, Post} from '../../../services/community-content.service';
+import { ProductsService, Product } from '../../../services/products.service';
 
 interface CommunityOption {
   id: string;
@@ -29,6 +25,8 @@ interface CommunityOption {
   styleUrl: './create-flash-sale.css'
 })
 export class CreateFlashSaleComponent {
+
+  private selectedProduct: Product | null = null;
 
   /* =====================================================
      COMMUNAUTÉS (uniquement celles dont l'utilisateur est admin)
@@ -73,15 +71,61 @@ export class CreateFlashSaleComponent {
      CONSTRUCTEUR
   ====================================================== */
   constructor(
-    private router: Router,
-    private flashSaleStore: FlashSaleStoreService,
-    private communityService: CommunityService,
-    private contentService: CommunityContentService
-  ) {
-    this.loadAdminCommunities();
+  private router: Router,
+  private route: ActivatedRoute,
+  private flashSaleStore: FlashSaleStoreService,
+  private communityService: CommunityService,
+  private contentService: CommunityContentService,
+  private productsService: ProductsService
+) {
+  this.loadAdminCommunities();
+  this.initializeDates();
+  this.loadProductFromRoute();
+}
+
+/* =====================================================
+   PRODUIT SÉLECTIONNÉ DEPUIS LA PAGE PRODUCTS
+====================================================== */
+
+private loadProductFromRoute(): void {
+  const productId = this.route.snapshot.queryParamMap.get('productId');
+
+  // Aucun produit transmis :
+  // on conserve le comportement actuel de création manuelle.
+  if (!productId) {
     this.generateProductId();
-    this.initializeDates();
+    return;
   }
+
+  this.productsService.products$.subscribe(products => {
+    const product = products.find(
+      item => item.id === productId
+    );
+
+    if (!product) {
+      this.errorMessage =
+        'Le produit sélectionné est introuvable.';
+      this.generateProductId();
+      return;
+    }
+
+    this.selectedProduct = product;
+
+    this.form.productId = product.id;
+    this.form.productName = product.name;
+    this.form.originalPrice = Number(product.price);
+    this.form.quantity = Number(product.stock);
+
+    // Priorité à la galerie d'images
+    if (product.images && product.images.length > 0) {
+      this.form.productImage = product.images[0];
+    } else {
+      this.form.productImage = product.imageUrl || '';
+    }
+
+    this.errorMessage = '';
+  });
+}
 
   /* =====================================================
      CHARGER LES COMMUNAUTÉS DONT L'UTILISATEUR EST ADMIN

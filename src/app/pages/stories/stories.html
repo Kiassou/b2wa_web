@@ -1,30 +1,21 @@
 <div class="storie-page">
 
-  <!-- =====================================================
-       HEADER
+    <!-- =====================================================
+        HEADER
   ====================================================== -->
 
-  <header class="page-header">
+    <header class="page-header">
 
     <div class="header-left">
 
-      <button
-        type="button"
-        class="back-btn"
-        (click)="goBack()"
-        aria-label="Retour"
-      >
+      <div class="header-icon">
         <span class="material-symbols-outlined">
-          arrow_back
+          auto_stories
         </span>
-      </button>
+      </div>
 
-      <div class="header-title">
-
-        <span class="page-kicker">
-          B2WA • CONTENU
-        </span>
-
+      <div class="header-text">
+        <span class="page-kicker">B2WA COMMUNAUTES</span>
         <h1>
           Stories & Contenus
         </h1>
@@ -32,41 +23,29 @@
         <p>
           Gérez vos Stories, Statuts et publications.
         </p>
-
       </div>
 
-    </div>
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="openCreatePublication()">
+      <span class="material-symbols-outlined">edit_square</span>
+      Nouveau Contenus
+    </button>
 
-    <div class="header-actions">
-
-      <button
-        type="button"
-        class="secondary-btn"
-        (click)="openCreateStory()"
-      >
+    <button
+      type="button"
+      class="secondary-btn"
+      (click)="openCreateStory()">
         <span class="material-symbols-outlined">
           add_circle
         </span>
-
         Story / Statut
-      </button>
-
-      <button
-        type="button"
-        class="primary-btn"
-        (click)="openCreatePublication()"
-      >
-        <span class="material-symbols-outlined">
-          edit_square
-        </span>
-
-        Nouvelle publication
-      </button>
+    </button>
 
     </div>
 
   </header>
-
 
   <!-- =====================================================
        PREMIUM INFO
@@ -606,21 +585,7 @@
                 <!-- MENU ACTIONS -->
 
                 <div class="content-actions">
-
-                  <button
-                    type="button"
-                    class="icon-btn"
-                    title="Modifier"
-                    (click)="editContent(content)"
-                  >
-
-                    <span class="material-symbols-outlined">
-                      edit
-                    </span>
-
-                  </button>
-
-
+                  
                   <button
                     type="button"
                     class="icon-btn danger"
@@ -966,13 +931,35 @@
 
   }
 
-  <app-create-story-modal
-  [visible]="showStoryModal"
-  [isPremium]="isPremium"
-  [content]="selectedContent"
-  (closed)="closeStoryModal()"
-  (submitted)="onStorySubmitted($event)"
-  (premiumRequired)="onStoryPremiumRequired()"
-></app-create-story-modal>
+<!-- =========================================================
+     CREATE STORY MODAL
+========================================================= -->
+
+<app-create-story-modal
+[visible]="showStoryModal"
+[isPremium]="isPremium"
+[content]="selectedContent"
+[communities]="communities"
+(closed)="closeStoryModal()"
+(submitted)="onStorySubmitted($event)"
+(premiumRequired)="onStoryPremiumRequired()"
+
+> </app-create-story-modal>
+
+<!-- =========================================================
+     CREATE PUBLICATION MODAL
+========================================================= -->
+
+<app-create-publication-modal
+[visible]="showPublicationModal"
+[isPremium]="isPremium"
+[content]="selectedContent"
+[communities]="communities"
+(closed)="closePublicationModal()"
+(submitted)="onPublicationSubmitted($event)"
+(premiumRequired)="onPublicationPremiumRequired()"
+
+> </app-create-publication-modal>
+
 
 </div>

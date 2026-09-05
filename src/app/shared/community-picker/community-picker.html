@@ -1,0 +1,234 @@
+@if (visible) {
+
+  <div
+    class="picker-overlay"
+    (click)="close()"
+  >
+
+    <div
+      class="picker-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="community-picker-title"
+      (click)="stopPropagation($event)"
+    >
+
+      <!-- =====================================================
+           HEADER
+      ====================================================== -->
+
+      <header class="picker-header">
+
+        <div class="header-title">
+
+          <div class="title-icon">
+            <span class="material-symbols-outlined">
+              groups
+            </span>
+          </div>
+
+          <div>
+            <h2 id="community-picker-title">
+              Choisir les communautés
+            </h2>
+
+            <p>
+              Sélectionnez où publier votre contenu
+            </p>
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-btn"
+          aria-label="Fermer"
+          (click)="close()"
+        >
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+
+      </header>
+
+
+      <!-- =====================================================
+           SELECT ALL
+      ====================================================== -->
+
+      <div class="select-all-row">
+
+        <label class="select-all-label">
+
+          <input
+            type="checkbox"
+            [checked]="allSelected"
+            (change)="toggleSelectAll()"
+          />
+
+          <span class="custom-checkbox">
+            @if (allSelected) {
+              <span class="material-symbols-outlined">
+                check
+              </span>
+            }
+          </span>
+
+          <span class="select-all-text">
+            <strong>
+              Sélectionner toutes
+            </strong>
+
+            <small>
+              {{ communities.length }}
+              communauté{{ communities.length > 1 ? 's' : '' }}
+            </small>
+          </span>
+
+        </label>
+
+        <span class="selected-counter">
+          {{ selectedCount }}
+          / {{ communities.length }}
+        </span>
+
+      </div>
+
+
+      <!-- =====================================================
+           COMMUNITY LIST
+      ====================================================== -->
+
+      <div class="community-list">
+
+        @if (communities.length === 0) {
+
+          <div class="empty-state">
+
+            <span class="material-symbols-outlined">
+              groups_off
+            </span>
+
+            <h3>
+              Aucune communauté disponible
+            </h3>
+
+            <p>
+              Vous devez être administrateur d'une communauté
+              pour pouvoir y publier du contenu.
+            </p>
+
+          </div>
+
+        } @else {
+
+          @for (
+            community of communities;
+            track community.id
+          ) {
+
+            <button
+              type="button"
+              class="community-item"
+              [class.selected]="isSelected(community.id)"
+              (click)="toggleCommunity(community)"
+            >
+
+              <div class="community-check">
+
+                @if (isSelected(community.id)) {
+
+                  <span class="material-symbols-outlined">
+                    check
+                  </span>
+
+                }
+
+              </div>
+
+              <div class="community-icon">
+
+                <span class="material-symbols-outlined">
+                  groups
+                </span>
+
+              </div>
+
+              <div class="community-info">
+
+                <strong>
+                  {{ community.name }}
+                </strong>
+
+                <span>
+                  Communauté B2WA
+                </span>
+
+              </div>
+
+              <span class="material-symbols-outlined arrow">
+                chevron_right
+              </span>
+
+            </button>
+
+          }
+
+        }
+
+      </div>
+
+
+      <!-- =====================================================
+           FOOTER
+      ====================================================== -->
+
+      <footer class="picker-footer">
+
+        <div class="selection-info">
+
+          <span class="material-symbols-outlined">
+            check_circle
+          </span>
+
+          <span>
+            {{ selectedCount }}
+            communauté{{ selectedCount > 1 ? 's' : '' }}
+            sélectionnée{{ selectedCount > 1 ? 's' : '' }}
+          </span>
+
+        </div>
+
+        <div class="footer-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="close()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="confirm-btn"
+            [disabled]="selectedCount === 0"
+            (click)="confirmSelection()"
+          >
+            <span class="material-symbols-outlined">
+              check
+            </span>
+
+            Valider
+          </button>
+
+        </div>
+
+      </footer>
+
+    </div>
+
+  </div>
+
+}

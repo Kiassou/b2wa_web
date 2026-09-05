@@ -1,1 +1,252 @@
-<p>finances works!</p>
+<div class="finances-container">
+  <!-- En-tête de la page -->
+  <header class="page-header">
+    <div class="header-titles">
+      <h1>Finances & Recettes</h1>
+      <p class="subtitle">Gérez votre solde, vos revenus par canal et vos retraits de fonds.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" (click)="exportJournalPDF()">
+        <span class="icon">📄</span> Export PDF
+      </button>
+      <button class="btn btn-outline" (click)="exportJournalExcel()">
+        <span class="icon">📊</span> Export Excel
+      </button>
+      <button class="btn btn-primary" (click)="openWithdrawModal()">
+        <span class="icon">💸</span> Demander un retrait
+      </button>
+    </div>
+  </header>
+
+  <!-- Notification Toast -->
+  @if (showSuccessToast()) {
+    <div class="toast toast-success">
+      <span class="toast-icon">✅</span>
+      <span>{{ toastMessage() }}</span>
+    </div>
+  }
+
+  <!-- Cartes d'aperçu des chiffres clés -->
+  <section class="overview-grid">
+    <div class="stat-card">
+      <div class="stat-icon icon-revenue">💰</div>
+      <div class="stat-info">
+        <span class="stat-label">Chiffre d'Affaires Total</span>
+        <h2 class="stat-value">{{ overview().totalRevenue | number:'1.0-0' }} FCFA</h2>
+        <span class="stat-trend positive">
+          ↑ +{{ overview().monthlyGrowthPercentage }}% ce mois
+        </span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon icon-available">💳</div>
+      <div class="stat-info">
+        <span class="stat-label">Solde Disponible</span>
+        <h2 class="stat-value text-primary">{{ overview().availableBalance | number:'1.0-0' }} FCFA</h2>
+        <span class="stat-hint">Prêt pour retrait rapide</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon icon-pending">⏳</div>
+      <div class="stat-info">
+        <span class="stat-label">Solde en Attente</span>
+        <h2 class="stat-value text-warning">{{ overview().pendingBalance | number:'1.0-0' }} FCFA</h2>
+        <span class="stat-hint">En cours de traitement</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon icon-withdraw">📥</div>
+      <div class="stat-info">
+        <span class="stat-label">Total Retiré</span>
+        <h2 class="stat-value">{{ overview().totalWithdrawals | number:'1.0-0' }} FCFA</h2>
+        <span class="stat-hint">Transféré vers Mobile Money / Banque</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Répartition des revenus par canal -->
+  <section class="channels-section">
+    <h3>Répartition des Recettes par Canal</h3>
+    <div class="channels-list">
+      @for (channel of revenueChannels(); track channel.channel) {
+        <div class="channel-card">
+          <div class="channel-header">
+            <span class="channel-title">{{ channel.channel }}</span>
+            <span class="channel-amount">{{ channel.amount | number:'1.0-0' }} FCFA</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div
+              class="progress-bar-fill"
+              [style.width.%]="channel.percentage"
+              [style.background-color]="channel.color"
+            ></div>
+          </div>
+          <div class="channel-footer">
+            <span>Part : {{ channel.percentage }}%</span>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Tableau des transactions -->
+  <section class="table-section">
+    <div class="table-controls">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          placeholder="Rechercher par référence, description, client..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+        />
+      </div>
+
+      <div class="filter-box">
+        <label for="typeFilter">Type :</label>
+        <select
+          id="typeFilter"
+          [ngModel]="selectedTypeFilter()"
+          (ngModelChange)="selectedTypeFilter.set($event)"
+        >
+          <option value="TOUS">Tous les types</option>
+          <option value="VENTE_COMMUNAUTE">Ventes Communautés</option>
+          <option value="VENTE_DIRECTE">Ventes Directes</option>
+          <option value="RETRAIT">Retraits</option>
+          <option value="ABONNEMENT">Abonnements</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="finance-table">
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Date & Heure</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Moyen de Paiement</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tx of filteredTransactions(); track tx.id) {
+            <tr>
+              <td class="font-bold">{{ tx.reference }}</td>
+              <td class="text-muted">{{ tx.date }}</td>
+              <td>
+                <div class="tx-desc">{{ tx.description }}</div>
+                @if (tx.customerName) {
+                  <small class="tx-customer">Client: {{ tx.customerName }}</small>
+                }
+              </td>
+              <td>
+                <span class="badge" [ngClass]="getTypeBadgeClass(tx.type)">
+                  {{ tx.type }}
+                </span>
+              </td>
+              <td>
+                <span class="payment-tag">{{ tx.paymentMethod }}</span>
+              </td>
+              <td class="font-bold text-right" [class.text-danger]="tx.type === 'RETRAIT'">
+                {{ tx.type === 'RETRAIT' ? '-' : '+' }}{{ tx.amount | number:'1.0-0' }} FCFA
+              </td>
+              <td>
+                <span
+                  class="status-dot"
+                  [ngClass]="{
+                    'status-complete': tx.status === 'COMPLETE',
+                    'status-pending': tx.status === 'EN_ATTENTE',
+                    'status-failed': tx.status === 'ECHOUE'
+                  }"
+                ></span>
+                {{ tx.status }}
+              </td>
+              <td class="text-center">
+                <button
+                  class="btn-icon"
+                  title="Télécharger le reçu PDF"
+                  (click)="exportSingleReceipt(tx, $event)"
+                >
+                  📥 Reçu
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-table">
+                Aucune transaction ne correspond à vos critères.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Modal de demande de retrait -->
+  @if (showWithdrawModal()) {
+    <div class="modal-backdrop" (click)="closeWithdrawModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Demander un retrait de fonds</h3>
+          <button class="btn-close" (click)="closeWithdrawModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="available-alert">
+            Solde disponible : <strong>{{ overview().availableBalance | number:'1.0-0' }} FCFA</strong>
+          </div>
+
+          <div class="form-group">
+            <label for="withdrawAmount">Montant à retirer (FCFA)</label>
+            <input
+              id="withdrawAmount"
+              type="number"
+              placeholder="Ex: 100000"
+              [ngModel]="withdrawAmount()"
+              (ngModelChange)="withdrawAmount.set($event)"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="paymentMethod">Mode de paiement</label>
+            <select
+              id="paymentMethod"
+              [ngModel]="selectedMethod()"
+              (ngModelChange)="selectedMethod.set($event)"
+            >
+              <option value="ORANGE_MONEY">Orange Money</option>
+              <option value="WAVE">Wave</option>
+              <option value="MOOV_MONEY">Moov Money</option>
+              <option value="VIREMENT">Virement Bancaire</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="destinationAccount">Numéro de téléphone / IBAN</label>
+            <input
+              id="destinationAccount"
+              type="text"
+              placeholder="Ex: +223 70 00 11 22 ou IBAN"
+              [ngModel]="destinationAccount()"
+              (ngModelChange)="destinationAccount.set($event)"
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline" (click)="closeWithdrawModal()">Annuler</button>
+          <button class="btn btn-primary" (click)="submitWithdrawal()">
+            Confirmer le retrait
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

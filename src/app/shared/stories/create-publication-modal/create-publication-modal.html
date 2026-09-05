@@ -3,7 +3,7 @@
   <div class="modal-backdrop">
 
 <div
-  class="story-modal"
+  class="publication-modal"
   (click)="$event.stopPropagation()"
 >
 
@@ -17,7 +17,7 @@
 
       <div class="modal-icon">
         <span class="material-symbols-outlined">
-          photo_camera
+          article
         </span>
       </div>
 
@@ -28,11 +28,15 @@
         </span>
 
         <h2>
-          {{ isEditing ? 'Modifier le Story' : 'Créer un Story / Statut' }}
+          {{
+            isEditing
+              ? 'Modifier la publication'
+              : 'Nouvelle publication'
+          }}
         </h2>
 
         <p>
-          Partagez une actualité avec votre communauté
+          Partagez une actualité avec votre audience
         </p>
 
       </div>
@@ -45,9 +49,11 @@
       (click)="closeModal()"
       aria-label="Fermer"
     >
+
       <span class="material-symbols-outlined">
         close
       </span>
+
     </button>
 
   </header>
@@ -59,13 +65,55 @@
 
   <div class="modal-body">
 
-    <!-- CONTENU -->
+    <!-- ===================================================
+         TITRE
+    ==================================================== -->
+
     <div class="form-group">
 
-      <label for="story-content">
+      <label for="publication-title">
 
         <span class="material-symbols-outlined">
-          edit_note
+          title
+        </span>
+
+        Titre de la publication
+
+      </label>
+
+      <div class="input-wrapper">
+
+        <span class="material-symbols-outlined input-icon">
+          edit
+        </span>
+
+        <input
+          id="publication-title"
+          type="text"
+          maxlength="120"
+          placeholder="Ex : Nouveau stock disponible..."
+          [(ngModel)]="form.title"
+        />
+
+        <span class="character-count">
+          {{ titleLength }}/120
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         CONTENU
+    ==================================================== -->
+
+    <div class="form-group">
+
+      <label for="publication-content">
+
+        <span class="material-symbols-outlined">
+          notes
         </span>
 
         Contenu
@@ -75,15 +123,15 @@
       <div class="textarea-wrapper">
 
         <textarea
-          id="story-content"
-          rows="5"
-          maxlength="500"
-          placeholder="Que souhaitez-vous partager ?"
+          id="publication-content"
+          rows="6"
+          maxlength="2000"
+          placeholder="Écrivez votre publication..."
           [(ngModel)]="form.content"
         ></textarea>
 
         <span class="character-count">
-          {{ contentLength }}/500
+          {{ contentLength }}/2000
         </span>
 
       </div>
@@ -209,9 +257,9 @@
     </div>
 
 
-    <!-- =================================================
+    <!-- ===================================================
          VISIBILITÉ
-    ================================================== -->
+    ==================================================== -->
 
     <div class="form-group">
 
@@ -233,11 +281,15 @@
         <button
           type="button"
           class="visibility-option"
-          [class.active]="form.visibility === 'community'"
+          [class.active]="
+            form.visibility === 'community'
+          "
           (click)="selectVisibility('community')"
         >
 
-          <div class="visibility-icon community-icon">
+          <div
+            class="visibility-icon community-icon"
+          >
 
             <span class="material-symbols-outlined">
               groups
@@ -261,12 +313,13 @@
 
           </div>
 
-          <span
-            class="material-symbols-outlined check-icon"
-            *ngIf="form.visibility === 'community'"
-          >
-            check_circle
-          </span>
+          @if (form.visibility === 'community') {
+
+            <span class="material-symbols-outlined check-icon">
+              check_circle
+            </span>
+
+          }
 
         </button>
 
@@ -276,11 +329,15 @@
         <button
           type="button"
           class="visibility-option public-option"
-          [class.active]="form.visibility === 'public'"
+          [class.active]="
+            form.visibility === 'public'
+          "
           (click)="selectVisibility('public')"
         >
 
-          <div class="visibility-icon public-icon">
+          <div
+            class="visibility-icon public-icon"
+          >
 
             <span class="material-symbols-outlined">
               public
@@ -307,23 +364,26 @@
             } @else {
 
               <small class="premium-badge locked">
+
                 <span class="material-symbols-outlined">
                   lock
                 </span>
 
                 PREMIUM
+
               </small>
 
             }
 
           </div>
 
-          <span
-            class="material-symbols-outlined check-icon"
-            *ngIf="form.visibility === 'public'"
-          >
-            check_circle
-          </span>
+          @if (form.visibility === 'public') {
+
+            <span class="material-symbols-outlined check-icon">
+              check_circle
+            </span>
+
+          }
 
         </button>
 
@@ -332,28 +392,25 @@
     </div>
 
 
-<!-- =================================================
-     COMMUNAUTÉ
-================================================== -->
+    <!-- ===================================================
+         COMMUNAUTÉ
+    ==================================================== -->
 
-@if (form.visibility === 'community') {
+    @if (form.visibility === 'community') {
 
   <div class="form-group community-group">
 
     <label>
-
       <span class="material-symbols-outlined">
         groups
       </span>
 
       Choisir les communautés
-
     </label>
 
-
-    <!-- =================================================
-         BOUTON DE SÉLECTION
-    ================================================== -->
+    <!-- =====================================================
+         COMMUNITY SELECTOR
+    ====================================================== -->
 
     <button
       type="button"
@@ -366,7 +423,6 @@
         <span class="material-symbols-outlined community-selector-icon">
           account_tree
         </span>
-
 
         <div class="community-selector-info">
 
@@ -383,18 +439,12 @@
           } @else {
 
             <span class="selected-title">
-
               {{ selectedCommunities.length }}
-
               communauté{{ selectedCommunities.length > 1 ? 's' : '' }}
-
               sélectionnée{{ selectedCommunities.length > 1 ? 's' : '' }}
-
             </span>
 
-
             <small>
-
               @for (
                 community of selectedCommunities;
                 track community.id;
@@ -404,7 +454,6 @@
                 {{ community.name }}{{ !last ? ', ' : '' }}
 
               }
-
             </small>
 
           }
@@ -413,7 +462,6 @@
 
       </div>
 
-
       <span class="material-symbols-outlined selector-arrow">
         expand_more
       </span>
@@ -421,9 +469,9 @@
     </button>
 
 
-    <!-- =================================================
-         ERREUR
-    ================================================== -->
+    <!-- =====================================================
+         ERROR
+    ====================================================== -->
 
     @if (
       selectedCommunities.length === 0 &&
@@ -447,16 +495,16 @@
 }
 
 
-    <!-- =================================================
-         INFORMATION
-    ================================================== -->
+    <!-- ===================================================
+         INFO
+    ==================================================== -->
 
-    <div class="story-info">
+    <div class="publication-info">
 
       <div class="info-icon">
 
         <span class="material-symbols-outlined">
-          schedule
+          groups
         </span>
 
       </div>
@@ -464,25 +512,32 @@
       <div class="info-content">
 
         <strong>
-          Durée du Story
+          Publication B2WA
         </strong>
 
         <p>
-          Votre Story restera visible pendant
-          <strong>24 heures</strong>
-          avant de disparaître automatiquement.
+          Les publications communautaires sont gratuites.
+          La diffusion publique nécessite un abonnement
+          <strong>Premium</strong>.
         </p>
 
       </div>
 
+      <span class="material-symbols-outlined info-check">
+        verified
+      </span>
+
     </div>
 
 
-    <!-- =================================================
-         PREMIUM INFORMATION
-    ================================================== -->
+    <!-- ===================================================
+         PREMIUM WARNING
+    ==================================================== -->
 
-    @if (form.visibility === 'public' && !isPremium) {
+    @if (
+      form.visibility === 'public' &&
+      !isPremium
+    ) {
 
       <div class="premium-warning">
 
@@ -494,15 +549,15 @@
 
         </div>
 
-        <div>
+        <div class="premium-warning-content">
 
           <strong>
             Diffusion publique Premium
           </strong>
 
           <p>
-            La diffusion publique des contenus est réservée
-            aux membres Premium.
+            La publication publique est réservée
+            aux utilisateurs Premium.
           </p>
 
           <button
@@ -510,10 +565,13 @@
             class="premium-link"
             (click)="requestPremium()"
           >
+
             Découvrir Premium
+
             <span class="material-symbols-outlined">
               arrow_forward
             </span>
+
           </button>
 
         </div>
@@ -569,14 +627,18 @@
         type="button"
         class="primary-btn"
         [disabled]="!canPublish"
-        (click)="publishStory()"
+        (click)="publishPublication()"
       >
 
         <span class="material-symbols-outlined">
           {{ isEditing ? 'save' : 'publish' }}
         </span>
 
-        {{ isEditing ? 'Enregistrer' : 'Publier le Story' }}
+        {{
+          isEditing
+            ? 'Enregistrer'
+            : 'Publier la publication'
+        }}
 
       </button>
 
@@ -593,6 +655,5 @@
   (closed)="closeCommunityPicker()"
   (selectionConfirmed)="onCommunitiesSelected($event)"
 ></app-community-picker>
-
   </div>
 }

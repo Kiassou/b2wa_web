@@ -434,6 +434,21 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   /* =====================================================
+   PRODUCTS VENTE FLASH
+  ====================================================== */
+  createSaleFlash(product: Product): void {
+    this.openActionMenuId = null;
+    this.router.navigate(
+      ['/dashboard/create-flash-sale'],
+      {
+        queryParams: {
+          productId: product.id
+        }
+      }
+    );
+  }
+
+  /* =====================================================
      CONFIRM ACTION
   ====================================================== */
 

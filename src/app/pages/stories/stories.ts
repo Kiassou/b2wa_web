@@ -9,214 +9,302 @@ import {
 } from '../../models/content.model';
 
 import { ContentService } from '../../services/content.service';
+import { CommunityService } from '../../services/community.service';
 
-import { CreateStoryModalComponent, StoryFormData } 
-  from '../../shared/stories/create-story-modal/create-story-modal';
+import {
+  CreateStoryModalComponent,
+  StoryFormData,
+  StoryCommunity
+} from '../../shared/stories/create-story-modal/create-story-modal';
+
+import {
+  CreatePublicationModalComponent,
+  PublicationFormData,
+  PublicationCommunity
+} from '../../shared/stories/create-publication-modal/create-publication-modal';
 
 @Component({
   selector: 'app-storie',
   standalone: true,
-    imports: [CommonModule, CreateStoryModalComponent],
+  imports: [
+    CommonModule,
+    CreateStoryModalComponent,
+    CreatePublicationModalComponent
+  ],
   templateUrl: './stories.html',
   styleUrl: './stories.css'
 })
 export class StoriesComponent implements OnInit {
 
-  // ============================================================
-  // DONNÉES
-  // ============================================================
+  // =========================================================
+  // CONTENT
+  // =========================================================
 
   contents: Content[] = [];
-
   stories: Content[] = [];
-
   publications: Content[] = [];
-
   filteredContents: Content[] = [];
 
-  // ============================================================
-  // ÉTAT DE LA PAGE
-  // ============================================================
+  // =========================================================
+  // FILTERS
+  // =========================================================
 
-  activeSection: 'all' | 'stories' | 'publications' = 'all';
+  activeSection:
+    'all' |
+    'stories' |
+    'publications' = 'all';
 
   searchTerm = '';
 
-  selectedVisibility: 'all' | ContentVisibility = 'all';
+  selectedVisibility:
+    'all' |
+    ContentVisibility = 'all';
 
   isLoading = false;
 
-  // ============================================================
+  // =========================================================
   // MODALS
-  // ============================================================
+  // =========================================================
 
   showStoryModal = false;
-
   showPublicationModal = false;
-
   showDeleteModal = false;
 
   selectedContent: Content | null = null;
 
-  // ============================================================
+  // =========================================================
   // PREMIUM
-  // ============================================================
+  // =========================================================
 
-  /**
-   * Pour le moment le compte n'est pas Premium.
-   *
-   * Plus tard cette valeur viendra du compte fournisseur
-   * ou d'un service Premium.
-   */
   isPremium = false;
-
   showPremiumModal = false;
 
-  // ============================================================
-  // CONSTRUCTEUR
-  // ============================================================
+  // =========================================================
+  // COMMUNITIES
+  // =========================================================
+
+  communities: StoryCommunity[] = [];
+
+  // =========================================================
+  // CONSTRUCTOR
+  // =========================================================
 
   constructor(
     private contentService: ContentService,
+    private communityService: CommunityService,
     private router: Router
   ) {}
 
-  // ============================================================
-  // INITIALISATION
-  // ============================================================
+  // =========================================================
+  // INIT
+  // =========================================================
 
   ngOnInit(): void {
+    this.loadCommunities();
     this.loadContents();
   }
 
-  // ============================================================
-  // CHARGEMENT
-  // ============================================================
+  // =========================================================
+  // LOAD COMMUNITIES
+  // =========================================================
+
+  loadCommunities(): void {
+
+    /*
+     * IMPORTANT :
+     * Seules les communautés dont le fournisseur est ADMIN
+     * peuvent être utilisées pour publier du contenu.
+     *
+     * Une communauté simplement rejointe ne doit PAS apparaître
+     * dans le sélecteur.
+     */
+
+    const myCommunities =
+      this.communityService.getMyCommunities();
+
+    const availableCommunities = [
+      ...myCommunities
+    ];
+
+    this.communities =
+      availableCommunities.map(community => ({
+        id: community.id,
+        name: community.name
+      }));
+  }
+
+  // =========================================================
+  // LOAD CONTENTS
+  // =========================================================
 
   loadContents(): void {
 
     this.isLoading = true;
 
-    this.contents = this.contentService.getAll();
+    this.contents =
+      this.contentService.getAll();
 
-    this.stories = this.contentService.getStories();
+    this.stories =
+      this.contentService.getStories();
 
-    this.publications = this.contentService.getPublications();
+    this.publications =
+      this.contentService.getPublications();
 
     this.applyFilters();
 
     this.isLoading = false;
   }
 
-  // ============================================================
-  // STATISTIQUES
-  // ============================================================
+  // =========================================================
+  // STATISTICS
+  // =========================================================
 
   get activeStoriesCount(): number {
-    return this.contentService.getActiveStoriesCount();
+    return this.contentService
+      .getActiveStoriesCount();
   }
 
   get publicationsCount(): number {
-    return this.contentService.getPublicationsCount();
+    return this.contentService
+      .getPublicationsCount();
   }
 
   get totalViews(): number {
-    return this.contentService.getTotalViews();
+    return this.contentService
+      .getTotalViews();
   }
 
-  // ============================================================
-  // FILTRAGE
-  // ============================================================
+  // =========================================================
+  // FILTERS
+  // =========================================================
 
   applyFilters(): void {
 
-    let result = [...this.contents];
+    let result =
+      [...this.contents];
 
-    // ----------------------------------------------------------
-    // Filtre par section
-    // ----------------------------------------------------------
+    // -------------------------------------------------------
+    // SECTION
+    // -------------------------------------------------------
 
-    if (this.activeSection === 'stories') {
+    if (
+      this.activeSection === 'stories'
+    ) {
 
-      result = result.filter(
-        content => content.type === 'story'
-      );
+      result =
+        result.filter(
+          content =>
+            content.type === 'story'
+        );
 
-    } else if (this.activeSection === 'publications') {
+    } else if (
+      this.activeSection === 'publications'
+    ) {
 
-      result = result.filter(
-        content => content.type === 'publication'
-      );
+      result =
+        result.filter(
+          content =>
+            content.type === 'publication'
+        );
     }
 
-    // ----------------------------------------------------------
-    // Filtre par visibilité
-    // ----------------------------------------------------------
+    // -------------------------------------------------------
+    // VISIBILITY
+    // -------------------------------------------------------
 
-    if (this.selectedVisibility !== 'all') {
+    if (
+      this.selectedVisibility !== 'all'
+    ) {
 
-      result = result.filter(
-        content =>
-          content.visibility === this.selectedVisibility
-      );
+      result =
+        result.filter(
+          content =>
+            content.visibility ===
+            this.selectedVisibility
+        );
     }
 
-    // ----------------------------------------------------------
-    // Recherche
-    // ----------------------------------------------------------
+    // -------------------------------------------------------
+    // SEARCH
+    // -------------------------------------------------------
 
-    const search = this.searchTerm
-      .trim()
-      .toLowerCase();
+    const search =
+      this.searchTerm
+        .trim()
+        .toLowerCase();
 
     if (search) {
 
-      result = result.filter(content => {
+      result =
+        result.filter(content => {
 
-        const title =
-          content.title?.toLowerCase() || '';
+          const title =
+            content.title
+              ?.toLowerCase() || '';
 
-        const text =
-          content.content.toLowerCase();
+          const text =
+            content.content
+              .toLowerCase();
 
-        const community =
-          content.communityName?.toLowerCase() || '';
+          /*
+           * Ancien système :
+           * communityName
+           *
+           * Nouveau système :
+           * communities[]
+           */
 
-        return (
-          title.includes(search) ||
-          text.includes(search) ||
-          community.includes(search)
-        );
-      });
+          const legacyCommunity =
+            content.communityName
+              ?.toLowerCase() || '';
+
+          const multipleCommunities =
+            content.communities
+              ?.map(community => community.name)
+              .join(' ')
+              .toLowerCase() || '';
+
+          return (
+            title.includes(search) ||
+            text.includes(search) ||
+            legacyCommunity.includes(search) ||
+            multipleCommunities.includes(search)
+          );
+
+        });
     }
 
-    // ----------------------------------------------------------
-    // Résultat
-    // ----------------------------------------------------------
-
-    this.filteredContents = result;
+    this.filteredContents =
+      result;
   }
 
-  // ============================================================
-  // CHANGEMENT DE SECTION
-  // ============================================================
+  // =========================================================
+  // CHANGE SECTION
+  // =========================================================
 
   changeSection(
-    section: 'all' | 'stories' | 'publications'
+    section:
+      'all' |
+      'stories' |
+      'publications'
   ): void {
 
-    this.activeSection = section;
+    this.activeSection =
+      section;
 
     this.applyFilters();
   }
 
-  // ============================================================
-  // RECHERCHE
-  // ============================================================
+  // =========================================================
+  // SEARCH
+  // =========================================================
 
-  onSearchChange(value: string): void {
+  onSearchChange(
+    value: string
+  ): void {
 
-    this.searchTerm = value;
+    this.searchTerm =
+      value;
 
     this.applyFilters();
   }
@@ -228,89 +316,346 @@ export class StoriesComponent implements OnInit {
     this.applyFilters();
   }
 
-  // ============================================================
-  // VISIBILITÉ
-  // ============================================================
+  // =========================================================
+  // VISIBILITY
+  // =========================================================
 
   changeVisibility(
-    visibility: 'all' | ContentVisibility
+    visibility:
+      'all' |
+      ContentVisibility
   ): void {
 
-    this.selectedVisibility = visibility;
+    this.selectedVisibility =
+      visibility;
 
     this.applyFilters();
   }
 
-  // ============================================================
-  // CRÉATION STORY / STATUT
-  // ============================================================
+  // =========================================================
+  // CREATE STORY
+  // =========================================================
 
   openCreateStory(): void {
 
-    this.selectedContent = null;
+    this.selectedContent =
+      null;
 
-    this.showStoryModal = true;
+    this.showStoryModal =
+      true;
   }
 
   closeStoryModal(): void {
 
-    this.showStoryModal = false;
+    this.showStoryModal =
+      false;
 
-    this.selectedContent = null;
+    this.selectedContent =
+      null;
   }
 
-  // ============================================================
-  // CRÉATION PUBLICATION
-  // ============================================================
+  // =========================================================
+  // STORY SUBMITTED
+  // =========================================================
+
+  onStorySubmitted(
+    data: StoryFormData
+  ): void {
+
+    const now =
+      new Date();
+
+    const expiresAt =
+      new Date(
+        now.getTime() +
+        24 * 60 * 60 * 1000
+      );
+
+    /*
+     * Première communauté uniquement pour garder
+     * la compatibilité avec l'ancien modèle.
+     *
+     * La vraie donnée utilisée maintenant est :
+     * data.communities
+     */
+
+    const firstCommunity =
+      data.communities?.[0];
+
+    // -------------------------------------------------------
+    // EDIT
+    // -------------------------------------------------------
+
+    if (this.selectedContent) {
+
+      this.contentService.update(
+        this.selectedContent.id,
+        {
+
+          content:
+            data.content,
+
+          image:
+            data.image,
+
+          video:
+            data.video,
+
+          visibility:
+            data.visibility,
+
+          // Nouveau système multi-communautés
+          communities:
+            [...data.communities],
+
+          // Compatibilité ancien système
+          communityId:
+            firstCommunity?.id,
+
+          communityName:
+            firstCommunity?.name,
+
+          updatedAt:
+            now.toISOString(),
+
+          expiresAt:
+            expiresAt.toISOString(),
+
+          status:
+            'published'
+        }
+      );
+
+    }
+
+    // -------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------
+
+    else {
+
+this.contentService.create({
+  type: 'story',
+
+  content:
+    data.content,
+
+  image:
+    data.image,
+
+  video:
+    data.video,
+
+  visibility:
+    data.visibility,
+
+  communities:
+    [...data.communities],
+
+  // Compatibilité ancien système
+  communityId:
+    firstCommunity?.id,
+
+  communityName:
+    firstCommunity?.name,
+
+  authorId:
+    'supplier-001',
+
+  authorName:
+    'Mamadou Diallo',
+
+  expiresAt:
+    expiresAt.toISOString(),
+
+  status:
+    'published'
+});
+
+    }
+
+    this.closeStoryModal();
+
+    this.loadContents();
+  }
+
+  // =========================================================
+  // CREATE PUBLICATION
+  // =========================================================
 
   openCreatePublication(): void {
 
-    this.selectedContent = null;
+    this.selectedContent =
+      null;
 
-    this.showPublicationModal = true;
+    this.showPublicationModal =
+      true;
   }
 
   closePublicationModal(): void {
 
-    this.showPublicationModal = false;
+    this.showPublicationModal =
+      false;
 
-    this.selectedContent = null;
+    this.selectedContent =
+      null;
   }
 
-  // ============================================================
-  // MODIFICATION
-  // ============================================================
+  // =========================================================
+  // PUBLICATION SUBMITTED
+  // =========================================================
 
-  editContent(content: Content): void {
+  onPublicationSubmitted(
+    data: PublicationFormData
+  ): void {
 
-    this.selectedContent = content;
+    // -------------------------------------------------------
+    // SECURITY
+    // -------------------------------------------------------
 
-    if (content.type === 'story') {
+    if (
+      data.visibility === 'public' &&
+      !this.isPremium
+    ) {
 
-      this.showStoryModal = true;
+      this.showPremiumModal =
+        true;
 
-    } else {
-
-      this.showPublicationModal = true;
+      return;
     }
+
+    /*
+     * Première communauté uniquement pour conserver
+     * la compatibilité avec l'ancien modèle.
+     */
+
+    const firstCommunity =
+      data.communities?.[0];
+
+    const now =
+      new Date();
+
+    // -------------------------------------------------------
+    // EDIT
+    // -------------------------------------------------------
+
+    if (this.selectedContent) {
+
+      this.contentService.update(
+        this.selectedContent.id,
+        {
+
+          title:
+            data.title,
+
+          content:
+            data.content,
+
+          image:
+            data.image,
+
+          video:
+            data.video,
+
+          visibility:
+            data.visibility,
+
+          // Nouveau système multi-communautés
+          communities:
+            [...data.communities],
+
+          // Compatibilité ancien système
+          communityId:
+            firstCommunity?.id,
+
+          communityName:
+            firstCommunity?.name,
+
+          updatedAt:
+            now.toISOString(),
+
+          status:
+            'published'
+        }
+      );
+
+    }
+
+    // -------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------
+
+    else {
+
+this.contentService.create({
+
+  type:
+    'publication',
+
+  title:
+    data.title,
+
+  content:
+    data.content,
+
+  image:
+    data.image,
+
+  video:
+    data.video,
+
+  visibility:
+    data.visibility,
+
+  communities:
+    [...data.communities],
+
+  // Compatibilité ancien système
+  communityId:
+    firstCommunity?.id,
+
+  communityName:
+    firstCommunity?.name,
+
+  authorId:
+    'supplier-001',
+
+  authorName:
+    'Mamadou Diallo',
+
+  status:
+    'published'
+});
+
+    }
+
+    this.closePublicationModal();
+
+    this.loadContents();
   }
 
-  // ============================================================
-  // SUPPRESSION
-  // ============================================================
+  // =========================================================
+  // DELETE
+  // =========================================================
 
-  askDelete(content: Content): void {
+  askDelete(
+    content: Content
+  ): void {
 
-    this.selectedContent = content;
+    this.selectedContent =
+      content;
 
-    this.showDeleteModal = true;
+    this.showDeleteModal =
+      true;
   }
 
   cancelDelete(): void {
 
-    this.showDeleteModal = false;
+    this.showDeleteModal =
+      false;
 
-    this.selectedContent = null;
+    this.selectedContent =
+      null;
   }
 
   confirmDelete(): void {
@@ -328,58 +673,68 @@ export class StoriesComponent implements OnInit {
       this.loadContents();
     }
 
-    this.showDeleteModal = false;
+    this.showDeleteModal =
+      false;
 
-    this.selectedContent = null;
+    this.selectedContent =
+      null;
   }
 
-  // ============================================================
+  // =========================================================
   // PREMIUM
-  // ============================================================
+  // =========================================================
 
-  /**
-   * Vérifie si le fournisseur peut publier publiquement.
-   */
   canPublishPublic(): boolean {
 
-    return this.contentService.canPublishPublic(
-      this.isPremium
-    );
+    return this.contentService
+      .canPublishPublic(
+        this.isPremium
+      );
   }
 
-  /**
-   * Appelé lorsqu'un fournisseur choisit
-   * la visibilité publique.
-   */
   checkPublicVisibility(): boolean {
 
     if (this.isPremium) {
       return true;
     }
 
-    this.showPremiumModal = true;
+    this.showPremiumModal =
+      true;
 
     return false;
   }
 
+  onStoryPremiumRequired(): void {
+
+    this.showPremiumModal =
+      true;
+  }
+
+  onPublicationPremiumRequired(): void {
+
+    this.showPremiumModal =
+      true;
+  }
+
   closePremiumModal(): void {
 
-    this.showPremiumModal = false;
+    this.showPremiumModal =
+      false;
   }
 
   openPremiumPage(): void {
 
-    this.showPremiumModal = false;
+    this.showPremiumModal =
+      false;
 
-    // Route à adapter lorsque la page Premium sera créée.
     this.router.navigate([
       '/dashboard/premium'
     ]);
   }
 
-  // ============================================================
+  // =========================================================
   // NAVIGATION
-  // ============================================================
+  // =========================================================
 
   goBack(): void {
 
@@ -388,9 +743,9 @@ export class StoriesComponent implements OnInit {
     ]);
   }
 
-  // ============================================================
+  // =========================================================
   // HELPERS
-  // ============================================================
+  // =========================================================
 
   getContentTypeLabel(
     type: ContentType
@@ -419,13 +774,19 @@ export class StoriesComponent implements OnInit {
       : 'groups';
   }
 
-  isStoryActive(content: Content): boolean {
+  isStoryActive(
+    content: Content
+  ): boolean {
 
-    if (content.type !== 'story') {
+    if (
+      content.type !== 'story'
+    ) {
       return false;
     }
 
-    if (content.status !== 'published') {
+    if (
+      content.status !== 'published'
+    ) {
       return false;
     }
 
@@ -433,17 +794,25 @@ export class StoriesComponent implements OnInit {
       return true;
     }
 
-    return new Date(content.expiresAt) > new Date();
+    return (
+      new Date(
+        content.expiresAt
+      ) > new Date()
+    );
   }
 
-  formatNumber(value: number): string {
+  formatNumber(
+    value: number
+  ): string {
 
     return new Intl.NumberFormat(
       'fr-FR'
     ).format(value);
   }
 
-  formatDate(date: string): string {
+  formatDate(
+    date: string
+  ): string {
 
     return new Intl.DateTimeFormat(
       'fr-FR',
@@ -452,54 +821,8 @@ export class StoriesComponent implements OnInit {
         month: 'short',
         year: 'numeric'
       }
-    ).format(new Date(date));
-  }
-onStoryPremiumRequired(): void {
-  this.showPremiumModal = true;
-}
-  onStorySubmitted(data: StoryFormData): void {
-
-  const now = new Date();
-
-  const expiresAt = new Date(
-    now.getTime() + 24 * 60 * 60 * 1000
-  );
-
-  if (this.selectedContent) {
-
-    this.contentService.update(
-      this.selectedContent.id,
-      {
-        content: data.content,
-        image: data.image,
-        video: data.video,
-        visibility: data.visibility,
-        communityId: data.communityId,
-        communityName: data.communityName,
-        expiresAt: expiresAt.toISOString(),
-        status: 'published'
-      }
+    ).format(
+      new Date(date)
     );
-
-  } else {
-
-    this.contentService.create({
-      type: 'story',
-      content: data.content,
-      image: data.image,
-      video: data.video,
-      visibility: data.visibility,
-      communityId: data.communityId,
-      communityName: data.communityName,
-      authorId: 'supplier-001',
-      authorName: 'Mamadou Diallo',
-      expiresAt: expiresAt.toISOString(),
-      status: 'published'
-    });
-
   }
-
-  this.closeStoryModal();
-  this.loadContents();
-}
 }

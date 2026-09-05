@@ -4,6 +4,14 @@ export type ContentVisibility = 'public' | 'community';
 
 export type ContentStatus = 'published' | 'draft' | 'expired';
 
+/**
+ * Communauté associée à un contenu
+ */
+export interface ContentCommunity {
+  id: string;
+  name: string;
+}
+
 export interface Content {
   id: string;
 
@@ -26,14 +34,22 @@ export interface Content {
 
   /**
    * Destination du contenu
-   * community = contenu réservé à une communauté
+   * community = contenu réservé à une ou plusieurs communautés
    * public    = contenu visible par tous (Premium)
    */
   visibility: ContentVisibility;
 
   /**
-   * Informations de la communauté
-   * présentes uniquement si visibility === 'community'
+   * Communautés associées au contenu
+   *
+   * Un contenu peut être publié dans
+   * plusieurs communautés.
+   */
+  communities?: ContentCommunity[];
+
+  /**
+   * Ancien format conservé pour compatibilité
+   * avec les contenus existants.
    */
   communityId?: string;
   communityName?: string;
