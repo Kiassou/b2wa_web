@@ -1,0 +1,1 @@
+import{On as qa,k as Ga,ln as iv,vn as mI}from"./chunk-DJpvUVVs.js";var c=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=iv({type:e,selectors:[[`app-activity`]],decls:2,vars:0,template:function(t,m){t&1&&(Ga(0,`p`),mI(1,`activity works!`),qa())},encapsulation:2})};export{c as ActivityComponent};
