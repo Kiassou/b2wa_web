@@ -10,13 +10,15 @@ import {
   Live,
   Member
 } from '../../../services/community-content.service';
+import { CommunityDiscussionComponent } from '../../../shared/community-discussion/community-discussion';
 
-type CommunityTab = 'home' | 'posts' | 'products' | 'lives' | 'members';
+
+type CommunityTab = 'home' | 'posts' | 'products' | 'discussions' | 'lives' | 'members';
 
 @Component({
   selector: 'app-community-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CommunityDiscussionComponent],
   templateUrl: './community-view.html',
   styleUrl: './community-view.css'
 })

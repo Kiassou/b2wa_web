@@ -4,38 +4,101 @@
   padding-bottom: 60px;
 }
 
-
 /* =========================================================
-   TOP BAR
+   PAGE HEADER
 ========================================================= */
+.page-header {
+  margin-bottom: 26px;
+}
 
-.page-topbar {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 22px 28px 12px;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 0;
-  background: transparent;
-  color: #526071;
-  font-size: 14px;
-  font-weight: 600;
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid #dce4f0;
+  border-radius: 14px;
+
+  background: #fff;
+  color: #334155;
+
+  display: grid;
+  place-items: center;
+
   cursor: pointer;
-  padding: 8px 0;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
 }
 
 .back-btn:hover {
-  color: #155eef;
+  transform: translateX(-3px);
+  background: #f8fbff;
+  box-shadow: 0 8px 22px rgba(30, 64, 175, .08);
 }
 
 .back-btn .material-symbols-outlined {
   font-size: 20px;
 }
 
+.header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      background: linear-gradient(
+    135deg,
+    #00da50,
+    #0f7a37
+  );
+  color: #fff;
+}
+
+.header-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+
+
+.page-kicker,
+.card-kicker {
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-text h1 {
+  margin: 3px 0 2px;
+  color: #6b7587;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+.header-text p {
+  margin: 0;
+  color: #6b7587;
+  font-size: 14px;
+}
+
+.header-kicker,
+.section-kicker {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  color: #16a34a;
+}
 
 /* =========================================================
    HERO
@@ -180,7 +243,7 @@
 
 .community-stat > .material-symbols-outlined {
   font-size: 21px;
-  color: #155eef;
+  color: #16a34a;
 }
 
 .community-stat div {
@@ -228,18 +291,19 @@
 }
 
 .share-btn {
-  border: 1px solid #dfe4ea;
+  border: 1px solid #d4ffd7;
   background: #ffffff;
   color: #344054;
 }
 
 .share-btn:hover {
   background: #f8fafc;
+  color: #16a34a;
 }
 
 .join-btn {
-  border: 1px solid #155eef;
-  background: #155eef;
+  border: 1px solid #16a34a;
+  background: #16a34a;
   color: #ffffff;
 }
 
@@ -296,11 +360,11 @@
 }
 
 .community-tabs button:hover {
-  color: #155eef;
+  color: #16a34a;
 }
 
 .community-tabs button.active {
-  color: #155eef;
+  color: #16a34a;
 }
 
 .community-tabs button.active::after {
@@ -311,7 +375,7 @@
   bottom: -1px;
   height: 2px;
   border-radius: 5px 5px 0 0;
-  background: #155eef;
+  background: #16a34a;
 }
 
 .community-tabs .material-symbols-outlined {
@@ -326,7 +390,7 @@
   place-items: center;
   border-radius: 999px;
   background: #eef4ff;
-  color: #155eef;
+  color: #16a34a;
   font-size: 10px;
 }
 
@@ -380,7 +444,7 @@
 .section-kicker {
   display: block;
   margin-bottom: 5px;
-  color: #155eef;
+  color: #16a34a;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.1px;
@@ -410,7 +474,7 @@
   gap: 5px;
   border: 0;
   background: transparent;
-  color: #155eef;
+  color: #16a34a;
   font-family: inherit;
   font-size: 12px;
   font-weight: 700;
@@ -451,7 +515,7 @@
 }
 
 .info-item > .material-symbols-outlined {
-  color: #155eef;
+  color: #16a34a;
   font-size: 20px;
 }
 
@@ -509,7 +573,7 @@
   place-items: center;
   border-radius: 50%;
   background: #eef4ff;
-  color: #155eef;
+  color: #16a34a;
   font-weight: 800;
 }
 
@@ -533,7 +597,7 @@
   padding: 5px 8px;
   border-radius: 999px;
   background: #eef4ff;
-  color: #155eef;
+  color: #16a34a;
   font-size: 10px;
   font-weight: 700;
 }
@@ -594,7 +658,7 @@
 
 .post-action:hover {
   background-color: #f8fafc;
-  color: #155eef;
+  color: #16a34a;
 }
 
 .post-action.active {
@@ -682,7 +746,7 @@
 }
 
 .live-meta .material-symbols-outlined {
-  color: #155eef;
+  color: #16a34a;
   font-size: 17px;
 }
 
@@ -700,7 +764,7 @@
   margin-top: 15px;
   border: 0;
   border-radius: 9px;
-  background: #155eef;
+  background: #16a34a;
   color: #ffffff;
   font-family: inherit;
   font-size: 12px;
@@ -882,7 +946,7 @@
   left: 12px;
   padding: 5px 8px;
   border-radius: 7px;
-  background: #155eef;
+  background: #16a34a;
   color: #ffffff;
   font-size: 10px;
   font-weight: 700;
@@ -893,7 +957,7 @@
 }
 
 .product-category {
-  color: #155eef;
+  color: #16a34a;
   font-size: 10px;
   font-weight: 700;
 }
@@ -931,7 +995,7 @@
   gap: 4px;
   border: 0;
   background: transparent;
-  color: #155eef;
+  color: #16a34a;
   font-family: inherit;
   font-size: 11px;
   font-weight: 700;
@@ -994,7 +1058,7 @@
 }
 
 .live-details .material-symbols-outlined {
-  color: #155eef;
+  color: #16a34a;
   font-size: 17px;
 }
 
@@ -1070,7 +1134,7 @@
   padding: 5px 7px;
   border-radius: 999px;
   background: #eef4ff;
-  color: #155eef;
+  color: #16a34a;
   font-size: 9px;
   font-weight: 700;
 }

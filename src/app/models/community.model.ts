@@ -11,6 +11,7 @@ export interface Community {
   posts: number;
   products: number;
   lives: number;
+  discussions?: number;
   verified: boolean;
   isMember: boolean;
   isAdmin: boolean;

@@ -1,0 +1,1210 @@
+<div class="discussion-container">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="discussion-header">
+
+    <div class="discussion-header-left">
+
+      <div class="community-avatar">
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+      </div>
+
+      <div class="community-info">
+        <h3>
+          {{ communityName }}
+        </h3>
+
+        <span>
+          {{ messages.length }}
+          {{ messages.length > 1 ? 'messages' : 'message' }}
+        </span>
+      </div>
+
+    </div>
+
+    <div class="discussion-header-actions">
+
+      <!-- RECHERCHE -->
+      <button
+        type="button"
+        class="header-action"
+        title="Rechercher"
+        (click)="toggleMessageSearch()">
+        <span class="material-symbols-outlined">
+          search
+        </span>
+      </button>
+
+      <!-- OPTIONS -->
+      <button
+        type="button"
+        class="header-action"
+        title="Options"
+        (click)="toggleOptionsMenu()">
+        <span class="material-symbols-outlined">
+          more_vert
+        </span>
+      </button>
+
+      @if (showOptionsMenu) {
+        <div class="discussion-options-menu">
+
+          <!-- NOTIFICATIONS -->
+          <button
+            type="button"
+            (click)="toggleNotifications()">
+
+            <span class="material-symbols-outlined">
+              {{ notificationsEnabled
+                ? 'notifications_off'
+                : 'notifications' }}
+            </span>
+
+            <span>
+              {{ notificationsEnabled
+                ? 'Désactiver les notifications'
+                : 'Activer les notifications' }}
+            </span>
+
+          </button>
+
+          <!-- MÉDIAS -->
+          <button
+            type="button"
+            (click)="showMediaFiles()">
+
+            <span class="material-symbols-outlined">
+              perm_media
+            </span>
+
+            <span>
+              Médias et fichiers
+            </span>
+
+          </button>
+
+          <!-- DERNIERS MESSAGES -->
+          <button
+            type="button"
+            (click)="scrollToBottom()">
+
+            <span class="material-symbols-outlined">
+              south
+            </span>
+
+            <span>
+              Aller aux derniers messages
+            </span>
+
+          </button>
+
+        </div>
+      }
+
+    </div>
+
+  </div>
+
+  <!-- =====================================================
+       BARRE DE RECHERCHE
+  ====================================================== -->
+
+  @if (showMessageSearch) {
+
+    <div class="message-search-bar">
+
+      <span class="material-symbols-outlined">
+        search
+      </span>
+
+      <input
+        type="text"
+        [(ngModel)]="messageSearchText"
+        placeholder="Rechercher dans la discussion..."
+        autocomplete="off">
+
+      @if (messageSearchText) {
+
+        <button
+          type="button"
+          class="clear-search"
+          (click)="clearMessageSearch()">
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
+        </button>
+
+      }
+
+      <span class="search-result-count">
+        {{ filteredMessages.length }}
+      </span>
+
+    </div>
+
+  }
+
+  <!-- =====================================================
+       ZONE DES MESSAGES
+  ====================================================== -->
+
+  <div #messagesContainer class="messages-container">
+
+    @if (showMediaModal) {
+  <div
+    class="media-modal-backdrop">
+
+    <div
+      class="media-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Médias et fichiers"
+      (click)="$event.stopPropagation()">
+
+      <div class="media-modal-header">
+
+        <div>
+          <h3>
+            Médias et fichiers
+          </h3>
+
+          <span>
+            {{ mediaMessages.length }}
+            {{ mediaMessages.length > 1 ? 'éléments' : 'élément' }}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="media-modal-close"
+          title="Fermer"
+          (click)="closeMediaModal()">
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
+        </button>
+
+      </div>
+
+      @if (mediaMessages.length === 0) {
+
+        <div class="media-empty-state">
+
+          <span class="material-symbols-outlined">
+            perm_media
+          </span>
+
+          <h4>
+            Aucun média ou fichier
+          </h4>
+
+          <p>
+            Les images, vidéos, vocaux et fichiers partagés
+            dans cette discussion apparaîtront ici.
+          </p>
+
+        </div>
+
+      } @else {
+
+        <div class="media-grid">
+
+          @for (
+            message of mediaMessages;
+            track message.id
+          ) {
+
+            <div class="media-item">
+
+              <!-- IMAGE -->
+
+              @if (message.type === 'image') {
+
+                <img
+                  [src]="message.fileUrl"
+                  [alt]="message.fileName || 'Image partagée'">
+
+              }
+
+              <!-- VIDÉO -->
+
+              @if (message.type === 'video') {
+
+                <video
+                  controls
+                  preload="metadata"
+                  [src]="message.fileUrl">
+                </video>
+
+              }
+
+              <!-- AUDIO -->
+
+              @if (message.type === 'audio') {
+
+                <div class="media-audio">
+
+                  <span class="material-symbols-outlined">
+                    mic
+                  </span>
+
+                  <audio
+                    controls
+                    [src]="message.fileUrl">
+                  </audio>
+
+                </div>
+
+              }
+
+              <!-- FICHIER -->
+
+              @if (message.type === 'file') {
+
+                <div class="media-file">
+
+                  <span class="material-symbols-outlined">
+                    description
+                  </span>
+
+                  <div class="media-file-info">
+
+                    <strong>
+                      {{ message.fileName || 'Fichier' }}
+                    </strong>
+
+                    <span>
+                      {{ formatFileSize(message.fileSize) }}
+                    </span>
+
+                  </div>
+
+                  <a
+                    [href]="message.fileUrl"
+                    [download]="message.fileName"
+                    target="_blank"
+                    rel="noopener"
+                    class="media-download"
+                    title="Télécharger">
+
+                    <span class="material-symbols-outlined">
+                      download
+                    </span>
+
+                  </a>
+
+                </div>
+
+              }
+
+              <div class="media-item-footer">
+
+                <span>
+                  {{ message.senderName }}
+                </span>
+
+                <span>
+                  {{ formatMessageDate(message.createdAt) }}
+                </span>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+}
+
+    <!-- LOADING -->
+
+    <div
+      class="discussion-loading"
+      *ngIf="loading">
+
+      <span class="material-symbols-outlined spinning">
+        progress_activity
+      </span>
+
+      <span>
+        Chargement de la discussion...
+      </span>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+
+    <div
+      class="empty-discussion"
+      *ngIf="!loading && filteredMessages.length === 0">
+
+      <div class="empty-icon">
+        <span class="material-symbols-outlined">
+          forum
+        </span>
+      </div>
+
+      <h4>
+        {{ messageSearchText
+          ? 'Aucun résultat'
+          : 'Aucun message' }}
+      </h4>
+
+      <p>
+        {{ messageSearchText
+          ? 'Aucun message ne correspond à votre recherche.'
+          : 'Soyez le premier à démarrer la discussion dans cette communauté.' }}
+      </p>
+
+    </div>
+
+    <!-- MESSAGES -->
+
+    <div
+      class="messages-list"
+      *ngIf="!loading && filteredMessages.length > 0">
+
+      <div
+        class="message-wrapper"
+        *ngFor="
+          let message of filteredMessages;
+          trackBy: trackByMessageId
+        "
+        [class.my-message]="isMyMessage(message)"
+        [class.other-message]="!isMyMessage(message)">
+
+        <!-- AVATAR -->
+
+        <div
+          class="message-avatar"
+          *ngIf="!isMyMessage(message)">
+
+          <img
+            [src]="message.senderAvatar"
+            [alt]="message.senderName">
+
+        </div>
+
+        <!-- BULLE -->
+
+        <div class="message-content-wrapper">
+
+          <!-- NOM EXPÉDITEUR -->
+
+          <div
+            class="sender-name"
+            *ngIf="!isMyMessage(message)">
+
+            {{ message.senderName }}
+
+            <span
+              class="admin-badge"
+              *ngIf="message.senderRole === 'admin'">
+              Admin
+            </span>
+
+          </div>
+
+          <div class="message-bubble">
+
+            <!-- MESSAGE SUPPRIMÉ -->
+
+            <div
+              class="deleted-message"
+              *ngIf="message.deleted">
+
+              <span class="material-symbols-outlined">
+                block
+              </span>
+
+              Message supprimé
+
+            </div>
+
+            <!-- RÉPONSE -->
+
+            <div
+              class="reply-preview"
+              *ngIf="
+                !message.deleted &&
+                message.replyToId &&
+                getReplyMessage(message)
+              ">
+
+              <div class="reply-line"></div>
+
+              <div class="reply-content">
+
+                <strong>
+                  {{ getReplyMessage(message)?.senderName }}
+                </strong>
+
+                <span>
+                  {{ getReplyMessage(message)?.content || 'Média' }}
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- TEXTE -->
+
+            <div
+              class="text-message"
+              *ngIf="
+                !message.deleted &&
+                message.type === 'text'
+              ">
+
+              {{ message.content }}
+
+            </div>
+
+            <!-- IMAGE -->
+
+            <div
+              class="media-message image-message"
+              *ngIf="
+                !message.deleted &&
+                message.type === 'image'
+              ">
+
+              <img
+                [src]="message.fileUrl"
+                [alt]="message.fileName || 'Image'">
+
+              <div
+                class="media-caption"
+                *ngIf="message.content">
+
+                {{ message.content }}
+
+              </div>
+
+            </div>
+
+            <!-- VIDÉO -->
+
+            <div
+              class="media-message video-message"
+              *ngIf="
+                !message.deleted &&
+                message.type === 'video'
+              ">
+
+              <video
+                controls
+                preload="metadata"
+                [src]="message.fileUrl">
+              </video>
+
+              <div
+                class="media-caption"
+                *ngIf="message.content">
+
+                {{ message.content }}
+
+              </div>
+
+            </div>
+
+            <!-- AUDIO -->
+
+            <div
+              class="audio-message"
+              *ngIf="
+                !message.deleted &&
+                message.type === 'audio'
+              ">
+
+              <div class="audio-icon">
+
+                <span class="material-symbols-outlined">
+                  mic
+                </span>
+
+              </div>
+
+              <div class="audio-content">
+
+                <audio
+                  controls
+                  [src]="message.fileUrl">
+                </audio>
+
+                <span
+                  class="audio-duration"
+                  *ngIf="message.duration">
+
+                  {{ formatDuration(message.duration) }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- FICHIER -->
+
+            <div
+              class="file-message"
+              *ngIf="
+                !message.deleted &&
+                message.type === 'file'
+              ">
+
+              <div class="file-icon">
+
+                <span class="material-symbols-outlined">
+                  {{ getFileIcon(message) }}
+                </span>
+
+              </div>
+
+              <div class="file-info">
+
+                <strong>
+                  {{ message.fileName || 'Fichier' }}
+                </strong>
+
+                <span>
+                  {{ formatFileSize(message.fileSize) }}
+                </span>
+
+              </div>
+
+              <a
+                class="file-download"
+                [href]="message.fileUrl"
+                [download]="message.fileName"
+                title="Télécharger">
+
+                <span class="material-symbols-outlined">
+                  download
+                </span>
+
+              </a>
+
+            </div>
+
+            <!-- INFOS MESSAGE -->
+
+            <div
+              class="message-meta"
+              *ngIf="!message.deleted">
+
+              <span class="message-time">
+                {{ formatMessageTime(message.createdAt) }}
+              </span>
+
+              <span
+                class="message-status"
+                *ngIf="isMyMessage(message)">
+
+                <span
+                  class="material-symbols-outlined"
+                  [class.read]="message.status === 'read'">
+
+                  done_all
+
+                </span>
+
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- RÉACTIONS -->
+
+          <div
+            class="message-reactions"
+            *ngIf="
+              !message.deleted &&
+              message.reactions &&
+              message.reactions.length > 0
+            ">
+
+            <button
+              type="button"
+              class="reaction"
+              *ngFor="let reaction of message.reactions"
+              (click)="removeReaction(message, reaction.emoji)">
+
+              <span>
+                {{ reaction.emoji }}
+              </span>
+
+              <small>
+                {{ reaction.count }}
+              </small>
+
+            </button>
+
+          </div>
+
+          <!-- ACTIONS MESSAGE -->
+
+          <div
+            class="message-actions"
+            *ngIf="!message.deleted">
+
+            <button
+              type="button"
+              (click)="addReaction(message, '❤️')"
+              title="J'aime">
+              ❤️
+            </button>
+
+            <button
+              type="button"
+              (click)="addReaction(message, '👍')"
+              title="Bien dit">
+              👍
+            </button>
+
+            <button
+              type="button"
+              (click)="addReaction(message, '😂')"
+              title="Drôle">
+              😂
+            </button>
+
+            <button
+              type="button"
+              (click)="addReaction(message, '😢')"
+              title="Ce n'est pas drôle">
+              😢
+            </button>
+
+            <button
+              type="button"
+              (click)="replyTo(message)"
+              title="Répondre">
+
+              <span class="material-symbols-outlined">
+                reply
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              *ngIf="
+                isMyMessage(message) ||
+                currentUserRole === 'admin'
+              "
+              (click)="deleteMessage(message)"
+              title="Supprimer">
+
+              <span class="material-symbols-outlined">
+                delete
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =====================================================
+       ERREUR
+  ====================================================== -->
+
+  <div
+    class="discussion-error"
+    *ngIf="errorMessage">
+
+    <span class="material-symbols-outlined">
+      error
+    </span>
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+  </div>
+
+  <!-- =====================================================
+       APERÇU FICHIER
+  ====================================================== -->
+
+  <div
+    class="file-preview-container"
+    *ngIf="selectedFile">
+
+    <div class="file-preview-header">
+
+      <strong>
+        Aperçu
+      </strong>
+
+      <button
+        type="button"
+        class="close-preview"
+        (click)="cancelSelectedFile()">
+
+        <span class="material-symbols-outlined">
+          close
+        </span>
+
+      </button>
+
+    </div>
+
+    <!-- IMAGE -->
+
+    <div
+      class="selected-image-preview"
+      *ngIf="selectedFileType === 'image'">
+
+      <img
+        [src]="selectedFilePreview"
+        alt="Aperçu image">
+
+    </div>
+
+    <!-- VIDEO -->
+
+    <div
+      class="selected-video-preview"
+      *ngIf="selectedFileType === 'video'">
+
+      <video
+        controls
+        [src]="selectedFilePreview">
+      </video>
+
+    </div>
+
+    <!-- FICHIER -->
+
+    <div
+      class="selected-file-preview"
+      *ngIf="selectedFileType === 'file'">
+
+      <div class="selected-file-icon">
+
+        <span class="material-symbols-outlined">
+          description
+        </span>
+
+      </div>
+
+      <div>
+
+        <strong>
+          {{ selectedFile.name }}
+        </strong>
+
+        <span>
+          {{ formatFileSize(selectedFile.size) }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- LÉGENDE -->
+
+    <div class="preview-caption">
+
+      <input
+        type="text"
+        [(ngModel)]="messageText"
+        placeholder="Ajouter une légende..."
+        maxlength="1000">
+
+    </div>
+
+    <button
+      type="button"
+      class="send-file-button"
+      [disabled]="sending"
+      (click)="sendSelectedFile()">
+
+      <span
+        class="material-symbols-outlined"
+        *ngIf="!sending">
+        send
+      </span>
+
+      <span
+        class="material-symbols-outlined spinning"
+        *ngIf="sending">
+        progress_activity
+      </span>
+
+      Envoyer
+
+    </button>
+
+  </div>
+
+  <!-- =====================================================
+       RÉPONSE EN COURS
+  ====================================================== -->
+
+  <div
+    class="replying-container"
+    *ngIf="replyingTo">
+
+    <div class="replying-icon">
+
+      <span class="material-symbols-outlined">
+        reply
+      </span>
+
+    </div>
+
+    <div class="replying-content">
+
+      <span>
+        Réponse à
+        <strong>
+          {{ replyingTo.senderName }}
+        </strong>
+      </span>
+
+      <p>
+        {{ replyingTo.content || 'Média' }}
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="cancel-reply"
+      (click)="cancelReply()">
+
+      <span class="material-symbols-outlined">
+        close
+      </span>
+
+    </button>
+
+  </div>
+
+  <!-- =====================================================
+       ZONE DE SAISIE
+  ====================================================== -->
+
+  <div class="message-input-container">
+
+    <!-- ATTACHMENT -->
+
+    <div class="attachment-wrapper">
+
+      <button
+        type="button"
+        class="input-action"
+        title="Joindre un fichier"
+        (click)="toggleAttachmentMenu()">
+
+        <span class="material-symbols-outlined">
+          attach_file
+        </span>
+
+      </button>
+
+      @if (showAttachmentMenu) {
+
+        <div class="attachment-menu">
+
+          <!-- IMAGE -->
+
+          <label
+            class="attachment-option"
+            title="Photo">
+
+            <span class="material-symbols-outlined">
+              image
+            </span>
+
+            <span>
+              Photo
+            </span>
+
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              (change)="onFileSelected($event)">
+
+          </label>
+
+          <!-- VIDEO -->
+
+          <label
+            class="attachment-option"
+            title="Vidéo">
+
+            <span class="material-symbols-outlined">
+              videocam
+            </span>
+
+            <span>
+              Vidéo
+            </span>
+
+            <input
+              type="file"
+              accept="video/*"
+              hidden
+              (change)="onFileSelected($event)">
+
+          </label>
+
+          <!-- FICHIER -->
+
+          <label
+            class="attachment-option"
+            title="Document">
+
+            <span class="material-symbols-outlined">
+              description
+            </span>
+
+            <span>
+              Fichier
+            </span>
+
+            <input
+              type="file"
+              hidden
+              (change)="onFileSelected($event)">
+
+          </label>
+
+        </div>
+
+      }
+
+    </div>
+
+    <!-- EMOJI -->
+
+    <button
+      type="button"
+      class="input-action emoji-button"
+      title="Emoji"
+      (click)="toggleEmojiPicker()">
+
+      <span class="material-symbols-outlined">
+        mood
+      </span>
+
+    </button>
+
+    @if (showEmojiPicker) {
+
+      <div class="emoji-picker">
+
+        <!-- HEADER -->
+
+        <div class="emoji-picker-header">
+
+          <div class="emoji-picker-title">
+
+            <span class="material-symbols-outlined">
+              mood
+            </span>
+
+            <span>
+              Emojis
+            </span>
+
+          </div>
+
+          <button
+            type="button"
+            class="emoji-picker-close"
+            (click)="toggleEmojiPicker()">
+
+            <span class="material-symbols-outlined">
+              close
+            </span>
+
+          </button>
+
+        </div>
+
+        <!-- CATEGORIES -->
+
+        <div class="emoji-categories">
+
+          @for (
+            category of emojiCategories;
+            track category.name;
+            let i = $index
+          ) {
+
+            <button
+              type="button"
+              class="emoji-category-button"
+              [class.active]="activeEmojiCategory === i"
+              [title]="category.name"
+              (click)="setEmojiCategory(i)">
+
+              <span class="material-symbols-outlined">
+                {{ category.icon }}
+              </span>
+
+            </button>
+
+          }
+
+        </div>
+
+        <!-- EMOJIS -->
+
+        <div class="emoji-grid">
+
+          @for (
+            emoji of emojiCategories[activeEmojiCategory].emojis;
+            track emoji
+          ) {
+
+            <button
+              type="button"
+              class="emoji-item"
+              [title]="emoji"
+              (click)="selectEmoji(emoji)">
+
+              {{ emoji }}
+
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+    <!-- TEXTAREA -->
+
+    <div class="message-input-wrapper">
+
+      <textarea
+        [(ngModel)]="messageText"
+        (keydown)="onMessageKeydown($event)"
+        placeholder="Écrire un message..."
+        rows="1"
+        maxlength="5000"
+        [disabled]="sending || isRecording">
+      </textarea>
+
+    </div>
+
+    <!-- SEND -->
+
+    <button
+      type="button"
+      class="send-button"
+      *ngIf="
+        messageText.trim().length > 0 ||
+        selectedFile
+      "
+      [disabled]="sending"
+      (click)="
+        selectedFile
+          ? sendSelectedFile()
+          : sendMessage()
+      "
+      title="Envoyer">
+
+      <span
+        class="material-symbols-outlined"
+        *ngIf="!sending">
+        send
+      </span>
+
+      <span
+        class="material-symbols-outlined spinning"
+        *ngIf="sending">
+        progress_activity
+      </span>
+
+    </button>
+
+    <!-- MICRO -->
+
+    <button
+      type="button"
+      class="voice-button"
+      *ngIf="
+        messageText.trim().length === 0 &&
+        !selectedFile
+      "
+      [class.recording]="isRecording"
+      (click)="toggleRecording()"
+      [title]="
+        isRecording
+          ? 'Arrêter'
+          : 'Message vocal'
+      ">
+
+      <span
+        class="material-symbols-outlined"
+        *ngIf="!isRecording">
+        mic
+      </span>
+
+      <span
+        class="material-symbols-outlined"
+        *ngIf="isRecording">
+        stop
+      </span>
+
+    </button>
+
+  </div>
+
+  <!-- =====================================================
+       ENREGISTREMENT EN COURS
+  ====================================================== -->
+
+  <div
+    class="recording-indicator"
+    *ngIf="isRecording">
+
+    <span class="recording-dot"></span>
+
+    <span>
+      Enregistrement vocal...
+    </span>
+
+    <strong>
+      {{ formatDuration(recordingSeconds) }}
+    </strong>
+
+    <span class="recording-hint">
+      Appuyez sur le micro pour arrêter
+    </span>
+
+  </div>
+
+</div>

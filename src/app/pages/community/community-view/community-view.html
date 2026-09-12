@@ -1,28 +1,55 @@
 <div class="community-view-page">
 
+      <!-- =====================================================
+       HEADER
+  ====================================================== -->
 
-  <!-- ========================================================= -->
-  <!-- BACK -->
-  <!-- ========================================================= -->
-  <div class="page-topbar">
+  <header class="page-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+        title="Retour"
+      >
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+      </button>
 
 
-    <button
-      type="button"
-      class="back-btn"
-      (click)="goBack()"
-    >
-      <span class="material-symbols-outlined">
-        arrow_back
-      </span>
+      <div class="header-icon">
+
+        <span class="material-symbols-outlined">
+          groups
+        </span>
+
+      </div>
 
 
-      <span>Communautés</span>
-    </button>
+      <div class="header-text">
 
+        <span class="header-kicker">
+          RÉSEAU B2WA
+        </span>
 
-  </div>
+        <h1>
+          {{ community?.name }}
+        </h1>
 
+        <p>
+          {{ community?.description }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </header>
 
   <!-- ========================================================= -->
   <!-- COMMUNITY HERO -->
@@ -330,6 +357,21 @@
 
 
       <span>Produits</span>
+    </button>
+
+    <button
+      type="button"
+      [class.active]="activeTab === 'discussions'"
+      (click)="setActiveTab('discussions')"
+    >
+
+
+      <span class="material-symbols-outlined">
+        forum
+      </span>
+
+
+      <span>Discussions</span>
     </button>
 
 
@@ -1537,6 +1579,32 @@
         }
       </section>
     }
+
+    <!-- ======================================================= -->
+    <!-- DISCUSSIONS -->
+    <!-- ======================================================= -->
+    @if (activeTab === 'discussions') {
+      <section class="full-content-section">
+        <div class="section-title">
+          <div>
+            <span class="section-kicker">
+              Discussions
+            </span>
+            <h2>
+              Discussions de la communauté
+            </h2>
+            <p>
+              Participez aux discussions organisées par cette communauté.
+            </p>
+          </div>
+        </div>
+        <app-community-discussion
+          [communityId]="community?.id ?? ''"
+          [communityName]="community?.name ?? ''">
+        </app-community-discussion>
+      </section>
+    }
+    
 
 
     <!-- ======================================================= -->

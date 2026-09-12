@@ -1,0 +1,980 @@
+<section class="assets-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header class="page-header">
+
+    <div class="header-content">
+
+      <span class="page-kicker">
+        <span class="material-symbols-outlined">
+          shield
+        </span>
+
+        SECURITY ASSETS
+      </span>
+
+      <h1>
+        Vos actifs
+      </h1>
+
+      <p>
+        Gérez les ressources surveillées par CODEC
+        et gardez une visibilité complète sur votre
+        environnement numérique.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="add-asset-button"
+      (click)="openAddModal()"
+    >
+
+      <span class="material-symbols-outlined">
+        add
+      </span>
+
+      Ajouter un actif
+
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
+
+  <section class="stats-grid">
+
+    <article class="stat-card">
+
+      <div class="stat-icon blue">
+        <span class="material-symbols-outlined">
+          devices
+        </span>
+      </div>
+
+      <div class="stat-info">
+
+        <span>
+          Total des actifs
+        </span>
+
+        <strong>
+          {{ totalAssets }}
+        </strong>
+
+      </div>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-icon green">
+        <span class="material-symbols-outlined">
+          verified_user
+        </span>
+      </div>
+
+      <div class="stat-info">
+
+        <span>
+          Sécurisés
+        </span>
+
+        <strong>
+          {{ secureAssets }}
+        </strong>
+
+      </div>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-icon orange">
+        <span class="material-symbols-outlined">
+          warning
+        </span>
+      </div>
+
+      <div class="stat-info">
+
+        <span>
+          À surveiller
+        </span>
+
+        <strong>
+          {{ warningAssets }}
+        </strong>
+
+      </div>
+
+    </article>
+
+
+    <article class="stat-card">
+
+      <div class="stat-icon red">
+        <span class="material-symbols-outlined">
+          error
+        </span>
+      </div>
+
+      <div class="stat-info">
+
+        <span>
+          Critiques
+        </span>
+
+        <strong>
+          {{ criticalAssets }}
+        </strong>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- =====================================================
+       TOOLBAR
+  ====================================================== -->
+
+  <section class="assets-toolbar">
+
+    <div class="search-box">
+
+      <span class="material-symbols-outlined">
+        search
+      </span>
+
+      <input
+        type="search"
+        [(ngModel)]="searchTerm"
+        placeholder="Rechercher un actif, une IP..."
+      />
+
+    </div>
+
+
+    <div class="filter-buttons">
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'Tous'"
+        (click)="setFilter('Tous')"
+      >
+        Tous
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'Serveur'"
+        (click)="setFilter('Serveur')"
+      >
+        Serveurs
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'Site Web'"
+        (click)="setFilter('Site Web')"
+      >
+        Sites Web
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'Poste de travail'"
+        (click)="setFilter('Poste de travail')"
+      >
+        Postes
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'Cloud'"
+        (click)="setFilter('Cloud')"
+      >
+        Cloud
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ASSETS HEADER
+  ====================================================== -->
+
+  <div class="section-heading">
+
+    <div>
+
+      <span class="section-kicker">
+        ENVIRONMENT
+      </span>
+
+      <h2>
+        Actifs surveillés
+      </h2>
+
+    </div>
+
+    <span class="asset-count">
+      {{ filteredAssets.length }} actif(s)
+    </span>
+
+  </div>
+
+
+  <!-- =====================================================
+       EMPTY STATE
+  ====================================================== -->
+
+  @if (filteredAssets.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+
+        <span class="material-symbols-outlined">
+          search_off
+        </span>
+
+      </div>
+
+      <h3>
+        Aucun actif trouvé
+      </h3>
+
+      <p>
+        Aucun actif ne correspond à votre recherche
+        ou au filtre sélectionné.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       ASSETS GRID
+  ====================================================== -->
+
+  <section class="assets-grid">
+
+    @for (asset of filteredAssets; track asset.id) {
+
+      <article class="asset-card">
+
+
+        <!-- CARD TOP -->
+
+        <div class="asset-top">
+
+          <div class="asset-identity">
+
+            <div
+              class="asset-icon"
+              [class]="asset.iconClass"
+            >
+
+              <span class="material-symbols-outlined">
+                {{ asset.icon }}
+              </span>
+
+            </div>
+
+            <div>
+
+              <h3>
+                {{ asset.name }}
+              </h3>
+
+              <span class="asset-type">
+                {{ asset.type }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="asset-status"
+            [class]="asset.status"
+          >
+
+            <span class="material-symbols-outlined">
+              {{ getStatusIcon(asset.status) }}
+            </span>
+
+            {{ getStatusLabel(asset.status) }}
+
+          </div>
+
+        </div>
+
+
+        <!-- TARGET -->
+
+        <div class="asset-target">
+
+          <span class="material-symbols-outlined">
+            link
+          </span>
+
+          <span>
+            {{ asset.target }}
+          </span>
+
+        </div>
+
+
+        <!-- SCORE -->
+
+        <div class="score-section">
+
+          <div class="score-header">
+
+            <span>
+              Security Score
+            </span>
+
+            <strong
+              [class]="getScoreClass(asset.score)"
+            >
+              {{ asset.score > 0 ? asset.score + '/100' : '—' }}
+            </strong>
+
+          </div>
+
+
+          <div class="score-bar">
+
+            <div
+              class="score-progress"
+              [class]="getScoreClass(asset.score)"
+              [style.width.%]="asset.score"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- METRICS -->
+
+        <div class="asset-metrics">
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              bug_report
+            </span>
+
+            <strong>
+              {{ asset.threats }}
+            </strong>
+
+            <small>
+              Menaces
+            </small>
+
+          </div>
+
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              security
+            </span>
+
+            <strong>
+              {{ asset.vulnerabilities }}
+            </strong>
+
+            <small>
+              Vulnérabilités
+            </small>
+
+          </div>
+
+
+          <div>
+
+            <span class="material-symbols-outlined">
+              lan
+            </span>
+
+            <strong>
+              {{ asset.openPorts }}
+            </strong>
+
+            <small>
+              Ports
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="asset-footer">
+
+          <div class="last-scan">
+
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
+
+            <span>
+              {{ asset.lastScan }}
+            </span>
+
+          </div>
+
+
+          <div class="asset-actions">
+
+            <button
+              type="button"
+              class="icon-button"
+              title="Détails"
+              (click)="openDetails(asset)"
+            >
+
+              <span class="material-symbols-outlined">
+                visibility
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              class="icon-button"
+              title="Modifier"
+              (click)="openEditModal(asset)"
+            >
+
+              <span class="material-symbols-outlined">
+                edit
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              class="icon-button danger"
+              title="Supprimer"
+              (click)="askDelete(asset)"
+            >
+
+              <span class="material-symbols-outlined">
+                delete
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              class="scan-button"
+              (click)="scanAsset(asset)"
+            >
+
+              <span class="material-symbols-outlined">
+                radar
+              </span>
+
+              Scanner
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    }
+
+  </section>
+
+</section>
+
+
+<!-- =====================================================
+     ADD / EDIT MODAL
+====================================================== -->
+
+@if (showAssetModal) {
+
+  <div class="modal-backdrop">
+
+    <div
+      class="asset-modal"
+      role="dialog"
+      aria-modal="true"
+    >
+
+      <div class="modal-header">
+
+        <div>
+
+          <span class="modal-kicker">
+            SECURITY ASSET
+          </span>
+
+          <h2>
+            {{ editingAsset ? 'Modifier l’actif' : 'Ajouter un actif' }}
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeAssetModal()"
+        >
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="form-group">
+
+          <label>
+            Nom de l'actif
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="assetForm.name"
+            placeholder="Ex : Serveur Production"
+          />
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label>
+              Type
+            </label>
+
+            <select
+              [(ngModel)]="assetForm.type"
+            >
+
+              <option value="Serveur">
+                Serveur
+              </option>
+
+              <option value="Site Web">
+                Site Web
+              </option>
+
+              <option value="Poste de travail">
+                Poste de travail
+              </option>
+
+              <option value="Domaine">
+                Domaine
+              </option>
+
+              <option value="Réseau">
+                Réseau
+              </option>
+
+              <option value="Cloud">
+                Cloud
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Cible
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="assetForm.target"
+              placeholder="IP, domaine ou URL"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            [(ngModel)]="assetForm.description"
+            placeholder="Décrivez cet actif..."
+            rows="4"
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeAssetModal()"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="saveAsset()"
+        >
+
+          <span class="material-symbols-outlined">
+            check
+          </span>
+
+          {{ editingAsset ? 'Enregistrer' : 'Ajouter l’actif' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- =====================================================
+     DETAILS MODAL
+====================================================== -->
+
+@if (showDetailsModal && selectedAsset) {
+
+  <div class="modal-backdrop">
+
+    <div class="details-modal">
+
+      <div class="modal-header">
+
+        <div class="asset-identity">
+
+          <div
+            class="asset-icon"
+            [class]="selectedAsset.iconClass"
+          >
+
+            <span class="material-symbols-outlined">
+              {{ selectedAsset.icon }}
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="modal-kicker">
+              ASSET DETAILS
+            </span>
+
+            <h2>
+              {{ selectedAsset.name }}
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeDetails()"
+        >
+
+          <span class="material-symbols-outlined">
+            close
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <div class="details-content">
+
+        <div class="detail-target">
+
+          <span class="material-symbols-outlined">
+            link
+          </span>
+
+          {{ selectedAsset.target }}
+
+        </div>
+
+
+        <div class="security-score-large">
+
+          <div>
+
+            <span>
+              Security Score
+            </span>
+
+            <strong
+              [class]="getScoreClass(selectedAsset.score)"
+            >
+              {{ selectedAsset.score > 0
+                ? selectedAsset.score + '/100'
+                : 'Non analysé' }}
+            </strong>
+
+          </div>
+
+          <div class="large-score-bar">
+
+            <div
+              class="score-progress"
+              [class]="getScoreClass(selectedAsset.score)"
+              [style.width.%]="selectedAsset.score"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="detail-grid">
+
+          <div class="detail-item">
+
+            <span class="material-symbols-outlined">
+              bug_report
+            </span>
+
+            <div>
+              <small>Menaces</small>
+              <strong>{{ selectedAsset.threats }}</strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="material-symbols-outlined">
+              security
+            </span>
+
+            <div>
+              <small>Vulnérabilités</small>
+              <strong>{{ selectedAsset.vulnerabilities }}</strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="material-symbols-outlined">
+              lan
+            </span>
+
+            <div>
+              <small>Ports ouverts</small>
+              <strong>{{ selectedAsset.openPorts }}</strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="material-symbols-outlined">
+              dns
+            </span>
+
+            <div>
+              <small>Services</small>
+              <strong>{{ selectedAsset.services }}</strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="material-symbols-outlined">
+              scan
+            </span>
+
+            <div>
+              <small>Scans</small>
+              <strong>{{ selectedAsset.scans }}</strong>
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
+
+            <div>
+              <small>Dernier scan</small>
+              <strong>{{ selectedAsset.lastScan }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="description-box">
+
+          <span class="material-symbols-outlined">
+            description
+          </span>
+
+          <p>
+            {{ selectedAsset.description || 'Aucune description.' }}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeDetails()"
+        >
+          Fermer
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="scanAsset(selectedAsset)"
+        >
+
+          <span class="material-symbols-outlined">
+            radar
+          </span>
+
+          Scanner cet actif
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- =====================================================
+     DELETE MODAL
+====================================================== -->
+
+@if (showDeleteModal && selectedAsset) {
+
+  <div class="modal-backdrop">
+
+    <div class="delete-modal">
+
+      <div class="delete-icon">
+
+        <span class="material-symbols-outlined">
+          delete
+        </span>
+
+      </div>
+
+      <h2>
+        Supprimer cet actif ?
+      </h2>
+
+      <p>
+        Vous êtes sur le point de supprimer
+        <strong>{{ selectedAsset.name }}</strong>.
+        Cette action est irréversible.
+      </p>
+
+
+      <div class="delete-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeDeleteModal()"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="delete-button"
+          (click)="deleteAsset()"
+        >
+
+          <span class="material-symbols-outlined">
+            delete
+          </span>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+
+}

@@ -1,39 +1,55 @@
 <div class="manage-page">
 
-  <!-- =====================================================
-       TOP BAR
+    <!-- =====================================================
+       HEADER
   ====================================================== -->
 
-  <header class="manage-topbar">
+  <header class="page-header">
 
-    <button
-      type="button"
-      class="back-btn"
-      (click)="goBack()"
-    >
+    <div class="header-left">
 
-      <span class="material-symbols-outlined">
-        arrow_back
-      </span>
+      <button
+        type="button"
+        class="back-btn"
+        (click)="goBack()"
+        title="Retour"
+      >
 
-      Communauté
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
 
-    </button>
+      </button>
 
 
-    <div class="topbar-title">
+      <div class="header-icon">
 
-      <span class="material-symbols-outlined">
-        admin_panel_settings
-      </span>
+        <span class="material-symbols-outlined">
+          admin_panel_settings
+        </span>
 
-      Gestion de la communauté
+      </div>
+
+
+      <div class="header-text">
+
+        <span class="header-kicker">
+          RÉSEAU B2WA
+        </span>
+
+        <h1>
+          Gestion de la communauté
+        </h1>
+
+        <p>
+          Gérez et surveillez l'activité de votre communauté.
+        </p>
+
+      </div>
 
     </div>
 
   </header>
-
-
 
   <!-- =====================================================
        COMMUNITY HEADER

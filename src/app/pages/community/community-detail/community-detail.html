@@ -193,6 +193,22 @@
         </span>
       </button>
 
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === 'discussion'"
+        (click)="changeTab('discussion')"
+      >
+        <span class="material-symbols-outlined">
+          forum
+        </span>
+
+        Discussion
+
+        <span class="tab-count">
+          {{ community?.discussions || 0 }}
+        </span>
+      </button>
 
       <button
         type="button"
@@ -977,6 +993,17 @@
 
         </section>
 
+      }
+
+        <!-- ===============================================
+           DISCUSSIONS TAB
+      ================================================= -->
+
+      @if (activeTab === 'discussion') {
+        <app-community-discussion
+          [communityId]="community?.id ?? ''"
+          [communityName]="community?.name ?? ''">
+        </app-community-discussion>
       }
 
 

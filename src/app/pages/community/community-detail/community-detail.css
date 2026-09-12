@@ -84,13 +84,13 @@
 }
 
 .status-badge.admin {
-  background: rgba(37, 99, 235, 0.95);
+  background: rgba(37, 235, 60, 0.518);
   color: #ffffff;
 }
 
 .status-badge.member {
   background: rgba(255, 255, 255, 0.92);
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .status-badge.public {
@@ -156,7 +156,7 @@
   width: 23px;
   height: 23px;
   border-radius: 50%;
-  background: #2563eb;
+  background: #16a34a;
   color: #ffffff;
 }
 
@@ -169,7 +169,7 @@
   margin-top: 5px;
   font-size: 11px;
   font-weight: 700;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .community-description {
@@ -224,13 +224,13 @@
 
 .primary-action {
   border: 0;
-  background: #2563eb;
+  background: #16a34a;
   color: #ffffff;
   box-shadow: 0 7px 18px rgba(37, 99, 235, 0.18);
 }
 
 .primary-action:hover {
-  background: #1d4ed8;
+  background: #16a34a;
   transform: translateY(-1px);
 }
 
@@ -243,7 +243,7 @@
 .secondary-action:hover {
   border-color: #bfdbfe;
   background: #eff6ff;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .primary-action .material-symbols-outlined,
@@ -255,9 +255,6 @@
    3. NAVIGATION TABS
 --------------------------------------------------------- */
 .community-navigation {
-  position: sticky;
-  top: 0;
-  z-index: 20;
   margin-top: 18px;
   margin-bottom: 25px;
   border: 1px solid #e2e8f0;
@@ -295,12 +292,12 @@
 
 .tab:hover {
   background: #f8fafc;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .tab.active {
   background: #eff6ff;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .tab .material-symbols-outlined {
@@ -315,7 +312,7 @@
   height: 20px;
   padding: 0 5px;
   border-radius: 6px;
-  background: rgba(37, 99, 235, 0.08);
+  background: rgba(74, 222, 128, 0.08);
   font-size: 9px;
 }
 
@@ -378,7 +375,7 @@
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.13em;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .admin-actions-header h2 {
@@ -395,7 +392,7 @@
   height: 40px;
   border-radius: 12px;
   background: #eff6ff;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .admin-icon .material-symbols-outlined {
@@ -618,7 +615,7 @@
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.13em;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .section-header h2 {
@@ -640,7 +637,7 @@
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: #2563eb;
+  color: #16a34a;
   font-family: inherit;
   font-size: 10px;
   font-weight: 700;
@@ -678,7 +675,7 @@
   flex-shrink: 0;
   border-radius: 11px;
   background: #eff6ff;
-  color: #2563eb;
+  color: #16a34a;
 }
 
 .live-date span, .live-card-date span { font-size: 8px; font-weight: 800; text-transform: uppercase; }
@@ -829,7 +826,7 @@
   padding: 3px 6px;
   border-radius: 5px;
   background: #eff6ff;
-  color: #2563eb;
+  color: #16a34a;
   font-size: 8px;
   font-weight: 800;
 }
@@ -885,7 +882,7 @@
   padding: 0 9px;
   border: 0;
   border-radius: 8px;
-  background: #2563eb;
+  background: #16a34a;
   color: #ffffff;
   font-family: inherit;
   font-size: 9px;
@@ -979,7 +976,7 @@
   border: 0;
   border-radius: 8px;
   background: #eff6ff;
-  color: #2563eb;
+  color: #16a34a;
   font-family: inherit;
   font-size: 9px;
   font-weight: 700;
@@ -1029,7 +1026,7 @@
 /* ---------------------------------------------------------
    10. MEMBERS SECTION & SIDEBAR DETAILS
 --------------------------------------------------------- */
-.members-total { padding: 7px 9px; border-radius: 7px; background: #eff6ff; color: #2563eb; font-size: 9px; font-weight: 800; }
+.members-total { padding: 7px 9px; border-radius: 7px; background: #eff6ff; color: #16a34a; font-size: 9px; font-weight: 800; }
 .members-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 
 .member-card { display: flex; align-items: center; gap: 10px; padding: 11px; border: 1px solid #e2e8f0; border-radius: 11px; }
@@ -1040,11 +1037,11 @@
 .member-info span { margin-top: 3px; font-size: 8px; color: #94a3b8; }
 
 .member-role { padding: 4px 7px; border-radius: 5px; background: #f8fafc; color: #94a3b8; font-size: 7px; font-weight: 800; }
-.member-role.admin { background: #eff6ff; color: #2563eb; }
+.member-role.admin { background: #eff6ff; color: #16a34a; }
 
 .sidebar-card { padding: 18px; border: 1px solid #e2e8f0; border-radius: 15px; background: #ffffff; box-shadow: 0 5px 20px rgba(15, 23, 42, 0.025); }
 .sidebar-title { display: flex; align-items: center; gap: 7px; margin-bottom: 13px; }
-.sidebar-title .material-symbols-outlined { font-size: 18px; color: #2563eb; }
+.sidebar-title .material-symbols-outlined { font-size: 18px; color: #16a34a; }
 .sidebar-title h3 { margin: 0; font-size: 13px; font-weight: 800; color: #334155; }
 .sidebar-description { margin: 0; font-size: 10px; line-height: 1.7; color: #64748b; }
 
@@ -1070,7 +1067,7 @@
 
 .sidebar-heading-row { display: flex; align-items: center; justify-content: space-between; }
 .sidebar-heading-row .sidebar-title { margin-bottom: 13px; }
-.sidebar-heading-row > button { border: 0; background: transparent; color: #2563eb; font-family: inherit; font-size: 9px; font-weight: 700; cursor: pointer; }
+.sidebar-heading-row > button { border: 0; background: transparent; color: #16a34a; font-family: inherit; font-size: 9px; font-weight: 700; cursor: pointer; }
 
 .sidebar-members { display: flex; flex-direction: column; gap: 10px; }
 .sidebar-member { display: flex; align-items: center; gap: 8px; }
@@ -1081,7 +1078,7 @@
 
 .rules-card ul { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0; list-style: none; }
 .rules-card li { position: relative; padding-left: 15px; font-size: 9px; line-height: 1.5; color: #64748b; }
-.rules-card li::before { content: ""; position: absolute; left: 0; top: 5px; width: 5px; height: 5px; border-radius: 50%; background: #2563eb; }
+.rules-card li::before { content: ""; position: absolute; left: 0; top: 5px; width: 5px; height: 5px; border-radius: 50%; background: #16a34a; }
 
 /* ---------------------------------------------------------
    RESPONSIVE PAGE DETAIL

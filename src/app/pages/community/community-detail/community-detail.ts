@@ -9,6 +9,7 @@ import { CreateProductModalComponent } from '../../../shared/community/create-pr
 import { ProductSuccessModalComponent } from '../../../shared/community/create-product-modal/product-success-modal/product-success-modal';
 import { LiveSuccessModalComponent } from '../../../shared/community/schedule-live-modal/live-success-modal/live-success-modal';
 import { ScheduleLiveModalComponent } from '../../../shared/community/schedule-live-modal/schedule-live-modal';
+import { CommunityDiscussionComponent } from '../../../shared/community-discussion/community-discussion';
 
 import { Community, CommunityService } from '../../../services/community.service';
 import {
@@ -29,7 +30,8 @@ import {
     CreateProductModalComponent,
     ProductSuccessModalComponent,
     ScheduleLiveModalComponent,
-    LiveSuccessModalComponent
+    LiveSuccessModalComponent,
+    CommunityDiscussionComponent
   ],
   templateUrl: './community-detail.html',
   styleUrls: ['./community-detail.css'],
@@ -37,7 +39,7 @@ import {
 })
 export class CommunityDetailComponent {
   // Onglet actif
-  activeTab: 'home' | 'products' | 'lives' | 'members' = 'home';
+  activeTab: 'home' | 'products' | 'lives' | 'members' | 'discussion' = 'home';
 
   // États de visibilité des modales
   showPostModal = false;
@@ -85,6 +87,7 @@ export class CommunityDetailComponent {
 
   // Liste des membres
   members: Member[] = [];
+  
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -129,9 +132,11 @@ export class CommunityDetailComponent {
     this.location.back();
   }
 
-  changeTab(tab: 'home' | 'products' | 'lives' | 'members'): void {
+  changeTab(
+    tab: 'home' | 'products' | 'lives' | 'members' | 'discussion'
+  ): void {
     this.activeTab = tab;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   formatNumber(value: number): string {
