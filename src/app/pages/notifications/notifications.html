@@ -1,1 +1,1585 @@
-<p>notifications works!</p>
+<div class="notifications-page">
+
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
+  <header class="notifications-hero">
+
+    <div class="hero-copy">
+
+      <div class="eyebrow">
+        <span class="material-symbols-outlined">
+          notifications_active
+        </span>
+
+        Centre d’activité B2WA
+      </div>
+
+      <h1>
+        Vos notifications
+      </h1>
+
+      <p>
+        Restez informé des activités importantes de votre réseau B2WA.
+      </p>
+
+    </div>
+
+    <div class="hero-mark">
+
+      <span class="material-symbols-outlined">
+        notifications
+      </span>
+
+      <span
+        class="hero-badge"
+        *ngIf="unreadCount > 0">
+
+        {{ unreadCount }}
+
+      </span>
+
+    </div>
+
+  </header>
+
+  <!-- =====================================================
+       RÉSUMÉ
+  ====================================================== -->
+
+  <section class="notification-summary">
+
+    <div class="summary-card summary-card-main">
+
+      <div class="summary-icon">
+        <span class="material-symbols-outlined">
+          inbox
+        </span>
+      </div>
+
+      <div>
+        <span class="summary-label">
+          Total
+        </span>
+
+        <strong>
+          {{ totalCount }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="summary-card summary-card-unread">
+
+      <div class="summary-icon">
+        <span class="material-symbols-outlined">
+          mark_email_unread
+        </span>
+      </div>
+
+      <div>
+        <span class="summary-label">
+          Non lues
+        </span>
+
+        <strong>
+          {{ unreadCount }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="summary-card summary-card-read">
+
+      <div class="summary-icon">
+        <span class="material-symbols-outlined">
+          mark_email_read
+        </span>
+      </div>
+
+      <div>
+        <span class="summary-label">
+          Lues
+        </span>
+
+        <strong>
+          {{ readCount }}
+        </strong>
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="mark-all-button"
+      [disabled]="unreadCount === 0"
+      (click)="markAllAsRead()">
+
+      <span class="material-symbols-outlined">
+        done_all
+      </span>
+
+      <span>
+        Tout marquer comme lu
+      </span>
+
+    </button>
+
+  </section>
+
+  <!-- =====================================================
+       FILTRES
+  ====================================================== -->
+
+  <section class="notifications-toolbar">
+
+    <div class="filter-group">
+
+      <span class="filter-title">
+        Affichage
+      </span>
+
+      <div class="filter-buttons">
+
+        <button
+          type="button"
+          class="filter-button"
+          [class.active]="activeFilter === 'all'"
+          (click)="setFilter('all')">
+
+          Toutes
+
+          <span>
+            {{ totalCount }}
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="filter-button"
+          [class.active]="activeFilter === 'unread'"
+          (click)="setFilter('unread')">
+
+          Non lues
+
+          <span>
+            {{ unreadCount }}
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          class="filter-button"
+          [class.active]="activeFilter === 'read'"
+          (click)="setFilter('read')">
+
+          Lues
+
+          <span>
+            {{ readCount }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="filter-group type-filter-group">
+
+      <label
+        class="filter-title"
+        for="notification-type-filter">
+
+        Catégorie
+
+      </label>
+
+      <select
+        id="notification-type-filter"
+        class="type-select"
+        [value]="activeType"
+        (change)="
+          setTypeFilter(
+            $any($event.target).value
+          )
+        ">
+
+        <option value="all">
+          Toutes les catégories
+        </option>
+
+        <option value="system">
+          Système
+        </option>
+
+        <option value="community">
+          Communauté
+        </option>
+
+        <option value="post">
+          Publication
+        </option>
+
+        <option value="live">
+          Live
+        </option>
+
+        <option value="flash_sale">
+          Vente flash
+        </option>
+
+        <option value="product">
+          Produit
+        </option>
+
+        <option value="order">
+          Commande
+        </option>
+
+        <option value="shipment">
+          Expédition
+        </option>
+
+        <option value="member">
+          Membre
+        </option>
+
+      </select>
+
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       CONTENU
+  ====================================================== -->
+
+  <main class="notifications-content">
+
+    <!-- CHARGEMENT -->
+
+    <div
+      class="state-card"
+      *ngIf="loading">
+
+      <span class="material-symbols-outlined spinning">
+        progress_activity
+      </span>
+
+      <h2>
+        Chargement de vos notifications
+      </h2>
+
+      <p>
+        Nous préparons votre centre d’activité.
+      </p>
+
+    </div>
+
+    <!-- ERREUR -->
+
+    <div
+      class="state-card state-error"
+      *ngIf="!loading && errorMessage">
+
+      <span class="material-symbols-outlined">
+        error
+      </span>
+
+      <h2>
+        Une erreur est survenue
+      </h2>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="loadNotifications()">
+
+        Réessayer
+
+      </button>
+
+    </div>
+
+    <!-- VIDE -->
+
+    <div
+      class="state-card state-empty"
+      *ngIf="
+        !loading &&
+        !errorMessage &&
+        filteredNotifications.length === 0
+      ">
+
+      <div class="empty-icon">
+
+        <span class="material-symbols-outlined">
+          notifications_none
+        </span>
+
+      </div>
+
+      <h2>
+        Aucune notification
+      </h2>
+
+      <p>
+        Il n’y a aucune notification correspondant à vos filtres.
+      </p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        *ngIf="
+          activeFilter !== 'all' ||
+          activeType !== 'all'
+        "
+        (click)="setFilter('all'); setTypeFilter('all')">
+
+        Réinitialiser les filtres
+
+      </button>
+
+    </div>
+
+    <!-- LISTE -->
+
+    <div
+      *ngIf="
+        !loading &&
+        !errorMessage &&
+        filteredNotifications.length > 0
+      ">
+
+      <div class="content-heading">
+
+        <div>
+
+          <span class="content-kicker">
+            Activité récente
+          </span>
+
+          <h2>
+            {{ filteredCount }}
+            {{ filteredCount > 1
+              ? 'notifications'
+              : 'notification' }}
+          </h2>
+
+        </div>
+
+        <span class="content-status">
+
+          <span class="status-dot"></span>
+
+          Synchronisé
+
+        </span>
+
+      </div>
+
+      <div class="notification-list">
+
+        <article
+          class="notification-card"
+          *ngFor="
+            let notification of filteredNotifications;
+            trackBy: trackByNotificationId
+          "
+          [class.is-unread]="isUnread(notification)"
+          [class.is-read]="notification.status === 'read'"
+          [ngClass]="getPriorityClass(notification.priority)"
+          (click)="openNotification(notification)">
+
+          <div
+            class="notification-type-icon"
+            [attr.data-type]="notification.type">
+
+            <span class="material-symbols-outlined">
+              {{ getTypeIcon(notification.type) }}
+            </span>
+
+          </div>
+
+          <div class="notification-body">
+
+            <div class="notification-topline">
+
+              <div class="notification-tags">
+
+                <span class="notification-type">
+                  {{ getTypeLabel(notification.type) }}
+                </span>
+
+                <span
+                  class="priority-badge"
+                  [ngClass]="getPriorityClass(notification.priority)">
+
+                  <span class="priority-dot"></span>
+
+                  {{ getPriorityLabel(notification.priority) }}
+
+                </span>
+
+              </div>
+
+              <span
+                class="unread-label"
+                *ngIf="isUnread(notification)">
+
+                Nouveau
+
+              </span>
+
+            </div>
+
+            <h3>
+              {{ notification.title }}
+            </h3>
+
+            <p class="notification-message">
+              {{ notification.message }}
+            </p>
+
+            <div class="notification-footer">
+
+              <span class="notification-date">
+
+                <span class="material-symbols-outlined">
+                  schedule
+                </span>
+
+                {{ getRelativeTime(notification.createdAt) }}
+
+              </span>
+
+              <span class="notification-date-full">
+                {{ formatDateTime(notification.createdAt) }}
+              </span>
+
+              <span
+                class="unread-dot"
+                *ngIf="isUnread(notification)">
+              </span>
+
+            </div>
+
+          </div>
+
+          <button
+            type="button"
+            class="notification-delete"
+            title="Supprimer"
+            aria-label="Supprimer la notification"
+            (click)="
+              confirmDelete(
+                notification,
+                $event
+              )
+            ">
+
+            <span class="material-symbols-outlined">
+              delete_outline
+            </span>
+
+          </button>
+
+          <span class="notification-arrow material-symbols-outlined">
+            chevron_right
+          </span>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- =====================================================
+       MODAL DÉTAILS
+  ====================================================== -->
+
+<div
+  class="modal-backdrop"
+  *ngIf="showDetailsModal && selectedNotification">
+
+  <section
+    class="notification-modal details-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="notification-details-title"
+    (click)="$event.stopPropagation()">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="modal-header">
+
+      <div class="modal-title-wrapper">
+
+        <div
+          class="modal-type-icon"
+          [attr.data-type]="selectedNotification.type">
+
+          <span class="material-symbols-outlined">
+            {{ getTypeIcon(selectedNotification.type) }}
+          </span>
+
+        </div>
+
+        <div class="modal-title-content">
+
+          <div class="modal-eyebrow-row">
+
+            <span class="modal-eyebrow">
+              {{ getTypeLabel(selectedNotification.type) }}
+            </span>
+
+            <span
+              class="priority-badge"
+              [ngClass]="
+                getPriorityClass(
+                  selectedNotification.priority
+                )
+              ">
+
+              <span class="priority-dot"></span>
+
+              {{ getPriorityLabel(selectedNotification.priority) }}
+
+            </span>
+
+          </div>
+
+          <h2 id="notification-details-title">
+            {{ selectedNotification.title }}
+          </h2>
+
+          <div class="modal-date">
+
+            <span class="material-symbols-outlined">
+              schedule
+            </span>
+
+            {{ getRelativeTime(selectedNotification.createdAt) }}
+
+            <span class="modal-date-separator">
+              •
+            </span>
+
+            {{ formatDateTime(selectedNotification.createdAt) }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="modal-close"
+        title="Fermer"
+        aria-label="Fermer"
+        (click)="closeDetailsModal()">
+
+        <span class="material-symbols-outlined">
+          close
+        </span>
+
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENT
+         ===================================================== -->
+
+    <div class="modal-content">
+
+
+      <!-- ===================================================
+           MESSAGE PRINCIPAL
+           =================================================== -->
+
+      <section class="detail-message">
+
+        <div class="detail-message-icon">
+
+          <span class="material-symbols-outlined">
+            subject
+          </span>
+
+        </div>
+
+        <div class="detail-message-content">
+
+          <span class="detail-section-label">
+            À propos de cette notification
+          </span>
+
+          <p>
+            {{
+              selectedNotification.description
+              || selectedNotification.message
+            }}
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           CONTEXTE COMMUNAUTÉ
+           =================================================== -->
+
+      <section
+        class="detail-context-card"
+        *ngIf="
+          selectedNotification.type === 'community' ||
+          selectedNotification.type === 'post' ||
+          selectedNotification.type === 'live' ||
+          selectedNotification.type === 'member'
+        ">
+
+        <div class="context-icon">
+
+          <span class="material-symbols-outlined">
+            groups
+          </span>
+
+        </div>
+
+        <div class="context-content">
+
+          <span class="detail-section-label">
+            Communauté
+          </span>
+
+          <strong>
+            {{
+              selectedNotification.metadata?.['communityName']
+              || 'Communauté B2WA'
+            }}
+          </strong>
+
+          <span
+            class="context-reference"
+            *ngIf="
+              selectedNotification.metadata?.['communityId']
+            ">
+
+            ID :
+            {{ selectedNotification.metadata?.['communityId'] }}
+
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           PUBLICATION
+           =================================================== -->
+
+      <section
+        class="detail-post-card"
+        *ngIf="selectedNotification.type === 'post'">
+
+        <div class="post-icon">
+
+          <span class="material-symbols-outlined">
+            article
+          </span>
+
+        </div>
+
+        <div class="post-content">
+
+          <span class="detail-section-label">
+            Publication
+          </span>
+
+          <strong>
+            {{ selectedNotification.referenceId }}
+          </strong>
+
+          <span>
+            Cette publication est disponible dans votre
+            communauté.
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           LIVE
+           =================================================== -->
+
+      <section
+        class="detail-live-card"
+        *ngIf="selectedNotification.type === 'live'">
+
+        <div class="live-card-header">
+
+          <div class="live-icon">
+
+            <span class="material-symbols-outlined">
+              live_tv
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="live-badge">
+              LIVE PROGRAMMÉ
+            </span>
+
+            <strong>
+              {{ selectedNotification.title }}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div
+          class="live-schedule"
+          *ngIf="
+            selectedNotification.metadata?.['scheduledAt']
+          ">
+
+          <span class="material-symbols-outlined">
+            calendar_month
+          </span>
+
+          <div>
+
+            <span>
+              Date prévue
+            </span>
+
+            <strong>
+              {{
+                formatDateTime(
+                  selectedNotification.metadata?.['scheduledAt']
+                )
+              }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           VENTE FLASH
+           =================================================== -->
+
+      <section
+        class="detail-flash-card"
+        *ngIf="selectedNotification.type === 'flash_sale'">
+
+        <div class="flash-header">
+
+          <div class="flash-icon">
+
+            <span class="material-symbols-outlined">
+              local_fire_department
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="flash-label">
+              VENTE FLASH
+            </span>
+
+            <strong>
+              Offre exclusive
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="flash-grid">
+
+          <div class="flash-item">
+
+            <span>
+              Produit
+            </span>
+
+            <strong>
+              {{
+                selectedNotification.metadata?.['productId']
+                || 'Non précisé'
+              }}
+            </strong>
+
+          </div>
+
+          <div class="flash-item">
+
+            <span>
+              Réduction
+            </span>
+
+            <strong class="discount-value">
+
+              -
+              {{
+                selectedNotification.metadata?.['discount']
+                || 0
+              }}%
+
+            </strong>
+
+          </div>
+
+          <div class="flash-item">
+
+            <span>
+              Quantité disponible
+            </span>
+
+            <strong>
+              {{
+                selectedNotification.metadata?.['quantity']
+                || 0
+              }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           PRODUIT
+           =================================================== -->
+
+      <section
+        class="detail-product-card"
+        *ngIf="selectedNotification.type === 'product'">
+
+        <div class="product-icon">
+
+          <span class="material-symbols-outlined">
+            inventory_2
+          </span>
+
+        </div>
+
+        <div class="product-content">
+
+          <span class="detail-section-label">
+            Produit
+          </span>
+
+          <strong>
+            {{
+              selectedNotification.metadata?.['productName']
+              || selectedNotification.referenceId
+              || 'Produit B2WA'
+            }}
+          </strong>
+
+          <span>
+            Produit concerné par cette notification.
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           COMMANDE
+           =================================================== -->
+
+      <section
+        class="detail-order-card"
+        *ngIf="selectedNotification.type === 'order'">
+
+        <div class="order-header">
+
+          <div class="order-icon">
+
+            <span class="material-symbols-outlined">
+              shopping_bag
+            </span>
+
+          </div>
+
+          <div>
+
+            <span class="detail-section-label">
+              Commande
+            </span>
+
+            <strong>
+              {{ selectedNotification.referenceId }}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="order-grid">
+
+          <div>
+
+            <span>
+              Client
+            </span>
+
+            <strong>
+              {{
+                selectedNotification.metadata?.['customerName']
+                || 'Client B2WA'
+              }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Montant
+            </span>
+
+            <strong>
+
+              {{
+                selectedNotification.metadata?.['amount']
+                || 0
+              }}
+
+              {{
+                selectedNotification.metadata?.['currency']
+                || 'FCFA'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           EXPÉDITION
+           =================================================== -->
+
+      <section
+        class="detail-shipment-card"
+        *ngIf="selectedNotification.type === 'shipment'">
+
+        <div class="shipment-header">
+
+          <div>
+
+            <span class="detail-section-label">
+              Expédition
+            </span>
+
+            <strong>
+              {{ selectedNotification.referenceId }}
+            </strong>
+
+          </div>
+
+          <span
+            class="shipment-status"
+            [attr.data-status]="
+              selectedNotification.metadata?.['status']
+            ">
+
+            <span class="status-dot"></span>
+
+            {{
+              selectedNotification.metadata?.['status']
+              || 'unknown'
+            }}
+
+          </span>
+
+        </div>
+
+
+        <div class="shipment-reference">
+
+          <div>
+
+            <span>
+              Commande associée
+            </span>
+
+            <strong>
+              {{
+                selectedNotification.metadata?.['orderId']
+                || 'Non précisée'
+              }}
+            </strong>
+
+          </div>
+
+          <span class="material-symbols-outlined">
+            arrow_forward
+          </span>
+
+          <div>
+
+            <span>
+              Statut actuel
+            </span>
+
+            <strong>
+              {{ selectedNotification.title }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- TIMELINE -->
+        <div class="shipment-timeline">
+
+          <div
+            class="timeline-step"
+            [class.active]="
+              selectedNotification.metadata?.['status']
+              === 'created'
+            "
+            [class.completed]="
+              selectedNotification.metadata?.['status']
+              !== 'created'
+            ">
+
+            <div class="timeline-dot">
+
+              <span class="material-symbols-outlined">
+                inventory_2
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Expédition créée
+              </strong>
+
+              <span>
+                L'expédition a été créée
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-line"></div>
+
+
+          <div
+            class="timeline-step"
+            [class.active]="
+              selectedNotification.metadata?.['status']
+              === 'accepted'
+            "
+            [class.completed]="
+              selectedNotification.metadata?.['status'] !==
+              'accepted'
+            ">
+
+            <div class="timeline-dot">
+
+              <span class="material-symbols-outlined">
+                check_circle
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Colis accepté
+              </strong>
+
+              <span>
+                Le transporteur a reçu le colis
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-line"></div>
+
+
+          <div
+            class="timeline-step"
+            [class.active]="
+              selectedNotification.metadata?.['status']
+              === 'in_transit'
+            "
+            [class.completed]="
+              selectedNotification.metadata?.['status'] ===
+              'arrived_at_center' ||
+              selectedNotification.metadata?.['status'] ===
+              'out_for_delivery' ||
+              selectedNotification.metadata?.['status'] ===
+              'delivered'
+            ">
+
+            <div class="timeline-dot">
+
+              <span class="material-symbols-outlined">
+                local_shipping
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                En transit
+              </strong>
+
+              <span>
+                Le colis est en cours d'acheminement
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-line"></div>
+
+
+          <div
+            class="timeline-step"
+            [class.active]="
+              selectedNotification.metadata?.['status']
+              === 'arrived_at_center'
+            "
+            [class.completed]="
+              selectedNotification.metadata?.['status'] ===
+              'out_for_delivery' ||
+              selectedNotification.metadata?.['status'] ===
+              'delivered'
+            ">
+
+            <div class="timeline-dot">
+
+              <span class="material-symbols-outlined">
+                warehouse
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Centre de traitement
+              </strong>
+
+              <span>
+                Le colis est arrivé au centre
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-line"></div>
+
+
+          <div
+            class="timeline-step"
+            [class.active]="
+              selectedNotification.metadata?.['status']
+              === 'out_for_delivery'
+            "
+            [class.completed]="
+              selectedNotification.metadata?.['status'] ===
+              'delivered'
+            ">
+
+            <div class="timeline-dot">
+
+              <span class="material-symbols-outlined">
+                delivery_dining
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                En livraison
+              </strong>
+
+              <span>
+                {{ getShipmentStatusLabel(
+                  selectedNotification.metadata?.['status']
+                ) }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-line"></div>
+
+
+          <div
+            class="timeline-step"
+            [class.active]="
+              selectedNotification.metadata?.['status']
+              === 'delivered'
+            ">
+
+            <div class="timeline-dot">
+
+              <span class="material-symbols-outlined">
+                check_circle
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Livré
+              </strong>
+
+              <span>
+                La commande a été livrée
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           MEMBRE
+           =================================================== -->
+
+      <section
+        class="detail-member-card"
+        *ngIf="selectedNotification.type === 'member'">
+
+        <div class="member-icon">
+
+          <span class="material-symbols-outlined">
+            person
+          </span>
+
+        </div>
+
+        <div>
+
+          <span class="detail-section-label">
+            Nouveau membre
+          </span>
+
+          <strong>
+            {{
+              selectedNotification.metadata?.['memberName']
+              || 'Nouveau membre'
+            }}
+          </strong>
+
+          <span>
+            a rejoint votre communauté.
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           INFORMATIONS
+           =================================================== -->
+
+      <section class="modal-information-section">
+
+        <div class="detail-section-heading">
+
+          <span class="material-symbols-outlined">
+            info
+          </span>
+
+          Informations
+
+        </div>
+
+
+        <div class="modal-information-grid">
+
+          <div class="information-item">
+
+            <span class="information-label">
+              Référence
+            </span>
+
+            <strong>
+              {{ selectedNotification.referenceId || '—' }}
+            </strong>
+
+          </div>
+
+
+          <div class="information-item">
+
+            <span class="information-label">
+              Rôle destinataire
+            </span>
+
+            <strong>
+              {{ selectedNotification.recipientRole }}
+            </strong>
+
+          </div>
+
+
+          <div class="information-item">
+
+            <span class="information-label">
+              Statut
+            </span>
+
+            <strong
+              [class.text-unread]="
+                selectedNotification.status === 'unread'
+              ">
+
+              {{
+                selectedNotification.status === 'read'
+                ? 'Lue'
+                : 'Non lue'
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="information-item">
+
+            <span class="information-label">
+              Reçue le
+            </span>
+
+            <strong>
+              {{ formatDateTime(
+                selectedNotification.createdAt
+              ) }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="information-item"
+            *ngIf="selectedNotification.readAt">
+
+            <span class="information-label">
+              Lue le
+            </span>
+
+            <strong>
+              {{ formatDateTime(
+                selectedNotification.readAt
+              ) }}
+            </strong>
+
+          </div>
+
+
+          <div class="information-item">
+
+            <span class="information-label">
+              Suppression
+            </span>
+
+            <strong>
+
+              {{
+                selectedNotification.deletable
+                ? 'Autorisé'
+                : 'Protégé'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTIONS
+         ===================================================== -->
+
+    <footer class="modal-actions">
+
+      <button
+        type="button"
+        class="modal-secondary-button"
+        (click)="closeDetailsModal()">
+
+        Fermer
+
+      </button>
+
+
+      <button
+        type="button"
+        class="modal-secondary-button"
+        *ngIf="
+          selectedNotification.referenceId
+        ">
+
+        <span class="material-symbols-outlined">
+          open_in_new
+        </span>
+
+        Voir la ressource
+
+      </button>
+
+
+      <button
+        type="button"
+        class="modal-danger-button"
+        *ngIf="
+          selectedNotification.deletable !== false
+        "
+        (click)="deleteSelectedNotification()">
+
+        <span class="material-symbols-outlined">
+          delete_outline
+        </span>
+
+        Supprimer
+
+      </button>
+
+    </footer>
+
+  </section>
+
+</div>
+
+  <!-- =====================================================
+       MODAL SUPPRESSION
+  ====================================================== -->
+
+  <div
+    class="modal-backdrop"
+    *ngIf="hasDeleteConfirmation"
+    (click)="cancelDelete()">
+
+    <section
+      class="notification-modal delete-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-notification-title"
+      (click)="$event.stopPropagation()">
+
+      <div class="delete-icon">
+
+        <span class="material-symbols-outlined">
+          delete_forever
+        </span>
+
+      </div>
+
+      <h2 id="delete-notification-title">
+        Supprimer cette notification ?
+      </h2>
+
+      <p>
+        Cette action retirera définitivement cette notification
+        de votre espace personnel.
+      </p>
+
+      <div class="delete-preview">
+        {{ notificationToDelete?.title }}
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="modal-secondary-button"
+          (click)="cancelDelete()">
+
+          Annuler
+
+        </button>
+
+        <button
+          type="button"
+          class="modal-danger-button"
+          (click)="deleteNotification()">
+
+          <span class="material-symbols-outlined">
+            delete_outline
+          </span>
+
+          Supprimer
+
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
