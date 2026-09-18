@@ -41,7 +41,7 @@ export class SidebarComponent {
   // Section Logistique & Finance
   logisticsItems: SidebarItem[] = [
     { label: 'Expéditions', icon: 'local_shipping', route: '/dashboard/shipping' },
-    { label: 'Finances & Recettes', icon: 'payments', route: '/dashboard/finances' }
+    // { label: 'Finances & Recettes', icon: 'payments', route: '/dashboard/finances' }
   ];
 
   // Bas de page
