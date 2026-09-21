@@ -1,75 +1,102 @@
 <div class="login-card">
 
+  <div class="card-glow glow-top"></div>
+  <div class="card-glow glow-bottom"></div>
+
   <!-- HEADER -->
-  <div class="login-header">
-    <div class="brand-header">
-      <div class="login-logo-wrap">
-        <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="login-logo" />
-      </div>
-      <div class="brand-info">
-        <h3>B2WA</h3>
-        <small>BUSINESS TO WEST AFRICA</small>
-      </div>
-    </div>
+  <header class="login-header">
 
     <div class="auth-title">
-      <span class="eyebrow">ESPACE MEMBRE</span>
-      <p>Accédez à votre compte grossiste ou commerçant</p>
+      <span class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        ESPACE MEMBRE
+      </span>
+
+<div class="brand-text">
+  <h1>
+    Bienvenue sur
+    <span class="brand-name">
+      <span class="b-text">B</span><span class="two-text">2</span><span class="wa-text">WA</span>
+    </span>
+  </h1>
+</div>
+
+      <p>
+        Connectez-vous pour gérer vos activités, suivre vos commandes
+        et développer votre réseau professionnel.
+      </p>
     </div>
-  </div>
+
+  </header>
 
   <!-- FORM -->
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    novalidate
+    autocomplete="on"
+  >
 
-    <!-- EMAIL -->
+    <!-- IDENTIFIANT -->
     <div class="form-group">
-      <label for="email">Adresse email ou Téléphone</label>
-      <div 
+      <label for="email">
+        Identifiant professionnel
+      </label>
+
+      <div
         class="input-wrap"
         [class.input-error]="f['email'].touched && f['email'].invalid"
       >
-        <span class="material-symbols-outlined">mail</span>
+        <span class="material-symbols-outlined input-icon">
+          alternate_email
+        </span>
+
         <input
           id="email"
-          type="email"
+          type="text"
           formControlName="email"
-          placeholder="ex: marchand@b2wa.com"
-          autocomplete="email"
+          placeholder="E-mail ou numéro de téléphone"
+          autocomplete="username"
         />
       </div>
 
-      <small 
-        class="error" 
+      <small
+        class="error"
         *ngIf="f['email'].touched && f['email'].invalid"
       >
+        <span class="material-symbols-outlined">error</span>
+
         <span *ngIf="f['email'].errors?.['required']">
-          L'identifiant est obligatoire.
+          Veuillez renseigner votre adresse e-mail ou votre numéro.
         </span>
+
         <span *ngIf="f['email'].errors?.['email']">
-          Format d'email invalide.
+          Veuillez saisir une adresse e-mail valide.
         </span>
       </small>
     </div>
 
     <!-- PASSWORD -->
-    <div class="form-group">
+    <div class="form-group password-group">
       <div class="label-row">
         <label for="password">Mot de passe</label>
+
         <a routerLink="/auth/forgot-password" class="forgot-link">
           Mot de passe oublié ?
         </a>
       </div>
 
-      <div 
+      <div
         class="input-wrap"
         [class.input-error]="f['password'].touched && f['password'].invalid"
       >
-        <span class="material-symbols-outlined">lock</span>
+        <span class="material-symbols-outlined input-icon">lock</span>
+
         <input
           id="password"
           [type]="showPassword ? 'text' : 'password'"
           formControlName="password"
-          placeholder="••••••••"
+          placeholder="Saisissez votre mot de passe"
           autocomplete="new-password"
         />
 
@@ -77,7 +104,8 @@
           type="button"
           class="toggle-btn"
           (click)="togglePassword()"
-          [attr.aria-label]="showPassword ? 'Masquer' : 'Afficher'"
+          [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+          [attr.title]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
         >
           <span class="material-symbols-outlined">
             {{ showPassword ? 'visibility_off' : 'visibility' }}
@@ -85,48 +113,89 @@
         </button>
       </div>
 
-      <small 
-        class="error" 
+      <small
+        class="error"
         *ngIf="f['password'].touched && f['password'].invalid"
       >
+        <span class="material-symbols-outlined">error</span>
+
         <span *ngIf="f['password'].errors?.['required']">
           Le mot de passe est obligatoire.
         </span>
+
         <span *ngIf="f['password'].errors?.['minlength']">
-          6 caractères minimum.
+          Votre mot de passe doit contenir au moins 6 caractères.
         </span>
       </small>
     </div>
 
-    <!-- REMEMBER ME -->
+    <!-- OPTIONS -->
     <div class="form-footer">
       <label class="remember-me">
         <input type="checkbox" formControlName="rememberMe" />
-        <span>Se souvenir de moi</span>
+        <span class="custom-check">
+          <span class="material-symbols-outlined">check</span>
+        </span>
+        <span>Garder ma session active</span>
       </label>
+
+      <span class="session-info">
+        <span class="material-symbols-outlined">info</span>
+        Sur cet appareil uniquement
+      </span>
     </div>
 
     <!-- SERVER ERROR -->
-    <p class="server-error" *ngIf="errorMessage">
+    <div class="server-error" *ngIf="errorMessage" role="alert">
       <span class="material-symbols-outlined">error</span>
-      {{ errorMessage }}
-    </p>
+      <span>{{ errorMessage }}</span>
+    </div>
 
     <!-- LOGIN BUTTON -->
-    <button type="submit" class="login-btn" [disabled]="loading">
-      <span class="material-symbols-outlined" *ngIf="!loading">login</span>
-      <span>{{ loading ? 'Connexion en cours...' : 'Se connecter' }}</span>
+    <button
+      type="submit"
+      class="login-btn"
+      [disabled]="loading"
+    >
+      <span
+        class="material-symbols-outlined"
+        *ngIf="!loading"
+      >
+        login
+      </span>
+
+      <span class="loader" *ngIf="loading"></span>
+
+      <span>
+        {{ loading ? 'Connexion sécurisée en cours...' : 'Accéder à mon espace' }}
+      </span>
+
+      <span
+        class="material-symbols-outlined button-arrow"
+        *ngIf="!loading"
+      >
+        arrow_forward
+      </span>
     </button>
+
+    <!-- SECURITY TEXT -->
+    <div class="security-message">
+      <span class="material-symbols-outlined">lock</span>
+      <span>Vos informations sont protégées et traitées de manière sécurisée.</span>
+    </div>
 
     <!-- DIVIDER -->
     <div class="divider">
-      <span>ou</span>
+      <span>Vous découvrez B2WA ?</span>
     </div>
 
     <!-- REGISTER LINK -->
     <div class="auth-link">
-      <span>Nouveau sur la plateforme ?</span>
-      <a routerLink="/auth/register">Créer un compte B2WA</a>
+      <span>Créez votre espace professionnel</span>
+      <a routerLink="/auth/register">
+        Créer un compte
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </a>
     </div>
 
   </form>

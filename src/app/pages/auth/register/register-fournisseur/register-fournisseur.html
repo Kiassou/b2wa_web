@@ -1,0 +1,225 @@
+<div class="supplier-page">
+  <main class="supplier-container">
+
+  <header class="top-header">
+
+    <div class="header-inner">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+        <span>Retour</span>
+      </button>
+
+    </div>
+
+  </header>
+
+    <!-- MAIN CONTENT -->
+    <section class="supplier-content">
+
+      <!-- INTRODUCTION -->
+      <div class="intro-section">
+
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          PARCOURS FOURNISSEUR
+        </div>
+
+        <h1>
+          Faites grandir votre activité avec
+          <span class="brand-name">
+            <span class="b-text">B</span><span class="two-text">2</span><span class="wa-text">WA</span>
+          </span>
+        </h1>
+
+        <p class="intro-text">
+          Créez votre espace professionnel pour présenter vos produits,
+          recevoir des opportunités commerciales et vous connecter à des
+          partenaires dans toute l’Afrique de l’Ouest.
+        </p>
+
+        <!-- BENEFITS -->
+        <div class="benefits">
+
+          <div class="benefit">
+            <div class="benefit-icon">
+              <span class="material-symbols-rounded">inventory_2</span>
+            </div>
+
+            <div>
+              <strong>Présentez votre offre</strong>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">
+              <span class="material-symbols-rounded">groups</span>
+            </div>
+
+            <div>
+              <strong>
+                Accédez à de nouveaux marchés</strong>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">
+              <span class="material-symbols-rounded">trending_up</span>
+            </div>
+
+            <div>
+              <strong>Développez votre visibilité</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Petite phrase de réassurance : bloc léger -->
+        <div class="intro-note">
+          <span class="material-symbols-rounded">info</span>
+          <span>La création de votre compte ne prend que quelques minutes.</span>
+        </div>
+
+      </div>
+
+      <!-- REGISTRATION CARD -->
+      <div class="registration-card">
+
+        <div class="card-header">
+          <div class="card-icon">
+            <span class="material-symbols-rounded">how_to_reg</span>
+          </div>
+
+          <div>
+            <span class="card-label">CRÉATION DE COMPTE</span>
+            <h2>Devenir fournisseur</h2>
+          </div>
+        </div>
+
+        <p class="card-description">
+          Commencez par renseigner vos informations. Vous pourrez ensuite
+          compléter votre dossier et faire vérifier votre activité.
+        </p>
+
+        <!-- STEPS -->
+        <div class="steps" aria-label="Étapes de l'inscription">
+
+          <div class="step active">
+            <div class="step-number">01</div>
+
+            <div class="step-line"></div>
+
+            <div class="step-content">
+              <strong>Profil</strong>
+              <small>Vos informations</small>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">02</div>
+
+            <div class="step-line"></div>
+
+            <div class="step-content">
+              <strong>Compte</strong>
+              <small>Validation e-mail</small>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">03</div>
+
+            <div class="step-line"></div>
+
+            <div class="step-content">
+              <strong>Documents</strong>
+              <small>Votre activité</small>
+            </div>
+          </div>
+
+          <div class="step last">
+            <div class="step-number">04</div>
+
+            <div class="step-content">
+              <strong>Validation</strong>
+              <small>Dossier soumis</small>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- REQUIREMENTS -->
+        <div class="requirements">
+
+          <div class="requirement-title">
+            <span class="material-symbols-rounded">checklist</span>
+            <span>À prévoir pour commencer</span>
+          </div>
+
+          <div class="requirement-list">
+            <div>
+              <span class="material-symbols-rounded">check_circle</span>
+              Une adresse e-mail ou un numéro de téléphone accessible
+            </div>
+
+            <div>
+              <span class="material-symbols-rounded">check_circle</span>
+              Les informations essentielles sur votre entreprise ou activité
+            </div>
+
+            <div>
+              <span class="material-symbols-rounded">check_circle</span>
+              Vos documents professionnels pour la vérification
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ACTION -->
+        <button
+          type="button"
+          class="start-button"
+          (click)="startRegistration()"
+        >
+          <span class="start-button-text">
+            Commencer mon inscription
+          </span>
+
+          <span class="button-icon">
+            <span class="material-symbols-rounded">arrow_forward</span>
+          </span>
+        </button>
+
+        <div class="login-link">
+          Déjà membre B2WA ?
+          <a routerLink="/auth/login">Accéder à mon espace</a>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      <span>© {{ currentYear }} B2WA</span>
+
+      <span class="footer-separator"></span>
+
+      <span>The West African Business Network</span>
+
+      <div class="footer-secure">
+        <span class="material-symbols-rounded">lock</span>
+        Données protégées
+      </div>
+    </footer>
+
+  </main>
+
+</div>

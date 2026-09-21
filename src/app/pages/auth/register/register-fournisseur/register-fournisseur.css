@@ -1,0 +1,601 @@
+/* =========================================================
+   HOST & PAGE
+   ========================================================= */
+
+:host {
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.supplier-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   CONTENEUR PRINCIPAL (DISPOSITION VERTICALE UNIFIÉE)
+   ========================================================= */
+
+.supplier-container {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.4rem;
+  overflow: hidden;
+}
+
+/* =========================================================
+   CONTENU PRINCIPAL (EN COLONNE)
+   ========================================================= */
+
+.supplier-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* =========================================================
+   SECTION GAUCHE (DESORMAIS EN HAUT ET CENTRÉE)
+   ========================================================= */
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  height: 34px;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25), 0 0 20px rgba(34, 197, 94, 0.12);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #16a34a;
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-button:hover {
+  color: #4ade80;
+
+  border-color: rgba(34, 197, 94, 0.25);
+
+  background: rgba(34, 197, 94, 0.06);
+
+  transform: translateX(-2px);
+}
+
+.back-button .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.intro-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #16a34a;
+}
+
+.eyebrow-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+}
+
+
+
+.brand-name .b-text {
+  color: #16a34a;
+}
+
+.brand-name .two-text {
+  color: #16a34a;
+}
+
+.brand-name .wa-text {
+  color: #f59e0b;
+}
+
+
+
+.intro-section h1 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.15;
+  font-weight: 850;
+  color: #8b95a2;
+}
+
+
+
+.intro-text {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: #8b95a2;
+  max-width: 540px;
+}
+
+/* BENEFITS (DISPOSITION HORIZONTALE COMPACTE EN DESKTOP) */
+
+.benefits {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 0.15rem;
+  width: 100%;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+}
+
+.benefit-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.benefit-icon .material-symbols-rounded {
+  font-size: 0.9rem;
+  color: #4ade80;
+}
+
+.benefit strong {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 750;
+  color: #16a34a;
+}
+
+.benefit p {
+  font-size: 0.58rem;
+  line-height: 1.2;
+  color: #16a34a;
+}
+
+/* =========================================================
+   CARTE D'INSCRIPTION (CENTRÉE EN BAS)
+   ========================================================= */
+
+.registration-card {
+  position: relative;
+  width: 90%;
+  padding: 1.2rem 1.4rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  animation: supplierCardIn 0.5s ease both;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@keyframes supplierCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.3rem;
+}
+
+.card-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-icon .material-symbols-rounded {
+  font-size: 1.1rem;
+  color: #4ade80;
+}
+
+.card-label {
+  display: block;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #f59e0b;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 850;
+  color: #8b95a2;
+  letter-spacing: 0.2px;
+}
+
+.card-description {
+  text-align: center;
+  flex: 0 0 auto;
+  margin: 0 0 0.4rem;
+  font-size: 0.64rem;
+  line-height: 1.35;
+  color: #8b95a2;
+}
+
+/* =========================================================
+   STEPS
+   ========================================================= */
+
+.steps {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgb(217, 255, 223);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.58rem;
+  font-weight: 800;
+  color:  #8b95a2;
+  z-index: 2;
+}
+
+.step.active .step-number {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
+}
+
+.step-line {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #16a34a;
+  z-index: 1;
+}
+
+.step.last .step-line {
+  display: none;
+}
+
+.step-content {
+  text-align: center;
+}
+
+.step-content strong {
+  display: block;
+  font-size: 0.58rem;
+  font-weight: 750;
+  color: #16a34a;
+  white-space: nowrap;
+}
+
+.step-content small {
+  font-size: 0.5rem;
+  color: #64748b;
+  display: block;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   REQUIREMENTS
+   ========================================================= */
+
+.requirements {
+  flex: 0 0 auto;
+  margin-bottom: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.requirement-title {
+  justify-content: center;
+  display: flex;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.requirement-title .material-symbols-rounded {
+  font-size: 0.85rem;
+}
+
+.requirement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.requirement-list div {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: #64748b;
+}
+
+.requirement-list .material-symbols-rounded {
+  font-size: 0.8rem;
+  color: #22c55e;
+}
+
+/* =========================================================
+   BOUTON
+   ========================================================= */
+
+.start-button {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: none;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.25);
+}
+
+.start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(22, 163, 74, 0.35);
+}
+
+.start-button .button-icon .material-symbols-rounded {
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   LIEN CONNEXION
+   ========================================================= */
+
+.login-link {
+  flex: 0 0 auto;
+  text-align: center;
+  margin-top: 1.3rem;
+  font-size: 0.62rem;
+  color: #94a3b8;
+}
+
+.login-link a {
+  color: #22c55e;
+  font-weight: 750;
+  text-decoration: none;
+  margin-left: 4px;
+  transition: color 0.2s ease;
+}
+
+.login-link a:hover {
+  color: #4ade80;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.page-footer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.55rem;
+  color: #64748b;
+  padding-top: 0.15rem;
+}
+
+.footer-separator {
+  width: 1px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.footer-secure {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.55rem;
+  color: #22c55e;
+}
+
+.footer-secure .material-symbols-rounded {
+  font-size: 0.8rem;
+}
+
+/* =========================================================
+   AJOUTS LÉGERS — VERSION ENRICHIE
+   ========================================================= */
+
+.intro-note {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+  padding: 0.32rem 0.5rem;
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-radius: 9px;
+  background: rgba(56, 189, 248, 0.06);
+  color: #94a3b8;
+  font-size: 0.62rem;
+  line-height: 1.25;
+}
+
+.intro-note .material-symbols-rounded {
+  flex: 0 0 auto;
+  color: #38bdf8;
+  font-size: 0.9rem;
+}
+
+.start-button-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.08rem;
+  text-align: left;
+}
+
+.start-button-text small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.56rem;
+  font-weight: 600;
+}
+
+/* Le bouton garde un bon alignement même avec deux lignes */
+
+.start-button {
+  min-height: 48px;
+}
+
+.button-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile : on limite encore davantage la hauteur */
+
+@media (max-width: 560px) {
+  .start-button {
+    min-height: 42px;
+  }
+}
+
+/* =========================================================
+   MOBILE ET PETITS ÉCRANS
+   ========================================================= */
+
+@media (max-width: 560px) {
+  .supplier-container {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .top-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .brand {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .benefits {
+    display: none; /* Masqué sur très petits écrans mobile pour maximiser l'espace */
+  }
+
+  .registration-card {
+    padding: 0.65rem 0.75rem;
+  }
+
+  .step-content small {
+    display: none; /* Masque les sous-titres des étapes sur petit mobile */
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .registration-card,
+  .start-button,
+  .back-link,
+  .login-link a {
+    animation: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,312 @@
+<div class="documents-page">
+
+  <div class="background-grid"></div>
+  <div class="glow glow-green"></div>
+  <div class="glow glow-blue"></div>
+
+  <!-- MAIN -->
+  <main class="documents-container">
+
+    <!-- TITLE -->
+    <section class="page-title">
+
+      <p class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        B2WA · INSCRIPTION FOURNISSEUR
+      </p>
+
+      <h1>Complétez votre dossier</h1>
+
+      <p class="subtitle">
+        Ajoutez vos documents professionnels pour finaliser
+        votre demande d’inscription fournisseur.
+      </p>
+
+    </section>
+
+    <!-- STEPPER -->
+    <section
+      class="stepper"
+      aria-label="Progression de votre inscription"
+    >
+
+      <div class="step completed">
+        <div class="step-number">
+          <span class="material-symbols-outlined">check</span>
+        </div>
+
+        <span>Informations</span>
+      </div>
+
+      <div class="step-line completed-line"></div>
+
+      <div class="step completed">
+        <div class="step-number">
+          <span class="material-symbols-outlined">check</span>
+        </div>
+
+        <span>Vérification</span>
+      </div>
+
+      <div class="step-line active-line"></div>
+
+      <div class="step active">
+        <div class="step-number">3</div>
+        <span>Documents</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <span>Confirmation</span>
+      </div>
+
+    </section>
+
+    <!-- DOCUMENT HEADER -->
+    <section class="documents-intro">
+
+      <div class="intro-icon">
+        <span class="material-symbols-outlined">folder_open</span>
+      </div>
+
+      <div class="intro-content">
+        <p class="intro-eyebrow">VÉRIFICATION DE L’ACTIVITÉ</p>
+
+        <h2>Ajoutez les documents demandés</h2>
+
+        <p>
+          Ces informations permettent à B2WA de vérifier votre activité
+          et de créer un environnement professionnel plus fiable.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- PROGRESS -->
+    <section
+      class="upload-progress"
+      [class.progress-complete]="requiredDocumentsComplete"
+    >
+
+      <div class="progress-header">
+
+        <div>
+          <span class="progress-label">Documents obligatoires ajoutés</span>
+
+          <strong>
+            {{ uploadedRequiredDocuments }} / {{ requiredDocuments.length }}
+          </strong>
+        </div>
+
+        <span class="progress-percentage">
+          {{ progressPercentage }}%
+        </span>
+
+      </div>
+
+      <div
+        class="progress-track"
+        role="progressbar"
+        aria-label="Progression du dossier"
+        [attr.aria-valuemin]="0"
+        [attr.aria-valuemax]="100"
+        [attr.aria-valuenow]="progressPercentage"
+      >
+        <div
+          class="progress-value"
+          [style.width.%]="progressPercentage"
+        ></div>
+      </div>
+
+      <p class="progress-message">
+        @if (requiredDocumentsComplete) {
+          <span class="material-symbols-outlined">check_circle</span>
+          Votre dossier est complet. Vous pouvez maintenant l’envoyer.
+        } @else {
+          <span class="material-symbols-outlined">info</span>
+          Ajoutez tous les documents marqués « Obligatoire » pour continuer.
+        }
+      </p>
+
+    </section>
+
+    <!-- ERROR -->
+    @if (uploadError) {
+      <div class="upload-error" role="alert">
+        <span class="material-symbols-outlined">error</span>
+        <span>{{ uploadError }}</span>
+      </div>
+    }
+
+    <!-- DOCUMENTS -->
+    <section class="documents-list" aria-label="Documents à transmettre">
+
+      @for (document of documents; track document.id) {
+
+        <article
+          class="document-card"
+          [class.uploaded]="document.status === 'uploaded'"
+        >
+
+          <div class="document-icon">
+            <span class="material-symbols-outlined">
+              {{ document.icon }}
+            </span>
+          </div>
+
+          <div class="document-content">
+
+            <div class="document-heading">
+              <div>
+                <h3>{{ document.title }}</h3>
+
+                @if (document.required) {
+                  <span class="required-badge">Obligatoire</span>
+                } @else {
+                  <span class="optional-badge">Facultatif</span>
+                }
+              </div>
+
+              @if (document.status === 'uploaded') {
+                <span class="uploaded-badge">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  Ajouté
+                </span>
+              }
+            </div>
+
+            <p class="document-description">
+              {{ document.description }}
+            </p>
+
+            @if (document.status === 'empty') {
+
+              <div class="upload-zone">
+
+                <input
+                  #fileInput
+                  type="file"
+                  hidden
+                  accept=".pdf,.jpg,.jpeg,.png,.webp"
+                  (change)="onFileSelected($event, document.id)"
+                />
+
+                <button
+                  type="button"
+                  class="upload-button"
+                  (click)="openFileSelector(fileInput)"
+                >
+                  <span class="material-symbols-outlined">upload_file</span>
+                  <span>Ajouter un document</span>
+                </button>
+
+                <span class="upload-hint">
+                  Formats acceptés : PDF, JPG, PNG, WEBP · Taille maximale : 10 Mo
+                </span>
+
+              </div>
+
+            } @else {
+
+              <div class="file-preview">
+
+                <div class="file-info">
+
+                  <div class="file-icon">
+                    <span class="material-symbols-outlined">description</span>
+                  </div>
+
+                  <div class="file-details">
+                    <strong>{{ document.fileName }}</strong>
+
+                    <span>
+                      {{ formatFileSize(document.file) }}
+                    </span>
+                  </div>
+
+                </div>
+
+                <div class="file-status">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>Prêt à être envoyé</span>
+                </div>
+
+                <button
+                  type="button"
+                  class="remove-button"
+                  [attr.aria-label]="'Supprimer ' + document.fileName"
+                  title="Supprimer le fichier"
+                  (click)="removeFile(document.id)"
+                >
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+        </article>
+
+      }
+
+    </section>
+
+    <!-- SECURITY -->
+    <section class="security-note">
+
+      <div class="security-icon">
+        <span class="material-symbols-outlined">lock</span>
+      </div>
+
+      <div>
+        <strong>Vos documents restent confidentiels</strong>
+
+        <p>
+          Ils sont utilisés uniquement pour vérifier votre activité
+          et traiter votre inscription fournisseur.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ACTIONS -->
+    <section class="actions">
+
+      @if (!requiredDocumentsComplete) {
+        <p class="submit-hint">
+          <span class="material-symbols-outlined">info</span>
+          Ajoutez tous les documents obligatoires pour envoyer votre dossier.
+        </p>
+      }
+
+      <button
+        type="button"
+        class="submit-button"
+        [disabled]="!requiredDocumentsComplete || isSubmitting"
+        (click)="submitDocuments()"
+      >
+
+        @if (isSubmitting) {
+          <span class="spinner"></span>
+          <span>Envoi sécurisé du dossier...</span>
+        } @else {
+          <span>Envoyer mon dossier</span>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        }
+
+      </button>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      © {{ currentYear }} B2WA · The West African Business Network
+    </footer>
+
+  </main>
+
+</div>

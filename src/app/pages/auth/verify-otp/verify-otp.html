@@ -1,35 +1,82 @@
 <div class="auth-card otp-card">
 
-  <!-- HEADER BRANDING B2WA -->
-  <div class="brand-header">
-    <div class="brand-logo-wrap">
-      <img src="assets/images/B2WA_logo.png" alt="Logo B2WA" class="brand-logo" />
-    </div>
-    <div class="brand-info">
-      <h3>B2WA</h3>
-      <small>BUSINESS TO WEST AFRICA</small>
-    </div>
-  </div>
+  <!-- TITRE -->
+  <section class="auth-title">
 
-  <!-- TITRE & SOUS-TITRE -->
-  <div class="auth-title">
-    <span class="eyebrow">DOUBLE AUTHENTIFICATION</span>
+    <span class="eyebrow">
+      <span class="eyebrow-dot"></span>
+     B2WA - VÉRIFICATION DE SÉCURITÉ
+    </span>
+
+    <h1>Confirmez votre identité</h1>
+
     <p>
-      Saisissez le code à 6 chiffres envoyé à votre adresse email pour réinitialiser votre accès.
+      Saisissez le code de vérification à 6 chiffres envoyé
+      à votre adresse e-mail.
     </p>
-  </div>
+
+  </section>
+
+  <!-- EMAIL DESTINATAIRE -->
+  <section class="email-summary">
+
+    <div class="email-summary-icon">
+      <span class="material-symbols-outlined">mark_email_read</span>
+    </div>
+
+    <div class="email-summary-content">
+      <span class="email-summary-label">CODE ENVOYÉ À</span>
+
+      <strong>{{ email }}</strong>
+
+      <span class="email-summary-help">
+        Vérifiez également vos courriers indésirables.
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="edit-email-btn"
+      (click)="editEmail()"
+      title="Modifier l’adresse e-mail"
+      aria-label="Modifier l’adresse e-mail"
+    >
+      <span class="material-symbols-outlined">edit</span>
+      <span>Modifier</span>
+    </button>
+
+  </section>
 
   <!-- FORMULAIRE OTP -->
-  <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="auth-form" autocomplete="off">
-    
+  <form
+    [formGroup]="otpForm"
+    (ngSubmit)="onSubmit()"
+    class="auth-form"
+    novalidate
+    autocomplete="one-time-code"
+  >
+
+    <div class="otp-label-row">
+      <label for="otp-0">Code de vérification</label>
+
+      <span class="otp-length">
+        6 chiffres
+      </span>
+    </div>
+
     <div class="otp-inputs-container">
+
       <input
         *ngFor="let controlName of otpControls; let i = index"
         #otpInput
         type="text"
+        [id]="'otp-' + i"
+        [attr.name]="'otp-' + i"
         maxlength="1"
         inputmode="numeric"
         pattern="[0-9]*"
+        [attr.autocomplete]="i === 0 ? 'one-time-code' : 'off'"
+        [attr.aria-label]="'Chiffre ' + (i + 1) + ' sur 6'"
         [formControlName]="controlName"
         (input)="onInput(i, $event)"
         (keydown)="onKeyDown(i, $event)"
@@ -38,43 +85,85 @@
         [class.filled]="otpForm.get(controlName)?.value"
         [class.is-invalid]="submitted && otpForm.invalid"
       />
+
     </div>
 
-    <div class="error-msg text-center" *ngIf="submitted && otpForm.invalid">
-      Veuillez saisir le code complet à 6 chiffres.
+    <div
+      class="error-msg text-center"
+      *ngIf="submitted && otpForm.invalid"
+      role="alert"
+    >
+      <span class="material-symbols-outlined">error</span>
+      Veuillez saisir les 6 chiffres du code de vérification.
     </div>
 
-    <!-- BOUTON VALIDER -->
-    <button 
-      type="submit" 
-      class="submit-btn" 
+    <button
+      type="submit"
+      class="submit-btn"
       [disabled]="isLoading || otpForm.invalid"
     >
-      <span *ngIf="!isLoading" class="material-symbols-outlined btn-icon">verified_user</span>
+      <span
+        *ngIf="!isLoading"
+        class="material-symbols-outlined btn-icon"
+      >
+        verified_user
+      </span>
+
       <span *ngIf="isLoading" class="spinner"></span>
-      <span>{{ isLoading ? 'Vérification...' : 'Vérifier le code' }}</span>
+
+      <span>
+        {{ isLoading ? 'Vérification en cours...' : 'Vérifier mon code' }}
+      </span>
+
     </button>
+
   </form>
 
-  <!-- RENVOYER LE CODE & TIMER -->
+  <!-- TIMER / RENVOI -->
   <div class="resend-section">
-    <p *ngIf="countdown > 0">
-      Renvoyer le code dans <strong class="timer-text">{{ countdown }}s</strong>
-    </p>
-    <button 
-      *ngIf="countdown === 0" 
-      type="button" 
-      class="resend-btn" 
+
+    <div class="timer-info" *ngIf="countdown > 0">
+      <span class="material-symbols-outlined">schedule</span>
+
+      <span>
+        Vous pourrez demander un nouveau code dans
+        <strong class="timer-text">{{ countdown }} s</strong>
+      </span>
+    </div>
+
+    <button
+      *ngIf="countdown === 0"
+      type="button"
+      class="resend-btn"
       (click)="resendCode()"
       [disabled]="isResending"
     >
-      <span class="material-symbols-outlined">refresh</span>
-      <span>{{ isResending ? 'Envoi...' : 'Renvoyer le code' }}</span>
+      <span class="material-symbols-outlined">
+        {{ isResending ? 'hourglass_top' : 'refresh' }}
+      </span>
+
+      <span>
+        {{ isResending ? 'Envoi du nouveau code...' : 'Renvoyer un nouveau code' }}
+      </span>
     </button>
+
   </div>
 
+  <!-- NOTE SÉCURITÉ -->
+  <div class="security-note">
+    <span class="material-symbols-outlined">lock</span>
+
+    <span>
+      Ne partagez jamais ce code. L’équipe B2WA ne vous le demandera jamais.
+    </span>
+  </div>
+
+  <!-- FOOTER -->
   <div class="auth-footer-link">
-    <a routerLink="/auth/login">← Retour à la connexion</a>
+    <a routerLink="/auth/login">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Retour à la connexion
+    </a>
   </div>
 
 </div>

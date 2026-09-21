@@ -1,0 +1,749 @@
+<div class="register-info-page">
+
+  <!-- HEADER -->
+  <header class="top-header">
+
+    <div class="header-inner">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="goBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+        <span>Retour</span>
+      </button>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+  <main class="register-container">
+
+    <!-- TITLE -->
+    <section class="page-title">
+
+      <p class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        B2WA · Inscription fournisseur
+      </p>
+
+      <h1>
+        Informations du fournisseur
+      </h1>
+
+      <p class="subtitle">
+        Complétez vos informations personnelles et professionnelles
+        pour créer votre compte fournisseur B2WA.
+      </p>
+
+    </section>
+
+    <!-- STEPPER -->
+    <section class="stepper">
+
+      <div class="step active">
+        <div class="step-number">1</div>
+        <span>Informations</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <span>Vérification</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <span>Documents</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <span>Confirmation</span>
+      </div>
+
+    </section>
+
+    <!-- FORM -->
+    <form
+      class="registration-form"
+      #supplierForm="ngForm"
+      (ngSubmit)="continue()"
+    >
+
+      <!-- =====================================================
+           INFORMATIONS PERSONNELLES
+      ====================================================== -->
+      <section class="form-section">
+
+        <div class="section-header">
+
+          <div class="section-icon personal-icon">
+            <span class="material-symbols-outlined">
+              person
+            </span>
+          </div>
+
+          <div>
+            <p class="section-number">
+              ÉTAPE 01
+            </p>
+
+            <h2>
+              Informations personnelles
+            </h2>
+
+            <p>
+              Les informations du responsable du compte fournisseur.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="fields-grid">
+
+          <!-- PRÉNOM -->
+          <div class="field">
+
+            <label for="firstName">
+              Prénom
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                person
+              </span>
+
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                [(ngModel)]="supplier.firstName"
+                placeholder="Votre prénom"
+                autocomplete="given-name"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- NOM -->
+          <div class="field">
+
+            <label for="lastName">
+              Nom
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                badge
+              </span>
+
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                [(ngModel)]="supplier.lastName"
+                placeholder="Votre nom"
+                autocomplete="family-name"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- EMAIL -->
+          <div class="field">
+
+            <label for="email">
+              Adresse email
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                mail
+              </span>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                [(ngModel)]="supplier.email"
+                placeholder="exemple@email.com"
+                autocomplete="email"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- TÉLÉPHONE -->
+          <div class="field">
+
+            <label for="phone">
+              Téléphone
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                phone
+              </span>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                [(ngModel)]="supplier.phone"
+                placeholder="+223 XX XX XX XX"
+                autocomplete="tel"
+                required
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =====================================================
+           INFORMATIONS ENTREPRISE
+      ====================================================== -->
+      <section class="form-section">
+
+        <div class="section-header">
+
+          <div class="section-icon company-icon">
+            <span class="material-symbols-outlined">
+              business
+            </span>
+          </div>
+
+          <div>
+            <p class="section-number">
+              ÉTAPE 02
+            </p>
+
+            <h2>
+              Informations entreprise
+            </h2>
+
+            <p>
+              Présentez l'entreprise et votre activité professionnelle.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="fields-grid">
+
+          <!-- ENTREPRISE -->
+          <div class="field">
+
+            <label for="companyName">
+              Nom de l'entreprise
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                storefront
+              </span>
+
+              <input
+                id="companyName"
+                name="companyName"
+                type="text"
+                [(ngModel)]="supplier.companyName"
+                placeholder="Nom de votre entreprise"
+                autocomplete="organization"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- CATÉGORIE -->
+          <div class="field">
+
+            <label for="category">
+              Catégorie d'activité
+            </label>
+
+            <div class="input-wrapper select-wrapper">
+
+              <span class="material-symbols-outlined">
+                category
+              </span>
+
+              <select
+                id="category"
+                name="category"
+                [(ngModel)]="supplier.category"
+                required
+              >
+                <option value="" disabled>
+                  Sélectionnez une catégorie
+                </option>
+
+                @for (category of categories; track category) {
+                  <option [value]="category">
+                    {{ category }}
+                  </option>
+                }
+              </select>
+
+              <span class="material-symbols-outlined select-arrow">
+                expand_more
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- PAYS -->
+          <div class="field">
+
+            <label for="country">
+              Pays
+            </label>
+
+            <div class="input-wrapper select-wrapper">
+
+              <span class="material-symbols-outlined">
+                public
+              </span>
+
+              <select
+                id="country"
+                name="country"
+                [(ngModel)]="supplier.country"
+                required
+              >
+                <option value="Mali">Mali</option>
+                <option value="Sénégal">Sénégal</option>
+                <option value="Côte d'Ivoire">
+                  Côte d'Ivoire
+                </option>
+                <option value="Burkina Faso">
+                  Burkina Faso
+                </option>
+                <option value="Guinée">
+                  Guinée
+                </option>
+                <option value="Ghana">Ghana</option>
+                <option value="Bénin">Bénin</option>
+                <option value="Togo">Togo</option>
+                <option value="Niger">Niger</option>
+                <option value="Mauritanie">
+                  Mauritanie
+                </option>
+                <option value="Autre">Autre</option>
+              </select>
+
+              <span class="material-symbols-outlined select-arrow">
+                expand_more
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- VILLE -->
+          <div class="field">
+
+            <label for="city">
+              Ville
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                location_city
+              </span>
+
+              <input
+                id="city"
+                name="city"
+                type="text"
+                [(ngModel)]="supplier.city"
+                placeholder="Ex. Bamako"
+                autocomplete="address-level2"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- ADRESSE -->
+          <div class="field full-width">
+
+            <label for="address">
+              Adresse
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="material-symbols-outlined">
+                location_on
+              </span>
+
+              <input
+                id="address"
+                name="address"
+                type="text"
+                [(ngModel)]="supplier.address"
+                placeholder="Quartier, rue, zone..."
+                autocomplete="street-address"
+                required
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =====================================================
+           SÉCURITÉ DU COMPTE
+      ====================================================== -->
+      <section class="form-section security-section">
+
+        <div class="section-header">
+
+          <div class="section-icon security-icon">
+            <span class="material-symbols-outlined">
+              shield_lock
+            </span>
+          </div>
+
+          <div>
+            <p class="section-number">
+              ÉTAPE 03
+            </p>
+
+            <h2>
+              Sécurité du compte
+            </h2>
+
+            <p>
+              Créez un mot de passe sécurisé pour protéger votre compte.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="password-grid">
+
+          <!-- MOT DE PASSE -->
+          <div class="password-column">
+
+            <div class="field">
+
+              <label for="password">
+                Mot de passe
+              </label>
+
+              <div class="input-wrapper password-wrapper">
+
+                <span class="material-symbols-outlined">
+                  lock
+                </span>
+
+                <input
+                  id="password"
+                  name="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  [(ngModel)]="supplier.password"
+                  placeholder="Créez votre mot de passe"
+                  autocomplete="new-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  (click)="togglePassword()"
+                  [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                >
+                  <span class="material-symbols-outlined">
+                    {{ showPassword ? 'visibility_off' : 'visibility' }}
+                  </span>
+                </button>
+
+              </div>
+
+            </div>
+
+            <!-- STRENGTH -->
+            <div class="password-strength">
+
+              <div class="strength-header">
+
+                <span>
+                  Force du mot de passe
+                </span>
+
+                <strong
+                  [class.weak]="passwordStrength <= 2"
+                  [class.medium]="passwordStrength === 3"
+                  [class.good]="passwordStrength === 4"
+                  [class.excellent]="passwordStrength === 5"
+                >
+                  {{ passwordStrengthLabel }}
+                </strong>
+
+              </div>
+
+              <div class="strength-bar">
+
+                @for (segment of [1, 2, 3, 4, 5]; track segment) {
+                  <span
+                    [class.active]="segment <= passwordStrength"
+                    [class.excellent]="passwordStrength === 5"
+                  ></span>
+                }
+
+              </div>
+
+            </div>
+
+            <!-- PASSWORD RULES -->
+            <div class="password-rules">
+
+              <p class="rules-title">
+                Votre mot de passe doit contenir :
+              </p>
+
+              <div
+                class="rule"
+                [class.valid]="passwordHasMinLength"
+              >
+                <span class="material-symbols-outlined">
+                  {{ passwordHasMinLength ? 'check_circle' : 'radio_button_unchecked' }}
+                </span>
+
+                <span>
+                  8 caractères minimum
+                </span>
+              </div>
+
+              <div
+                class="rule"
+                [class.valid]="passwordHasUppercase"
+              >
+                <span class="material-symbols-outlined">
+                  {{ passwordHasUppercase ? 'check_circle' : 'radio_button_unchecked' }}
+                </span>
+
+                <span>
+                  Une lettre majuscule
+                </span>
+              </div>
+
+              <div
+                class="rule"
+                [class.valid]="passwordHasLowercase"
+              >
+                <span class="material-symbols-outlined">
+                  {{ passwordHasLowercase ? 'check_circle' : 'radio_button_unchecked' }}
+                </span>
+
+                <span>
+                  Une lettre minuscule
+                </span>
+              </div>
+
+              <div
+                class="rule"
+                [class.valid]="passwordHasNumber"
+              >
+                <span class="material-symbols-outlined">
+                  {{ passwordHasNumber ? 'check_circle' : 'radio_button_unchecked' }}
+                </span>
+
+                <span>
+                  Un chiffre
+                </span>
+              </div>
+
+              <div
+                class="rule"
+                [class.valid]="passwordHasSpecial"
+              >
+                <span class="material-symbols-outlined">
+                  {{ passwordHasSpecial ? 'check_circle' : 'radio_button_unchecked' }}
+                </span>
+
+                <span>
+                  Un caractère spécial
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- CONFIRMATION -->
+          <div class="password-column">
+
+            <div class="field">
+
+              <label for="confirmPassword">
+                Confirmer le mot de passe
+              </label>
+
+              <div
+                class="input-wrapper password-wrapper"
+                [class.input-valid]="passwordsMatch"
+                [class.input-invalid]="
+                  supplier.confirmPassword.length > 0 &&
+                  !passwordsMatch
+                "
+              >
+
+                <span class="material-symbols-outlined">
+                  lock_reset
+                </span>
+
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  [(ngModel)]="supplier.confirmPassword"
+                  placeholder="Répétez votre mot de passe"
+                  autocomplete="new-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  (click)="toggleConfirmPassword()"
+                  [attr.aria-label]="showConfirmPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                >
+                  <span class="material-symbols-outlined">
+                    {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
+                  </span>
+                </button>
+
+              </div>
+
+            </div>
+
+            @if (supplier.confirmPassword.length > 0) {
+
+              <div
+                class="match-message"
+                [class.success]="passwordsMatch"
+                [class.error]="!passwordsMatch"
+              >
+
+                <span class="material-symbols-outlined">
+                  {{ passwordsMatch ? 'check_circle' : 'error' }}
+                </span>
+
+                <span>
+                  {{
+                    passwordsMatch
+                      ? 'Les mots de passe correspondent.'
+                      : 'Les mots de passe ne correspondent pas.'
+                  }}
+                </span>
+
+              </div>
+
+            }
+
+            <div class="security-tip">
+
+              <span class="material-symbols-outlined">
+                security
+              </span>
+
+              <div>
+                <strong>
+                  Conseil de sécurité
+                </strong>
+
+                <p>
+                  Utilisez un mot de passe unique que vous n'utilisez
+                  pas sur d'autres services.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ACTION -->
+      <div class="form-actions">
+
+        <div class="form-note">
+
+          <span class="material-symbols-outlined">
+            verified_user
+          </span>
+
+          <span>
+            Vos informations sont sécurisées.
+          </span>
+
+        </div>
+
+        <button
+          type="submit"
+          class="continue-button"
+          [disabled]="!isFormValid"
+        >
+
+          <span>
+            Continuer
+          </span>
+
+          <span class="material-symbols-outlined">
+            arrow_forward
+          </span>
+
+        </button>
+
+      </div>
+
+    </form>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      © {{ currentYear }} B2WA · The West African Business Network
+    </footer>
+
+  </main>
+
+</div>

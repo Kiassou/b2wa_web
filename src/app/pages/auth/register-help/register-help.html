@@ -1,0 +1,182 @@
+<section class="help-page">
+
+  <!-- Background -->
+  <div class="background-grid"></div>
+  <div class="glow glow-one"></div>
+  <div class="glow glow-two"></div>
+
+  <div class="help-container">
+
+    <!-- Header -->
+    <header class="help-header">
+
+      <a routerLink="/auth/register" class="brand">
+        <img
+          src="assets/images/B2WA_logo.png"
+          alt="B2WA"
+        />
+
+        <div class="brand-text">
+          <strong>B2WA</strong>
+          <span>Assistant inscription</span>
+        </div>
+      </a>
+
+      <div class="secure-status">
+        <span class="status-dot"></span>
+        Assistance en ligne
+      </div>
+
+    </header>
+
+
+    <!-- Chat -->
+    <main class="chat-card">
+
+      <!-- Chat header -->
+      <div class="chat-header">
+
+        <div class="kora-avatar">
+          <span class="material-symbols-rounded">
+            smart_toy
+          </span>
+        </div>
+
+        <div class="kora-info">
+          <div class="kora-name">
+            Kora
+            <span class="online-dot"></span>
+          </div>
+
+          <span>Assistant B2WA</span>
+        </div>
+
+        <div class="header-badge">
+          <span class="material-symbols-rounded">
+            verified_user
+          </span>
+          Inscription
+        </div>
+
+      </div>
+
+
+      <!-- Messages -->
+      <div class="messages">
+
+        <div
+          *ngFor="let message of messages"
+          class="message-row"
+          [class.user-row]="message.sender === 'user'"
+          [class.kora-row]="message.sender === 'kora'"
+        >
+
+          <!-- Kora avatar -->
+          <div
+            *ngIf="message.sender === 'kora'"
+            class="message-avatar"
+          >
+            <span class="material-symbols-rounded">
+              smart_toy
+            </span>
+          </div>
+
+          <div class="message-content">
+
+            <div
+              class="message-bubble"
+              [class.user-message]="message.sender === 'user'"
+              [class.kora-message]="message.sender === 'kora'"
+            >
+              {{ message.text }}
+            </div>
+
+            <span class="message-time">
+              {{ message.time }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Quick questions -->
+      <div class="quick-section">
+
+        <span class="quick-title">
+          Questions fréquentes
+        </span>
+
+        <div class="quick-list">
+
+          <button
+            *ngFor="let question of quickQuestions"
+            type="button"
+            class="quick-question"
+            (click)="askQuestion(question)"
+          >
+            {{ question }}
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Input -->
+      <div class="chat-input-area">
+
+        <div class="input-wrapper">
+
+          <span class="material-symbols-rounded input-icon">
+            chat
+          </span>
+
+          <input
+            type="text"
+            [(ngModel)]="message"
+            (keyup.enter)="sendMessage()"
+            placeholder="Posez votre question à Kora..."
+          />
+
+          <button
+            type="button"
+            class="send-button"
+            (click)="sendMessage()"
+            [disabled]="!message.trim()"
+            aria-label="Envoyer"
+          >
+            <span class="material-symbols-rounded">
+              arrow_upward
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="chat-footer">
+
+        <div>
+          <span class="material-symbols-rounded">
+            lock
+          </span>
+
+          Vos échanges concernent uniquement votre inscription B2WA.
+        </div>
+
+        <a routerLink="/auth/register">
+          Retour à l'inscription
+        </a>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</section>

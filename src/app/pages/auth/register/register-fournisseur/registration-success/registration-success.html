@@ -1,0 +1,401 @@
+<div class="success-page">
+
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+  <main class="success-container">
+
+    <!-- ===================================================
+         SUCCESS CARD
+         =================================================== -->
+    <section class="success-card">
+
+      <!-- CONTENT -->
+      <div class="success-content">
+
+        <p class="eyebrow">
+          <span class="material-symbols-outlined">
+          verified
+        </span>
+          INSCRIPTION TERMINÉE
+        </p>
+
+        <h1>
+          Votre dossier a bien été transmis
+        </h1>
+
+        <p class="success-description">
+
+          Félicitations ! Votre demande d'inscription
+          fournisseur sur <strong>
+            <span class="brand-name">
+              <span class="b-text">B</span><span class="two-text">2</span><span class="wa-text">WA</span>
+            </span>
+          </strong> a été
+          enregistrée avec succès.
+
+          Notre équipe va maintenant examiner les informations
+          et les documents transmis.
+
+        </p>
+
+
+        <!-- =================================================
+             STATUS
+             ================================================= -->
+        <div class="status-box">
+
+          <div class="status-icon">
+
+            <span class="material-symbols-outlined">
+              pending_actions
+            </span>
+
+          </div>
+
+          <div class="status-content">
+
+            <strong>
+              Dossier en cours de traitement
+            </strong>
+
+            <span>
+              Votre inscription sera traitée par notre équipe.
+            </span>
+
+          </div>
+
+          <span class="status-badge">
+            En attente
+          </span>
+
+        </div>
+
+
+        <!-- =================================================
+             NEXT STEPS
+             ================================================= -->
+        <div class="next-steps">
+
+          <div class="section-heading">
+
+            <div class="section-heading-icon">
+
+              <span class="material-symbols-outlined">
+                route
+              </span>
+
+            </div>
+
+            <div>
+
+              <h2>
+                Que se passe-t-il maintenant ?
+              </h2>
+
+              <p>
+                Les prochaines étapes de votre inscription.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline">
+
+
+            <!-- ITEM 1 -->
+            <div class="timeline-item">
+
+              <div class="timeline-marker completed">
+
+                <span class="material-symbols-outlined">
+                  check
+                </span>
+
+              </div>
+
+              <div class="timeline-line"></div>
+
+              <div class="timeline-content">
+
+                <div class="timeline-title">
+
+                  <strong>
+                    Inscription reçue
+                  </strong>
+
+                  <span class="timeline-status completed-status">
+                    Terminé
+                  </span>
+
+                </div>
+
+                <span>
+                  Vos informations et documents ont été transmis.
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- ITEM 2 -->
+            <div class="timeline-item">
+
+              <div class="timeline-marker current">
+
+                <span class="material-symbols-outlined">
+                  manage_search
+                </span>
+
+              </div>
+
+              <div class="timeline-line"></div>
+
+              <div class="timeline-content">
+
+                <div class="timeline-title">
+
+                  <strong>
+                    Vérification du dossier
+                  </strong>
+
+                  <span class="timeline-status current-status">
+                    En cours
+                  </span>
+
+                </div>
+
+                <span>
+                  Notre équipe vérifie les informations fournies.
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- ITEM 3 -->
+            <div class="timeline-item last">
+
+              <div class="timeline-marker">
+
+                <span class="material-symbols-outlined">
+                  verified
+                </span>
+
+              </div>
+
+              <div class="timeline-content">
+
+                <div class="timeline-title">
+
+                  <strong>
+                    Activation du compte fournisseur
+                  </strong>
+
+                  <span class="timeline-status waiting-status">
+                    À venir
+                  </span>
+
+                </div>
+
+                <span>
+                  Vous pourrez ensuite commencer à utiliser
+                  les fonctionnalités fournisseur de B2WA.
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BENEFITS
+             ================================================= -->
+        <div class="benefits-strip">
+
+          <div class="benefit">
+
+            <span class="material-symbols-outlined">
+              verified_user
+            </span>
+
+            <div>
+              <strong>
+                Profil sécurisé
+              </strong>
+
+              <span>
+                Données protégées
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="benefit">
+
+            <span class="material-symbols-outlined">
+              hub
+            </span>
+
+            <div>
+              <strong>
+                Réseau B2WA
+              </strong>
+
+              <span>
+                Opportunités professionnelles
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="benefit">
+
+            <span class="material-symbols-outlined">
+              storefront
+            </span>
+
+            <div>
+              <strong>
+                Espace fournisseur
+              </strong>
+
+              <span>
+                Accès après validation
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACTIONS
+             ================================================= -->
+        <div class="actions">
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="goToDashboard()"
+          >
+
+            <span class="material-symbols-outlined">
+              dashboard
+            </span>
+
+            <span>
+              Accéder à mon espace
+            </span>
+
+            <span class="material-symbols-outlined arrow">
+              arrow_forward
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="goToHome()"
+          >
+
+            <span class="material-symbols-outlined">
+              home
+            </span>
+
+            <span>
+              Retour à l'accueil
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             HELP
+             ================================================= -->
+        <div class="help-box">
+
+          <div class="help-icon">
+
+            <span class="material-symbols-outlined">
+              support_agent
+            </span>
+
+          </div>
+
+          <div class="help-content">
+
+            <strong>
+              Besoin d'aide ?
+            </strong>
+
+            <p>
+
+              Une question concernant votre inscription ?
+
+              <a href="#">
+                Contactez l'équipe B2WA
+              </a>
+
+            </p>
+
+          </div>
+
+          <span class="material-symbols-outlined help-arrow">
+            arrow_forward
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         FOOTER
+         =================================================== -->
+    <footer class="page-footer">
+
+      <span>
+        © {{ currentYear }} B2WA
+      </span>
+
+      <span class="footer-separator">
+        ·
+      </span>
+
+      <span>
+        The West African Business Network
+      </span>
+
+      <span class="footer-secure">
+
+        <span class="material-symbols-outlined">
+          lock
+        </span>
+
+        Inscription sécurisée
+
+      </span>
+
+    </footer>
+
+  </main>
+
+</div>

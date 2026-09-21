@@ -1,0 +1,195 @@
+<div class="verify-page">
+
+
+  <!-- MAIN -->
+  <main class="verify-container">
+
+    <!-- TITLE -->
+    <section class="page-title">
+      <p class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        B2WA · Inscription fournisseur
+      </p>
+
+      <h1>Confirmez votre adresse e-mail</h1>
+
+      <p class="subtitle">
+        Cette vérification protège votre compte fournisseur
+        et finalise votre inscription.
+      </p>
+    </section>
+
+    <!-- STEPPER -->
+    <section
+      class="stepper"
+      aria-label="Progression de votre inscription"
+    >
+      <div class="step completed">
+        <div class="step-number">
+          <span class="material-symbols-outlined">check</span>
+        </div>
+        <span>Informations</span>
+      </div>
+
+      <div class="step-line active-line"></div>
+
+      <div class="step active">
+        <div class="step-number">2</div>
+        <span>Vérification</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <span>Documents</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <span>Confirmation</span>
+      </div>
+    </section>
+
+    <!-- VERIFICATION CARD -->
+    <section class="verification-section">
+
+      <div class="verification-icon">
+        <div class="icon-ring">
+          <span class="material-symbols-outlined">mark_email_read</span>
+        </div>
+      </div>
+
+      <div class="verification-content">
+
+        <p class="verification-eyebrow">
+          CODE DE SÉCURITÉ
+        </p>
+
+        <h2>Un code vous a été envoyé</h2>
+
+        <div class="email-display"
+            (click)="editEmail()"
+            aria-label="Modifier l'adresse e-mail"
+            title="Modifier l'adresse e-mail">
+          <span class="material-symbols-outlined">mail</span>
+
+          <strong>{{ email }}</strong>
+
+          <button
+            type="button"
+            class="edit-email-inline"
+          >
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+        </div>
+
+        <!-- OTP -->
+        <div class="otp-area">
+          <div class="otp-container" aria-label="Code de vérification à 6 chiffres">
+
+            @for (digit of otp; track $index) {
+              <input
+                #otpInput
+                type="text"
+                inputmode="numeric"
+                maxlength="1"
+                autocomplete="one-time-code"
+                class="otp-input"
+                [value]="digit"
+                [attr.aria-label]="'Chiffre ' + ($index + 1) + ' sur 6'"
+                (input)="onOtpInput($event, $index)"
+                (keydown)="onOtpKeydown($event, $index)"
+              />
+            }
+
+          </div>
+
+          <p class="otp-hint">
+            <span class="material-symbols-outlined">keyboard</span>
+            Saisissez les 6 chiffres reçus par e-mail.
+          </p>
+        </div>
+
+        <!-- ERROR -->
+        @if (verificationError) {
+          <div class="verification-error" role="alert">
+            <span class="material-symbols-outlined">error</span>
+            <span>{{ verificationError }}</span>
+          </div>
+        }
+
+        <!-- TIMER -->
+        <div class="timer">
+          <span class="material-symbols-outlined">schedule</span>
+
+          @if (countdown > 0) {
+            <span>
+              Code valide encore
+              <strong>{{ formattedCountdown }}</strong>
+            </span>
+          } @else {
+            <span class="timer-expired">
+              Ce code a expiré. Demandez-en un nouveau.
+            </span>
+          }
+        </div>
+
+        <!-- VERIFY -->
+        <button
+          type="button"
+          class="verify-button"
+          [disabled]="!isOtpComplete || isVerifying"
+          (click)="verify()"
+        >
+          @if (isVerifying) {
+            <span class="spinner"></span>
+            <span>Vérification en cours...</span>
+          } @else {
+            <span>Confirmer mon compte</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          }
+        </button>
+
+        <!-- RESEND -->
+        <div class="resend-area">
+          <span>Vous n’avez pas reçu le code ?</span>
+
+          <button
+            type="button"
+            class="resend-button"
+            [disabled]="countdown > 0"
+            (click)="resendCode()"
+          >
+            @if (countdown > 0) {
+              Renvoyer dans {{ formattedCountdown }}
+            } @else {
+              Renvoyer un code
+            }
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SECURITY NOTE -->
+    <div class="security-note">
+      <span class="material-symbols-outlined">verified_user</span>
+
+      <p>
+        Votre adresse e-mail est utilisée uniquement pour sécuriser
+        votre compte et suivre votre inscription.
+      </p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      © {{ currentYear }} B2WA · The West African Business Network
+    </footer>
+
+  </main>
+
+</div>

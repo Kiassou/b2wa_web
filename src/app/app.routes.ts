@@ -50,6 +50,55 @@ export const routes: Routes = [
             .then(m => m.RegisterComponent)
       },
       {
+        path: 'register-help',
+        loadComponent: () =>
+          import('./pages/auth/register-help/register-help')
+            .then(m => m.RegisterHelpComponent),
+        title: 'B2WA | Kora - Assistant B2WA'
+      },
+      {
+        path: 'register-fournisseur',
+        loadComponent: () =>
+          import('./pages/auth/register/register-fournisseur/register-fournisseur')
+        .then((m) => m.RegisterFournisseurComponent),
+        title: 'B2WA | Inscription fournisseur'
+      },
+      {
+        path: 'register-info',
+        loadComponent: () =>
+          import('./pages/auth/register/register-fournisseur/register-info/register-info')
+        .then((m) => m.RegisterInfoComponent),
+        title: 'B2WA | Inscription fournisseur'
+      },
+      {
+        path: 'verify-account',
+        loadComponent: () =>
+          import('./pages/auth/register/register-fournisseur/verify-account/verify-account')
+        .then((m) => m.VerifyAccountComponent),
+        title: 'B2WA | Vérification du compte'
+      },
+      {
+        path: 'documents',
+        loadComponent: () =>
+          import('./pages/auth/register/register-fournisseur/supplier-documents/supplier-documents')
+        .then((m) => m.SupplierDocumentsComponent),
+        title: 'B2WA | Documents du fournisseur'
+      },
+      {
+        path: 'registration-success',
+        loadComponent: () =>
+          import('./pages/auth/register/register-fournisseur/registration-success/registration-success')
+        .then((m) => m.RegistrationSuccessComponent),
+        title: 'B2WA | Inscription réussie'
+      },
+      {
+        path: 'register-commercant',
+        loadComponent: () =>
+          import('./pages/auth/register/register-commercant/register-commercant')
+        .then((m) => m.RegisterCommercantComponent),
+        title: 'B2WA | Inscription commerçant'
+      },
+      {
         path: 'pending-approval',
 
         loadComponent: () =>

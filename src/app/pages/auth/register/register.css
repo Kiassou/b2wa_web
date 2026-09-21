@@ -1,480 +1,873 @@
 :host {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* CARTE PRINCIPALE */
+/* =========================================================
+PAGE
+========================================================= */
+
+.register-page {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+box-sizing: border-box;
+overflow: hidden;
+}
+
+
+/* =========================================================
+CARTE PRINCIPALE
+========================================================= */
+
 .register-card {
-  width: 100%;
-  max-width: 440px;
-  padding: 2.5rem;
-  border-radius: 20px;
-  background: rgba(15, 44, 89, 0.75); /* Bleu Marine B2WA */
-  border: 1px solid rgba(22, 163, 74, 0.3); /* Vert B2WA */
-  backdrop-filter: blur(16px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  box-sizing: border-box;
+position: relative;
+z-index: 2;
+padding: 2.5rem;
+box-sizing: border-box;
+border-radius: 5px;
+overflow: hidden;
 }
 
-/* BRAND HEADER COMPACT */
+
+/* =========================================================
+HEADER
+========================================================= */
+
 .register-header {
-  margin-bottom: 0.6rem;
+margin-bottom: 2rem;
 }
 
-.brand-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 0.2rem;
+/* TITRE */
+
+.auth-title .eyebrow {
+  display: inline-flex;
+  gap: 0.42rem;
+  margin-bottom: 0.48rem;
+  color: #16a34a;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 1.45px;
 }
 
-.register-logo-wrap {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #ffffff;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.login-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 50%;
-}
-
-.brand-info h3 {
+.auth-title h1 {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #fff;
+  color: #8b95a2;
+  font-size: clamp(1.45rem, 4vw, 1.65rem);
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  line-height: 1.1;
+}
+
+.brand-text strong {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 20px;
   line-height: 1;
 }
 
-.brand-info small {
-  font-size: 0.58rem;
-  font-weight: 700;
-  color: #f59e0b;
-  letter-spacing: 0.8px;
+.b-text {
+  color: #16a34a;
 }
 
-.auth-title .eyebrow {
-  font-size: 0.65rem;
-  font-weight: 700;
+.two-text {
   color: #16a34a;
-  letter-spacing: 1px;
 }
+
+.wa-text {
+  color: #f59e0b;
+}
+
+
+
+
+
+.register-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+
 
 .auth-title p {
-  margin: 0;
-  font-size: 0.75rem;
-  color: #cbd5e1;
-}
+  margin: 0.4rem auto 0;
 
-/* FORMULAIRE & GRILLES */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+  max-width: 540px;
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-}
+  font-size: 0.78rem;
+  line-height: 1.4;
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  margin-bottom: 0.15rem;
-  display: block;
-}
-
-.input-wrap {
-  display: flex;
-  align-items: center;
-  background: rgba(10, 25, 47, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  padding: 0 0.5rem;
-  height: 45px; 
-  transition: all 0.2s ease;
-}
-
-.input-wrap:focus-within {
-  border-color: #16a34a;
-  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
-}
-
-.input-wrap input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: #fff;
-  outline: none;
-  font-size: 0.8rem;
-}
-
-.input-wrap input::placeholder {
-  color: #64748b;
-  font-size: 0.75rem;
-}
-
-.input-wrap span.material-symbols-outlined {
   color: #94a3b8;
-  font-size: 1rem;
-  margin-right: 0.35rem;
 }
 
-.input-wrap.input-error {
-  border-color: #ef4444;
+/* =========================================================
+   CHOIX DU PROFIL
+   ========================================================= */
+
+.account-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+
+  margin-top: 0.9rem;
 }
 
-.toggle-btn {
-  background: transparent;
-  border: none;
+/* =========================================================
+   CARTE PROFIL
+   ========================================================= */
+
+.account-card {
+  position: relative;
+
+  min-height: 190px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1.25rem;
+
+  border-radius: 17px;
+
+  background:white;
+  box-shadow: 0 10px 14px rgba(0, 0, 0, 0.1);
+  border: 1px  rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  color: #94a3b8;
-  padding: 0;
-  display: flex;
-  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
-/* SÉLECTEUR DE RÔLE COMPACT */
-.role-selector-compact {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+/* Ligne lumineuse en haut */
+
+.account-card::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+
+  height: 2px;
+
+  border-radius: 0 0 10px 10px;
+
+  opacity: 0;
+
+  transition: opacity 0.25s ease;
 }
 
-.role-btn {
+/* Glow interne */
+
+.account-card::after {
+  content: '';
+
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  border-radius: 50%;
+
+  filter: blur(45px);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity 0.3s ease;
+}
+
+.account-card:hover {
+  transform: translateY(-5px);
+}
+
+.account-card:hover::before,
+.account-card:hover::after {
+  opacity: 1;
+}
+
+/* =========================================================
+   FOURNISSEUR
+   ========================================================= */
+
+.supplier-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #22c55e,
+    transparent
+  );
+}
+
+.supplier-card::after {
+  background: rgba(34, 197, 94, 0.18);
+  top: -45px;
+  left: -35px;
+}
+
+.supplier-card:hover {
+  border-color: rgba(34, 197, 94, 0.48);
+
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.28),
+    0 0 10px rgba(34, 197, 94, 0.08);
+}
+
+/* =========================================================
+   COMMERÇANT
+   ========================================================= */
+
+.merchant-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #38bdf8,
+    transparent
+  );
+}
+
+.merchant-card::after {
+  background: rgba(14, 165, 233, 0.18);
+  right: -35px;
+  bottom: -45px;
+}
+
+.merchant-card:hover {
+  border-color: rgba(56, 189, 248, 0.48);
+
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.28),
+    0 0 10px rgba(56, 189, 248, 0.08);
+}
+
+/* =========================================================
+   ICÔNES
+   ========================================================= */
+
+.account-icon {
+  position: relative;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: 35px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(10, 25, 47, 0.5);
-  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.58);
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.account-card:hover .account-icon {
+  transform: scale(1.06);
+}
+
+.account-icon .material-symbols-outlined {
+  font-size: 1.6rem;
+}
+
+/* Fournisseur icon */
+
+.supplier-card .account-icon {
+  color: #4ade80;
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.08);
+}
+
+/* Commerçant icon */
+
+.merchant-card .account-icon {
+  color: #38bdf8;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.08);
+}
+
+/* =========================================================
+   TEXTE DES CARTES
+   ========================================================= */
+
+.account-card h2 {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  margin: 0;
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #cbd5e1;
-  transition: all 0.2s ease;
+  font-weight: 800;
+
+  color: #8b95a2;
 }
 
-.role-btn input[type="radio"] {
-  display: none;
-}
-
-.role-btn.active {
-  border-color: #16a34a;
-  background: rgba(22, 163, 74, 0.2);
-  color: #ffffff;
-}
-
-.role-btn .icon {
-  font-size: 1rem;
-  color: #f59e0b;
-}
-
-/* FOOTER & CHECKBOX */
-.form-footer {
-  margin-top: 0.1rem;
-}
-
-.checkbox-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.account-card p {
+  position: relative;
+  z-index: 1;
+  max-width: 280px;
+  margin: 0.4rem 0 0;
   font-size: 0.72rem;
-  color: #cbd5e1;
+  line-height: 1.45;
+  text-align: center;
+  color: #a3a6ae;
 }
 
-.checkbox-wrap input[type="checkbox"] {
-  accent-color: #16a34a;
-  width: 13px;
-  height: 13px;
-}
+/* =========================================================
+   BOUTON
+   ========================================================= */
 
-.terms-link {
-  color: #16a34a;
+.account-action {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  margin-top: 0.75rem;
+
+  min-width: 125px;
+  height: 32px;
+
+  padding: 0 0.85rem;
+
+  border-radius: 8px;
+
+  font-size: 0.7rem;
+  font-weight: 750;
+
   text-decoration: none;
-  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* BOUTONS & DIVIDER */
-.submit-btn {
-  width: 100%;
-  height: 38px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.82rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+.account-card:hover .account-action {
+  transform: translateY(-1px);
 }
 
-.submit-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+.supplier-card .account-action {
+  background: linear-gradient(
+    135deg,
+    #16a34a,
+    #15803d
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 5px 15px rgba(22, 163, 74, 0.22);
 }
+
+.merchant-card .account-action {
+  background: linear-gradient(
+    135deg,
+    #0284c7,
+    #0369a1
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 5px 15px rgba(14, 165, 233, 0.20);
+}
+
+.account-action .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
 
 .divider {
   display: flex;
   align-items: center;
-  text-align: center;
-  margin: 0.1rem 0;
+
+  gap: 0.65rem;
+
+  margin: 0.9rem 0 0.75rem;
+
   color: #64748b;
-  font-size: 0.7rem;
+
+  font-size: 0.65rem;
 }
 
 .divider::before,
 .divider::after {
   content: '';
+
   flex: 1;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.09);
 }
 
 .divider span {
-  padding: 0 0.4rem;
+  white-space: nowrap;
 }
+
+/* =========================================================
+   LIEN CONNEXION
+   ========================================================= */
 
 .auth-link {
   text-align: center;
-  font-size: 0.75rem;
-  color: #cbd5e1;
-}
 
-.auth-link a {
-  color: #16a34a;
-  font-weight: 700;
-  text-decoration: none;
-  margin-left: 4px;
-}
+  font-size: 0.73rem;
 
-/* STYLES MODAL UPLOADS */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(5, 15, 30, 0.82);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-}
-
-.modal-card {
-  width: 100%;
-  max-width: 460px;
-  background: #0f2c59;
-  border: 1px solid rgba(22, 163, 74, 0.4);
-  border-radius: 16px;
-  padding: 1.25rem;
-  color: #ffffff;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-}
-
-.modal-header {
-  margin-bottom: 0.85rem;
-}
-
-.modal-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 0.5rem;
-}
-
-.modal-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-title-wrap h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.role-badge {
-  display: inline-block;
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: #16a34a;
-  text-transform: uppercase;
-}
-
-.mandatory-notice, .optional-notice {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.7rem;
-  padding: 0.4rem 0.65rem;
-  border-radius: 6px;
-  margin: 0;
-}
-
-.mandatory-notice {
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-}
-
-.optional-notice {
-  background: rgba(22, 163, 74, 0.15);
-  color: #86efac;
-  border: 1px solid rgba(22, 163, 74, 0.25);
-}
-
-.modal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.doc-upload-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.6rem 0.85rem;
-  border-radius: 10px;
-  background: rgba(10, 25, 47, 0.6);
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-}
-
-.doc-upload-card.has-file {
-  border-style: solid;
-  border-color: #16a34a;
-  background: rgba(22, 163, 74, 0.1);
-}
-
-.doc-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow: hidden;
-}
-
-.doc-icon {
-  font-size: 1.3rem;
   color: #94a3b8;
 }
 
-.doc-upload-card.has-file .doc-icon {
-  color: #16a34a;
+.auth-link a {
+  color: #22c55e;
+
+  font-weight: 750;
+
+  text-decoration: none;
+
+  margin-left: 4px;
+
+  transition: color 0.2s ease;
 }
 
-.doc-details {
+.auth-link a:hover {
+  color: #4ade80;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   PETIT INDICATEUR B2WA
+   ========================================================= */
+
+.register-footer {
+  margin-top: 0.75rem;
+
+  text-align: center;
+
+  font-size: 0.58rem;
+
+  color: #475569;
+
+  letter-spacing: 0.4px;
+}
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .register-page {
+    padding: 0.75rem;
+  }
+
+  .register-card {
+    max-width: 650px;
+    padding: 1.25rem;
+  }
+
+  .account-options {
+    gap: 0.75rem;
+  }
+
+  .account-card {
+    min-height: 175px;
+    padding: 1rem;
+  }
+
+  .account-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.65rem;
+  }
+
+  .account-icon .material-symbols-outlined {
+    font-size: 1.55rem;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+  :host,
+  .register-page {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .register-page {
+    padding: 0.65rem;
+    align-items: center;
+  }
+
+  .register-card {
+    padding: 1rem 0.85rem;
+    border-radius: 19px;
+  }
+
+  .register-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .register-logo-wrap {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand-info h3 {
+    font-size: 1rem;
+  }
+
+  .brand-info small {
+    font-size: 0.5rem;
+  }
+
+  .auth-title .eyebrow {
+    font-size: 0.58rem;
+    letter-spacing: 1.4px;
+  }
+
+  .auth-title h1 {
+    font-size: 1.25rem;
+  }
+
+  .auth-title p {
+    font-size: 0.68rem;
+    margin-top: 0.3rem;
+  }
+
+  .account-options {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    margin-top: 0.7rem;
+  }
+
+  .account-card {
+    min-height: 130px;
+    padding: 0.75rem;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: 0.75rem;
+    text-align: left;
+  }
+
+  .account-icon {
+    width: 46px;
+    height: 46px;
+    margin: 0;
+    grid-row: span 2;
+  }
+
+  .account-icon .material-symbols-outlined {
+    font-size: 1.4rem;
+  }
+
+  .account-card h2 {
+    align-self: end;
+    font-size: 0.9rem;
+  }
+
+  .account-card p {
+    align-self: start;
+    margin: 0.2rem 0 0;
+    max-width: none;
+    text-align: left;
+    font-size: 0.64rem;
+  }
+
+  .account-action {
+    grid-column: 3;
+    grid-row: 1 / 3;
+
+    min-width: 92px;
+    height: 30px;
+
+    margin: 0;
+
+    font-size: 0.62rem;
+  }
+
+  .divider {
+    margin: 0.7rem 0 0.55rem;
+  }
+
+  .auth-link {
+    font-size: 0.67rem;
+  }
+
+  .register-footer {
+    display: none;
+  }
+}
+
+/* =========================================================
+   TRÈS PETITS ÉCRANS
+   ========================================================= */
+
+@media (max-height: 650px) and (min-width: 561px) {
+  .register-page {
+    padding: 0.5rem;
+  }
+
+  .register-card {
+    padding: 1rem 1.25rem;
+  }
+
+  .register-header {
+    margin-bottom: 0.65rem;
+  }
+
+  .register-logo-wrap {
+    width: 34px;
+    height: 34px;
+  }
+
+  .auth-title h1 {
+    font-size: 1.3rem;
+  }
+
+  .auth-title p {
+    margin-top: 0.2rem;
+  }
+
+  .account-card {
+    min-height: 155px;
+    padding: 0.9rem;
+  }
+
+  .account-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.55rem;
+  }
+
+  .divider {
+    margin: 0.6rem 0 0.5rem;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .register-card,
+  .account-card,
+  .account-icon,
+  .account-action {
+    animation: none;
+    transition: none;
+  }
+}
+
+
+/* Titre */
+
+.auth-title .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.75);
+}
+
+/* Carte */
+
+.account-card {
+  position: relative;
+  text-align: left;
+}
+
+.card-top-line {
+  position: absolute;
+  top: 0;
+  left: 16%;
+  right: 16%;
+  height: 2px;
+  border-radius: 0 0 10px 10px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.account-card:hover .card-top-line {
+  opacity: 1;
+}
+
+.supplier-card .card-top-line {
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+}
+
+.merchant-card .card-top-line {
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+}
+
+/* Petit label d'intention */
+
+.account-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 1.1px;
+}
+
+.account-label .material-symbols-outlined {
+  font-size: 0.8rem;
+}
+
+.supplier-card .account-label {
+  color: #4ade80;
+}
+
+.merchant-card .account-label {
+  color: #38bdf8;
+}
+
+/* Liste de bénéfices */
+
+.account-benefits {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-}
-
-.doc-details strong {
-  font-size: 0.75rem;
-  color: #f8fafc;
-}
-
-.doc-details small {
-  font-size: 0.65rem;
-  color: #64748b;
-}
-
-.file-name {
-  color: #f59e0b !important;
-  font-weight: 600;
-}
-
-.upload-btn {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
-  font-size: 0.72rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.remove-btn {
-  background: rgba(239, 68, 68, 0.15);
-  border: none;
-  color: #ef4444;
-  padding: 0.35rem;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 1rem;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0.9rem 0 1rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.primary-btn {
+.account-benefits span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  color: #a9b9cf;
+  font-size: 0.65rem;
+  line-height: 1.2;
+}
+
+.account-benefits .material-symbols-outlined {
+  font-size: 0.88rem;
+}
+
+.supplier-card .account-benefits .material-symbols-outlined {
+  color: #4ade80;
+}
+
+.merchant-card .account-benefits .material-symbols-outlined {
+  color: #38bdf8;
+}
+
+/* Information sous les cartes */
+
+.register-info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.4rem;
+  max-width: 650px;
+  margin: 1rem auto 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 11px;
+  background: rgba(56, 189, 248, 0.055);
+  color: #9fb3cb;
+  font-size: 0.56rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.register-info .material-symbols-outlined {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: #38bdf8;
+  font-size: 1rem;
+}
+
+/* Lien de connexion */
+
+.auth-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.auth-link a .material-symbols-outlined {
+  font-size: 0.9rem;
+}
+
+/* Footer */
+
+.register-footer {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-  color: #ffffff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  color: #64748b;
+  font-size: 0.56rem;
 }
 
-.primary-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.register-footer .material-symbols-outlined {
+  color: #4ade80;
+  font-size: 0.75rem;
 }
 
-.secondary-btn {
-  padding: 0.5rem 0.9rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: transparent;
-  color: #cbd5e1;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
+.footer-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #475569;
+}
+
+/* Mobile */
+
+@media (max-width: 560px) {
+  .top-brand {
+    margin-bottom: 0.9rem;
+  }
+
+  .brand-status {
+    font-size: 0.54rem;
+  }
+
+  .secure-badge {
+    padding: 0.3rem 0.42rem;
+    font-size: 0.52rem;
+  }
+
+  .secure-badge .material-symbols-outlined {
+    display: none;
+  }
+
+  .account-benefits {
+    display: none;
+  }
+
+  .register-info {
+    margin-top: 0.7rem;
+    font-size: 0.6rem;
+  }
+
+  .register-footer {
+    display: none;
+  }
 }
