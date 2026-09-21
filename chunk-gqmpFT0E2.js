@@ -1,0 +1,1 @@
+import{Ot as Xy,St as Va,fn as lI,in as ja}from"./chunk-CVjAPUX6.js";var c=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=Xy({type:e,selectors:[[`app-activity`]],decls:2,vars:0,template:function(t,m){t&1&&(ja(0,`p`),lI(1,`activity works!`),Va())},encapsulation:2})};export{c as ActivityComponent};
