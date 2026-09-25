@@ -709,30 +709,31 @@
 
         <div class="form-note">
 
-          <span class="material-symbols-outlined">
-            verified_user
-          </span>
-
-          <span>
-            Vos informations sont sécurisées.
-          </span>
-
+        <label class="terms-checkbox">
+          <input
+           type="checkbox"
+           name="termsAccepted"
+           [(ngModel)]="termsAccepted"
+           required/>
+           <span>
+            J’accepte les
+             <a 
+              routerLink="/auth/terms"
+               rel="noopener noreferrer">
+              conditions générales d’utilisation
+             </a>.
+           </span>
+        </label>
         </div>
 
         <button
-          type="submit"
+         type="submit"
           class="continue-button"
-          [disabled]="!isFormValid"
-        >
-
+          [disabled]="!isFormValid || isLoading">
           <span>
-            Continuer
+            {{ isLoading ? 'Envoi en cours...' : 'Continuer' }}
           </span>
-
-          <span class="material-symbols-outlined">
-            arrow_forward
-          </span>
-
+          <span class="material-symbols-outlined">arrow_forward</span>
         </button>
 
       </div>

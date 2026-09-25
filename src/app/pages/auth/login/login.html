@@ -39,22 +39,23 @@
 
     <!-- IDENTIFIANT -->
     <div class="form-group">
-      <label for="email">
+
+      <label for="identifier">
         Identifiant professionnel
       </label>
 
       <div
         class="input-wrap"
-        [class.input-error]="f['email'].touched && f['email'].invalid"
+        [class.input-error]="f['identifier'].touched && f['identifier'].invalid"
       >
         <span class="material-symbols-outlined input-icon">
           alternate_email
         </span>
 
         <input
-          id="email"
+          id="identifier"
           type="text"
-          formControlName="email"
+          formControlName="identifier"
           placeholder="E-mail ou numéro de téléphone"
           autocomplete="username"
         />
@@ -62,18 +63,15 @@
 
       <small
         class="error"
-        *ngIf="f['email'].touched && f['email'].invalid"
+        *ngIf="f['identifier'].touched && f['identifier'].invalid"
       >
         <span class="material-symbols-outlined">error</span>
 
-        <span *ngIf="f['email'].errors?.['required']">
-          Veuillez renseigner votre adresse e-mail ou votre numéro.
-        </span>
-
-        <span *ngIf="f['email'].errors?.['email']">
-          Veuillez saisir une adresse e-mail valide.
+        <span *ngIf="f['identifier'].errors?.['required']">
+          Veuillez renseigner votre adresse e-mail ou votre numéro de téléphone.
         </span>
       </small>
+
     </div>
 
     <!-- PASSWORD -->

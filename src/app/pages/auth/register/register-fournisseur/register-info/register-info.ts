@@ -1,14 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
+import {
+  RegistrationService,
+  SupplierRegistrationStartRequest
+} from '../../../../../services/registration.service';
 
 @Component({
   selector: 'app-register-info',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register-info.html',
-  styleUrl: './register-info.css'
+  styleUrl: './register-info.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterInfoComponent {
 
@@ -16,6 +22,11 @@ export class RegisterInfoComponent {
 
   showPassword = false;
   showConfirmPassword = false;
+
+  isLoading = false;
+  errorMessage = '';
+
+  termsAccepted = false;
 
   supplier = {
     firstName: '',
@@ -46,7 +57,10 @@ export class RegisterInfoComponent {
     'Autre'
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private registrationService: RegistrationService
+  ) {}
 
   get passwordHasMinLength(): boolean {
     return this.supplier.password.length >= 8;
@@ -118,7 +132,8 @@ export class RegisterInfoComponent {
       this.supplier.city.trim() &&
       this.supplier.address.trim() &&
       this.passwordStrength === 5 &&
-      this.passwordsMatch
+      this.passwordsMatch &&
+      this.termsAccepted
     );
   }
 
@@ -131,18 +146,168 @@ export class RegisterInfoComponent {
   }
 
   continue(): void {
-    if (!this.isFormValid) {
+    if (!this.isFormValid || this.isLoading) {
       return;
     }
 
-    /*
-     * IMPORTANT :
-     * Le mot de passe ne sera pas enregistré dans localStorage.
-     * Lorsque le backend sera branché, ces données seront envoyées
-     * directement à l'API d'inscription.
-     */
+    this.isLoading = true;
+    this.errorMessage = '';
 
-    this.router.navigate(['/auth/verify-account']);
+    const request: SupplierRegistrationStartRequest = {
+      nom: this.supplier.lastName.trim(),
+      prenom: this.supplier.firstName.trim(),
+      email: this.supplier.email.trim(),
+      telephone: this.supplier.phone.trim(),
+      password: this.supplier.password,
+      nom_entreprise: this.supplier.companyName.trim(),
+
+      /*
+       * Mapping temporaire de la catégorie.
+       * On remplacera cela plus tard par les vrais IDs
+       * venant du backend.
+       */
+      categorie_id: this.getCategory_id(this.supplier.category),
+
+      adresse: this.supplier.address.trim(),
+      ville: this.supplier.city.trim(),
+      pays: this.supplier.country,
+
+      terms_accepted: this.termsAccepted,
+      terms_version: '1.0'
+    };
+
+    // 🔎 TEST
+    console.log('CHECKBOX =', this.termsAccepted);
+    console.log('REQUEST =', request.terms_accepted);
+    console.log('TYPE =', typeof request.terms_accepted);
+
+    console.log('📤 Données envoyées pour inscription fournisseur :', {
+      ...request,
+      password: '********'
+    });
+
+    this.registrationService
+      .startSupplierRegistration(request)
+      .subscribe({
+        next: (response) => {
+          console.log(
+            '✅ Inscription fournisseur démarrée :',
+            response
+          );
+
+          /*
+           * Le backend doit nous retourner un registrationId.
+           */
+          if (!response?.registration_id) {
+            console.error(
+              '❌ Le backend n’a pas retourné de registrationId.',
+              response
+            );
+
+            this.isLoading = false;
+
+            this.errorMessage =
+              'La réponse du serveur est invalide. Aucun identifiant d’inscription reçu.';
+
+            return;
+          }
+
+          /*
+           * Passage à l'étape de vérification OTP.
+           */
+          this.router.navigate(
+            ['/auth/verify-account'],
+            {
+              state: {
+                registration_id: response.registration_id,
+                email: this.supplier.email.trim()
+              }
+            }
+          );
+        },
+
+        error: (error) => {
+          console.error(
+            '❌ Erreur démarrage inscription fournisseur'
+          );
+
+          console.error(
+            'Status :',
+            error?.status
+          );
+
+          console.error(
+            'Status Text :',
+            error?.statusText
+          );
+
+          console.error(
+            'URL :',
+            error?.url
+          );
+
+          console.error(
+            'Error body :',
+            error?.error
+          );
+
+          console.error(
+            'Message :',
+            error?.message
+          );
+
+          console.error(
+            'Erreur complète :',
+            error
+          );
+
+          this.isLoading = false;
+
+          /*
+           * On essaie de récupérer le message fourni
+           * directement par le backend.
+           */
+          const backendMessage =
+            error?.error?.message ??
+            error?.error?.error ??
+            error?.message;
+
+          this.errorMessage =
+            backendMessage ??
+            'Impossible de démarrer l’inscription. Veuillez réessayer.';
+
+          /*
+           * Masquage automatique du message après 3 secondes.
+           */
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000);
+        }
+      });
+  }
+
+  /**
+   * Mapping temporaire entre le libellé affiché
+   * dans le formulaire et l'ID attendu par le backend.
+   *
+   * Ces IDs seront remplacés plus tard par les vrais IDs
+   * venant de la table categories du backend.
+   */
+  private getCategory_id(category: string): number {
+    const categoryMap: Record<string, number> = {
+      'Agriculture & Agroalimentaire': 1,
+      'Commerce & Distribution': 2,
+      'Mode & Textile': 3,
+      'Électronique & Technologie': 4,
+      'Beauté & Cosmétique': 5,
+      'Maison & Décoration': 6,
+      'Matériaux & Construction': 7,
+      'Transport & Logistique': 8,
+      'Services professionnels': 9,
+      'Autre': 10
+    };
+
+    return categoryMap[category] ?? 10;
   }
 
   goBack(): void {

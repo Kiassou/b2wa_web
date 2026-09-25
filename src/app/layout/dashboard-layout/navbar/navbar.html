@@ -39,11 +39,11 @@
         [attr.aria-expanded]="isDropdownOpen"
       >
         <div class="avatar">
-          <span>O</span>
+          <span>{{ initials() }}</span>
         </div>
         <div class="user-info">
-          <span class="user-name">O. TRAORE</span>
-          <span class="user-role">FOURNISSEUR B2WA</span>
+          <span class="user-name">{{ fullName() }}</span>
+          <span class="user-role">{{ user()?.type_compte }} B2WA</span>
         </div>
         <span class="material-symbols-outlined dropdown-chevron">
           expand_more
@@ -55,8 +55,8 @@
         <div class="dropdown-menu">
           <!-- HEADER DU DROPDOWN -->
           <div class="dropdown-header">
-            <span class="dropdown-user-name">Oumar TRAORE</span>
-            <span class="dropdown-user-email">o.traore@b2wa.africa</span>
+            <span class="dropdown-user-name">{{ fullName() }}</span>
+            <span class="dropdown-user-email">{{ user()?.email }}</span>
           </div>
 
           <div class="dropdown-divider"></div>

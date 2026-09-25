@@ -229,11 +229,7 @@
   top: calc(100% + 8px);
   right: 0;
   width: 220px;
-    background: linear-gradient(
-    135deg,
-    #00da50,
-    #0f7a37
-  );
+    background: #16a34a;
   border: 1px solid rgba(22, 163, 74, 0.3);
   border-radius: 12px;
   padding: 0.5rem;
@@ -253,12 +249,12 @@
 .dropdown-user-name {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #ffffff;
+  color: white;
 }
 
 .dropdown-user-email {
-  font-size: 0.68rem;
-  color: black;
+  font-size: 0.7rem;
+  color: #cbd5e1;
 }
 
 .dropdown-divider {
